@@ -344,7 +344,7 @@ This will be hinted by the Vue extension, no need to memorize them:
 - Folder structure:
 
 ## Create a Module
-
+```
 src/modules/users/
    ├── components/
    ├── pages/
@@ -353,17 +353,17 @@ src/modules/users/
    ├── types/
    ├── composables/
    └── index.ts
-
+```
 ## Create Types
-
+```js
 export interface User {
   id: number;
   name: string;
   email: string;
 }
-
+```
 ## Create API Service
-
+```js
 import api from "@/app/plugins/axios";
 import type { User } from "../types/user.types";
 
@@ -372,10 +372,10 @@ export const usersApi = {
     return api.get<User[]>("/users");
   },
 };
-
+```
 
 ## Create Pinia Store
-
+```js
 import { defineStore } from "pinia";
 import { usersApi } from "../services/users.api";
 
@@ -391,3 +391,4 @@ export const useUsersStore = defineStore("users", {
     },
   },
 });
+```
