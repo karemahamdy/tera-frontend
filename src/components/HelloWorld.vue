@@ -1,41 +1,47 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
+import TailwindCard from "./TailwindCard.vue";
 
-defineProps<{ msg: string }>()
 
-const count = ref(0)
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
+  <div class="p-6 w-full h-full bg-gray-100">
+    <Card style="width: 25rem; overflow: hidden">
+      <template #header>
+        <img
+          alt="user header"
+          src="https://shorthand.com/the-craft/types-of-image-file-formats/assets/UPhtO6IIvn/sh-unsplash_4qgbmezb56c-4096x2731.jpeg"
+        />
+      </template>
+      <template #title>Advanced Card</template>
+      <template #subtitle>Card subtitle</template>
+      <template #content>
+        <p class="m-0">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore
+          sed consequuntur error repudiandae numquam deserunt quisquam repellat
+          libero asperiores earum nam nobis, culpa ratione quam perferendis
+          esse, cupiditate neque quas!
+        </p>
+      </template>
+      <template #footer>
+        <div class="flex gap-4 mt-1">
+          <Button
+            label="Cancel"
+            severity="secondary"
+            variant="outlined"
+            class="w-full"
+          />
+          <Button label="Save" class="w-full" />
+        </div>
+      </template>
+    </Card>
+    <TailwindCard class="mt-10 rounded" />
   </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Learn more about IDE Support for Vue in the
-    <a
-      href="https://vuejs.org/guide/scaling-up/tooling.html#ide-support"
-      target="_blank"
-      >Vue Docs Scaling up Guide</a
-    >.
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
 
-<style scoped>
-.read-the-docs {
-  color: #888;
+<style>
+body {
+  font-family: "Arial", sans-serif;
 }
 </style>
