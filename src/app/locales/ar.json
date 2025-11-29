@@ -1,0 +1,19 @@
+{
+  "welcome": "أهلاً بك",
+  "login": "تسجيل الدخول",
+  "logout": "تسجيل الخروج",
+  "language": "Switch to English",
+  "auth": {
+    "welcomeBack": "مرحبا بعودتك",
+    "signInMsg": "سجّل الدخول للوصول إلى لوحة التحكم",
+    "userName": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "على الأقل 8 أحرف",
+    "branch": "الفرع",
+    "branchPlaceholder": "اختر فرعك",
+    "rememberMe": "تذكرني",
+    "login": "تسجيل الدخول",
+    "loginFrameTagline": "أدر عملك بوضوح وسرعة وتحكم",
+    "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً"
+  }
+}
