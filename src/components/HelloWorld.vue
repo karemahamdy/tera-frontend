@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import TailwindCard from "./TailwindCard.vue";
-
-
 </script>
 
 <template>

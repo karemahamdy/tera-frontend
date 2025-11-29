@@ -392,3 +392,152 @@ export const useUsersStore = defineStore("users", {
   },
 });
 ```
+
+
+## Vue 3 + TypeScript Project Architecture 
+Modular Monolithic + Component-Based Architecture 
+- This document provides a clear, structured overview of how our new Vue.js + 
+TypeScript project will be organized using a Modular Monolithic Architecture 
+combined with Component-Based Architecture. It defines folder structure, 
+module responsibilities, naming conventions, routing, state management, and 
+service design.
+
+## 1. Goals of the Architecture 
+• Scalability for large applications 
+• Clear separation of features 
+• Reusability of UI components & utilities 
+• Easy onboarding for team members 
+• Maintainability and clean code boundaries 
+• Works perfectly with Vue 3 + TS + Yarn + Pinia + Vue Router + TailwindCSS 
+## 2. High-Level Structure 
+```
+src/ 
+├── app/                
+router, store, layouts) 
+├── modules/            
+├── components/         
+├── assets/             
+├── utils/              
+├── types/              
+├── services/           
+├── plugins/            
+└── main.ts     
+```        
+## 3. Modules Structure (Core of the Architecture) 
+- Each feature is its own module under src/modules. Every module contains 
+everything related to it. 
+Example module: User 
+```
+modules/user/ 
+├── components/           
+├── pages/                
+├── store/                
+├── services/             
+├── types/                
+├── routes.ts             
+└── index.ts     
+```         
+## 4. Components Architecture 
+Shared reusable UI components go under src/components/. 
+Examples: 
+```
+components/ 
+├── buttons/ 
+│    
+├── BaseButton.vue 
+│    
+└── IconButton.vue 
+├── inputs/ 
+│    
+├── BaseInput.vue 
+│    
+└── SearchInput.vue 
+└── layout/ 
+├── PageHeader.vue 
+└── CardContainer.vue 
+```
+- Rules: - Reusable = goes to src/components - Feature-specific = stays inside 
+module
+
+## 5. Routing Layer 
+All module routes are registered from inside app/router/index.ts. Example: 
+// app/router/index.ts 
+``` js
+import { userRoutes } from "@/modules/user/routes"; 
+const routes = [ 
+...userRoutes, 
+]; 
+Inside module: 
+// modules/user/routes.ts 
+export const userRoutes = [ 
+{ 
+path: "/users", 
+component: () => import("./pages/UserList.vue"), 
+}, 
+]; 
+```
+## 6. Module Stores (Pinia) 
+Each module has its own store. 
+Example: 
+modules/user/store/useUserStore.ts 
+Store contains: - state - getters - actions 
+
+## 7. API Layer (Services) 
+Each module handles its own APIs: 
+modules/user/services/userService.ts 
+Rule: - No API calls inside components - Services return typed responses 
+
+## 8. Global Utilities & Composables 
+Global composables go to: 
+utils/composables/ 
+Module-specific composables go inside the module. 
+
+## 9. Naming Conventions 
+• Components: PascalCase 
+• Files: kebab-case 
+• Stores: useModuleStore.ts 
+• Services: <module>Service.ts 
+• Types: <Module>Types.ts 
+
+## 10. Example Full Folder Structure 
+```
+src/ 
+ ├── app/ 
+ │    ├── router/ 
+ │    │     └── index.ts 
+ │    ├── store/ 
+ │    ├── layouts/ 
+ │    └── app.config.ts 
+ │ 
+ ├── modules/ 
+ │    ├── user/ 
+ │    │     ├── components/ 
+ │    │     ├── pages/ 
+ │    │     ├── services/ 
+ │    │     ├── store/ 
+ │    │     ├── types/ 
+ │    │     ├── routes.ts 
+ │    │     └── index.ts 
+ │    └── auth/ 
+ │          └── ... 
+ │ 
+ ├── components/ 
+ ├── utils/ 
+ ├── services/ 
+ ├── plugins/ 
+ ├── types/ 
+ ├── assets/ 
+ └── main.ts 
+```
+## 11. Development Guidelines 
+• Never import from another module directly (modules should be 
+independent) 
+• Use global components only for shared UI patterns 
+• Keep business logic inside services & stores, not components 
+• Keep modules small and focused 
+ 
+## 12. Summary 
+This structure allows your project to: - Grow without becoming messy - Maintain 
+clear boundaries between features - Be easy to test and modify - Support teamwork 
+and long-term scalability 
+ 
