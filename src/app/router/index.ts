@@ -17,6 +17,12 @@ const routes = [
         name: "Dashboard",
         meta: { permission: null },
       },
+      {
+         path: "/system",
+        component: () => import("@/components/System.vue"),
+        name: "System",
+        meta: { permission: null },
+      }
     ],
   },
 ];
