@@ -7,6 +7,7 @@ import { setupPrimeVue } from './plugins/primevue';
 import 'primeicons/primeicons.css';
 import { i18n } from './plugins/i18n';
 
+
 const app = createApp(App)
 
 const pinia = createPinia();

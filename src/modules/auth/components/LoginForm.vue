@@ -27,10 +27,10 @@ function switchLanguage() {
     <div
       class="custom-card-bg w-full max-w-md rounded-2xl bg-[#F0F3FA] p-8 shadow"
     >
-      <h2 class="text-3xl font-bold text-center text-[#3F5FAC]">
+      <h2 class="text-3xl font-semibold text-center text-primary-500">
         {{ $t("auth.welcomeBack") }}
       </h2>
-      <p class="text-center text-sm text-gray-600">
+      <p class="text-center text-sm text-gray-600 mt-2">
         {{ $t("auth.signInMsg") }}
       </p>
 
@@ -86,7 +86,7 @@ function switchLanguage() {
         <Button v-slot="slotProps" asChild>
           <button
             v-bind="slotProps.a11yAttrs"
-            class="rounded bg-[#3F5FAC] hover:bg-[#354a8f] text-white border-none p-2 cursor-pointer w-full font-semibold"
+            class="rounded-lg bg-primary-500 hover:bg-primary-600  text-white border-none p-2 cursor-pointer w-full font-medium"
           >
             {{ $t("auth.login") }}
           </button>
@@ -95,6 +95,7 @@ function switchLanguage() {
       <div class="mt-5 text-center">
           <Button @click="switchLanguage" :label="$t('language')" icon="pi pi-language" />
       </div>
+      
     </div>
   </div>
 </template>
