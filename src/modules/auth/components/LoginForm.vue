@@ -35,6 +35,21 @@ function switchLanguage() {
       </p>
 
       <form class="space-y-5 mt-4">
+
+        <div>
+          <label class="text-gray-700 font-medium">{{
+            $t("auth.entity")
+          }}</label>
+
+          <Dropdown
+            v-model="selectedOption"
+            :options="options"
+            optionLabel="label"
+            :placeholder="$t('auth.entityPlaceholder')"
+            class="w-full mt-1"
+          />
+        </div>
+        
         <div>
           <label class="text-gray-700 font-medium">{{
             $t("auth.userName")
@@ -58,20 +73,6 @@ function switchLanguage() {
             :placeholder="$t('auth.passwordPlaceholder')"
             class="mt-1 w-full"
             inputClass="w-full p-3 border border-gray-300 rounded-lg"
-          />
-        </div>
-
-        <div class="mt-4">
-          <label class="text-gray-700 font-medium">{{
-            $t("auth.branch")
-          }}</label>
-
-          <Dropdown
-            v-model="selectedOption"
-            :options="options"
-            optionLabel="label"
-            :placeholder="$t('auth.branchPlaceholder')"
-            class="w-full mt-1"
           />
         </div>
 
