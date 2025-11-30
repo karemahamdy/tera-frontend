@@ -10,7 +10,10 @@ import Checkbox from "primevue/checkbox";
 import Dropdown from "primevue/dropdown";
 
 export function setupPrimeVue(app: App) {
-  app.use(PrimeVue, { theme: { preset: Aura } });
+  app.use(PrimeVue, { theme: { preset: Aura,  options: {
+        darkModeSelector: false,
+        cssVariables: true,
+      } } });
 
   // Register global components
   app.component('Button', Button);

@@ -32,24 +32,24 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+// router.beforeEach((to, from, next) => {
+//   window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const userStore = useUserStore();
+//   const userStore = useUserStore();
 
-  const isAuthenticated = userStore.isAuthenticated;
+//   const isAuthenticated = userStore.isAuthenticated;
 
-  if (
-    to.matched.some((record) => record.meta.requiresAuth) &&
-    !isAuthenticated
-  ) {
-    return next("/auth/login");
-  }
+//   if (
+//     to.matched.some((record) => record.meta.requiresAuth) &&
+//     !isAuthenticated
+//   ) {
+//     return next("/auth/login");
+//   }
 
-  const { title } = to.meta;
-  document.title = (title as string) || defaultTitle;
+//   const { title } = to.meta;
+//   document.title = (title as string) || defaultTitle;
 
-  next();
-});
+//   next();
+// });
 
 export default router;
