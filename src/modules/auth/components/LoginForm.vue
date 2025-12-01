@@ -23,9 +23,9 @@ function switchLanguage() {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center p-4">
+  <div class="min-h-screen flex items-center justify-center p-4 bg-white">
     <div
-      class="custom-card-bg w-full max-w-md rounded-2xl bg-[#F0F3FA] p-8 shadow"
+      class="custom-card-bg w-full max-w-md rounded-2xl bg-primary-25 p-8 shadow"
     >
       <h2 class="text-3xl font-semibold text-center text-primary-500">
         {{ $t("auth.welcomeBack") }}

@@ -80,11 +80,16 @@ html {
 body {
   color: white !important;
 }
+.heading-title {
+  @apply text-lg font-bold  text-gray-700 ;
+}
+
+.subheading-title {
+  @apply text-base font-normal text-gray-500 mb-4;
+}
 
 .p-inputtext,
 .p-password input {
-    background-color: var(--color-gray-50) !important;
-    color: black !important;
     border: 1px solid var(--color-gray-200) !important;
     padding: 0.75rem !important;
     border-radius: 0.75rem !important;
@@ -116,24 +121,21 @@ body {
     background-color: var(--color-gray-200) !important;
     color: #21315a !important;
 }
-.p-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
 
 .p-checkbox-box {
-    width: 1.25rem !important;
-    height: 1.25rem !important;
     border: 1px solid var(--color-gray-200) !important;
     border-radius: 0.25rem !important;
-    background-color: var(--color-gray-50) !important;
 }
 
-.p-checkbox-box.p-highlight {
-    background-color: var(--color-primary-500) !important;
-    border-color: var(--color-primary-500) !important;
+.p-checkbox .p-checkbox-box.p-highlight {
+  background-color: var(--color-primary-500) !important;
+  border-color: var(--color-primary-500) !important;
 }
+
+.p-checkbox .p-checkbox-box .p-checkbox-icon {
+  color: white !important;
+}
+
 
 .p-checkbox-label {
     color: black !important;
