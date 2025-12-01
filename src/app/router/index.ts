@@ -13,13 +13,13 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("@/components/HelloWorld.vue"),
+        component: () => import("@/sharedComponents/HelloWorld.vue"),
         name: "Dashboard",
         meta: { permission: null },
       },
       {
          path: "/system",
-        component: () => import("@/components/System.vue"),
+        component: () => import("@/sharedComponents/System.vue"),
         name: "System",
         meta: { permission: null },
       }
