@@ -28,12 +28,8 @@ const showDelete = () => {
 const showDownload = () => {
   downloadDialog.value = true;
   isDownloading.value = true;
+
   
-  // Simulate download
-  setTimeout(() => {
-    isDownloading.value = false;
-    downloadDialog.value = false;
-  }, 3000);
 };
 
 const handleConfirm = () => {
@@ -72,48 +68,40 @@ const handleDelete = () => {
     
     <div class="flex gap-2 mb-2">
       <Button label="Success Dialog" @click="showSuccess" severity="success" />
-      <Button label="Danger Dialog" @click="showDanger" severity="danger" />
-      <Button label="Delete Dialog" @click="showDelete" severity="danger" outlined />
+      <Button label="Deleted Dialog" @click="showDanger" severity="danger" />
+      <Button label="alert Dialog" @click="showDelete" severity="warn" />
       <Button label="Download Dialog" @click="showDownload" />
     </div>
 
     <StatusDialog
       v-model:visible="successDialog"
       status="success"
-      title="Operation Successful"
-      description="Your changes have been saved successfully."
-      confirm-text="Continue"
-      @confirm="handleConfirm"
+      title=" User Created Successfully"
+      description="New user account has been added. Please wait… you will be redirected shortly."
+      :loading="isDownloading"
+      
     />
 
     <StatusDialog
       v-model:visible="dangerDialog"
       status="danger"
-      title="Warning!"
-      description="This action may have consequences. Are you sure you want to proceed?"
-      confirm-text="Proceed"
-      cancel-text="Cancel"
-      @confirm="handleConfirm"
-      @cancel="handleCancel"
+      title="Validation failed. Please check and try again.!"    
     />
 
     <StatusDialog
       v-model:visible="deleteDialog"
       status="delete"
-      title="Delete Item"
-      description="This action cannot be undone. Are you sure you want to delete this item?"
-      confirm-text="Delete"
-      cancel-text="Cancel"
-      @confirm="handleDelete"
+      title="Are you sure you want to delete this user ?"
+      @confirm="handleConfirm"
       @cancel="handleCancel"
     />
 
     <StatusDialog
       v-model:visible="downloadDialog"
       status="download"
-      title="Downloading..."
-      description="Please wait while we prepare your download."
-      :loading="isDownloading"
+      title="Download Template"
+      description="You are about to download the Excel template (.xlsx) for bulk user uploads."
+      
     />
 
     <Card style="width: 25rem; overflow: hidden">

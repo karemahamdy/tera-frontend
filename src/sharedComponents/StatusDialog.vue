@@ -1,28 +1,38 @@
 <template>
     <Dialog v-model:visible="isVisible" modal :closable="!loading" :dismissableMask="!loading"
         :style="{ width: '28rem' }">
+
         <template #header>
-            <div class="flex items-center gap-3">
-                <div :class="['flex items-center justify-center rounded-full', statusConfig.iconBg]"
-                    style="width: 48px; height: 48px;">
-                    <i :class="['text-2xl', statusConfig.icon, statusConfig.iconColor]" />
-                </div>
+            <div class="flex items-center gap-3 mt-4 justify-center">
+                <img :src="statusConfig.icon" :alt="statusConfig.alt" />
             </div>
         </template>
 
-        <div class="py-4">
-            <h3 class="text-xl font-semibold mb-2">{{ title }}</h3>
-            <p v-if="description" class="text-gray-600">{{ description }}</p>
+        <div class="py-3">
+            <h3 class="text-3xl font-semibold mb-4 text-center text-gray-700 px-4">{{ title }}</h3>
+            <p v-if="description" class="text-gray-600 px-3 text-center font-normal">{{ description }}</p>
         </div>
 
         <template #footer>
-            <div v-if="loading" class="flex justify-center py-2">
-                <ProgressSpinner style="width: 40px; height: 40px" strokeWidth="4" />
+
+            <!-- success + danger → loading spinner -->
+            <div v-if="['success', 'danger'].includes(status)" class="flex justify-center m-auto ">
+            <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="6" fill="transparent"
+            animationDuration="2s" aria-label="Custom ProgressSpinner" class="custom-spinner" stroke="#3f5fac" />
             </div>
-            <div v-else class="flex gap-2 justify-end">
-                <Button v-if="cancelText" :label="cancelText" severity="secondary" @click="handleCancel" outlined />
-                <Button :label="confirmText || 'OK'" :severity="buttonSeverity" @click="handleConfirm" />
+
+            <!-- delete dialog -->
+            <div v-else-if="status === 'delete'" class="flex gap-2 justify-end">
+                <BaseButton label="Cancel" variant="ghost" @click="closeDialog" />
+                <BaseButton label="Yes, Delete" variant="danger" @click="confirmAction" />
             </div>
+
+            <!-- download dialog -->
+            <div v-else-if="status === 'download'" class="flex gap-2 justify-end">
+                <BaseButton label="Cancel" variant="ghost" @click="closeDialog" />
+                <BaseButton label="Download" variant="primary" @click="confirmAction" />
+            </div>
+
         </template>
     </Dialog>
 </template>
@@ -30,105 +40,54 @@
 <script setup>
 import { computed } from 'vue';
 import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
+import BaseButton from './BaseButton.vue';
 
+import downloadIcon from '@/assets/images/download.png';
+import dangerIcon from '@/assets/images/danger.png';
+import successIcon from '@/assets/images/success.png';
+import alertIcon from '@/assets/images/alert.png';
+
+
+// PROPS
 const props = defineProps({
-    visible: {
-        type: Boolean,
-        required: true
-    },
-    status: {
-        type: String,
-        required: true,
-        validator: (value) => ['success', 'danger', 'delete', 'download'].includes(value)
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        default: ''
-    },
-    loading: {
-        type: Boolean,
-        default: false
-    },
-    confirmText: {
-        type: String,
-        default: 'OK'
-    },
-    cancelText: {
-        type: String,
-        default: ''
-    },
-    onConfirm: {
-        type: Function,
-        default: null
-    },
-    onCancel: {
-        type: Function,
-        default: null
-    }
+    visible: Boolean,
+    status: String,
+    title: String,
+    description: String,
+    loading: Boolean
 });
 
-const emit = defineEmits(['update:visible', 'confirm', 'cancel']);
+// EMITS
+const emit = defineEmits(['update:visible', 'confirm']);
 
+
+// V-MODEL BINDING
 const isVisible = computed({
     get: () => props.visible,
     set: (value) => emit('update:visible', value)
 });
 
+
+// ICON CONFIGS
 const statusConfigs = {
-    success: {
-        icon: 'pi pi-check',
-        iconColor: 'text-green-600',
-        iconBg: 'bg-green-100'
-    },
-    danger: {
-        icon: 'pi pi-exclamation-triangle',
-        iconColor: 'text-red-600',
-        iconBg: 'bg-red-100'
-    },
-    delete: {
-        icon: 'pi pi-trash',
-        iconColor: 'text-red-600',
-        iconBg: 'bg-red-100'
-    },
-    download: {
-        icon: 'pi pi-download',
-        iconColor: 'text-blue-600',
-        iconBg: 'bg-blue-100'
-    }
+    success: { icon: successIcon, alt: 'success' },
+    danger: { icon: dangerIcon, alt: 'danger' },
+    delete: { icon: alertIcon, alt: 'delete' },
+    download: { icon: downloadIcon, alt: 'download' }
 };
 
 const statusConfig = computed(() => statusConfigs[props.status]);
 
-const buttonSeverity = computed(() => {
-    switch (props.status) {
-        case 'danger':
-        case 'delete':
-            return 'danger';
-        case 'success':
-            return 'success';
-        default:
-            return 'primary';
-    }
-});
 
-const handleConfirm = () => {
-    if (props.onConfirm) {
-        props.onConfirm();
-    }
-    emit('confirm');
-};
+// ACTIONS
+const closeDialog = () => isVisible.value = false;
+const confirmAction = () => emit('confirm');
 
-const handleCancel = () => {
-    if (props.onCancel) {
-        props.onCancel();
-    }
-    emit('cancel');
-    isVisible.value = false;
-};
 </script>
+
+<style scoped>  
+.p-progressspinner-circle.animation {
+  stroke: #3f5fac !important;
+}
+</style>
