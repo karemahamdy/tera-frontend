@@ -3,48 +3,72 @@ import { ref } from 'vue';
 import BaseButton from './BaseButton.vue';
 import StatusDialog from './StatusDialog.vue';
 import BaseDialog from './BaseDialog.vue';
-import ChangePassword from './ChangePassword.vue';
-import TailwindCard from "./TailwindCard.vue";
+// import TailwindCard from "./TailwindCard.vue";
 
+// Import icons
+import downloadIcon from '@/assets/images/download.png';
+import dangerIcon from '@/assets/images/danger.png';
+import successIcon from '@/assets/images/success.png';
+import alertIcon from '@/assets/images/alert.png';
+import timerIcon from '@/assets/images/timer.png';
+
+
+// Dialog visibility states
 const successDialog = ref(false);
 const dangerDialog = ref(false);
 const deleteDialog = ref(false);
 const downloadDialog = ref(false);
+const logoutDialog = ref(false);
+
+// Loading states
 const isDownloading = ref(false);
 
-function deleteUser() {
-  console.log("User deleted");
-} 
+// Show dialog functions
 const showSuccess = () => {
-  successDialog.value = true;
+    successDialog.value = true;
+    // Auto redirect after 3 seconds
+    setTimeout(() => {
+        successDialog.value = false;
+        console.log('Redirecting...');
+    }, 3000);
 };
 
 const showDanger = () => {
-  dangerDialog.value = true;
+    dangerDialog.value = true;
+    // Auto close after 3 seconds
+    setTimeout(() => {
+        dangerDialog.value = false;
+    }, 3000);
 };
 
 const showDelete = () => {
-  deleteDialog.value = true;
+    deleteDialog.value = true;
+};
+const showLogout = () => {
+    logoutDialog.value = true;
 };
 
 const showDownload = () => {
-  downloadDialog.value = true;
-  isDownloading.value = true;
-
-
+    downloadDialog.value = true;
 };
 
-const handleConfirm = () => {
-  console.log('Confirmed');
+// Handle actions
+const handleDeleteConfirm = () => {
+    console.log('Deleting user...');
+    // Add your delete logic here
+    deleteDialog.value = false;
 };
 
-const handleCancel = () => {
-  console.log('Cancelled');
-};
-
-const handleDelete = () => {
-  console.log('Item deleted');
-  deleteDialog.value = false;
+const handleDownloadConfirm = () => {
+    console.log('Downloading template...');
+    isDownloading.value = true;
+    
+    // Simulate download
+    setTimeout(() => {
+        isDownloading.value = false;
+        downloadDialog.value = false;
+        console.log('Download complete!');
+    }, 2000);
 };
 </script>
 
@@ -69,47 +93,72 @@ const handleDelete = () => {
      <h2 class="text-2xl font-bold mb-4 bg-primary-500">Status Dialog Examples</h2>
     
     <div class="flex gap-2 mb-2">
-      <Button label="Success Dialog" @click="showSuccess" severity="success" />
-      <Button label="Deleted Dialog" @click="showDanger" severity="danger" />
-      <Button label="alert Dialog" @click="showDelete" severity="warn" />
-      <Button label="Download Dialog" @click="showDownload" />
-    </div>
+     
+            <Button label="Success Dialog" @click="showSuccess" severity="success" />
+            <Button label="Danger Dialog" @click="showDanger" severity="danger" />
+            <Button label="Alert Dialog" @click="showDelete" severity="warn" />
+            <Button label="Download Dialog" @click="showDownload" />
+            <Button label="logout Dialog" @click="showLogout" />
 
-    <StatusDialog
-      v-model:visible="successDialog"
-      status="success"
-      title=" User Created Successfully"
-      description="New user account has been added. Please wait… you will be redirected shortly."
-      :loading="isDownloading"
-      
-    />
+        </div>
 
-    <StatusDialog
-      v-model:visible="dangerDialog"
-      status="danger"
-      title="Validation failed. Please check and try again.!"    
-    />
+        <!-- Success Dialog -->
+        <StatusDialog
+            v-model:visible="successDialog"
+            :icon="successIcon"
+            title="User Created Successfully"
+            description="New user account has been added. Please wait… you will be redirected shortly."
+            :showSpinner="true"
+        />
 
-    <StatusDialog
-      v-model:visible="deleteDialog"
-      status="delete"
-      title="Are you sure you want to delete this user ?"
-      @confirm="handleConfirm"
-      @cancel="handleCancel"
-    />
+        <!-- Danger Dialog -->
+        <StatusDialog
+            v-model:visible="dangerDialog"
+            :icon="dangerIcon"
+            title="Validation failed. Please check and try again!"
+            :showSpinner="true"
+        />
 
-    <StatusDialog
-      v-model:visible="downloadDialog"
-      status="download"
-      title="Download Template"
-      description="You are about to download the Excel template (.xlsx) for bulk user uploads."
-      
-    />
+        <!-- Delete Dialog -->
+        <StatusDialog
+            v-model:visible="deleteDialog"
+            :icon="alertIcon"
+            title="Are you sure you want to delete this user?"
+            :buttons="[
+                { label: 'Cancel', variant: 'ghost', action: 'cancel' ,},
+                { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
+            ]"
+            @confirm="handleDeleteConfirm"
+        />
+
+         <StatusDialog
+            v-model:visible="logoutDialog"
+            :icon="timerIcon"
+            title="Your session will expire in"
+            timer="05:00 minutes"
+            :buttons="[
+                { label: 'Stay Logged in ', variant: 'ghost', action: 'cancel' },
+                { label: 'Log out now', variant: 'primary', action: 'confirm' }
+            ]"
+            @confirm="handleDeleteConfirm"
+        />
+        
+        <!-- Download Dialog -->
+        <StatusDialog
+            v-model:visible="downloadDialog"
+            :icon="downloadIcon"
+            title="Download Template"
+            description="You are about to download the Excel template (.xlsx) for bulk user uploads."
+            :loading="isDownloading"
+            :buttons="[
+                { label: 'Cancel', variant: 'ghost', action: 'cancel', block: true },
+                { label: 'Download', variant: 'primary', action: 'confirm', block: true }
+            ]"
+            @confirm="handleDownloadConfirm"
+        />
+    
 
     <BaseDialog/>
-
-    <ChangePassword/>
-
     <Card style="width: 25rem; overflow: hidden">
       <template #header>
         <img alt="user header"

@@ -4,24 +4,27 @@ import Dialog from 'primevue/dialog';
 import ProgressSpinner from 'primevue/progressspinner';
 import BaseButton from './BaseButton.vue';
 
-import downloadIcon from '@/assets/images/download.png';
-import dangerIcon from '@/assets/images/danger.png';
-import successIcon from '@/assets/images/success.png';
-import alertIcon from '@/assets/images/alert.png';
-
-
-// PROPS
 const props = defineProps({
     visible: Boolean,
-    status: String,
+    icon: String,
     title: String,
     description: String,
-    loading: Boolean
+    timer: String,
+    showSpinner: Boolean,
+    buttons: Array,
+    loading: Boolean,
+    closable: {
+        type: Boolean,
+        default: true
+    },
+    width: {
+        type: String,
+        default: '30rem'
+    }
 });
 
 // EMITS
-const emit = defineEmits(['update:visible', 'confirm']);
-
+const emit = defineEmits(['update:visible', 'confirm', 'cancel', 'action']);
 
 // V-MODEL BINDING
 const isVisible = computed({
@@ -29,65 +32,65 @@ const isVisible = computed({
     set: (value) => emit('update:visible', value)
 });
 
+// HANDLE BUTTON ACTIONS
+const handleAction = (action) => {
 
-// ICON CONFIGS
-const statusConfigs = {
-    success: { icon: successIcon, alt: 'success' },
-    danger: { icon: dangerIcon, alt: 'danger' },
-    delete: { icon: alertIcon, alt: 'delete' },
-    download: { icon: downloadIcon, alt: 'download' }
+    if (action === 'cancel') {
+        emit('cancel');
+        isVisible.value = false;
+    } else if (action === 'confirm') {
+        emit('confirm');
+    } else {
+
+        emit('action', action);
+    }
 };
 
-const statusConfig = computed(() => statusConfigs[props.status]);
-
-
-// ACTIONS
-const closeDialog = () => isVisible.value = false;
-const confirmAction = () => emit('confirm');
-
+const canClose = computed(() => props.closable && !props.loading);
 </script>
 
 <template>
-    <Dialog v-model:visible="isVisible" modal :closable="!loading" :dismissableMask="!loading"
-        :style="{ width: '28rem' }">
-
+    <Dialog v-model:visible="isVisible" modal :closable="canClose" :dismissableMask="canClose"
+        :style="{ width: width }">
+        <!-- Header  -->
         <template #header>
-            <div class="flex items-center gap-3 mt-4 justify-center">
-                <img :src="statusConfig.icon" :alt="statusConfig.alt" />
+            <div v-if="icon" class="flex items-center gap-3 mt-4 justify-center">
+                <img :src="icon" :alt="title || 'dialog icon'" />
             </div>
         </template>
 
+        <!-- Content -->
         <div class="py-3">
-            <h3 class="text-3xl font-semibold mb-4 text-center text-gray-700 px-4">{{ title }}</h3>
-            <p v-if="description" class="text-gray-600 px-3 text-center font-normal">{{ description }}</p>
+            <h3 class="text-3xl font-semibold mb-4 text-center text-gray-700 px-4">
+                {{ title }}
+            </h3>
+            <p v-if="description" class="text-gray-600 px-3 text-center font-normal">
+                {{ description }}
+            </p>
+             <h3  v-if="timer" class="text-3xl font-semibold  text-center text-primary-500 px-4">
+                {{ timer }}
+            </h3>
         </div>
 
+        <!-- Footer -->
         <template #footer>
-
-            <!-- success + danger → loading spinner -->
-            <div v-if="['success', 'danger'].includes(status)" class="flex justify-center m-auto ">
-            <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="6" fill="transparent"
-            animationDuration="2s" aria-label="Custom ProgressSpinner" class="custom-spinner" stroke="#3f5fac" />
+            <!-- Spinner -->
+            <div v-if="showSpinner" class="flex justify-center m-auto">
+                <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="6" fill="transparent"
+                    animationDuration="2s" stroke="#3f5fac" />
             </div>
 
-            <!-- delete dialog -->
-            <div v-else-if="status === 'delete'" class="flex gap-2 justify-end">
-                <BaseButton label="Cancel" variant="ghost" @click="closeDialog" />
-                <BaseButton label="Yes, Delete" variant="danger" @click="confirmAction" />
+            <!-- Buttons -->
+            <div v-else-if="buttons && buttons.length > 0" class="flex gap-2 justify-end w-full">
+                <BaseButton v-for="(btn, index) in buttons" :key="index" :label="btn.label" :variant="btn.variant"
+                   block :disabled="loading || btn.disabled" @click="handleAction(btn.action)" />
             </div>
-
-            <!-- download dialog -->
-            <div v-else-if="status === 'download'" class="flex gap-2 justify-end w-full">
-                <BaseButton label="Cancel" variant="ghost" @click="closeDialog" block/>
-                <BaseButton label="Download" variant="primary" @click="confirmAction" block/>
-            </div>
-
         </template>
     </Dialog>
 </template>
 
-<style scoped>  
-.p-progressspinner-circle.animation {
-  stroke: #3f5fac !important;
+<style scoped>
+.p-progressspinner-circle {
+    stroke: #3f5fac !important;
 }
 </style>
