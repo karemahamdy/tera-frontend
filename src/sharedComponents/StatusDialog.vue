@@ -77,9 +77,9 @@ const confirmAction = () => emit('confirm');
             </div>
 
             <!-- download dialog -->
-            <div v-else-if="status === 'download'" class="flex gap-2 justify-end">
-                <BaseButton label="Cancel" variant="ghost" @click="closeDialog" />
-                <BaseButton label="Download" variant="primary" @click="confirmAction" />
+            <div v-else-if="status === 'download'" class="flex gap-2 justify-end w-full">
+                <BaseButton label="Cancel" variant="ghost" @click="closeDialog" block/>
+                <BaseButton label="Download" variant="primary" @click="confirmAction" block/>
             </div>
 
         </template>

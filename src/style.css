@@ -88,6 +88,14 @@ body {
   @apply text-base font-normal text-gray-500 mb-4;
 }
 
+.dialog-heading-title {
+  @apply text-2xl font-medium text-primary-500 ;
+}
+
+.dialog-subheading-title {
+  @apply text-base font-light  text-[#4A5565] ;
+}
+
 .p-inputtext,
 .p-password input {
     border: 1px solid var(--color-gray-200) !important;

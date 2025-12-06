@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 import BaseButton from './BaseButton.vue';
 import StatusDialog from './StatusDialog.vue';
-// import TailwindCard from "./TailwindCard.vue";
+import BaseDialog from './BaseDialog.vue';
+import ChangePassword from './ChangePassword.vue';
+import TailwindCard from "./TailwindCard.vue";
 
 const successDialog = ref(false);
 const dangerDialog = ref(false);
@@ -29,7 +31,7 @@ const showDownload = () => {
   downloadDialog.value = true;
   isDownloading.value = true;
 
-  
+
 };
 
 const handleConfirm = () => {
@@ -103,6 +105,10 @@ const handleDelete = () => {
       description="You are about to download the Excel template (.xlsx) for bulk user uploads."
       
     />
+
+    <BaseDialog/>
+
+    <ChangePassword/>
 
     <Card style="width: 25rem; overflow: hidden">
       <template #header>
