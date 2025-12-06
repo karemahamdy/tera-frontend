@@ -79,6 +79,7 @@ html {
 
 body {
   /* color: white !important; */
+  font-family: 'Inter', sans-serif !important;
 }
 .heading-title {
   @apply text-lg font-bold  text-gray-700 ;
