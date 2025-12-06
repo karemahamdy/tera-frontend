@@ -78,7 +78,7 @@ html {
 }
 
 body {
-  color: white !important;
+  /* color: white !important; */
 }
 .heading-title {
   @apply text-lg font-bold  text-gray-700 ;
