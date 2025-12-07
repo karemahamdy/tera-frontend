@@ -2,9 +2,9 @@
 <template>
   <div class="heading-section mb-6">
     <div class="flex items-center gap-3">
-      <i class="pi pi-send" style="color: green"></i>
+      <i class="pi pi-send" style="color: var(--color-gray-400)"></i>
       <p class="heading-title">{{ title }}</p>
-      <i class="pi pi-arrow-right" style="color: green"></i>
+      <i class="pi pi-arrow-right" style="color: var(--color-gray-400)"></i>
       <span class="screen-header-name">{{ subtitle }}</span>
     </div>
     </div>
