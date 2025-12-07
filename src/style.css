@@ -80,6 +80,15 @@ html {
 body {
   color: white !important;
 }
+
+.heading-section {
+  @apply flex justify-between items-start
+}
+
+.screen-header-name {
+  @apply text-base font-medium  text-gray-700 ;
+}
+
 .heading-title {
   @apply text-lg font-bold  text-gray-700 ;
 }
@@ -143,7 +152,6 @@ body {
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
   color: white !important;
 }
-
 
 .p-checkbox-label {
     color: black !important;

@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import BaseButton from './BaseButton.vue';
 import StatusDialog from './StatusDialog.vue';
-import BaseDialog from './BaseDialog.vue';
+import ChangePassword from './ChangePassword.vue';
+import ScreenHeader from './ScreenHeader.vue';
 // import TailwindCard from "./TailwindCard.vue";
 
 // Import icons
@@ -11,6 +12,7 @@ import dangerIcon from '@/assets/images/danger.png';
 import successIcon from '@/assets/images/success.png';
 import alertIcon from '@/assets/images/alert.png';
 import timerIcon from '@/assets/images/timer.png';
+import TableList from './tableList.vue';
 
 
 // Dialog visibility states
@@ -76,6 +78,8 @@ const handleDownloadConfirm = () => {
   <div class="p-6 w-full h-full bg-gray-100">
     <h1 class="heading-title"> HEADING TITLE </h1>
     <h6 class="subheading-title">SUBHEADING TITLE</h6>
+
+<ScreenHeader title="Access Control" subtitle="Roles & Permissions" />
 
     <div class="flex justify-between gap-4 mb-4 container px-32">
       <BaseButton label="cancel" variant="ghost" block/>
@@ -157,8 +161,11 @@ const handleDownloadConfirm = () => {
             @confirm="handleDownloadConfirm"
         />
     
+        <ChangePassword/>
+    
+     <h2 class="text-2xl font-bold my-4 bg-primary-500"> Entity Page Examples</h2>
+<TableList/>
 
-    <BaseDialog/>
     <Card style="width: 25rem; overflow: hidden">
       <template #header>
         <img alt="user header"
