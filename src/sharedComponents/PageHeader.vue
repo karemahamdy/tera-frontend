@@ -65,7 +65,7 @@ const onFilterChange = (filter, event) => {
         </div>
     </div>
 
-    <div class="filters-section">
+    <div class="flex gap-[10px] mb-6 mt-2 flex-nowrap">
         <span class="p-input-icon-left search-input">
             <InputText v-model="searchQuery" :placeholder="searchPlaceholder" @input="onSearch" />
         </span>
@@ -78,13 +78,6 @@ const onFilterChange = (filter, event) => {
 </template>
 
 <style>
-.filters-section {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 24px;
-    flex-wrap: nowrap;
-}
-
 .search-input {
     flex: 1;
     min-width: 100px;
