@@ -6,6 +6,7 @@ import router from './app/router'
 import { setupPrimeVue } from './plugins/primevue';
 import 'primeicons/primeicons.css';
 import { i18n } from './plugins/i18n';
+import { setupPrimeVueIcons } from './plugins/primevueIcons';
 
 
 const app = createApp(App)
@@ -15,5 +16,6 @@ app.use(i18n);
 app.use(pinia);
 app.use(router)
 setupPrimeVue(app);
+setupPrimeVueIcons(app);
 
 app.mount('#app')

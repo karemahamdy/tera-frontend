@@ -5,9 +5,6 @@ import Aura from '@primeuix/themes/aura';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Card from 'primevue/card';
-import Password from 'primevue/password';
-import Checkbox from 'primevue/checkbox';
-import Dropdown from 'primevue/dropdown';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dialog from 'primevue/dialog';
@@ -16,6 +13,15 @@ import Avatar from 'primevue/avatar';
 import Tag from 'primevue/tag';
 import Menu from 'primevue/menu';
 import Badge from 'primevue/badge';
+import Password from "primevue/password";
+import Checkbox from "primevue/checkbox";
+import Dropdown from "primevue/dropdown";
+import Badge from 'primevue/badge'
+import Avatar from 'primevue/avatar'
+import Menubar from 'primevue/menubar'
+import Tooltip from 'primevue/tooltip'
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
 
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
@@ -42,4 +48,10 @@ export function setupPrimeVue(app: App) {
   app.component('Tag', Tag);
   app.component('Menu', Menu);
   app.component('Badge', Badge);
+  app.component('Badge', Badge);
+  app.component('Avatar', Avatar);
+  app.component('Menubar', Menubar);
+  app.directive('tooltip', Tooltip);
+  app.component('InputGroup', InputGroup);
+  app.component('InputGroupAddon', InputGroupAddon);
 }

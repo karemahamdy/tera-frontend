@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { authRoutes } from "@/modules/auth/routes.ts";
+import { homeRoutes } from "@/modules/home/routes.ts";
 import { useUserStore } from "@/app/store/useUserStore";
 
 const defaultTitle = "Tera ERP";
@@ -8,9 +9,12 @@ const routes = [
   ...authRoutes,
   {
     path: "/",
+    name: "Layout",
+    redirect: "/home",
     component: () => import("@/app/layouts/DefaultLayout.vue"),
     meta: { requiresAuth: true, permission: null },
     children: [
+      ...homeRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),

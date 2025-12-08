@@ -3,6 +3,9 @@
   "login": "Login",
   "logout": "Logout",
   "language": "تغيير إلى العربية",
+  "layout": {
+    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
+  },
   "auth": {
     "welcomeBack": "Welcome Back",
     "signInMsg": "Sign in to access your dashboard",

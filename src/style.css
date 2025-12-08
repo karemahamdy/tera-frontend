@@ -78,7 +78,8 @@ html {
 }
 
 body {
-  color: white !important;
+  /* color: white !important; */
+  font-family: 'Inter', sans-serif !important;
 }
 
 .heading-section {
