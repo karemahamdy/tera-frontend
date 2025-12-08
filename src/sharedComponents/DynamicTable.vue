@@ -78,12 +78,12 @@ const getStatusText = (status) => {
                     </div>
 
                     <!-- Permission Icon -->
-                    <Button v-else-if="col.field === 'permission'" icon="pi pi-shield" text rounded
+                    <Button v-else-if="col.field === 'permission'" icon="pi pi-shield"  text rounded
                         @click="toggleMenu($event, slotProps.data)" class="permission-btn" />
 
                     <!-- Action Column -->
                     <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
-                        @click="toggleMenu($event, slotProps.data)" />
+                        @click="toggleMenu($event, slotProps.data)" class="action-btn"/>
 
                     <!-- Default Text -->
                     <span v-else>{{ slotProps.data[col.field] }}</span>
@@ -164,6 +164,13 @@ const getStatusText = (status) => {
     background-color: var(--color-primary-25) !important;
 }
 
+.action-btn {
+    color: var(--color-gray-700);
+}
+.action-btn:hover {
+    color: var(--color-gray-700) !important;
+    background-color: var(--color-gray-100) !important;
+}
 /* paginator */
 ::v-deep .p-paginator {
   padding: 12px 16px;
