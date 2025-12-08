@@ -3,14 +3,17 @@
   "login": "Login",
   "logout": "Logout",
   "language": "تغيير إلى العربية",
+  "layout": {
+    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
+  },
   "auth": {
     "welcomeBack": "Welcome Back",
     "signInMsg": "Sign in to access your dashboard",
     "userName": "User Name",
     "password": "Password",
     "passwordPlaceholder": "at least 8 characters",
-    "branch": "Branch",
-    "branchPlaceholder": "Choose Your Branch",
+    "entity": "Entity",
+    "entityPlaceholder": "Choose Your Entity",
     "rememberMe": "Remember Me",
     "login": "Sign in",
     "loginFrameTagline": "Manage your business with clarity, speed, and control.",

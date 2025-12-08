@@ -23,18 +23,33 @@ function switchLanguage() {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center p-4">
+  <div class="min-h-screen flex items-center justify-center p-4 bg-white">
     <div
-      class="custom-card-bg w-full max-w-md rounded-2xl bg-[#F0F3FA] p-8 shadow"
+      class="custom-card-bg w-full max-w-md rounded-2xl bg-primary-25 p-8 shadow"
     >
-      <h2 class="text-3xl font-bold text-center text-[#3F5FAC]">
+      <h2 class="text-3xl font-semibold text-center text-primary-500">
         {{ $t("auth.welcomeBack") }}
       </h2>
-      <p class="text-center text-sm text-gray-600">
+      <p class="text-center text-sm text-gray-600 mt-2">
         {{ $t("auth.signInMsg") }}
       </p>
 
       <form class="space-y-5 mt-4">
+
+        <div>
+          <label class="text-gray-700 font-medium">{{
+            $t("auth.entity")
+          }}</label>
+
+          <Dropdown
+            v-model="selectedOption"
+            :options="options"
+            optionLabel="label"
+            :placeholder="$t('auth.entityPlaceholder')"
+            class="w-full mt-1"
+          />
+        </div>
+        
         <div>
           <label class="text-gray-700 font-medium">{{
             $t("auth.userName")
@@ -61,20 +76,6 @@ function switchLanguage() {
           />
         </div>
 
-        <div class="mt-4">
-          <label class="text-gray-700 font-medium">{{
-            $t("auth.branch")
-          }}</label>
-
-          <Dropdown
-            v-model="selectedOption"
-            :options="options"
-            optionLabel="label"
-            :placeholder="$t('auth.branchPlaceholder')"
-            class="w-full mt-1"
-          />
-        </div>
-
         <div class="flex items-center gap-2 mt-2">
           <Checkbox v-model="rememberMe" :binary="true" inputId="remember" />
           <label for="remember" class="text-gray-700 cursor-pointer">
@@ -86,7 +87,7 @@ function switchLanguage() {
         <Button v-slot="slotProps" asChild>
           <button
             v-bind="slotProps.a11yAttrs"
-            class="rounded bg-[#3F5FAC] hover:bg-[#354a8f] text-white border-none p-2 cursor-pointer w-full font-semibold"
+            class="rounded-lg bg-primary-500 hover:bg-primary-600  text-white border-none p-2 cursor-pointer w-full font-medium"
           >
             {{ $t("auth.login") }}
           </button>
@@ -95,6 +96,7 @@ function switchLanguage() {
       <div class="mt-5 text-center">
           <Button @click="switchLanguage" :label="$t('language')" icon="pi pi-language" />
       </div>
+      
     </div>
   </div>
 </template>

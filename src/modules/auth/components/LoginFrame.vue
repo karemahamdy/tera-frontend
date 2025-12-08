@@ -7,18 +7,18 @@ import overview from "@/assets/images/login-frame-overview.png";
 <template>
   <div class="p-5">
     <div
-      class="relative w-full h-full bg-cover bg-center rounded"
+      class="relative w-full h-full bg-cover bg-center rounded-[18.37px]"
       :style="`background-image: url(${loginFrameImage})`"
     >
       <div class="absolute inset-0 text-center flex flex-col justify-between items-center p-5">
         <div>
             <h1 class="text-9xl text-[#FFFFFF52] mt-5">TERA ERP</h1>
-            <p class="text-4xl text-[#D5D7DA] px-5 mt-5">
+            <p class="text-4xl text-gray-300 px-5 mt-5 font-weight-medium">
               {{ $t('auth.loginFrameTagline') }}
             </p>
         </div>
 
-        <div class="relative w-60 mx-auto mt-5">
+        <div class="relative w-90 mx-auto mt-5">
           <!-- Main Image -->
           <img :src="overview" alt="overview" class="w-full" />
 
@@ -40,7 +40,7 @@ import overview from "@/assets/images/login-frame-overview.png";
         <div class="flex justify-center">
           <div class="relative w-24/25 flex items-center justify-center">
             <div
-              class="bg-white/20 opacity-85 backdrop-blur-md rounded-xl p-4 text-white text-lg font-bold text-center border border-white/30"
+              class="bg-white/20 opacity-85 backdrop-blur-md rounded-xl p-4 text-white text-lg font-semibold text-center border border-gray-50"
             >
               {{ $t('auth.loginFrameNote') }}
             </div>

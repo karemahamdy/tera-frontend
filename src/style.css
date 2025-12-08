@@ -1,1 +1,153 @@
 @import "tailwindcss";
+
+@theme {
+     --color-*: initial;
+    /* Primary palette */
+    --color-primary-25: #f0f3fa;
+    --color-primary-50: #e1e7f4;
+    --color-primary-100: #cbd4ec;
+    --color-primary-200: #a2b3dd;
+    --color-primary-300: #7992ce;
+    --color-primary-400: #5373c0;
+    --color-primary-500: #3f5fac;
+    --color-primary-600: #375295;
+    --color-primary-700: #2c4277;
+    --color-primary-800: #21315a;
+    --color-primary-900: #16213c;
+    --color-primary-950: #0b101e;
+
+    /* Gray palette */
+    --color-gray-25: #fdfdfd;
+    --color-gray-50: #fafafa;
+    --color-gray-100: #f5f5f5;
+    --color-gray-200: #e9eaeb;
+    --color-gray-300: #d5d7da;
+    --color-gray-400: #a4a7ae;
+    --color-gray-500: #717680;
+    --color-gray-600: #535862;
+    --color-gray-700: #414651;
+    --color-gray-800: #252b37;
+    --color-gray-900: #181d27;
+    --color-gray-950: #0a0d12;
+
+    /* Success palette */
+    --color-success-25: #f6fef9;
+    --color-success-50: #ecfdf3;
+    --color-success-100: #d1fadf;
+    --color-success-200: #a6f4c5;
+    --color-success-300: #6ce9a6;
+    --color-success-400: #32d583;
+    --color-success-500: #12b76a;
+    --color-success-600: #039855;
+    --color-success-700: #027948;
+    --color-success-800: #05603a;
+    --color-success-900: #054f31;
+    --color-success-950: #053321;
+
+    /* Warning palette */
+    --color-warning-25: #fffcf5;
+    --color-warning-50: #fffaeb;
+    --color-warning-100: #feefc7;
+    --color-warning-200: #fedf89;
+    --color-warning-300: #fec84b;
+    --color-warning-400: #fdb022;
+    --color-warning-500: #f79009;
+    --color-warning-600: #f79009;
+    --color-warning-700: #b54708;
+    --color-warning-800: #93370d;
+    --color-warning-900: #792e0d;
+    --color-warning-950: #4e1d09;
+
+    /* Danger palette */
+    --color-danger-25: #fffbfa;
+    --color-danger-50: #fef3f2;
+    --color-danger-100: #fee4e2;
+    --color-danger-200: #fecdca;
+    --color-danger-300: #fda29b;
+    --color-danger-400: #f97066;
+    --color-danger-500: #f04438;
+    --color-danger-600: #d92d20;
+    --color-danger-700: #b32318;
+    --color-danger-800: #912018;
+    --color-danger-900: #7a271a;
+    --color-danger-950: #55160c;
+}
+
+html {
+  color-scheme: light !important;
+}
+
+body {
+  /* color: white !important; */
+  font-family: 'Inter', sans-serif !important;
+}
+.heading-title {
+  @apply text-lg font-bold  text-gray-700 ;
+}
+
+.subheading-title {
+  @apply text-base font-normal text-gray-500 mb-4;
+}
+
+.p-inputtext,
+.p-password input {
+    border: 1px solid var(--color-gray-200) !important;
+    padding: 0.75rem !important;
+    border-radius: 0.75rem !important;
+    font-size: 1rem !important;
+}
+
+.p-inputtext:focus,
+.p-password input:focus,
+.p-select:focus {
+    border-color: var(--color-primary-500) !important;
+    outline: none !important;
+}
+
+.p-select {
+  background-color: var(--color-gray-50) !important;
+  border: 1px solid var(--color-gray-200) !important;
+  border-radius: 0.75rem !important;
+  color:black !important;
+}
+
+.p-select .p-select-label {
+  background-color: var(--color-gray-50) !important;
+  color:black !important;
+  padding: 0.75rem !important;
+  border-radius: 0.75rem !important;
+}
+
+.p-select-option.p-select-option-selected {
+    background-color: var(--color-gray-200) !important;
+    color: #21315a !important;
+}
+
+.p-checkbox-box {
+    border: 1px solid var(--color-gray-200) !important;
+    border-radius: 0.25rem !important;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  background-color: var(--color-primary-500) !important;
+  border-color: var(--color-primary-500) !important;
+}
+
+.p-checkbox .p-checkbox-box .p-checkbox-icon {
+  color: white !important;
+}
+
+
+.p-checkbox-label {
+    color: black !important;
+    font-size: 0.95rem !important;
+}
+
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+    background:
+        #21315a !important;
+}
+
+.p-toggleswitch .p-toggleswitch-slider {
+    border-radius: 20px;
+}

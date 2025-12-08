@@ -2137,6 +2137,7 @@ __metadata:
     vite: "npm:^7.2.4"
     vue: "npm:^3.5.24"
     vue-i18n: "npm:^12.0.0-alpha.3"
+    vue-iconsax: "npm:^2.0.0"
     vue-router: "npm:4"
     vue-tsc: "npm:^3.1.4"
   languageName: unknown
@@ -2933,6 +2934,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-iconsax@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "vue-iconsax@npm:2.0.0"
+  dependencies:
+    vue: "npm:^3.5.10"
+  peerDependencies:
+    vue: ^3.0.0
+  checksum: 10c0/148965aee5fddd36af3d24d651d4660798e39fa718bcf3fa6e30d1b0b4d9dfc8d0baef00d03bded0c3c11133688578da86c972e7032f153c8cdaffbcf1a4ad47
+  languageName: node
+  linkType: hard
+
 "vue-router@npm:4":
   version: 4.6.3
   resolution: "vue-router@npm:4.6.3"
@@ -2958,7 +2970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.5.24":
+"vue@npm:^3.5.10, vue@npm:^3.5.24":
   version: 3.5.25
   resolution: "vue@npm:3.5.25"
   dependencies:
