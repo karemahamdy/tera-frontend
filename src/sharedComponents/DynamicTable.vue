@@ -35,8 +35,11 @@ const getStatusText = (status) => {
 </script>
 
 <template>
-    <DataTable :value="filteredData" :paginator="paginator" :rows="rows" :loading="loading"
-        class="border-2 border-[#E7E6E8] rounded-md" :rowsPerPageOptions="[5, 10, 20, 50]" responsiveLayout="scroll">
+    <DataTable :value="filteredData" :paginator="true" paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
+    currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records" 
+    :rowsPerPageOptions="[5, 10, 20, 50]" :rows="rows" :loading="loading"
+        class="border-2 border-[#E7E6E8] rounded-md" responsiveLayout="scroll">
+
         <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="col.sortable"
             :style="col.style">
 
@@ -130,7 +133,7 @@ const getStatusText = (status) => {
     color: var(--color-warning-500);
 }
 
-/*  */
+/* table  */
 :deep(.p-datatable .p-datatable-tbody > tr > td) {
     padding: 16px;
     color: var(--color-gray-500);
@@ -152,4 +155,58 @@ const getStatusText = (status) => {
     color: var(--color-primary-500) !important;
     background-color: var(--color-primary-25) !important;
 }
+
+/* paginator */
+::v-deep .p-paginator {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+::v-deep .p-paginator .p-paginator-current {
+  color: var(--color-gray-600) !important; 
+  font-size: 14px;
+}
+
+::v-deep .p-paginator .p-paginator-page {
+  border: 1px solid #e5e7eb ;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin: 0 2px;
+  min-width: 36px;
+  text-align: center;
+  
+}
+::v-deep .p-paginator .p-paginator-page:hover {
+  color: #ffffff !important;
+}
+
+::v-deep .p-paginator .p-paginator-page.p-paginator-page-selected {
+  background-color: var(--color-primary-500) !important;
+  color: #ffffff !important;
+  border-color: #3b56e5 !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+::v-deep .p-paginator .p-paginator-prev,
+::v-deep .p-paginator .p-paginator-next,
+::v-deep .p-paginator .p-paginator-first,
+::v-deep .p-paginator .p-paginator-last {
+  border: 1px solid #e5e7eb  !important;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* hover */
+::v-deep .p-paginator .p-paginator-page:hover,
+::v-deep .p-paginator .p-paginator-prev:hover,
+::v-deep .p-paginator .p-paginator-next:hover {
+  background: #4d70b6 !important;
+}
+
 </style>

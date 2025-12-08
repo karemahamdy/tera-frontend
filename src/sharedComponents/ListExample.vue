@@ -93,7 +93,306 @@ const props = defineProps({
                 status: 'Active',
                 lastLogin: 'Nov 3, 2025'
             },
-
+  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },  {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                slot: 'test12',
+                count: '2',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },
         ]
     },
     paginator: {
@@ -176,7 +475,6 @@ const filteredData = computed(() => {
     return result;
 });
 
-
 const onSearch = (query) => {
     searchQuery.value = query;
     emit('search', query);
@@ -227,3 +525,72 @@ const toggleMenu = (event, data) => {
         </template>
     </card>
 </template>
+
+<style scoped>
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.custom-tag {
+    background: var(--color-primary-25);
+    color: var(--color-gray-700);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.custom-badge {
+    background: var(--color-gray-200);
+    color: var(--color-gray-700);
+    padding: 16px 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* status */
+.status-active {
+    background: var(--color-success-500);
+    outline: 1px solid var(--color-success-500);
+}
+
+.status-inactive {
+    background: var(--color-warning-500);
+    outline: 1px solid var(--color-warning-500);
+}
+
+.status-text-active {
+    color: var(--color-success-500);
+}
+
+.status-text-inactive {
+    color: var(--color-warning-500);
+}
+
+/*  */
+:deep(.p-datatable .p-datatable-tbody > tr > td) {
+    padding: 16px;
+    color: var(--color-gray-500);
+}
+
+:deep(.p-datatable .p-datatable-thead > tr > th) {
+    background: #FAF9F9;
+    font-weight: 600;
+    color: var(--color-gray-700);
+    font-size: 13px;
+    padding: 20px 16px;
+}
+
+.permission-btn {
+    color: var(--color-primary-500);
+}
+
+.permission-btn:hover {
+    color: var(--color-primary-500) !important;
+    background-color: var(--color-primary-25) !important;
+}
+</style>
