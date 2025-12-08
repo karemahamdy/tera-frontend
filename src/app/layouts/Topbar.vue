@@ -23,9 +23,9 @@ function switchLanguage() {
 </script>
 <template>
   <header class="h-16 flex items-center px-4 bg-white/80 backdrop-blur shadow">
-    <button class="p-2 mr-3" @click="$emit('toggle')">
+    <!-- <button class="p-2 mr-3" @click="$emit('toggle')">
       <i class="pi pi-bars"></i>
-    </button>
+    </button> -->
 
     <div class="flex-1 flex items-center justify-between w-full">
       <div class="text-gray-500 flex items-center gap-2">

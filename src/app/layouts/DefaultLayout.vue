@@ -13,7 +13,7 @@ function toggleSidebar() {
 }
 </script>
 <template>
-  <div class="min-h-screen flex">
+  <div class="layout flex">
     <Sidebar :collapsed="sidebarCollapsed" @toggle="toggleSidebar" />
     <div class="w-full">
       <Topbar @toggle="toggleSidebar" :collapsed="sidebarCollapsed" />
@@ -26,6 +26,10 @@ function toggleSidebar() {
 </template>
 
 <style>
+.layout {
+  height: 100vh;
+  overflow: hidden;
+}
 .main-container {
   max-height: calc(100vh - 4rem) !important;
   overflow-y: auto;
