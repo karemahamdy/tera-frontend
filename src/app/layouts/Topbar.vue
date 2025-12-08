@@ -16,6 +16,12 @@ const emit = defineEmits<{
 // State
 const q = ref("");
 
+const options = [
+  { label: "Option 1", value: 1 },
+  { label: "Option 2", value: 2 },
+  { label: "Option 3", value: 3 },
+];
+const selectedOption = ref<number | null>(null);
 // Change language dynamically
 function switchLanguage() {
   locale.value = locale.value === "en" ? "ar" : "en";
@@ -34,6 +40,14 @@ function switchLanguage() {
       </div>
 
       <div class="flex items-center gap-3">
+        <Dropdown
+            v-model="selectedOption"
+            :options="options"
+            optionLabel="label"
+            :placeholder="$t('Select Branches')"
+            class="w-48"
+          />
+
         <button class="p-2 text-gray-500 cursor-pointer" @click="switchLanguage">
           <VsxIcon iconName="Translate" :size="24" type="linear" />
         </button>
