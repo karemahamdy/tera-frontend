@@ -16,8 +16,6 @@ import Badge from 'primevue/badge';
 import Password from "primevue/password";
 import Checkbox from "primevue/checkbox";
 import Dropdown from "primevue/dropdown";
-import Badge from 'primevue/badge'
-import Avatar from 'primevue/avatar'
 import Menubar from 'primevue/menubar'
 import Tooltip from 'primevue/tooltip'
 import InputGroup from 'primevue/inputgroup';
