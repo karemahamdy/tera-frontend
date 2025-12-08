@@ -3,6 +3,9 @@
   "login": "تسجيل الدخول",
   "logout": "تسجيل الخروج",
   "language": "Switch to English",
+  "layout": {
+    "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
+  },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
     "signInMsg": "سجّل الدخول للوصول إلى لوحة التحكم",
