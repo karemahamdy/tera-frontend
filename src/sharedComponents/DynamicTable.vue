@@ -35,11 +35,19 @@ const getStatusText = (status) => {
 </script>
 
 <template>
-    <DataTable :value="filteredData" :paginator="true" paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
-    currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records" 
-    :rowsPerPageOptions="[5, 10, 20, 50]" :rows="rows" :loading="loading"
+    <DataTable :value="filteredData" :paginator="true" :rows="rows" :rowsPerPageOptions="[5, 10, 20, 50]"
+        :loading="loading"
+        paginatorTemplate="paginatorstart FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink paginatorend"
+        currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records"
         class="border-2 border-[#E7E6E8] rounded-md" responsiveLayout="scroll">
-
+        <template #paginatorstart>
+            <div class="text-gray-600 font-medium">
+                Showing {{ first }}–{{ last }} of {{ totalRecords }} Records
+            </div>
+        </template>
+        <template #paginatorend>
+        </template>
+        
         <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="col.sortable"
             :style="col.style">
 
@@ -71,7 +79,7 @@ const getStatusText = (status) => {
 
                     <!-- Permission Icon -->
                     <Button v-else-if="col.field === 'permission'" icon="pi pi-shield" text rounded
-                        @click="toggleMenu($event, slotProps.data)" class="permission-btn"/>
+                        @click="toggleMenu($event, slotProps.data)" class="permission-btn" />
 
                     <!-- Action Column -->
                     <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
