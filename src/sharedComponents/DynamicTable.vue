@@ -1,3 +1,31 @@
+<script setup>
+import { ref, computed } from "vue";
+
+const props = defineProps({
+    columns: { type: Array, default: () => [] },
+    data: { type: Array, default: () => [] },
+    paginator: { type: Boolean, default: true },
+    rows: { type: Number, default: 10 },
+    loading: { type: Boolean, default: false },
+    rowsPerPageOptions: { type: Array, default: () => [5, 10, 20, 50] },
+    menuItems: { type: Array, default: () => [] },
+    getStatusBadge: { type: Function, default: null },
+    getStatusText: { type: Function, default: null },
+});
+
+const emit = defineEmits(["action-menu-click"]);
+
+const menu = ref(null);
+
+const toggleMenu = (event, row) => {
+    emit('action-menu-click', { event, data: row });
+    if (menu.value && menu.value.toggle) menu.value.toggle(event);
+};
+
+const filteredData = computed(() => props.data || []);
+
+</script>
+
 <template>
     <DataTable :value="filteredData" :paginator="paginator" :rows="rows" :loading="loading"
         class="border-2 border-[#E7E6E8] rounded-md" :rowsPerPageOptions="[5, 10, 20, 50]" responsiveLayout="scroll">
@@ -32,7 +60,7 @@
 
                     <!-- Permission Icon -->
                     <Button v-else-if="col.field === 'permission'" icon="pi pi-shield" text rounded
-                        @click="toggleMenu($event, slotProps.data)" />
+                        @click="toggleMenu($event, slotProps.data)" class="permission-btn"/>
 
                     <!-- Action Column -->
                     <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
@@ -48,33 +76,6 @@
     <Menu ref="menu" :model="menuItems" popup />
 </template>
 
-<script setup>
-import { ref, computed } from "vue";
-
-const props = defineProps({
-    columns: { type: Array, default: () => [] },
-    data: { type: Array, default: () => [] },
-    paginator: { type: Boolean, default: true },
-    rows: { type: Number, default: 10 },
-    loading: { type: Boolean, default: false },
-    rowsPerPageOptions: { type: Array, default: () => [5, 10, 20, 50] },
-    menuItems: { type: Array, default: () => [] },
-    getStatusBadge: { type: Function, default: null },
-    getStatusText: { type: Function, default: null },
-});
-
-const emit = defineEmits(["action-menu-click"]);
-
-const menu = ref(null);
-
-const toggleMenu = (event, row) => {
-    emit('action-menu-click', { event, data: row });
-    if (menu.value && menu.value.toggle) menu.value.toggle(event);
-};
-
-const filteredData = computed(() => props.data || []);
-
-</script>
 
 <style scoped>
 .user-cell {
@@ -133,5 +134,14 @@ const filteredData = computed(() => props.data || []);
     color: var(--color-gray-700);
     font-size: 13px;
     padding: 20px 16px;
+}
+
+.permission-btn {
+    color: var(--color-primary-500);
+}
+
+.permission-btn:hover {
+    color: var(--color-primary-500) !important;
+    background-color: var(--color-primary-25) !important;
 }
 </style>
