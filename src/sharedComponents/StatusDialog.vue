@@ -1,7 +1,5 @@
 <script setup>
 import { computed } from 'vue';
-import Dialog from 'primevue/dialog';
-import ProgressSpinner from 'primevue/progressspinner';
 import BaseButton from './BaseButton.vue';
 
 const props = defineProps({
@@ -67,7 +65,7 @@ const canClose = computed(() => props.closable && !props.loading);
             <p v-if="description" class="text-gray-600 px-3 text-center font-normal">
                 {{ description }}
             </p>
-             <h3  v-if="timer" class="text-3xl font-semibold  text-center text-primary-500 px-4">
+            <h3 v-if="timer" class="text-3xl font-semibold  text-center text-primary-500 px-4">
                 {{ timer }}
             </h3>
         </div>
@@ -82,8 +80,8 @@ const canClose = computed(() => props.closable && !props.loading);
 
             <!-- Buttons -->
             <div v-else-if="buttons && buttons.length > 0" class="flex gap-2 justify-end w-full">
-                <BaseButton v-for="(btn, index) in buttons" :key="index" :label="btn.label" :variant="btn.variant"
-                   block :disabled="loading || btn.disabled" @click="handleAction(btn.action)" />
+                <BaseButton v-for="(btn, index) in buttons" :key="index" :label="btn.label" :variant="btn.variant" block
+                    :disabled="loading || btn.disabled" @click="handleAction(btn.action)" />
             </div>
         </template>
     </Dialog>

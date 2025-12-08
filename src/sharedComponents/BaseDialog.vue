@@ -1,5 +1,4 @@
 <script setup>
-import { Dialog } from "primevue";
 import { defineProps } from "vue";
 import BaseButton from "./BaseButton.vue";
 
