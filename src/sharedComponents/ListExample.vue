@@ -12,13 +12,52 @@ const props = defineProps({
         type: String,
         default: 'Search ..'
     },
-    actionButtons: {
-        type: Array,
-        default: () => []
-    },
     filters: {
         type: Array,
-        default: () => []
+        default: () => [
+            {
+                placeholder: 'All Groups',
+                value: null,
+                options: [
+                    { label: 'All Groups', value: null },
+                    { label: 'Administration', value: 'Administration' },
+                    { label: 'Finance Team', value: 'Finance Team' },
+                    { label: 'Sales Team', value: 'Sales Team' },
+                    { label: 'HR Team', value: 'HR Team' }
+                ],
+                field: 'userGroup'
+            },
+            {
+                placeholder: 'All status',
+                value: null,
+                options: [
+                    { label: 'All status', value: null },
+                    { label: 'Active', value: 'Active' },
+                    { label: 'In active', value: 'In active' }
+                ],
+                field: 'status'
+            },
+             {
+                placeholder: 'All status',
+                value: null,
+                options: [
+                    { label: 'All status', value: null },
+                    { label: 'Active', value: 'Active' },
+                    { label: 'In active', value: 'In active' }
+                ],
+                field: 'status'
+            },
+             {
+                placeholder: 'All status',
+                value: null,
+                options: [
+                    { label: 'All status', value: null },
+                    { label: 'Active', value: 'Active' },
+                    { label: 'In active', value: 'In active' }
+                ],
+                field: 'status'
+            }
+        ]
     },
     columns: {
         type: Array,
@@ -79,7 +118,6 @@ const selectedRow = ref(null);
 
 const localFilters = ref(props.filters.map(f => ({ ...f })));
 
-
 const columns = computed(() => {
     const Columns = [
         { field: 'user', header: 'User', type: 'avatar', sortable: true },
@@ -97,34 +135,6 @@ const columns = computed(() => {
     return Columns;
 });
 
-
-const defaultActionButtons = [
-    {
-        label: 'Import',
-        icon: 'pi pi-download',
-        class: 'p-button-outlined',
-        variant: 'outline-primary',
-        onClick: () => console.log('Import clicked')
-    },
-    {
-        label: 'Export',
-        icon: 'pi pi-upload',
-        class: 'p-button-outlined',
-        variant: 'outline-primary',
-        onClick: () => console.log('Export clicked')
-    },
-    {
-        label: 'Add User',
-        icon: 'pi pi-plus',
-        variant: 'primary',
-        onClick: () => console.log('Add User clicked')
-    }
-];
-
-
-const actionButtons = computed(() => (props.actionButtons && props.actionButtons.length) ? props.actionButtons : defaultActionButtons);
-
-// Menu Items
 const menuItems = ref([
     {
         label: 'Edit',
@@ -168,7 +178,6 @@ const filteredData = computed(() => {
 
 
 const onSearch = (query) => {
-    // update local search state and emit
     searchQuery.value = query;
     emit('search', query);
 };
@@ -193,24 +202,16 @@ const toggleMenu = (event, data) => {
     menu.value.toggle(event);
 };
 
-const getStatusBadge = (status) => {
-    return status === "Active" ? "status-active" : "status-inactive";
-}
-
-const getStatusText = (status) => {
- return status === "Active" ? "status-text-active" : "status-text-inactive";
-}
-
 </script>
 
 <template>
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
         <!-- PageHeader component -->
         <template #title>
-            <PageHeader title="Users Management" subtitle="Manage user accounts and show all user information"
-                :searchPlaceholder="searchPlaceholder" :actionButtons="actionButtons" :filters="filters"
-                @search="onSearch" @filter-change="onFilterChange"
-                @action-click="(btn) => { if (btn && btn.onClick) btn.onClick(); }" />
+            <PageHeader title="Users Management" subtitle="Manage user accounts" :showExport="true" :showImport="true"
+                :onExport="exportData" :onImport="importData" :mainBtn="true" mainBtnText="Add User"
+                mainBtnIcon="pi pi-plus" :onMainBtnClick="openDialog" :filters="filters" @search="onSearch"
+                :searchPlaceholder="searchPlaceholder" @filter-change="onFilterChange" />              
         </template>
 
         <!-- DynamicTable component -->
@@ -226,5 +227,3 @@ const getStatusText = (status) => {
         </template>
     </card>
 </template>
-
-

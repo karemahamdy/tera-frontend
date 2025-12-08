@@ -24,6 +24,14 @@ const toggleMenu = (event, row) => {
 
 const filteredData = computed(() => props.data || []);
 
+const getStatusBadge = (status) => {
+    return status === "Active" ? "status-active" : "status-inactive";
+}
+
+const getStatusText = (status) => {
+    return status === "Active" ? "status-text-active" : "status-text-inactive";
+}
+
 </script>
 
 <template>

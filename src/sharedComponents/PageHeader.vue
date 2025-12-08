@@ -3,27 +3,30 @@ import { ref, defineProps, defineEmits } from "vue";
 import BaseButton from './BaseButton.vue';
 
 const props = defineProps({
-    title: {
-        type: String,
-        default: 'Users Management'
-    },
-    subtitle: {
-        type: String,
-        default: 'Manage user accounts and show all user information'
-    },
-    searchPlaceholder: {
-        type: String,
-        default: 'Search ..'
-    },
-    actionButtons: {
-        type: Array,
-        default: () => []
-    },
-    filters: {
-        type: Array,
-        default: () => []
-    },
-})
+    title: { type: String, default: "" },
+    subtitle: { type: String, default: "" },
+    showSearch: { type: Boolean, default: true },
+    searchPlaceholder: { type: String, default: 'Search ..' },
+    mainBtn: { type: Boolean, default: false },
+    mainBtnText: { type: String, default: "" },
+    mainBtnIcon: { type: String, default: "" },
+    mainBtnColor: { type: String, default: "primary" },
+    mainBtnOutline: { type: Boolean, default: false },
+    mainBtnValid: { type: Boolean, default: true },
+    onMainBtnClick: { type: Function, default: null },
+    createBtn: { type: Boolean, default: false },
+    createBtnText: { type: String, default: "Create" },
+    onCreateBtnClick: { type: Function, default: null },
+    showExport: { type: Boolean, default: false },
+    exportText: { type: String, default: "Export" },
+    onExport: { type: Function, default: null },
+    showImport: { type: Boolean, default: false },
+    importText: { type: String, default: "Import" },
+    onImport: { type: Function, default: null },
+    extraActions: { type: Array, default: () => [] },
+    filters: { type: Array, default: [] },
+});
+
 
 const emit = defineEmits(['search', 'filter-change', 'action-click']);
 
@@ -41,15 +44,24 @@ const onFilterChange = (filter, event) => {
 
 <template>
     <div class="heading-section">
+        
         <div class="flex flex-col">
             <h2 class="heading-title">{{ title }}</h2>
             <p class="subheading-title">{{ subtitle }}</p>
         </div>
 
-        <div class="flex justify-end gap-4">
-             <BaseButton label="Export" variant="outline-primary" icon="pi pi-file-export"/>
-             <BaseButton label="import" variant="outline-primary" icon="pi pi-file-export"/>
-             <BaseButton label="Add User" variant="primary" icon="pi pi-plus" />
+        <div class="flex justify-end gap-3 flex-wrap">
+            <!-- Export -->
+            <BaseButton v-if="showExport" :label="exportText" icon="pi pi-file-export" variant="outline-primary"
+                @click="onExport && onExport()" />
+            <!-- Import -->
+            <BaseButton v-if="showImport" :label="importText" icon="pi pi-file-import" variant="outline-primary"
+                @click="onImport && onImport()" />
+            <!-- Main Button -->
+            <BaseButton v-if="mainBtn" :label="mainBtnText" :icon="mainBtnIcon"
+                :variant="mainBtnOutline ? 'outline-' + mainBtnColor : mainBtnColor" :disabled="!mainBtnValid"
+                @click="onMainBtnClick && onMainBtnClick()" />
+            <slot name="actions"></slot>
         </div>
     </div>
 
