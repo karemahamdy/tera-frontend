@@ -12,7 +12,7 @@ import dangerIcon from '@/assets/images/danger.png';
 import successIcon from '@/assets/images/success.png';
 import alertIcon from '@/assets/images/alert.png';
 import timerIcon from '@/assets/images/timer.png';
-import TableList from './tableList.vue';
+import ListExample from './ListExample.vue';
 
 
 // Dialog visibility states
@@ -164,7 +164,7 @@ const handleDownloadConfirm = () => {
         <ChangePassword/>
     
      <h2 class="text-2xl font-bold my-4 bg-primary-500"> Entity Page Examples</h2>
-<TableList/>
+<ListExample/>
 
     <Card style="width: 25rem; overflow: hidden">
       <template #header>
