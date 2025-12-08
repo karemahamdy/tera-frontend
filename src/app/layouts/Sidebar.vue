@@ -149,7 +149,7 @@ function logout() {
 
 <style scoped>
 aside {
-  min-height: 100vh;
+  height: 100vh;
 }
 
 /* slide transition */
