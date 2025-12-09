@@ -19,7 +19,176 @@ const props = defineProps({
                 Created: 'Oct 11, 2025',
 
             },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
 
+            },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            },
+            {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            }, {
+                id: 1,
+                GroupName: 'Finance Team',
+                Description: 'Manage payment, budget..',
+                AssignedRoles: "Administration",
+                UserCount: '2',
+                slot: 'test1',
+                Created: 'Oct 11, 2025',
+
+            },
         ]
     },
 });
@@ -56,15 +225,13 @@ const onSearch = (query) => {
             <template #title>
                 <PageHeader title="Users Group" subtitle="Organize users into groups and assign roles"
                     :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="Add User Group"
-                    mainBtnIcon="pi pi-plus" @search="onSearch" importIcon="Import" :importIconSize="32"
-                    importIconColor="#5584FF" importIconType="linear" searchPlaceholder="Search user group..." />
+                    searchPlaceholder="Search user group..." />
             </template>
 
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :paginator="paginator" :rows="rows" :loading="loading"
-                    :rowsPerPageOptions="[5, 10, 20, 50]" :menuItems="menuItems" :getStatusBadge="getStatusBadge"
-                    :getStatusText="getStatusText" @action-menu-click="(payload) => emit('action-menu-click', payload)">
+                <DynamicTable :columns="columns" :data="data" :loading="loading" :menuItems="menuItems"
+                    @action-menu-click="(payload) => emit('action-menu-click', payload)">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" type="linear" />

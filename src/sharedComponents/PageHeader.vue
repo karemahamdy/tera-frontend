@@ -8,22 +8,14 @@ const props = defineProps({
     showSearch: { type: Boolean, default: true },
     searchPlaceholder: { type: String, default: 'Search ..' },
     mainBtn: { type: Boolean, default: false },
-    mainBtnText: { type: String, default: "" },
-    mainBtnIcon: { type: String, default: "" },
-    mainBtnColor: { type: String, default: "primary" },
-    mainBtnOutline: { type: Boolean, default: false },
-    mainBtnValid: { type: Boolean, default: true },
+    mainBtnText: { type: String, default: "" },   
     onMainBtnClick: { type: Function, default: null },
-    createBtn: { type: Boolean, default: false },
-    createBtnText: { type: String, default: "Create" },
-    onCreateBtnClick: { type: Function, default: null },
     showExport: { type: Boolean, default: false },
     exportText: { type: String, default: "Export" },
     onExport: { type: Function, default: null },
     showImport: { type: Boolean, default: false },
     importText: { type: String, default: "Import" },
     onImport: { type: Function, default: null },
-    extraActions: { type: Array, default: () => [] },
     filters: { type: Array, default: [] },
 });
 
@@ -58,10 +50,10 @@ const onFilterChange = (filter, event) => {
             <BaseButton v-if="showExport" :label="exportText"  icon="Export" variant="outline-primary"
                 @click="onExport && onExport()" />
             <!-- Main Button -->
-            <BaseButton v-if="mainBtn" :label="mainBtnText" icon="AddSquare" color="#fff"
-                :variant="mainBtnOutline ? 'outline-' + mainBtnColor : mainBtnColor" :disabled="!mainBtnValid"
+            <BaseButton v-if="mainBtn" :label="mainBtnText" icon="AddSquare"
+                variant="primary" :disabled="!mainBtnValid"
                 @click="onMainBtnClick && onMainBtnClick()" />
-            <slot name="actions"></slot>
+            <slot name="actionBtn"></slot>
         </div>
     </div>
 

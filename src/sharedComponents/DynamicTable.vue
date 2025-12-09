@@ -47,7 +47,7 @@ const getStatusText = (status) => {
         </template>
         <template #paginatorend>
         </template>
-        
+
         <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="col.sortable"
             :style="col.style">
 
@@ -78,12 +78,16 @@ const getStatusText = (status) => {
                     </div>
 
                     <!-- Permission Icon -->
-                    <Button v-else-if="col.field === 'permission'" icon="pi pi-shield"  text rounded
-                        @click="toggleMenu($event, slotProps.data)" class="permission-btn" />
+                    <Button v-else-if="col.field === 'permission'" text rounded class="permission-btn"
+                        @click="toggleMenu($event, slotProps.data)">
+                        <template #icon>
+                            <VsxIcon iconName="ShieldSecurity" :size="24" color="#3F5FAC" type="linear" />
+                        </template>
+                    </Button>
 
                     <!-- Action Column -->
                     <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
-                        @click="toggleMenu($event, slotProps.data)" class="action-btn"/>
+                        @click="toggleMenu($event, slotProps.data)" class="action-btn" />
 
                     <!-- Default Text -->
                     <span v-else>{{ slotProps.data[col.field] }}</span>
@@ -157,6 +161,7 @@ const getStatusText = (status) => {
 
 .permission-btn {
     color: var(--color-primary-500);
+    align-items: center;
 }
 
 .permission-btn:hover {
@@ -167,61 +172,63 @@ const getStatusText = (status) => {
 .action-btn {
     color: var(--color-gray-700);
 }
+
 .action-btn:hover {
     color: var(--color-gray-700) !important;
     background-color: var(--color-gray-100) !important;
 }
+
 /* paginator */
 ::v-deep .p-paginator {
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 ::v-deep .p-paginator .p-paginator-current {
-  color: var(--color-gray-600) !important; 
-  font-size: 14px;
+    color: var(--color-gray-600) !important;
+    font-size: 14px;
 }
 
 ::v-deep .p-paginator .p-paginator-page {
-  border: 1px solid #e5e7eb ;
-  border-radius: 8px;
-  padding: 6px 10px;
-  margin: 0 2px;
-  min-width: 36px;
-  text-align: center;
-  
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin: 0 2px;
+    min-width: 36px;
+    text-align: center;
+
 }
+
 ::v-deep .p-paginator .p-paginator-page:hover {
-  color: #ffffff !important;
+    color: #ffffff !important;
 }
 
 ::v-deep .p-paginator .p-paginator-page.p-paginator-page-selected {
-  background-color: var(--color-primary-500) !important;
-  color: #ffffff !important;
-  border-color: #3b56e5 !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    background-color: var(--color-primary-500) !important;
+    color: #ffffff !important;
+    border-color: #3b56e5 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 ::v-deep .p-paginator .p-paginator-prev,
 ::v-deep .p-paginator .p-paginator-next,
 ::v-deep .p-paginator .p-paginator-first,
 ::v-deep .p-paginator .p-paginator-last {
-  border: 1px solid #e5e7eb  !important;
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* hover */
 ::v-deep .p-paginator .p-paginator-page:hover,
 ::v-deep .p-paginator .p-paginator-prev:hover,
 ::v-deep .p-paginator .p-paginator-next:hover {
-  background: #4d70b6 !important;
+    background: #4d70b6 !important;
 }
-
 </style>
