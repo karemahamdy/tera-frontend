@@ -22,6 +22,12 @@ const routes = [
         meta: { permission: null },
       },
       {
+        path: "/user-group",
+        component: () => import("@/modules/user-group/pages/UserGroup.vue"),
+        name: "UserGroup",
+        meta: { permission: null },
+      },
+      {
          path: "/system",
         component: () => import("@/sharedComponents/System.vue"),
         name: "System",

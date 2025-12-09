@@ -51,14 +51,14 @@ const onFilterChange = (filter, event) => {
         </div>
 
         <div class="flex justify-end gap-3 flex-wrap">
-            <!-- Export -->
-            <BaseButton v-if="showExport" :label="exportText" icon="pi pi-file-export" variant="outline-primary"
-                @click="onExport && onExport()" />
-            <!-- Import -->
-            <BaseButton v-if="showImport" :label="importText" icon="pi pi-file-import" variant="outline-primary"
+               <!-- Import -->
+            <BaseButton v-if="showImport" :label="importText" icon="Import" variant="outline-primary"
                 @click="onImport && onImport()" />
+            <!-- Export -->
+            <BaseButton v-if="showExport" :label="exportText"  icon="Export" variant="outline-primary"
+                @click="onExport && onExport()" />
             <!-- Main Button -->
-            <BaseButton v-if="mainBtn" :label="mainBtnText" :icon="mainBtnIcon"
+            <BaseButton v-if="mainBtn" :label="mainBtnText" icon="AddSquare" color="#fff"
                 :variant="mainBtnOutline ? 'outline-' + mainBtnColor : mainBtnColor" :disabled="!mainBtnValid"
                 @click="onMainBtnClick && onMainBtnClick()" />
             <slot name="actions"></slot>

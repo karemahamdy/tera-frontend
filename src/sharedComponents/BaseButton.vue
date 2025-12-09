@@ -29,7 +29,7 @@ function handleClick() {
             variant === 'ghost' && 'bg-transparent hover:bg-gray-200 text-gray-500 border border-gray-500 px-16',
             variant === 'outline-primary' && 'bg-transparent hover:bg-primary-25 text-primary-500 border border-primary-500 px-8',
         ]">
-            <i v-if="icon" :class="icon"></i>
+            <VsxIcon v-if="icon" :iconName="icon" :size="24" :color=color type="linear" />
             <span>{{ label }}</span>
         </button>
     </Button>
