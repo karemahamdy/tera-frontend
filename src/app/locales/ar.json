@@ -3,6 +3,8 @@
   "login": "تسجيل الدخول",
   "logout": "تسجيل الخروج",
   "language": "Switch to English",
+  "permission": "الصلاحية",
+  "action": "الإجراء",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
@@ -18,5 +20,14 @@
     "login": "تسجيل الدخول",
     "loginFrameTagline": "أدر عملك بوضوح وسرعة وتحكم",
     "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً"
+  },
+  "userGroup": {
+    "groupName": "اسم المجموعة",
+    "description": "الوصف",
+    "assignedRoles": "الأدوار المعينة",
+    "userCount": "عدد المستخدمين",
+    "created": "تم الإنشاء",
+    "addUserGroup": "إضافة مجموعة مستخدمين",
+    "searchPlaceholder": "ابحث عن مجموعة المستخدمين..."
   }
 }

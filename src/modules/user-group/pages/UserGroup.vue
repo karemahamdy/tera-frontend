@@ -5,6 +5,10 @@ import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import { ref, computed } from "vue";
 import { defineEmits } from "vue";
 
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
 const props = defineProps({
     data: {
         type: Array,
@@ -198,22 +202,18 @@ const emit = defineEmits(['search', 'action-menu-click']);
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'GroupName', header: 'Group Name', type: 'slot', sortable: true },
-        { field: 'Description', header: 'Description', sortable: true },
-        { field: 'AssignedRoles', header: 'Assigned Roles', sortable: true, type: 'tag', Class: 'custom-tag' },
-        { field: 'UserCount', header: 'User Count', sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'Created', header: 'Created', sortable: true },
-        { field: 'permission', header: 'Permission' },
-        { field: 'action', header: 'Action' }
+        { field: 'GroupName', header: t('userGroup.groupName'), type: 'slot', sortable: true },
+        { field: 'Description', header: t('userGroup.description'), sortable: true },
+        { field: 'AssignedRoles', header:t('userGroup.assignedRoles'), sortable: true, type: 'tag', Class: 'custom-tag' },
+        { field: 'UserCount', header:t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
+        { field: 'Created', header:t('userGroup.created'), sortable: true },
+        { field: 'permission', header:t('permission') },
+        { field: 'action', header:t('action') }
     ];
 
     return Columns;
 });
 
-const onSearch = (query) => {
-    searchQuery.value = query;
-    emit('search', query);
-};
 
 </script>
 
