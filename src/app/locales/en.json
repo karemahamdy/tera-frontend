@@ -3,9 +3,11 @@
   "login": "Login",
   "logout": "Logout",
   "language": "تغيير إلى العربية",
-  
+  "import": "Import",
+  "export": "Export",
   "layout": {
-    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
+    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved",
+    "accessControl": "Access Control"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -27,6 +29,8 @@
     "userCount": "User Count",
     "addUserGroup": "Add User Group",
     "created": "Created",
-    "searchPlaceholder": "Search for user groups..."
+    "searchPlaceholder": "Search for user groups...",
+    "userGroup": "User Group",
+    "OrganizeUsersIntoGroupsAndAssignRoles": "Organize users into groups and assign roles"
   }
 }

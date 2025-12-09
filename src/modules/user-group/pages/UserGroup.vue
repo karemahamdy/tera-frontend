@@ -219,12 +219,12 @@ const columns = computed(() => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="Access Control" subtitle="Roles & Permissions" />
+        <ScreenHeader title="layout.accessControl" subtitle="userGroup.userGroup" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="Users Group" subtitle="Organize users into groups and assign roles"
-                    :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="Add User Group"
+                <PageHeader title="userGroup.userGroup" subtitle="userGroup.OrganizeUsersIntoGroupsAndAssignRoles"
+                    :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
                     searchPlaceholder="Search user group..." />
             </template>
 

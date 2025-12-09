@@ -3,9 +3,9 @@
   <div class="heading-section mb-6">
     <div class="flex items-center gap-3">
       <VsxIcon iconName="Send" :size="20" type="linear" style="color: var(--color-gray-400)" />
-      <p class="heading-title">{{ title }}</p>
+      <p class="heading-title">{{ $t(title) }}</p>
       <VsxIcon iconName="ArrowRight2" :size="20" type="linear" style="color: var(--color-gray-400)" />
-      <span class="screen-header-name">{{ subtitle }}</span>
+      <span class="screen-header-name">{{ $t(subtitle) }}</span>
     </div>
   </div>
 </template>

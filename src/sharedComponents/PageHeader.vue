@@ -1,6 +1,10 @@
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
 import BaseButton from './BaseButton.vue';
+// import { useI18n } from "vue-i18n";
+
+
+// const { t } = useI18n();
 
 const props = defineProps({
     title: { type: String, default: "" },
@@ -38,19 +42,19 @@ const onFilterChange = (filter, event) => {
     <div class="heading-section">
         
         <div class="flex flex-col">
-            <h2 class="heading-title">{{ title }}</h2>
-            <p class="subheading-title">{{ subtitle }}</p>
+            <h2 class="heading-title">{{ $t(title) }}</h2>
+            <p class="subheading-title">{{ $t(subtitle) }}</p>
         </div>
 
         <div class="flex justify-end gap-3 flex-wrap">
                <!-- Import -->
-            <BaseButton v-if="showImport" :label="importText" icon="Import" variant="outline-primary"
+            <BaseButton v-if="showImport" :label="$t('import')" icon="Import" variant="outline-primary"
                 @click="onImport && onImport()" />
             <!-- Export -->
-            <BaseButton v-if="showExport" :label="exportText"  icon="Export" variant="outline-primary"
+            <BaseButton v-if="showExport" :label="$t('export')"  icon="Export" variant="outline-primary"
                 @click="onExport && onExport()" />
             <!-- Main Button -->
-            <BaseButton v-if="mainBtn" :label="mainBtnText" icon="AddSquare"
+            <BaseButton v-if="mainBtn" :label="$t(mainBtnText)" icon="AddSquare"
                 variant="primary" :disabled="!mainBtnValid"
                 @click="onMainBtnClick && onMainBtnClick()" />
             <slot name="actionBtn"></slot>
