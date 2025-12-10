@@ -19,14 +19,7 @@ const props = defineProps({
     filters: { type: Array, default: [] },
 });
 
-
 const emit = defineEmits(['search', 'filter-change', 'action-click']);
-
-const searchQuery = ref('');
-
-const onSearch = () => {
-    emit('search', searchQuery.value);
-};
 
 const onFilterChange = (filter, event) => {
     emit('filter-change', { filter, value: event.value });
@@ -62,7 +55,7 @@ const onFilterChange = (filter, event) => {
     <!-- Search + Filters -->
     <div class="flex gap-[10px] mb-6 mt-2 flex-nowrap">
         <span class="p-input-icon-left search-input">
-            <InputText v-model="searchQuery" :placeholder="searchPlaceholder" @input="onSearch" />
+            <InputText v-model="searchQuery" :placeholder="searchPlaceholder"  @input="emit('search', $event.target.value)"/>
         </span>
         <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
             :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
