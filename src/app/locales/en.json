@@ -31,6 +31,16 @@
     "created": "Created",
     "searchPlaceholder": "Search for user groups...",
     "userGroup": "User Group",
-    "OrganizeUsersIntoGroupsAndAssignRoles": "Organize users into groups and assign roles"
+    "OrganizeUsersIntoGroupsAndAssignRoles": "Organize users into groups and assign roles",
+    "AssignRolesToUserGroup":"Assign Roles to User group",
+    "AddRolesGroupDesc":"Add Roles to the group and manage assigned permissions"
+  },
+  "roles": {
+    "roleName": "Role Name",
+    "accessScope": "Access scope",
+    "branches": "Branches",
+    "addNewRole": "Add New Roles",
+    "rolesTitle": "System Administrators",
+    "rolesDescription": "Controls system settings.."
   }
 }

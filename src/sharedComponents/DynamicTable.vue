@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
+import ActionMenu from './ActionMenu.vue';
+
 
 const props = defineProps({
     columns: { type: Array, default: () => [] },
@@ -9,6 +11,7 @@ const props = defineProps({
     loading: { type: Boolean, default: false },
     rowsPerPageOptions: { type: Array, default: () => [5, 10, 20, 50] },
     menuItems: { type: Array, default: () => [] },
+    permissionItems: { type: Array, default: () => [] },
     getStatusBadge: { type: Function, default: null },
     getStatusText: { type: Function, default: null },
 });
@@ -16,10 +19,27 @@ const props = defineProps({
 const emit = defineEmits(["action-menu-click"]);
 
 const menu = ref(null);
+const permissionMenu = ref(null);
+const permissionRow = ref(null);
+
+const permissionItems = computed(() =>  {  return props.permissionItems.map(item => ({
+        ...item,
+        command: () => item.command(permissionRow.value)  
+    }))
+});
+
+
+const togglePermissionMenu = (event, row) => {
+    permissionRow.value = row;
+    if (permissionMenu.value) permissionMenu.value.toggle(event);
+};
+
 
 const toggleMenu = (event, row) => {
-    emit('action-menu-click', { event, data: row });
-    if (menu.value && menu.value.toggle) menu.value.toggle(event);
+    // Store row reference for ActionMenu to use
+    if (menu.value && menu.value.toggle) {
+        menu.value.toggle(event, row);
+    }
 };
 
 const filteredData = computed(() => props.data || []);
@@ -79,11 +99,12 @@ const getStatusText = (status) => {
 
                     <!-- Permission Icon -->
                     <Button v-else-if="col.field === 'permission'" text rounded class="permission-btn"
-                        @click="toggleMenu($event, slotProps.data)">
+                        @click="togglePermissionMenu($event, slotProps.data)">
                         <template #icon>
                             <VsxIcon iconName="ShieldSecurity" :size="24" color="#3F5FAC" type="linear" />
                         </template>
                     </Button>
+
 
                     <!-- Action Column -->
                     <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
@@ -96,7 +117,19 @@ const getStatusText = (status) => {
         </Column>
     </DataTable>
     <!-- Action Menu -->
-    <Menu ref="menu" :model="menuItems" popup />
+    <Menu ref="permissionMenu" :model="permissionItems" popup> <template #item="{ item }">
+            <a class="p-menuitem-link flex items-center gap-2 py-2 px-3">
+                <VsxIcon :iconName="item.icon" :size="20" :color="item.color" type="linear" />
+                <span>{{ item.label }}</span>
+            </a>
+        </template></Menu>
+    <ActionMenu ref="menu" :showEdit="true" :showView="true" :showDelete="true" :showPermission="true" showReset="true"
+        :customItems="menuItems" @edit="row => emit('action-menu-click', { action: 'edit', data: row })"
+        @view="row => emit('action-menu-click', { action: 'view', data: row })"
+        @delete="row => emit('action-menu-click', { action: 'delete', data: row })"
+        @permission="row => emit('action-menu-click', { action: 'permission', data: row })" />
+
+
 </template>
 
 

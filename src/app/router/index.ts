@@ -27,6 +27,18 @@ const routes = [
         name: "UserGroup",
         meta: { permission: null },
       },
+       {
+    path: '/add-group-roles/:id',
+    name: 'AddGroupRoles',
+    component: () => import('@/modules/user-group/pages/AddGroupRoles.vue'),
+    meta: { permission: null },
+  },
+    {
+    path: '/list-group-roles/:id',
+    name: 'ListGroupRoles',
+    component: () => import('@/modules/user-group/pages/ListGroupRoles.vue'),
+    meta: { permission: null },
+  },
       {
          path: "/system",
         component: () => import("@/sharedComponents/System.vue"),

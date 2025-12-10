@@ -7,6 +7,7 @@ const props = defineProps({
     subtitle: { type: String, default: "" },
     showSearch: { type: Boolean, default: true },
     searchPlaceholder: { type: String, default: 'Search ..' },
+    showFilter: { type: Boolean, default: false},
     mainBtn: { type: Boolean, default: false },
     mainBtnText: { type: String, default: "" },
     onMainBtnClick: { type: Function, default: null },
@@ -31,7 +32,7 @@ const onFilterChange = (filter, event) => {
     <div class="heading-section flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
         <!-- Title + Subtitle -->
-        <div class="flex flex-col text- md:text-left">
+        <div class="flex flex-col">
             <h2 class="heading-title">{{ $t(title) }}</h2>
             <p class="subheading-title">{{ $t(subtitle) }}</p>
         </div>
@@ -53,11 +54,11 @@ const onFilterChange = (filter, event) => {
     </div>
 
     <!-- Search + Filters -->
-    <div class="flex gap-[10px] mb-6 mt-2 flex-nowrap">
+    <div class="flex gap-[10px]  mt-2 flex-nowrap">
         <span class="p-input-icon-left search-input">
-            <InputText v-model="searchQuery" :placeholder="searchPlaceholder"  @input="emit('search', $event.target.value)"/>
+            <InputText v-if="showSearch" v-model="searchQuery" :placeholder="searchPlaceholder"  @input="emit('search', $event.target.value)"/>
         </span>
-        <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
+        <Dropdown v-for="(filter, index) in filters" v-if="showFilter" :key="index" v-model="filter.value" :options="filter.options"
             :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
             :optionValue="filter.optionValue || 'value'" :showClear="filter.showClear"
             @change="(e) => onFilterChange(filter, e)" />

@@ -21,21 +21,15 @@ const props = defineProps({
         default: () => [
             {
                 id: 1,
-                GroupName: 'Finance Team',
-                Description: 'Manage payment, budget..',
-                AssignedRoles: "Administration",
-                UserCount: '4',
-                slot: 'test1',
-                Created: 'Oct 11, 2025',
+                RoleName: 'Finance Team',
+                Accessscope: 'Manage payment, budget..',
+                Branches: "Administration",
             },
-            {
-                id: 5,
-                GroupName: 'Finance Team',
-                Description: 'Manage payment, budget..',
-                AssignedRoles: "HR",
-                UserCount: '2',
-                slot: 'test1',
-                Created: 'Oct 11, 2025',
+          {
+                id: 1,
+                RoleName: 'Finance Team',
+                Accessscope: 'Manage payment, budget..',
+                Branches: "Administration",
             },
         ]
     },
@@ -79,12 +73,9 @@ const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'GroupName', header: t('userGroup.groupName'), type: 'slot', sortable: true },
-        { field: 'Description', header: t('userGroup.description'), sortable: true },
-        { field: 'AssignedRoles', header: t('userGroup.assignedRoles'), sortable: true, type: 'tag', Class: 'custom-tag' },
-        { field: 'UserCount', header: t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'Created', header: t('userGroup.created'), sortable: true },
-        { field: 'permission', header: t('permission') },
+        { field: 'RoleName', header: t('roles.roleName'), type: 'slot', sortable: true },
+        { field: 'Accessscope', header: t('roles.accessScope'), sortable: true },
+        { field: 'Branches', header: t('roles.branches'), sortable: true, type: 'badge', Class: 'custom-badge' },
         { field: 'action', header: t('action') }
     ];
 
@@ -118,14 +109,14 @@ const handleDeleteConfirm = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="userGroup.userGroup" subtitle="userGroup.OrganizeUsersIntoGroupsAndAssignRoles"
-                    :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    searchPlaceholder="Search user group..." @search="onSearch" />
+                <PageHeader title="roles.rolesTitle" subtitle="roles.rolesDescription"
+                    :showExport="false" :showImport="false" :mainBtn="true" mainBtnText="roles.addNewRole"
+                    :showSearch="false"/>
             </template>
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="filteredData" :loading="loading" :menuItems="menuItems"
-                    :permissionItems="permissionItems" @action-menu-click="handleActionMenu" :showDelete="true">
+                    :permissionItems="permissionItems" @action-menu-click="handleActionMenu" :showDelete="true" :showSearch="false">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" type="linear" />
@@ -137,7 +128,7 @@ const handleDeleteConfirm = () => {
         </card>
 
         <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
-            title="Are you sure you want to delete this Group?" :buttons="[
+            title="Are you sure you want to delete this role?" :buttons="[
                 { label: 'Cancel', variant: 'ghost', action: 'cancel' },
                 { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
             ]" @confirm="handleDeleteConfirm" />
