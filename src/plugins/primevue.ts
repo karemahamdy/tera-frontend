@@ -20,6 +20,8 @@ import Menubar from 'primevue/menubar'
 import Tooltip from 'primevue/tooltip'
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
+import Textarea from 'primevue/textarea';
+
 
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
@@ -52,4 +54,5 @@ export function setupPrimeVue(app: App) {
   app.directive('tooltip', Tooltip);
   app.component('InputGroup', InputGroup);
   app.component('InputGroupAddon', InputGroupAddon);
+  app.component('Textarea', Textarea);
 }

@@ -76,7 +76,7 @@ function logout() {
           <li class="mb-1">
             <router-link
               class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5 cursor-pointer"
-              to="/"
+              to="/home"
               :activeClass="$i18n.locale === 'ar' ? 'active active-link-ar' : 'active active-link'"
             >
               <VsxIcon iconName="Element4" :size="24" type="linear" />
