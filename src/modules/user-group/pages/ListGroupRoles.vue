@@ -7,7 +7,6 @@ import alertIcon from '@/assets/images/alert.png';
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -37,40 +36,6 @@ const props = defineProps({
 
 const emit = defineEmits(['search', 'action-menu-click']);
 
-const permissionItems = [
-    {
-        label: "New",
-        icon: "Star1",
-        color: "#12B76A",
-        command: (row) => {
-            console.log("ROW", row);
-            router.push(`/add-group-roles/${row.id}`);
-        }
-    },
-    {
-        label: "view",
-        icon: "Eye",
-        color: "#3F5FAC",
-        command: (row) => {
-            router.push(`/list-group-roles/${row.id}`);
-        }
-    }
-];
-
-const menuItems = [
-    {
-        label: "Active",
-        icon: "Activity",
-        color: "#12B76A",
-        command: (row) => {
-            console.log("Toggle Active clicked:", row);
-            row.status = row.status === "Active" ? "Inactive" : "Active";
-        }
-    }
-];
-
-const { onSearch, filteredData } = useSearch(props.data);
-
 const columns = computed(() => {
     const Columns = [
         { field: 'RoleName', header: t('roles.roleName'), type: 'slot', sortable: true },
@@ -84,46 +49,45 @@ const columns = computed(() => {
 
 const confirmDelete = (row) => {
     rowToDelete.value = row;
-    console.log("Row to delete:", rowToDelete.value);
     showDeleteDialog.value = true;
 };
 
+const onEdit = () => {
+  router.push("/add-group-roles/:id");
+};
+
 const handleActionMenu = ({ action, data }) => {
-    console.log("ActionMenu Data:", data);
     if (action === 'delete') {
         confirmDelete(data);
+    }
+     if (action === 'edit') {
+        onEdit();
     }
 };
 
 const handleDeleteConfirm = () => {
-    console.log("Deleted user with ID:", rowToDelete.value?.id);
     showDeleteDialog.value = false;
     rowToDelete.value = null;
 };
-
+const goToAddRole = () => {
+  router.push("/add-group-roles/:id");
+};
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="layout.accessControl" subtitle="userGroup.userGroup" />
+        <ScreenHeader title="layout.accessControl" subtitle="userGroup.userGroup" actionName="Assign role"/>
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="roles.rolesTitle" subtitle="roles.rolesDescription"
-                    :showExport="false" :showImport="false" :mainBtn="true" mainBtnText="roles.addNewRole"
+                    :showExport="false" :showImport="false" :mainBtn="true" mainBtnText="roles.addNewRole" :onMainBtnClick="goToAddRole"
                     :showSearch="false"/>
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading" :menuItems="menuItems"
-                    :permissionItems="permissionItems" @action-menu-click="handleActionMenu" :showDelete="true" :showSearch="false">
-                    <template #col-GroupName="{ data }">
-                        <div class="flex items-start gap-2 flex-wrap">
-                            <VsxIcon iconName="People" :size="24" color="#717680" type="linear" />
-                            <span class="break-words">{{ data.GroupName }}</span>
-                        </div>
-                    </template>
-                </DynamicTable>
+                <DynamicTable :columns="columns" :data="data" :loading="loading" 
+                   @action-menu-click="handleActionMenu" :showDelete="true" :showSearch="false" />
             </template>
         </card>
 

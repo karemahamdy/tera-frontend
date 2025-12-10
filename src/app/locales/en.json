@@ -39,7 +39,7 @@
     "roleName": "Role Name",
     "accessScope": "Access scope",
     "branches": "Branches",
-    "addNewRole": "Add New Roles",
+    "addNewRole": "Add New Role",
     "rolesTitle": "System Administrators",
     "rolesDescription": "Controls system settings.."
   }

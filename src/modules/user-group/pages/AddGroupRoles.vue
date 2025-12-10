@@ -13,7 +13,7 @@ console.log("Group ID:", id);
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader title="layout.accessControl" subtitle="userGroup.userGroup" />
+    <ScreenHeader title="layout.accessControl" subtitle="userGroup.userGroup" actionName="Assign role"/>
     <card class="bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col text- md:text-left mb-4 pt-4 px-20">
