@@ -20,17 +20,17 @@ const description = ref<string>('');
                 <form class="space-y-6">
                     <div>
                         <label class="text-gray-700 font-medium mb-2 block">Group Name</label>
-                        <InputText v-model="groupName" placeholder="Enter group name"
+                        <InputText v-model="groupName" placeholder="e.g., Finance Team"
                             class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
                     </div>
                     <div>
                         <label class="text-gray-700 font-medium mb-2 block">Description</label>
-                        <Textarea v-model="description" placeholder="Enter group description"
+                        <Textarea v-model="description" placeholder="Describe the purpose of this group.. "
                             class="mt-1 w-full p-3 border border-gray-300 rounded-lg" rows="4" />
                     </div>
                     <div class="flex justify-between gap-4 mb-4 w-full">
-                        <BaseButton label="cancel" variant="ghost" block />
-                        <BaseButton label="Login" variant="primary" block :to="{ name: 'Login' }" />
+                        <BaseButton label="Cancel" variant="ghost" block :to="{ name: 'Login' }" />
+                        <BaseButton label="Create Group" variant="primary" block />
                     </div>
                 </form>
 

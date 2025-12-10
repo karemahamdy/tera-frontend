@@ -21,6 +21,7 @@ import Tooltip from 'primevue/tooltip'
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Textarea from 'primevue/textarea';
+import ToggleSwitch from 'primevue/toggleswitch';
 
 
 export function setupPrimeVue(app: App) {
@@ -55,4 +56,5 @@ export function setupPrimeVue(app: App) {
   app.component('InputGroup', InputGroup);
   app.component('InputGroupAddon', InputGroupAddon);
   app.component('Textarea', Textarea);
+  app.component('ToggleSwitch', ToggleSwitch);
 }

@@ -54,7 +54,7 @@ function logout() {
 <template>
   <aside
     :class="[
-      'sidebar-bg text-white transition-all duration-200',
+      'sidebar-bg text-white transition-all duration-200 shadow',
       collapsed ? 'w-16' : 'w-72',
     ]"
   >
