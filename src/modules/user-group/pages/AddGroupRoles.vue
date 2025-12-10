@@ -4,11 +4,7 @@ import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
 
-const route = useRoute();
 const accessScope = ref("branch");
-const id = route.params.id;
-
-console.log("Group ID:", id);
 </script>
 
 <template>

@@ -63,18 +63,6 @@ const permissionItems = [
     }
 ];
 
-const menuItems = [
-    {
-        label: "Active",
-        icon: "Activity",
-        color: "#12B76A",
-        command: (row) => {
-            console.log("Toggle Active clicked:", row);
-            row.status = row.status === "Active" ? "Inactive" : "Active";
-        }
-    }
-];
-
 const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
@@ -124,7 +112,7 @@ const handleDeleteConfirm = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading" :menuItems="menuItems"
+                <DynamicTable :columns="columns" :data="filteredData" :loading="loading"
                     :permissionItems="permissionItems" @action-menu-click="handleActionMenu" :showDelete="true">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">

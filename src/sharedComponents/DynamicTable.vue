@@ -14,6 +14,7 @@ const props = defineProps({
     permissionItems: { type: Array, default: () => [] },
     getStatusBadge: { type: Function, default: null },
     getStatusText: { type: Function, default: null },
+    
 });
 
 const emit = defineEmits(["action-menu-click"]);
