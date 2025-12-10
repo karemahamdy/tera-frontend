@@ -1,10 +1,6 @@
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
 import BaseButton from './BaseButton.vue';
-// import { useI18n } from "vue-i18n";
-
-
-// const { t } = useI18n();
 
 const props = defineProps({
     title: { type: String, default: "" },
@@ -12,7 +8,7 @@ const props = defineProps({
     showSearch: { type: Boolean, default: true },
     searchPlaceholder: { type: String, default: 'Search ..' },
     mainBtn: { type: Boolean, default: false },
-    mainBtnText: { type: String, default: "" },   
+    mainBtnText: { type: String, default: "" },
     onMainBtnClick: { type: Function, default: null },
     showExport: { type: Boolean, default: false },
     exportText: { type: String, default: "Export" },
@@ -39,39 +35,42 @@ const onFilterChange = (filter, event) => {
 </script>
 
 <template>
-    <div class="heading-section">
-        
-        <div class="flex flex-col">
+    <div class="heading-section flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
+        <!-- Title + Subtitle -->
+        <div class="flex flex-col text- md:text-left">
             <h2 class="heading-title">{{ $t(title) }}</h2>
             <p class="subheading-title">{{ $t(subtitle) }}</p>
         </div>
 
-        <div class="flex justify-end gap-3 flex-wrap">
-               <!-- Import -->
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap justify- md:justify-end gap-3">
+            <!-- Import -->
             <BaseButton v-if="showImport" :label="$t('import')" icon="Import" variant="outline-primary"
                 @click="onImport && onImport()" />
             <!-- Export -->
-            <BaseButton v-if="showExport" :label="$t('export')"  icon="Export" variant="outline-primary"
+            <BaseButton v-if="showExport" :label="$t('export')" icon="Export" variant="outline-primary"
                 @click="onExport && onExport()" />
             <!-- Main Button -->
-            <BaseButton v-if="mainBtn" :label="$t(mainBtnText)" icon="AddSquare"
-                variant="primary" :disabled="!mainBtnValid"
-                @click="onMainBtnClick && onMainBtnClick()" />
+            <BaseButton v-if="mainBtn" :label="$t(mainBtnText)" icon="AddSquare" variant="primary"
+                :disabled="!mainBtnValid" @click="onMainBtnClick && onMainBtnClick()" />
+
             <slot name="actionBtn"></slot>
         </div>
     </div>
 
+    <!-- Search + Filters -->
     <div class="flex gap-[10px] mb-6 mt-2 flex-nowrap">
         <span class="p-input-icon-left search-input">
             <InputText v-model="searchQuery" :placeholder="searchPlaceholder" @input="onSearch" />
         </span>
-
         <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
             :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
             :optionValue="filter.optionValue || 'value'" :showClear="filter.showClear"
             @change="(e) => onFilterChange(filter, e)" />
     </div>
 </template>
+
 
 <style>
 .search-input {
