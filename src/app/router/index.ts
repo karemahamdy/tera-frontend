@@ -28,15 +28,15 @@ const routes = [
         meta: { permission: null },
       },
        {
-    path: '/add-group-roles/:id',
+    path: '/roles-permissions/add-group-roles/:id',
     name: 'AddGroupRoles',
-    component: () => import('@/modules/user-group/pages/AddGroupRoles.vue'),
+    component: () => import('@/modules/roles-permissions/AddGroupRoles.vue'),
     meta: { permission: null },
   },
     {
-    path: '/list-group-roles/:id',
+    path: '/roles-permissions/list-group-roles/:id',
     name: 'ListGroupRoles',
-    component: () => import('@/modules/user-group/pages/ListGroupRoles.vue'),
+    component: () => import('@/modules/roles-permissions/ListGroupRoles.vue'),
     meta: { permission: null },
   },
       {

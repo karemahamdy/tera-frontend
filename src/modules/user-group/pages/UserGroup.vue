@@ -50,7 +50,7 @@ const permissionItems = [
         color: "#12B76A",
         command: (row) => {
             console.log("ROW", row);
-            router.push(`/add-group-roles/${row.id}`);
+            router.push(`/roles-permissions/add-group-roles/${row.id}`);
         }
     },
     {
@@ -58,7 +58,7 @@ const permissionItems = [
         icon: "Eye",
         color: "#3F5FAC",
         command: (row) => {
-            router.push(`/list-group-roles/${row.id}`);
+            router.push(`/roles-permissions/list-group-roles/${row.id}`);
         }
     }
 ];
