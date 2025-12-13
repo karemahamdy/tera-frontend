@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
@@ -93,9 +93,13 @@ const handleActionMenu = ({ action, data }) => {
 };
 
 const handleDeleteConfirm = () => {
-    console.log("Deleted user with ID:", rowToDelete.value?.id);
+    console.log("Deleted user with ID:", rowToDelete.value);
     showDeleteDialog.value = false;
     rowToDelete.value = null;
+};
+
+const addUserGroup = () => {
+    router.push('/user-group/create');
 };
 
 </script>
@@ -108,7 +112,7 @@ const handleDeleteConfirm = () => {
             <template #title>
                 <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription"
                     :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    searchPlaceholder="Search user group..." @search="onSearch" />
+                    searchPlaceholder="Search user group..." @search="onSearch" :onMainBtnClick="addUserGroup" />
             </template>
             <!-- DynamicTable component -->
             <template #content>

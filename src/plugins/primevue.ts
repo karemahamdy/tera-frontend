@@ -20,6 +20,8 @@ import Menubar from 'primevue/menubar'
 import Tooltip from 'primevue/tooltip'
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
+import Textarea from 'primevue/textarea';
+import ToggleSwitch from 'primevue/toggleswitch';
 import RadioButton from "primevue/radiobutton";
 
 export function setupPrimeVue(app: App) {
@@ -53,6 +55,8 @@ export function setupPrimeVue(app: App) {
   app.directive('tooltip', Tooltip);
   app.component('InputGroup', InputGroup);
   app.component('InputGroupAddon', InputGroupAddon);
+  app.component('Textarea', Textarea);
+  app.component('ToggleSwitch', ToggleSwitch);
   app.component('RadioButton', RadioButton);
 
 }

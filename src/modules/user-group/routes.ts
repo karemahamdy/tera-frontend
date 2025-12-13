@@ -6,25 +6,21 @@ export const userGroupRoutes = [
     meta: {
       hide: true,
       localizedTitle: "Home",
+      permission: null
     },
   },
   {
-    path: '/roles-permissions/add-group-roles/:id',
-    name: 'AddGroupRoles',
-    component: () => import('@/modules/roles-permissions/pages/AddGroupRoles.vue'),
-    meta: {
-      hide: true,
-      localizedTitle: "UserGroup",
-    },
+    path: "/user-group/create",
+    name: "UserGroupCreate",
+    component: () => import("@/modules/user-group/pages/UserGroupForm.vue"),
+    meta: { permission: null },
+    props: { mode: "create" },
   },
   {
-    path: '/roles-permissions/list-group-roles/:id',
-    name: 'ListGroupRoles',
-    component: () => import('@/modules/roles-permissions/pages/ListGroupRoles.vue'),
-    meta: {
-      hide: true,
-      localizedTitle: "UserGroup",
-    },
+    path: "/user-group/edit/:id",
+    name: "UserGroupEdit",
+    component: () => import("@/modules/user-group/pages/UserGroupForm.vue"),
+    props: { mode: "edit" },
+    meta: { permission: null },
   },
-
 ];

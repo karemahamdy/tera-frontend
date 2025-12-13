@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
+// import { useRoute } from "vue-router";
 import type { NavItem } from "src/app/types/navigation";
 import logoImg from "@/assets/Header.svg";
 
 // Props
-const props = defineProps<{
+defineProps<{
   collapsed: boolean;
 }>();
 
 const router = useRouter();
-const route = useRoute();
+// const route = useRoute();
 const logo = logoImg;
 // Navigation items
 const navItems: NavItem[] = [
@@ -41,10 +42,10 @@ function isOpen(item: NavItem) {
   return !!open.value[item.label];
 }
 
-function isActive(item: NavItem) {
-  if (!item.route) return false;
-  return route.path === item.route;
-}
+// function isActive(item: NavItem) {
+//   if (!item.route) return false;
+//   return route.path === item.route;
+// }
 
 function logout() {
   router.push("/auth/login");
@@ -54,7 +55,7 @@ function logout() {
 <template>
   <aside
     :class="[
-      'sidebar-bg text-white transition-all duration-200',
+      'sidebar-bg text-white transition-all duration-200 shadow',
       collapsed ? 'w-16' : 'w-72',
     ]"
   >
@@ -76,7 +77,7 @@ function logout() {
           <li class="mb-1">
             <router-link
               class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5 cursor-pointer"
-              to="/"
+              to="/home"
               :activeClass="$i18n.locale === 'ar' ? 'active active-link-ar' : 'active active-link'"
             >
               <VsxIcon iconName="Element4" :size="24" type="linear" />

@@ -173,14 +173,7 @@ const handleDeleteConfirm = () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="tableData" :loading="loading" :permissionItems="permissionItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true">
-                    <template #col-GroupName="{ data }">
-                        <div class="flex items-start gap-2 flex-wrap">
-                            <VsxIcon iconName="People" :size="24" color="#717680" type="linear" />
-                            <span class="break-words">{{ data.GroupName }}</span>
-                        </div>
-                    </template>
-                </DynamicTable>
+                    @action-menu-click="handleActionMenu" :showDelete="true" />
             </template>
         </card>
 
