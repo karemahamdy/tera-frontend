@@ -1,0 +1,37 @@
+name: Build and Deploy Vue.js App
+
+on:
+  push:
+    branches:
+      - main
+env:
+  VITE_API_URL:  https://kosoorapi.azurewebsites.net/api
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: enable corepack
+        run: corepack enable
+        
+      - name: set node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Vue.js Project
+        run: yarn build
+
+      - name: Copy Files to Web Server
+        run: |
+          sudo rm -rf /var/www/teraerp-admin/html/*
+          sudo cp -r dist/* /var/www/teraerp-admin/html/
+          
+      - name: Reload Nginx
+        run: sudo systemctl reload nginx
