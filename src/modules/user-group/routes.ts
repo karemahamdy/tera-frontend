@@ -14,7 +14,7 @@ export const userGroupRoutes = [
     component: () => import('@/modules/roles-permissions/AddGroupRoles.vue'),
     meta: {
       hide: true,
-      localizedTitle: "Home",
+      localizedTitle: "UserGroup",
     },
   },
   {
@@ -23,7 +23,7 @@ export const userGroupRoutes = [
     component: () => import('@/modules/roles-permissions/ListGroupRoles.vue'),
     meta: {
       hide: true,
-      localizedTitle: "Home",
+      localizedTitle: "UserGroup",
     },
   },
 
