@@ -3,8 +3,6 @@ import { ref, computed } from "vue";
 import ActionMenu from './ActionMenu.vue';
 
 
-defineSlots()
-
 const props = defineProps({
     columns: { type: Array, default: () => [] },
     data: { type: Array, default: () => [] },
