@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
+import ActionMenu from './ActionMenu.vue';
+
 
 const props = defineProps({
     columns: { type: Array, default: () => [] },
@@ -9,17 +11,35 @@ const props = defineProps({
     loading: { type: Boolean, default: false },
     rowsPerPageOptions: { type: Array, default: () => [5, 10, 20, 50] },
     menuItems: { type: Array, default: () => [] },
+    permissionItems: { type: Array, default: () => [] },
     getStatusBadge: { type: Function, default: null },
     getStatusText: { type: Function, default: null },
+    
 });
 
 const emit = defineEmits(["action-menu-click"]);
 
 const menu = ref(null);
+const permissionMenu = ref(null);
+const permissionRow = ref(null);
+
+const permissionItems = computed(() =>  {  return props.permissionItems.map(item => ({
+        ...item,
+        command: () => item.command(permissionRow.value)  
+    }))
+});
+
+
+const togglePermissionMenu = (event, row) => {
+    permissionRow.value = row;
+    if (permissionMenu.value) permissionMenu.value.toggle(event);
+};
+
 
 const toggleMenu = (event, row) => {
-    emit('action-menu-click', { event, data: row });
-    if (menu.value && menu.value.toggle) menu.value.toggle(event);
+    if (menu.value && menu.value.toggle) {
+        menu.value.toggle(event, row);
+    }
 };
 
 const filteredData = computed(() => props.data || []);
@@ -47,7 +67,7 @@ const getStatusText = (status) => {
         </template>
         <template #paginatorend>
         </template>
-        
+
         <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="col.sortable"
             :style="col.style">
 
@@ -78,12 +98,17 @@ const getStatusText = (status) => {
                     </div>
 
                     <!-- Permission Icon -->
-                    <Button v-else-if="col.field === 'permission'" icon="pi pi-shield"  text rounded
-                        @click="toggleMenu($event, slotProps.data)" class="permission-btn" />
+                    <Button v-else-if="col.field === 'permission'" text rounded class="permission-btn"
+                        @click="togglePermissionMenu($event, slotProps.data)">
+                        <template #icon>
+                            <VsxIcon iconName="ShieldSecurity" :size="24" color="#3F5FAC" type="linear" />
+                        </template>
+                    </Button>
+
 
                     <!-- Action Column -->
                     <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
-                        @click="toggleMenu($event, slotProps.data)" class="action-btn"/>
+                        @click="toggleMenu($event, slotProps.data)" class="action-btn" />
 
                     <!-- Default Text -->
                     <span v-else>{{ slotProps.data[col.field] }}</span>
@@ -92,7 +117,36 @@ const getStatusText = (status) => {
         </Column>
     </DataTable>
     <!-- Action Menu -->
-    <Menu ref="menu" :model="menuItems" popup />
+    <Menu ref="permissionMenu" :model="permissionItems" popup> <template #item="{ item }">
+            <a class="p-menuitem-link flex items-center gap-2 py-2 px-3">
+                <VsxIcon :iconName="item.icon" :size="20" :color="item.color" type="linear" />
+                <span>{{ item.label }}</span>
+            </a>
+        </template></Menu>
+    <ActionMenu ref="menu" :showEdit="true" :showView="true" :showDelete="true" :showPermission="true" showReset="true"
+        :customItems="menuItems" @edit="row => emit('action-menu-click', { action: 'edit', data: row })"
+        @view="row => emit('action-menu-click', { action: 'view', data: row })"
+        @delete="row => emit('action-menu-click', { action: 'delete', data: row })"
+        @permission="row => emit('action-menu-click', { action: 'permission', data: row })" >
+         <template #item="{ item, props }">
+
+            <!-- Custom Toggle Item -->
+            <div v-if="item.changeStatus" class="flex items-center px-3 py-2 cursor-pointer"
+                @click.stop="item.command && item.command()">
+                <ToggleSwitch v-model="selectedRow.isActive" />
+                <span class="ml-2">{{ item.label }}</span>
+            </div>
+
+            <!-- Normal Menu Items -->
+            <a v-else v-ripple class="flex items-center px-3 py-2 cursor-pointer" @click="item.command"
+                v-bind="props.action">
+                <span :class="item.icon" />
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+        </template>
+        </ActionMenu>
+
+
 </template>
 
 
@@ -157,6 +211,7 @@ const getStatusText = (status) => {
 
 .permission-btn {
     color: var(--color-primary-500);
+    align-items: center;
 }
 
 .permission-btn:hover {
@@ -167,61 +222,63 @@ const getStatusText = (status) => {
 .action-btn {
     color: var(--color-gray-700);
 }
+
 .action-btn:hover {
     color: var(--color-gray-700) !important;
     background-color: var(--color-gray-100) !important;
 }
+
 /* paginator */
 ::v-deep .p-paginator {
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 ::v-deep .p-paginator .p-paginator-current {
-  color: var(--color-gray-600) !important; 
-  font-size: 14px;
+    color: var(--color-gray-600) !important;
+    font-size: 14px;
 }
 
 ::v-deep .p-paginator .p-paginator-page {
-  border: 1px solid #e5e7eb ;
-  border-radius: 8px;
-  padding: 6px 10px;
-  margin: 0 2px;
-  min-width: 36px;
-  text-align: center;
-  
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin: 0 2px;
+    min-width: 36px;
+    text-align: center;
+
 }
+
 ::v-deep .p-paginator .p-paginator-page:hover {
-  color: #ffffff !important;
+    color: #ffffff !important;
 }
 
 ::v-deep .p-paginator .p-paginator-page.p-paginator-page-selected {
-  background-color: var(--color-primary-500) !important;
-  color: #ffffff !important;
-  border-color: #3b56e5 !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    background-color: var(--color-primary-500) !important;
+    color: #ffffff !important;
+    border-color: #3b56e5 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 ::v-deep .p-paginator .p-paginator-prev,
 ::v-deep .p-paginator .p-paginator-next,
 ::v-deep .p-paginator .p-paginator-first,
 ::v-deep .p-paginator .p-paginator-last {
-  border: 1px solid #e5e7eb  !important;
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* hover */
 ::v-deep .p-paginator .p-paginator-page:hover,
 ::v-deep .p-paginator .p-paginator-prev:hover,
 ::v-deep .p-paginator .p-paginator-next:hover {
-  background: #4d70b6 !important;
+    background: #4d70b6 !important;
 }
-
 </style>

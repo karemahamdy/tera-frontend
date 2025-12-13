@@ -192,7 +192,7 @@ const emit = defineEmits(['search', 'filter-change', 'permission-click', 'action
 
 const searchQuery = ref('');
 const menu = ref();
-const selectedRow = ref(null);
+
 
 const localFilters = ref(props.filters.map(f => ({ ...f })));
 
@@ -213,23 +213,19 @@ const columns = computed(() => {
     return Columns;
 });
 
-const menuItems = ref([
+const permissionItems = [
     {
-        label: 'Edit',
-        icon: 'pi pi-pencil',
-        command: () => emit('action-menu-click', { action: 'edit', data: selectedRow.value })
+        label: "Manage Permissions",
+        icon: "pi pi-shield",
+        command: () => console.log("manage permissions"),
     },
     {
-        label: 'Delete',
-        icon: 'pi pi-trash',
-        command: () => emit('action-menu-click', { action: 'delete', data: selectedRow.value })
-    },
-    {
-        label: 'View Details',
-        icon: 'pi pi-eye',
-        command: () => emit('action-menu-click', { action: 'view', data: selectedRow.value })
+        label: "Assign Role",
+        icon: "pi pi-users",
+        command: () => console.log("assign role"),
     }
-]);
+];
+
 
 // Computed
 const filteredData = computed(() => {
@@ -274,10 +270,10 @@ const onPermissionClick = (data) => {
     emit('permission-click', data);
 };
 
-const toggleMenu = (event, data) => {
-    selectedRow.value = data;
-    menu.value.toggle(event);
-};
+// const toggleMenu = (event, data) => {
+//     selectedRow.value = data;
+//     menu.value.toggle(event);
+// };
 
 </script>
 
@@ -285,16 +281,16 @@ const toggleMenu = (event, data) => {
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
         <!-- PageHeader component -->
         <template #title>
-            <PageHeader title="Users Management" subtitle="Manage user accounts" :showExport="true" :showImport="true"
-                :onExport="exportData" :onImport="importData" :mainBtn="true" mainBtnText="Add User"
+            <PageHeader title="Users Management" subtitle="Manage user accounts" :showExport="true" :showImport="true" :showFilter="true"
+                :onExport="exportData" :onImport="importData" :mainBtn="true" mainBtnText="Add User" showSearch="false"
                 mainBtnIcon="pi pi-plus" :onMainBtnClick="openDialog" :filters="filters" @search="onSearch"
                 :searchPlaceholder="searchPlaceholder" @filter-change="onFilterChange" />              
         </template>
 
         <!-- DynamicTable component -->
         <template #content>
-            <DynamicTable :columns="columns" :data="filteredData" :paginator="paginator" :rows="rows" :loading="loading"
-                :rowsPerPageOptions="[5, 10, 20, 50]" :menuItems="menuItems" :getStatusBadge="getStatusBadge"
+            <DynamicTable :columns="columns" :data="filteredData" :paginator="paginator" :rows="rows" :loading="loading" :showFilter="true"
+                :rowsPerPageOptions="[5, 10, 20, 50]" :menuItems="menuItems" :getStatusBadge="getStatusBadge" :permissionItems="permissionItems"
                 :getStatusText="getStatusText" @action-menu-click="(payload) => emit('action-menu-click', payload)">
                 <template #col-slot="{ data }">
                     <i class="pi pi-star text-yellow-500 text-xl"></i>
