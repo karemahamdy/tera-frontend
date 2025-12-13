@@ -18,7 +18,7 @@ const navItems: NavItem[] = [
     label: "Acces Control",
     icon: "SecurityUser",
     children: [
-      { label: "Users Management", route: "/settings" },
+      { label: "Users Management", route: "/user-management" },
       { label: "User Groups", route: "/user-group" },
       { label: "Branch Management", route: "/roles" },
       { label: "Roles Management", route: "/roles" },
