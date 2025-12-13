@@ -112,25 +112,6 @@ const columns = computed(() => {
     return Columns;
 });
 
-const permissionItems = [
-    {
-        label: "New",
-        icon: "Star1",
-        color: "#12B76A",
-        command: (row: any) => {
-            router.push(`/roles-permissions/add-user-roles/${row.id}`);
-        },
-    },
-    {
-        label: "View",
-        icon: "Eye",
-        color: "#3F5FAC",
-        command: (row: any) => {
-            router.push(`/roles-permissions/list-user-roles/${row.id}`);
-        },
-    },
-];
-
 const tableData = computed(() => {
     if (searchQuery.value) {
         return searchedData.value;
