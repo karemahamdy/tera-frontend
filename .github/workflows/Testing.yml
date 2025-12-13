@@ -5,7 +5,7 @@ on:
     branches:
       - testing
 env:
-  VITE_API_URL:  https://kosoortestingapi.azurewebsites.net/api
+  VITE_API_URL:  https://teraerptestingapi.azurewebsites.net/api
 jobs:
   build-and-deploy:
     runs-on: self-hosted
