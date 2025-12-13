@@ -1,4 +1,13 @@
 
+<script setup>
+import { defineProps } from "vue";  
+const props = defineProps({
+  title: { type: String, required: true },
+  subtitle: { type: String, default: "" },
+  actionName: { type: String, default: "" },
+});
+</script>
+
 <template>
   <div class="heading-section mb-6">
     <div class="flex items-center gap-3">
@@ -12,11 +21,3 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps } from "vue";  
-const props = defineProps({
-  title: { type: String, required: true },
-  subtitle: { type: String, default: "" },
-  actionName: { type: String, default: "" },
-});
-</script>

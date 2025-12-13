@@ -281,7 +281,7 @@ const onPermissionClick = (data) => {
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
         <!-- PageHeader component -->
         <template #title>
-            <PageHeader title="Users Management" subtitle="Manage user accounts" :showExport="true" :showImport="true"
+            <PageHeader title="Users Management" subtitle="Manage user accounts" :showExport="true" :showImport="true" :showFilter="true"
                 :onExport="exportData" :onImport="importData" :mainBtn="true" mainBtnText="Add User" showSearch="false"
                 mainBtnIcon="pi pi-plus" :onMainBtnClick="openDialog" :filters="filters" @search="onSearch"
                 :searchPlaceholder="searchPlaceholder" @filter-change="onFilterChange" />              
@@ -289,7 +289,7 @@ const onPermissionClick = (data) => {
 
         <!-- DynamicTable component -->
         <template #content>
-            <DynamicTable :columns="columns" :data="filteredData" :paginator="paginator" :rows="rows" :loading="loading"
+            <DynamicTable :columns="columns" :data="filteredData" :paginator="paginator" :rows="rows" :loading="loading" :showFilter="true"
                 :rowsPerPageOptions="[5, 10, 20, 50]" :menuItems="menuItems" :getStatusBadge="getStatusBadge" :permissionItems="permissionItems"
                 :getStatusText="getStatusText" @action-menu-click="(payload) => emit('action-menu-click', payload)">
                 <template #col-slot="{ data }">

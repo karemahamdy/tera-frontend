@@ -54,4 +54,5 @@ export function setupPrimeVue(app: App) {
   app.component('InputGroup', InputGroup);
   app.component('InputGroupAddon', InputGroupAddon);
   app.component('RadioButton', RadioButton);
+
 }

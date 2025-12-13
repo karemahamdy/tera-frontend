@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed } from "vue";
-import Menu from "primevue/menu";
 
 const props = defineProps({
     onEdit: { type: Function, default: null },
