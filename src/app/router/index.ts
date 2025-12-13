@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from "@/app/store/useUserStore";
 import { authRoutes } from "@/modules/auth/routes.ts";
 import { homeRoutes } from "@/modules/home/routes.ts";
 import { userGroupRoutes } from "@/modules/user-group/routes";
-import { useUserStore } from "@/app/store/useUserStore";
+import { RolesPermissionsRoutes } from "@/modules/roles-permissions/pages/routes";
 
 const defaultTitle = "Tera ERP";
 
@@ -17,6 +18,7 @@ const routes = [
     children: [
       ...homeRoutes,
        ...userGroupRoutes,
+       ...RolesPermissionsRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
