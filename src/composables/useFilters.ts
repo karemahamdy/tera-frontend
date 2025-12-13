@@ -1,12 +1,8 @@
 import { ref, computed } from "vue";
 
-export function useFilters(data: any[], filtersConfig: any[]) {
+export function useFilters(data: any[], filtersOperation: any[]) {
     const searchQuery = ref("");
-    const filters = ref(filtersConfig.map(f => ({ ...f })));
-
-    const setSearch = (value: string) => {
-        searchQuery.value = value;
-    };
+    const filters = ref(filtersOperation.map(f => ({ ...f })));
 
     const onFilterChange = ({ filter, value }: any) => {
         const idx = filters.value.findIndex(f => f.field === filter.field);
@@ -40,7 +36,6 @@ export function useFilters(data: any[], filtersConfig: any[]) {
         searchQuery,
         filters,
         filteredData,
-        setSearch,
         onFilterChange,
     };
 }

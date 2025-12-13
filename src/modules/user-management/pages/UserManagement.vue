@@ -3,7 +3,8 @@ import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
-import alertIcon from '@/assets/images/alert.png';
+import alertIcon from "@/assets/images/alert.png";
+
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -14,7 +15,7 @@ const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);
 const showDeleteDialog = ref(false);
-const rowToDelete = ref(null);
+const rowToDelete = ref<any>(null);
 
 const props = defineProps({
     data: {
@@ -22,174 +23,79 @@ const props = defineProps({
         default: () => [
             {
                 id: 1,
-                name: 'John Moore',
-                email: 'john@tera.com',
+                name: "John Moore",
+                email: "john@tera.com",
                 avatar: null,
-                userGroup: 'Administration',
-                department: 'Finance',
-                accessScope: 'Global',
-                status: 'in Active',
-                lastLogin: 'Oct 11, 2025'
+                userGroup: "Administration",
+                department: "Finance",
+                accessScope: "Global",
+                status: "in Active",
+                lastLogin: "Oct 11, 2025",
             },
             {
                 id: 2,
-                name: 'Mick Taylor',
-                email: 'mick@tera.com',
+                name: "Mick Taylor",
+                email: "mick@tera.com",
                 avatar: null,
-                badge: 'pi pi-star-fill',
-                userGroup: 'Finance Team',
-                department: 'Finance',
-                accessScope: 'Branch',
-                status: 'Active',
-                lastLogin: 'Nov 3, 2025'
+                userGroup: "Finance Team",
+                department: "Finance",
+                accessScope: "Branch",
+                status: "Active",
+                lastLogin: "Nov 3, 2025",
             },
-            {
-                id: 2,
-                name: 'Mick Taylor',
-                email: 'mick@tera.com',
-                avatar: null,
-                badge: 'pi pi-star-fill',
-                userGroup: 'Finance Team',
-                department: 'Finance',
-                accessScope: 'Branch',
-                status: 'Active',
-                lastLogin: 'Nov 3, 2025'
-            }, {
-                id: 2,
-                name: 'Mick Taylor',
-                email: 'mick@tera.com',
-                avatar: null,
-                badge: 'pi pi-star-fill',
-                userGroup: 'Finance Team',
-                department: 'Finance',
-                accessScope: 'Branch',
-                status: 'Active',
-                lastLogin: 'Nov 3, 2025'
-            }, {
-                id: 2,
-                name: 'Mick Taylor',
-                email: 'mick@tera.com',
-                avatar: null,
-                badge: 'pi pi-star-fill',
-                userGroup: 'Finance Team',
-                department: 'Finance',
-                accessScope: 'Branch',
-                status: 'Active',
-                lastLogin: 'Nov 3, 2025'
-            }, {
-                id: 2,
-                name: 'Mick Taylor',
-                email: 'mick@tera.com',
-                avatar: null,
-                badge: 'pi pi-star-fill',
-                userGroup: 'Finance Team',
-                department: 'Finance',
-                accessScope: 'Branch',
-                status: 'Active',
-                lastLogin: 'Nov 3, 2025'
-            }, {
-                id: 2,
-                name: 'Mick Taylor',
-                email: 'mick@tera.com',
-                avatar: null,
-                badge: 'pi pi-star-fill',
-                userGroup: 'Finance Team',
-                department: 'Finance',
-                accessScope: 'Branch',
-                status: 'Active',
-                lastLogin: 'Nov 3, 2025'
-            }, {
-                id: 2,
-                name: 'Mick Taylor',
-                email: 'mick@tera.com',
-                avatar: null,
-                badge: 'pi pi-star-fill',
-                userGroup: 'Finance Team',
-                department: 'Finance',
-                accessScope: 'Branch',
-                status: 'Active',
-                lastLogin: 'Nov 3, 2025'
-            },
-        ]
-    },
-    filters: {
-        type: Array,
-        default: () => [
-            {
-                placeholder: 'All Groups',
-                value: null,
-                options: [
-                    { label: 'All Groups', value: null },
-                    { label: 'Administration', value: 'Administration' },
-                    { label: 'Finance Team', value: 'Finance Team' },
-                    { label: 'Sales Team', value: 'Sales Team' },
-                    { label: 'HR Team', value: 'HR Team' }
-                ],
-                field: 'userGroup'
-            },
-            {
-                placeholder: 'All status',
-                value: null,
-                options: [
-                    { label: 'All status', value: null },
-                    { label: 'Active', value: 'Active' },
-                    { label: 'In active', value: 'in active' }
-                ],
-                field: 'status'
-            },
-            {
-                placeholder: 'All Scopes',
-                value: null,
-                options: [
-                    { label: 'All Scopes', value: null },
-                    { label: 'Global', value: 'Global' },
-                    { label: 'Branch', value: 'Branch' }
-                ],
-                field: 'accessScope'
-            },
-            {
-                placeholder: 'All Department',
-                value: null,
-                options: [
-                    { label: 'All Department', value: null },
-                    { label: 'Administration', value: 'Administration' },
-                    { label: 'Finance Team', value: 'Finance Team' },
-                    { label: 'Sales Team', value: 'Sales Team' },
-                    { label: 'HR Team', value: 'HR Team' }
-                ],
-                field: 'department'
-            }
-        ]
+        ],
     },
 });
 
-const emit = defineEmits(['search', 'action-menu-click']);
-const permissionItems = [
+const filtersOperation = [
     {
-        label: "New",
-        icon: "Star1",
-        color: "#12B76A",
-        command: (row) => {
-            console.log("ROW", row);
-            router.push(`/roles-permissions/add-group-roles/${row.id}`);
-        }
+        placeholder: t("usersManagement.allGroups"),
+        value: null,
+        field: "userGroup",
+        options: [
+            { label: t("usersManagement.allGroups"), value: null },
+            { label: "Administration", value: "Administration" },
+            { label: "Finance Team", value: "Finance Team" },
+            { label: "Sales Team", value: "Sales Team" },
+            { label: "HR Team", value: "HR Team" },
+        ],
     },
     {
-        label: "view",
-        icon: "Eye",
-        color: "#3F5FAC",
-        command: (row) => {
-            router.push(`/roles-permissions/list-group-roles/${row.id}`);
-        }
-    }
+        placeholder: t("usersManagement.allStatus"),
+        value: null,
+        field: "status",
+        options: [
+            { label: t("usersManagement.allStatus"), value: null },
+            { label: "active", value: "Active" },
+            { label: "inactive", value: "in Active" },
+        ],
+    },
+    {
+        placeholder: t("usersManagement.allScopes"),
+        value: null,
+        field: "accessScope",
+        options: [
+            { label: t("usersManagement.allScopes"), value: null },
+            { label: "Global", value: "Global" },
+            { label: "Branch", value: "Branch" },
+        ],
+    },
+    {
+        placeholder: t("usersManagement.allDepartment"),
+        value: null,
+        field: "department",
+        options: [
+            { label: t("usersManagement.allDepartment"), value: null },
+            { label: "Administration", value: "Administration" },
+            { label: "Finance Team", value: "Finance Team" },
+            { label: "Sales Team", value: "Sales Team" },
+            { label: "HR Team", value: "HR Team" },
+        ],
+    },
 ];
 
-const { onSearch } = useSearch(props.data);
-const {
-    filteredData,
-    filters,
-    onFilterChange
-} = useFilters(props.data, props.filters);
+const { searchQuery, onSearch, filteredData: searchedData } = useSearch(props.data);
+const { filters, filteredData: filteredByFilters, onFilterChange } = useFilters(props.data, filtersOperation);
 
 const columns = computed(() => {
     const Columns = [
@@ -206,25 +112,51 @@ const columns = computed(() => {
     return Columns;
 });
 
-const confirmDelete = (row) => {
+const permissionItems = [
+    {
+        label: "New",
+        icon: "Star1",
+        color: "#12B76A",
+        command: (row: any) => {
+            router.push(`/roles-permissions/add-group-roles/${row.id}`);
+        },
+    },
+    {
+        label: "View",
+        icon: "Eye",
+        color: "#3F5FAC",
+        command: (row: any) => {
+            router.push(`/roles-permissions/list-group-roles/${row.id}`);
+        },
+    },
+];
+
+const tableData = computed(() => {
+    if (searchQuery.value) {
+        return searchedData.value;
+    }
+
+    const hasActiveFilter = filters.value.some(f => f.value !== null);
+    if (hasActiveFilter) {
+        return filteredByFilters.value;
+    }
+
+    return props.data;
+});
+
+const confirmDelete = (row: any) => {
     rowToDelete.value = row;
-    console.log("Row to delete:", rowToDelete.value);
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }) => {
-    console.log("ActionMenu Data:", data);
-    if (action === 'delete') {
-        confirmDelete(data);
-    }
+const handleActionMenu = ({ action, data }: any) => {
+    if (action === "delete") confirmDelete(data);
 };
 
 const handleDeleteConfirm = () => {
-    console.log("Deleted user with ID:", rowToDelete.value?.id);
     showDeleteDialog.value = false;
     rowToDelete.value = null;
 };
-
 </script>
 
 <template>
@@ -240,8 +172,8 @@ const handleDeleteConfirm = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading"
-                    :permissionItems="permissionItems" @action-menu-click="handleActionMenu" :showDelete="true">
+                <DynamicTable :columns="columns" :data="tableData" :loading="loading" :permissionItems="permissionItems"
+                    @action-menu-click="handleActionMenu" :showDelete="true">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" type="linear" />

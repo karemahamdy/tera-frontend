@@ -31,7 +31,12 @@
     "addUser": "اضافة مستخدم",
     "user": "المستخدم",
     "department": "القسم",
-    "lastLogin": "اخر دخول"
+    "lastLogin": "اخر دخول",
+    "allGroups": "كل الاقسام ",
+    "allStatus": " كل الحالات",
+    "allScopes": "كل النطاق",
+    "allDepartment":  "كل الاقسام"
+
   },
   "userGroup": {
     "groupName": "اسم المجموعة",

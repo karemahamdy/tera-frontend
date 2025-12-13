@@ -31,7 +31,11 @@
     "addUser": "Add User",
     "user": "User",
     "department": "Department",
-    "lastLogin": "Last Login"
+    "lastLogin": "Last Login",
+    "allGroups":"All Groups",
+    "allStatus":"All status",
+    "allScopes":"All Scopes",
+    "allDepartment":"All Department"
   },
   "userGroup": {
     "groupName": "Group Name",
