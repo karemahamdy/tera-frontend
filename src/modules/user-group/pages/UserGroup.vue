@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
@@ -48,7 +48,7 @@ const permissionItems = [
         label: "New",
         icon: "Star1",
         color: "#12B76A",
-        command: (row: any) => {
+        command: (row) => {
             console.log("ROW", row);
             router.push(`/roles-permissions/add-group-roles/${row.id}`);
         }
@@ -57,13 +57,13 @@ const permissionItems = [
         label: "view",
         icon: "Eye",
         color: "#3F5FAC",
-        command: (row: any) => {
+        command: (row) => {
             router.push(`/roles-permissions/list-group-roles/${row.id}`);
         }
     }
 ];
 
-const { onSearch, filteredData } = useSearch(props.data as any[]);
+const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
     const Columns = [
@@ -79,13 +79,13 @@ const columns = computed(() => {
     return Columns;
 });
 
-const confirmDelete = (row: any) => {
+const confirmDelete = (row) => {
     rowToDelete.value = row;
     console.log("Row to delete:", rowToDelete.value);
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }: { action: string; data: any }) => {
+const handleActionMenu = ({ action, data }) => {
     console.log("ActionMenu Data:", data);
     if (action === 'delete') {
         confirmDelete(data);

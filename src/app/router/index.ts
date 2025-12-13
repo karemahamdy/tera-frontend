@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useUserStore } from "@/app/store/useUserStore";
+// import { useUserStore } from "@/app/store/useUserStore";
 import { authRoutes } from "@/modules/auth/routes.ts";
 import { homeRoutes } from "@/modules/home/routes.ts";
 import { userGroupRoutes } from "@/modules/user-group/routes";
 import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
 
-const defaultTitle = "Tera ERP";
+// const defaultTitle = "Tera ERP";
 
 const routes = [
   ...authRoutes,
