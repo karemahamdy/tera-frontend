@@ -1,4 +1,4 @@
-export const RolesPermissionsRoutes = [
+export const rolesPermissionsRoutes = [
   // {
   //   path: "/roles-permissions",
   //   component: () => import("@/modules/roles-permissions/pages/RolesPermissions.vue"),
