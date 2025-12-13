@@ -3,8 +3,13 @@
   "login": "تسجيل الدخول",
   "logout": "تسجيل الخروج",
   "language": "Switch to English",
+  "import": "استيراد",
+  "export": "تصدير",
+  "permission": "الصلاحية",
+  "action": "الإجراء",
   "layout": {
-    "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
+    "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة",
+    "accessControl": "التحكم في الوصول"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -18,5 +23,26 @@
     "login": "تسجيل الدخول",
     "loginFrameTagline": "أدر عملك بوضوح وسرعة وتحكم",
     "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً"
+  },
+  "userGroup": {
+    "groupName": "اسم المجموعة",
+    "description": "الوصف",
+    "assignedRoles": "الأدوار المعينة",
+    "userCount": "عدد المستخدمين",
+    "created": "تم الإنشاء",
+    "addUserGroup": "إضافة مجموعة مستخدمين",
+    "searchPlaceholder": "ابحث عن مجموعة المستخدمين...",
+    "userGroup": "مجموعة المستخدمين",
+    "userGroupDescription": "نظم المستخدمين في مجموعات و بتعيين الأدوار لهم",
+    "AssignRolesToUserGroup":"تعيين الأدوار إلى مجموعة المستخدمين",
+    "AddRolesGroupDesc":"أضف الأدوار إلى المجموعة و إدارة الأذونات المعينة"
+  },
+  "roles": {
+    "roleName": "اسم الدور",
+    "accessScope": "نطاق الوصول",
+    "branches": "الفروع",
+    "addNewRole": "إضافة أدوار جديدة",
+    "rolesTitle": "مسؤولي النظام",
+    "rolesDescription":"يتحكم في إعدادات النظام.."
   }
 }

@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from "@/app/store/useUserStore";
 import { authRoutes } from "@/modules/auth/routes.ts";
 import { homeRoutes } from "@/modules/home/routes.ts";
-import { useUserStore } from "@/app/store/useUserStore";
+import { userGroupRoutes } from "@/modules/user-group/routes";
+import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
 
 const defaultTitle = "Tera ERP";
 
@@ -15,6 +17,8 @@ const routes = [
     meta: { requiresAuth: true, permission: null },
     children: [
       ...homeRoutes,
+       ...userGroupRoutes,
+       ...rolesPermissionsRoutes,
       {
         path: "user-groups/create",
         name: "UserGroupsCreate",
@@ -27,12 +31,6 @@ const routes = [
         name: "Dashboard",
         meta: { permission: null },
       },
-      {
-         path: "/system",
-        component: () => import("@/sharedComponents/System.vue"),
-        name: "System",
-        meta: { permission: null },
-      }
     ],
   },
 ];

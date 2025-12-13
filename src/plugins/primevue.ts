@@ -22,7 +22,7 @@ import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Textarea from 'primevue/textarea';
 import ToggleSwitch from 'primevue/toggleswitch';
-
+import RadioButton from "primevue/radiobutton";
 
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
@@ -57,4 +57,6 @@ export function setupPrimeVue(app: App) {
   app.component('InputGroupAddon', InputGroupAddon);
   app.component('Textarea', Textarea);
   app.component('ToggleSwitch', ToggleSwitch);
+  app.component('RadioButton', RadioButton);
+
 }

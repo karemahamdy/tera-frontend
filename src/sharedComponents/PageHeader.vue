@@ -7,34 +7,20 @@ const props = defineProps({
     subtitle: { type: String, default: "" },
     showSearch: { type: Boolean, default: true },
     searchPlaceholder: { type: String, default: 'Search ..' },
+    showFilter: { type: Boolean, default: false},
     mainBtn: { type: Boolean, default: false },
     mainBtnText: { type: String, default: "" },
-    mainBtnIcon: { type: String, default: "" },
-    mainBtnColor: { type: String, default: "primary" },
-    mainBtnOutline: { type: Boolean, default: false },
-    mainBtnValid: { type: Boolean, default: true },
     onMainBtnClick: { type: Function, default: null },
-    createBtn: { type: Boolean, default: false },
-    createBtnText: { type: String, default: "Create" },
-    onCreateBtnClick: { type: Function, default: null },
     showExport: { type: Boolean, default: false },
     exportText: { type: String, default: "Export" },
     onExport: { type: Function, default: null },
     showImport: { type: Boolean, default: false },
     importText: { type: String, default: "Import" },
     onImport: { type: Function, default: null },
-    extraActions: { type: Array, default: () => [] },
     filters: { type: Array, default: [] },
 });
 
-
 const emit = defineEmits(['search', 'filter-change', 'action-click']);
-
-const searchQuery = ref('');
-
-const onSearch = () => {
-    emit('search', searchQuery.value);
-};
 
 const onFilterChange = (filter, event) => {
     emit('filter-change', { filter, value: event.value });
@@ -43,39 +29,42 @@ const onFilterChange = (filter, event) => {
 </script>
 
 <template>
-    <div class="heading-section">
-        
+    <div class="heading-section flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
+        <!-- Title + Subtitle -->
         <div class="flex flex-col">
-            <h2 class="heading-title">{{ title }}</h2>
-            <p class="subheading-title">{{ subtitle }}</p>
+            <h2 class="heading-title">{{ $t(title) }}</h2>
+            <p class="subheading-title">{{ $t(subtitle) }}</p>
         </div>
 
-        <div class="flex justify-end gap-3 flex-wrap">
-            <!-- Export -->
-            <BaseButton v-if="showExport" :label="exportText" icon="pi pi-file-export" variant="outline-primary"
-                @click="onExport && onExport()" />
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap justify- md:justify-end gap-3">
             <!-- Import -->
-            <BaseButton v-if="showImport" :label="importText" icon="pi pi-file-import" variant="outline-primary"
+            <BaseButton v-if="showImport" :label="$t('import')" icon="Import" variant="outline-primary"
                 @click="onImport && onImport()" />
+            <!-- Export -->
+            <BaseButton v-if="showExport" :label="$t('export')" icon="Export" variant="outline-primary"
+                @click="onExport && onExport()" />
             <!-- Main Button -->
-            <BaseButton v-if="mainBtn" :label="mainBtnText" :icon="mainBtnIcon"
-                :variant="mainBtnOutline ? 'outline-' + mainBtnColor : mainBtnColor" :disabled="!mainBtnValid"
-                @click="onMainBtnClick && onMainBtnClick()" />
-            <slot name="actions"></slot>
+            <BaseButton v-if="mainBtn" :label="$t(mainBtnText)" icon="AddSquare" variant="primary"
+                :disabled="!mainBtnValid" @click="onMainBtnClick && onMainBtnClick()" />
+
+            <slot name="actionBtn"></slot>
         </div>
     </div>
 
-    <div class="flex gap-[10px] mb-6 mt-2 flex-nowrap">
+    <!-- Search + Filters -->
+    <div class="flex gap-[10px]  mt-2 flex-nowrap">
         <span class="p-input-icon-left search-input">
-            <InputText v-model="searchQuery" :placeholder="searchPlaceholder" @input="onSearch" />
+            <InputText v-if="showSearch" v-model="searchQuery" :placeholder="searchPlaceholder"  @input="emit('search', $event.target.value)"/>
         </span>
-
-        <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
+        <Dropdown v-for="(filter, index) in filters" v-if="showFilter" :key="index" v-model="filter.value" :options="filter.options"
             :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
             :optionValue="filter.optionValue || 'value'" :showClear="filter.showClear"
             @change="(e) => onFilterChange(filter, e)" />
     </div>
 </template>
+
 
 <style>
 .search-input {

@@ -3,8 +3,11 @@
   "login": "Login",
   "logout": "Logout",
   "language": "تغيير إلى العربية",
+  "import": "Import",
+  "export": "Export",
   "layout": {
-    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
+    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved",
+    "accessControl": "Access Control"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -18,6 +21,26 @@
     "login": "Sign in",
     "loginFrameTagline": "Manage your business with clarity, speed, and control.",
     "loginFrameNote": "Your gateway to smarter, faster, and organized business operations."
-
+  },
+  "userGroup": {
+    "groupName": "Group Name",
+    "description": "Description",
+    "assignedRoles": "Assigned Roles",
+    "userCount": "User Count",
+    "addUserGroup": "Add User Group",
+    "created": "Created",
+    "searchPlaceholder": "Search for user groups...",
+    "userGroup": "User Group",
+    "userGroupDescription": "Organize users into groups and assign roles",
+    "AssignRolesToUserGroup":"Assign Roles to User group",
+    "AddRolesGroupDesc":"Add Roles to the group and manage assigned permissions"
+  },
+  "roles": {
+    "roleName": "Role Name",
+    "accessScope": "Access scope",
+    "branches": "Branches",
+    "addNewRole": "Add New Role",
+    "rolesTitle": "System Administrators",
+    "rolesDescription": "Controls system settings.."
   }
 }

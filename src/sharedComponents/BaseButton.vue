@@ -1,5 +1,8 @@
 <script setup>
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+
+const { t } = useI18n();
 
 const props = defineProps({
     label: { type: String, required: true },
@@ -29,8 +32,8 @@ function handleClick() {
             variant === 'ghost' && 'bg-transparent hover:bg-gray-200 text-gray-500 border border-gray-500 px-16',
             variant === 'outline-primary' && 'bg-transparent hover:bg-primary-25 text-primary-500 border border-primary-500 px-8',
         ]">
-            <i v-if="icon" :class="icon"></i>
-            <span>{{ label }}</span>
+            <VsxIcon v-if="icon" :iconName="icon" :size="24" :color=color type="linear" />
+            <span>{{ t(label) }}</span>
         </button>
     </Button>
 </template>
