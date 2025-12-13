@@ -4,7 +4,7 @@ import { useUserStore } from '@/app/store/useUserStore';
 const userStore = useUserStore();
 
 // Props
-const props = defineProps<{
+defineProps<{
   collapsed: boolean;
 }>();
 

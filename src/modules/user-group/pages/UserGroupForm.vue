@@ -15,7 +15,7 @@ const groupName = ref<string>("");
 const description = ref<string>("");
 
 const handleSubmit = () => {
-    console.log("form submited");
+    console.log(`form submited ${groupId.value}`);
 }
 </script>
 <template>

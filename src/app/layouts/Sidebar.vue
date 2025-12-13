@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
+// import { useRoute } from "vue-router";
 import type { NavItem } from "src/app/types/navigation";
 import logoImg from "@/assets/Header.svg";
 
 // Props
-const props = defineProps<{
+defineProps<{
   collapsed: boolean;
 }>();
 
 const router = useRouter();
-const route = useRoute();
+// const route = useRoute();
 const logo = logoImg;
 // Navigation items
 const navItems: NavItem[] = [
@@ -41,10 +42,10 @@ function isOpen(item: NavItem) {
   return !!open.value[item.label];
 }
 
-function isActive(item: NavItem) {
-  if (!item.route) return false;
-  return route.path === item.route;
-}
+// function isActive(item: NavItem) {
+//   if (!item.route) return false;
+//   return route.path === item.route;
+// }
 
 function logout() {
   router.push("/auth/login");
