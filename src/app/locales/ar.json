@@ -26,6 +26,12 @@
     "search": "بحث",
     "reset": "إعادة تعيين"
   },
+  "table": {
+    "description": "الوصف",
+    "created": "تاريخ الإنشاء",
+    "action": "الإجراء",
+    "userAssigned": "المستخدم المعين"
+  },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
     "signInMsg": "سجّل الدخول للوصول إلى لوحة التحكم",
@@ -86,6 +92,11 @@
     "branches": "الفروع",
     "addNewRole": "إضافة أدوار جديدة",
     "rolesTitle": "مسؤولي النظام",
-    "rolesDescription":"يتحكم في إعدادات النظام.."
+    "rolesDescription":"يتحكم في إعدادات النظام..",
+    "rolesPermissions":"أدوار وصلاحيات",
+    "addRole": "إضافة دور",
+    "rolesInfo": "حدد ما يمكن لكل دور أن يفعله",
+    "searchPlaceholder": "ابحث عن الأدوار...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذا الدور؟"
   }
 }
