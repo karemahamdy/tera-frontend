@@ -71,6 +71,19 @@ const handleSubmit = () => {
                        class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
                     </div>
                     </div>
+
+                     <div class="flex flex-row gap-8">
+                        <div class="w-[50%]">
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.department") }}</label>
+                            <InputText v-model="groupName" placeholder="e.g., Finance Team"
+                            class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                        </div>
+                   <div class="w-[50%]">
+                       <label class="text-gray-700 font-medium mb-2 block">{{ $t("userGroup.userGroup") }}</label>
+                       <InputText v-model="groupName" placeholder="e.g., Finance Team"
+                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                    </div>
+                    </div>
                  
                     
                     <div class="flex justify-between gap-8 mb-4  w-full">
