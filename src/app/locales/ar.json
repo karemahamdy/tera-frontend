@@ -7,9 +7,10 @@
   "export": "تصدير",
   "permission": "الصلاحية",
   "action": "الإجراء",
+  "status": "الحالة",
+  "accessControl": "التحكم في الوصول",
   "layout": {
-    "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة",
-    "accessControl": "التحكم في الوصول"
+    "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -23,6 +24,14 @@
     "login": "تسجيل الدخول",
     "loginFrameTagline": "أدر عملك بوضوح وسرعة وتحكم",
     "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً"
+  },
+  "usersManagement": {
+    "usersManagement": "مجموعة المستخدمين",
+    "usersManagementDesc":"إدارة حسابات المستخدمين وعرض جميع معلومات المستخدم",
+    "addUser": "اضافة مستخدم",
+    "user": "المستخدم",
+    "department": "القسم",
+    "lastLogin": "اخر دخول"
   },
   "userGroup": {
     "groupName": "اسم المجموعة",

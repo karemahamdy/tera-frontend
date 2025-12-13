@@ -8,6 +8,7 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
+import { useFilters } from "@/composables/useFilters";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -21,28 +22,148 @@ const props = defineProps({
         default: () => [
             {
                 id: 1,
-                GroupName: 'Finance Team',
-                Description: 'Manage payment, budget..',
-                AssignedRoles: "Administration",
-                UserCount: '4',
-                slot: 'test1',
-                Created: 'Oct 11, 2025',
+                name: 'John Moore',
+                email: 'john@tera.com',
+                avatar: null,
+                userGroup: 'Administration',
+                department: 'Finance',
+                accessScope: 'Global',
+                status: 'in Active',
+                lastLogin: 'Oct 11, 2025'
             },
             {
-                id: 5,
-                GroupName: 'Finance Team',
-                Description: 'Manage payment, budget..',
-                AssignedRoles: "HR",
-                UserCount: '2',
-                slot: 'test1',
-                Created: 'Oct 11, 2025',
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
             },
+            {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            }, {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            }, {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            }, {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            }, {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            }, {
+                id: 2,
+                name: 'Mick Taylor',
+                email: 'mick@tera.com',
+                avatar: null,
+                badge: 'pi pi-star-fill',
+                userGroup: 'Finance Team',
+                department: 'Finance',
+                accessScope: 'Branch',
+                status: 'Active',
+                lastLogin: 'Nov 3, 2025'
+            },
+        ]
+    },
+    filters: {
+        type: Array,
+        default: () => [
+            {
+                placeholder: 'All Groups',
+                value: null,
+                options: [
+                    { label: 'All Groups', value: null },
+                    { label: 'Administration', value: 'Administration' },
+                    { label: 'Finance Team', value: 'Finance Team' },
+                    { label: 'Sales Team', value: 'Sales Team' },
+                    { label: 'HR Team', value: 'HR Team' }
+                ],
+                field: 'userGroup'
+            },
+            {
+                placeholder: 'All status',
+                value: null,
+                options: [
+                    { label: 'All status', value: null },
+                    { label: 'Active', value: 'Active' },
+                    { label: 'In active', value: 'in active' }
+                ],
+                field: 'status'
+            },
+            {
+                placeholder: 'All Scopes',
+                value: null,
+                options: [
+                    { label: 'All Scopes', value: null },
+                    { label: 'Global', value: 'Global' },
+                    { label: 'Branch', value: 'Branch' }
+                ],
+                field: 'accessScope'
+            },
+            {
+                placeholder: 'All Department',
+                value: null,
+                options: [
+                    { label: 'All Department', value: null },
+                    { label: 'Administration', value: 'Administration' },
+                    { label: 'Finance Team', value: 'Finance Team' },
+                    { label: 'Sales Team', value: 'Sales Team' },
+                    { label: 'HR Team', value: 'HR Team' }
+                ],
+                field: 'department'
+            }
         ]
     },
 });
 
 const emit = defineEmits(['search', 'action-menu-click']);
-
 const permissionItems = [
     {
         label: "New",
@@ -63,16 +184,22 @@ const permissionItems = [
     }
 ];
 
-const { onSearch, filteredData } = useSearch(props.data);
+const { onSearch } = useSearch(props.data);
+const {
+    filteredData,
+    filters,
+    onFilterChange
+} = useFilters(props.data, props.filters);
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'GroupName', header: t('userGroup.groupName'), type: 'slot', sortable: true },
-        { field: 'Description', header: t('userGroup.description'), sortable: true },
-        { field: 'AssignedRoles', header: t('userGroup.assignedRoles'), sortable: true, type: 'tag', Class: 'custom-tag' },
-        { field: 'UserCount', header: t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'Created', header: t('userGroup.created'), sortable: true },
-        { field: 'permission', header: t('permission') }, 
+        { field: 'user', header: t('usersManagement.user'), type: 'avatar', sortable: true },
+        { field: 'userGroup', header: t('userGroup.userGroup'), sortable: true, type: 'tag', Class: 'custom-tag' },
+        { field: 'department', header: t('usersManagement.department'), sortable: true },
+        { field: 'accessScope', header: t('roles.accessScope'), sortable: true },
+        { field: 'status', header: t('status'), sortable: true },
+        { field: 'lastLogin', header: t('usersManagement.lastLogin'), sortable: true },
+        { field: 'permission', header: t('permission') },
         { field: 'action', header: t('action') }
     ];
 
@@ -102,13 +229,14 @@ const handleDeleteConfirm = () => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="layout.accessControl" subtitle="userGroup.userGroup" />
+        <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription"
-                    :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    searchPlaceholder="Search user group..." @search="onSearch" />
+                <PageHeader title="usersManagement.usersManagement" subtitle="usersManagement.usersManagementDesc"
+                    :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="usersManagement.addUser"
+                    searchPlaceholder="Search Users..." @search="onSearch" :showFilter="true"
+                    @filter-change="onFilterChange" :filters="filters" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
@@ -125,11 +253,11 @@ const handleDeleteConfirm = () => {
         </card>
 
         <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
-            title="Are you sure you want to delete this Group?" :buttons="[
+            title="Are you sure you want to delete this user?" :buttons="[
                 { label: 'Cancel', variant: 'ghost', action: 'cancel' },
                 { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
             ]" @confirm="handleDeleteConfirm" />
- 
+
     </div>
 </template>
 

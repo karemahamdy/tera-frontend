@@ -102,7 +102,7 @@ const handleDeleteConfirm = () => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="layout.accessControl" subtitle="userGroup.userGroup" />
+        <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
