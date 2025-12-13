@@ -47,6 +47,26 @@ const props = defineProps({
     },
 });
 
+const permissionItems = [
+    {
+        label: "New",
+        icon: "Star1",
+        color: "#12B76A",
+        command: (row: any) => {
+            console.log("ROW", row);
+            router.push(`/roles-permissions/add-user-roles/${row.id}`);
+        }
+    },
+    {
+        label: "view",
+        icon: "Eye",
+        color: "#3F5FAC",
+        command: (row: any) => {
+            router.push(`/roles-permissions/list-user-roles/${row.id}`);
+        }
+    }
+];
+
 const filtersOperation = [
     {
         placeholder: t("usersManagement.allGroups"),
@@ -138,6 +158,11 @@ const handleDeleteConfirm = () => {
     showDeleteDialog.value = false;
     rowToDelete.value = null;
 };
+
+const addUserGroup = () => {
+    router.push('/user-management/create');
+};
+
 </script>
 
 <template>
@@ -149,7 +174,7 @@ const handleDeleteConfirm = () => {
                 <PageHeader title="usersManagement.usersManagement" subtitle="usersManagement.usersManagementDesc"
                     :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="usersManagement.addUser"
                     searchPlaceholder="Search Users..." @search="onSearch" :showFilter="true"
-                    @filter-change="onFilterChange" :filters="filters" />
+                    @filter-change="onFilterChange" :filters="filters" :onMainBtnClick="addUserGroup" />
             </template>
             <!-- DynamicTable component -->
             <template #content>

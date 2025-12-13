@@ -31,7 +31,9 @@
     "welcomeBack": "Welcome Back",
     "signInMsg": "Sign in to access your dashboard",
     "userName": "User Name",
+    "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
     "passwordPlaceholder": "at least 8 characters",
     "entity": "Entity",
     "entityPlaceholder": "Choose Your Entity",
@@ -52,7 +54,14 @@
     "allScopes":"All Scopes",
     "allDepartment":"All Department",
     "assignRoleToUser":"Assign  Role to user",
-    "assignRoleToUserDesc": "Add Role to users and manage assigned permissions."
+    "assignRoleToUserDesc": "Add Role to users and manage assigned permissions.",
+    "editUserManagement": "Edit Account Info",
+    "addNewUserManagement": "Add New User",
+    "updateUserInfo": "Update the user's information, roles, and access permissions.",
+    "addUserInfo": "Add a new user account with appropriate permissions.",
+    "fullName": "Full Name",
+    "username": "Username",
+    "internalID": "internal ID"
   },
   "userGroup": {
     "groupName": "Group Name",

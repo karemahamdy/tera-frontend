@@ -8,23 +8,19 @@ export const userManagementRoutes = [
       localizedTitle: " userManagement",
     },
   },
-  // {
-  //   path: '/roles-permissions/add-user-roles/:id',
-  //   name: 'AddUserRoles',
-  //   component: () => import('@/modules/roles-permissions/pages/AddUserRoles.vue'),
-  //   meta: {
-  //     hide: true,
-  //     localizedTitle: "userManagement",
-  //   },
-  // },
-  // {
-  //   path: '/roles-permissions/list-user-roles/:id',
-  //   name: 'ListUserRoles',
-  //   component: () => import('@/modules/roles-permissions/pages/ListUserRoles.vue'),
-  //   meta: {
-  //     hide: true,
-  //     localizedTitle: "userManagement",
-  //   },
-  // },
+ {
+    path: "/user-management/create",
+    name: "UserManagementCreate",
+    component: () => import("@/modules/user-management/pages/UserManagementForm.vue"),
+    meta: { permission: null },
+    props: { mode: "create" },
+  },
+  {
+    path: "/user-management/edit/:id",
+    name: "UserManagementEdit",
+    component: () => import("@/modules/user-management/pages/UserManagementForm.vue"),
+    props: { mode: "edit" },
+    meta: { permission: null },
+  },
 
 ];

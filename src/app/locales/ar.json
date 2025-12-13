@@ -30,7 +30,9 @@
     "welcomeBack": "مرحبا بعودتك",
     "signInMsg": "سجّل الدخول للوصول إلى لوحة التحكم",
     "userName": "اسم المستخدم",
+    "email": "البريد الالكتروني",
     "password": "كلمة المرور",
+    "confirmPassword": "تاكيد كلمة السر",
     "passwordPlaceholder": "على الأقل 8 أحرف",
     "entity": "الكيان",
     "entityPlaceholder": "اختر الكيان الخاص بك",
@@ -51,7 +53,14 @@
     "allScopes": "كل النطاق",
     "allDepartment":  "كل الاقسام",
     "assignRoleToUser": "تعيين الأدوار إلى المستخدمين",
-    "assignRoleToUserDesc": "أضف أدوارًا للمستخدمين وقم بإدارة الصلاحيات الممنوحة لهم."
+    "assignRoleToUserDesc": "أضف أدوارًا للمستخدمين وقم بإدارة الصلاحيات الممنوحة لهم.",
+    "addNewUserManagement":"اضافة مستخدم",
+    "editUserManagement":"تعديل بيانات المستخدم",
+    "updateUserInfo": "قم بتحديث معلومات المستخدم وأدواره وصلاحيات الوصول الخاصة به.",
+    "addUserInfo": "أضف حساب مستخدم جديد مع الصلاحيات المناسبة.",
+    "fullName": "الاسم بالكامل",
+    "username": "اسم المستخدم",
+    "internalID": "internalID"
   },
   "userGroup": {
     "groupName": "اسم المجموعة",
