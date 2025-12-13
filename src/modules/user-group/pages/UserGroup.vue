@@ -106,7 +106,7 @@ const handleDeleteConfirm = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="userGroup.userGroup" subtitle="userGroup.OrganizeUsersIntoGroupsAndAssignRoles"
+                <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription"
                     :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
                     searchPlaceholder="Search user group..." @search="onSearch" />
             </template>

@@ -33,7 +33,7 @@
     "addUserGroup": "إضافة مجموعة مستخدمين",
     "searchPlaceholder": "ابحث عن مجموعة المستخدمين...",
     "userGroup": "مجموعة المستخدمين",
-    "OrganizeUsersIntoGroupsAndAssignRoles": "نظم المستخدمين في مجموعات و بتعيين الأدوار لهم",
+    "userGroupDescription": "نظم المستخدمين في مجموعات و بتعيين الأدوار لهم",
     "AssignRolesToUserGroup":"تعيين الأدوار إلى مجموعة المستخدمين",
     "AddRolesGroupDesc":"أضف الأدوار إلى المجموعة و إدارة الأذونات المعينة"
   },
