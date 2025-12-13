@@ -13,6 +13,12 @@ const route = useRoute();
 const groupId = ref<string | null>(route.params.id ? String(route.params.id) : null);
 const groupName = ref<string>("");
 const description = ref<string>("");
+const options = ref<Array<{ label: string; value: string }>>([
+    { label: "Admin", value: "admin" },
+    { label: "Editor", value: "editor" },
+    { label: "Viewer", value: "viewer" },
+]);
+const selectedOption = ref<{ label: string; value: string } | null>(null);
 
 const handleSubmit = () => {
     console.log(`form submited ${groupId.value}`);
@@ -20,72 +26,77 @@ const handleSubmit = () => {
 </script>
 <template>
     <div>
-         <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" />
+        <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" />
         <card class="p-6 bg-[#ffffff] rounded-[10px]">
             <template #title>
                 <div class="flex flex-col pt-4 px-20">
                     <h2 class="heading-title">{{ editMode ? $t("usersManagement.editusersManagement") :
                         $t("usersManagement.addNewUserManagement") }}</h2>
                     <p class="subheading-title">
-                        {{ editMode ? $t("usersManagement.updateUserInfo") : $t("usersManagement.addUserInfo")  }}
+                        {{ editMode ? $t("usersManagement.updateUserInfo") : $t("usersManagement.addUserInfo") }}
                     </p>
                 </div>
             </template>
             <template #content>
-                <form @submit.prevent="handleSubmit" class="space-y-6 px-20">  
+                <form @submit.prevent="handleSubmit" class="space-y-6 px-20">
                     <div class="flex flex-row gap-8">
                         <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.fullName") }}</label>
-                            <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                            class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.fullName")
+                                }}</label>
+                            <InputText v-model="groupName" placeholder="Enter full name"
+                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
                         </div>
-                   <div class="w-[50%]">
-                       <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.username") }}</label>
-                       <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                    </div>
-                    </div>
-                 
-                      <div class="flex flex-row gap-8">
                         <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.email") }}</label>
-                            <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                            class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.username")
+                                }}</label>
+                            <InputText v-model="groupName" placeholder="Enter Username"
+                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
                         </div>
-                   <div class="w-[50%]">
-                       <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.internalID") }}</label>
-                       <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                    </div>
-                    </div>
-                 
-                      <div class="flex flex-row gap-8">
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.password") }}</label>
-                            <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                            class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                        </div>
-                   <div class="w-[50%]">
-                       <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.confirmPassword") }}</label>
-                       <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                    </div>
                     </div>
 
-                     <div class="flex flex-row gap-8">
+                    <div class="flex flex-row gap-8">
                         <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.department") }}</label>
-                            <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                            class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.email") }}</label>
+                            <InputText v-model="groupName" placeholder="user@company.com"
+                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
                         </div>
-                   <div class="w-[50%]">
-                       <label class="text-gray-700 font-medium mb-2 block">{{ $t("userGroup.userGroup") }}</label>
-                       <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                        <div class="w-[50%]">
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.internalID")
+                                }}</label>
+                            <InputText v-model="groupName" placeholder="Enter user id"
+                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                        </div>
                     </div>
+
+                    <div class="flex flex-row gap-8">
+                        <div class="w-[50%]">
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.password") }}</label>
+                            <InputText v-model="groupName" placeholder="******"
+                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                        </div>
+                        <div class="w-[50%]">
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.confirmPassword") }}</label>
+                            <InputText v-model="groupName" placeholder="*****"
+                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
+                        </div>
                     </div>
-                 
-                    
+
+                    <div class="flex flex-row gap-8">
+                        <div class="w-[50%]">
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.department")
+                                }}</label>
+                            <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
+                                :placeholder="$t('select')" class="w-full mt-1" />
+                        </div>
+                        <div class="w-[50%]">
+                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("userGroup.userGroup") }}</label>
+                            <!-- <InputText v-model="groupName" placeholder="e.g., Finance Team"
+                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" /> -->
+                            <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
+                                :placeholder="$t('select ')" class="w-full mt-1" />
+                        </div>
+                    </div>
+
                     <div class="flex justify-between gap-8 mb-4  w-full">
                         <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'userManagement' }" />
                         <BaseButton :label="editMode ? 'button.save' : 'usersManagement.addUser'" variant="primary"
