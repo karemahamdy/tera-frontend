@@ -37,7 +37,6 @@ const togglePermissionMenu = (event, row) => {
 
 
 const toggleMenu = (event, row) => {
-    // Store row reference for ActionMenu to use
     if (menu.value && menu.value.toggle) {
         menu.value.toggle(event, row);
     }
@@ -128,7 +127,24 @@ const getStatusText = (status) => {
         :customItems="menuItems" @edit="row => emit('action-menu-click', { action: 'edit', data: row })"
         @view="row => emit('action-menu-click', { action: 'view', data: row })"
         @delete="row => emit('action-menu-click', { action: 'delete', data: row })"
-        @permission="row => emit('action-menu-click', { action: 'permission', data: row })" />
+        @permission="row => emit('action-menu-click', { action: 'permission', data: row })" >
+         <template #item="{ item, props }">
+
+            <!-- Custom Toggle Item -->
+            <div v-if="item.changeStatus" class="flex items-center px-3 py-2 cursor-pointer"
+                @click.stop="item.command && item.command()">
+                <ToggleSwitch v-model="selectedRow.isActive" />
+                <span class="ml-2">{{ item.label }}</span>
+            </div>
+
+            <!-- Normal Menu Items -->
+            <a v-else v-ripple class="flex items-center px-3 py-2 cursor-pointer" @click="item.command"
+                v-bind="props.action">
+                <span :class="item.icon" />
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+        </template>
+        </ActionMenu>
 
 
 </template>

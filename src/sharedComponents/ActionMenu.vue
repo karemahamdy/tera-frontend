@@ -16,12 +16,10 @@ const props = defineProps({
 
 const menu = ref(null);
 const currentRow = ref(null);
-
 const toggleMenu = (event, row) => {
-    currentRow.value = row; 
-   menu.value.show(event);
+    currentRow.value = row;
+    menu.value.show(event);
 };
-
 defineExpose({
     toggle: toggleMenu
 });
@@ -54,19 +52,17 @@ const menuItems = computed(() => {
             color: "#F04438",
             command: () => props.onDelete && props.onDelete(currentRow.value)
         });
-        
     }
 
-   if (props.customItems.length) {
-    props.customItems.forEach(item => {
-        items.push({
-            ...item,
-            command: () => item.command ?.(currentRow.value)
+    if (props.customItems.length) {
+        props.customItems.forEach(item => {
+            items.push({
+                ...item,
+                command: () => item.command?.(currentRow.value)
+            });
         });
-    });
-}
-
-
+    }
+    
     return items;
 });
 </script>
@@ -75,12 +71,7 @@ const menuItems = computed(() => {
     <Menu ref="menu" :model="menuItems" popup>
         <template #item="{ item }">
             <a class="p-menuitem-link flex items-center gap-2 py-2 px-3">
-                <VsxIcon
-                    :iconName="item.icon"
-                    :size="20"
-                    :color="item.color"
-                    type="linear"
-                />
+                <VsxIcon :iconName="item.icon" :size="20" :color="item.color" type="linear" />
                 <span>{{ item.label }}</span>
             </a>
         </template>
