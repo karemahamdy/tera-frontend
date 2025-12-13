@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { useRoute } from "vue-router";
 import { ref } from "vue";
 
-const accessScope = ref("branch");
+const accessScope = ref<string>("branch");
+const name = ref<string>("");
+const options = ref<Array<{ label: string; value: string }>>([
+  { label: "Admin", value: "admin" },
+  { label: "Editor", value: "editor" },
+  { label: "Viewer", value: "viewer" },
+]);
+const selectedOption = ref<{ label: string; value: string } | null>(null);
 </script>
 
 <template>

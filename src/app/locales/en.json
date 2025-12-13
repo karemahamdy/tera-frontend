@@ -5,9 +5,25 @@
   "language": "تغيير إلى العربية",
   "import": "Import",
   "export": "Export",
+  "permission": "Permission",
+  "action": "Action",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved",
     "accessControl": "Access Control"
+  },
+  "button": {
+    "addNew": "Add New",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "update": "Update",
+    "close": "Close",
+    "confirm": "Confirm",
+    "submit": "Submit",
+    "search": "Search",
+    "reset": "Reset"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -33,7 +49,12 @@
     "userGroup": "User Group",
     "userGroupDescription": "Organize users into groups and assign roles",
     "AssignRolesToUserGroup":"Assign Roles to User group",
-    "AddRolesGroupDesc":"Add Roles to the group and manage assigned permissions"
+    "AddRolesGroupDesc":"Add Roles to the group and manage assigned permissions",
+    "editUserGroup": "Edit User Group",
+    "addNewUserGroup": "Add New User Group",
+    "userGroupInfo": "User groups help organize users and assign roles collectively.",
+    "descriptionPlaceholder": "Describe the purpose of this group.. ",
+    "createGroup": "Create Group"
   },
   "roles": {
     "roleName": "Role Name",

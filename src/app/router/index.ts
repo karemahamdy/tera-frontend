@@ -20,12 +20,6 @@ const routes = [
        ...userGroupRoutes,
        ...rolesPermissionsRoutes,
       {
-        path: "user-groups/create",
-        name: "UserGroupsCreate",
-        component: () => import("@/modules/UserGroupForm.vue"),
-        meta: { permission: null },
-      },
-      {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
         name: "Dashboard",

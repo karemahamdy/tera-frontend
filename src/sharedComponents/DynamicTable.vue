@@ -3,6 +3,8 @@ import { ref, computed } from "vue";
 import ActionMenu from './ActionMenu.vue';
 
 
+defineSlots()
+
 const props = defineProps({
     columns: { type: Array, default: () => [] },
     data: { type: Array, default: () => [] },
@@ -18,7 +20,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["action-menu-click"]);
-
 const menu = ref(null);
 const permissionMenu = ref(null);
 const permissionRow = ref(null);
