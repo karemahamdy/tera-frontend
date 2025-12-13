@@ -24,7 +24,8 @@
     "confirm": "Confirm",
     "submit": "Submit",
     "search": "Search",
-    "reset": "Reset"
+    "reset": "Reset",
+    "assign": "Assign"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -49,7 +50,9 @@
     "allGroups":"All Groups",
     "allStatus":"All status",
     "allScopes":"All Scopes",
-    "allDepartment":"All Department"
+    "allDepartment":"All Department",
+    "assignRoleToUser":"Assign  Role to user",
+    "assignRoleToUserDesc": "Add Role to users and manage assigned permissions."
   },
   "userGroup": {
     "groupName": "Group Name",

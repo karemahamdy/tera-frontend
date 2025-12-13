@@ -15,12 +15,12 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" actionName="Assign role"/>
+    <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" actionName="Assign role"/>
     <card class="bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col mb-4 pt-4 px-20">
-          <h2 class="heading-title">{{ $t('userGroup.AssignRolesToUserGroup') }}</h2>
-          <p class="subheading-title">{{ $t('userGroup.AddRolesGroupDesc') }}</p>
+          <h2 class="heading-title">{{ $t('usersManagement.assignRoleToUser') }}</h2>
+          <p class="subheading-title">{{ $t('usersManagement.assignRoleToUserDesc') }}</p>
         </div>
       </template>
       <template #content>
@@ -29,7 +29,7 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
 
         <div>
           <label class="text-gray-700 font-bold">{{
-            $t("userGroup.userGroup")
+            $t("usersManagement.user")
           }}</label>
           <InputText
             v-model="name"

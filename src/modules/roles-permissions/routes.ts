@@ -8,6 +8,24 @@ export const rolesPermissionsRoutes = [
   //     localizedTitle: "Home",
   //   },
   // },
+   {
+    path: '/roles-permissions/add-user-roles/:id',
+    name: 'AddUserRoles',
+    component: () => import('@/modules/roles-permissions/pages/AddUserRoles.vue'),
+    meta: {
+      hide: true,
+      localizedTitle: "RolesPermissions",
+    },
+  },
+  {
+    path: '/roles-permissions/list-user-roles/:id',
+    name: 'ListUserRoles',
+    component: () => import('@/modules/roles-permissions/pages/ListUserRoles.vue'),
+    meta: {
+      hide: true,
+      localizedTitle: "RolesPermissions",
+    },
+  },
   {
     path: '/roles-permissions/add-group-roles/:id',
     name: 'AddGroupRoles',
