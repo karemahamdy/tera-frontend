@@ -53,7 +53,7 @@ const confirmDelete = (row: any) => {
 };
 
 const onEdit = () => {
-  router.push("/add-group-roles/:id");
+  router.push("/add-user-roles/:id");
 };
 
 const handleActionMenu = ({ action, data }: { action: string; data: any }) => {
@@ -70,13 +70,13 @@ const handleDeleteConfirm = () => {
     rowToDelete.value = null;
 };
 const goToAddRole = () => {
-  router.push("/add-group-roles/:id");
+  router.push("/add-user-roles/:id");
 };
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" actionName="Assign role"/>
+        <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" actionName="Assign role"/>
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>

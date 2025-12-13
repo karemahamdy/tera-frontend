@@ -5,11 +5,12 @@
   "language": "تغيير إلى العربية",
   "import": "Import",
   "export": "Export",
-  "permission": "Permission",
-  "action": "Action",
+  "permission":"Permission",
+  "action": "action",
+  "status": "Status",
+  "accessControl": "Access Control",
   "layout": {
-    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved",
-    "accessControl": "Access Control"
+    "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
   "button": {
     "addNew": "Add New",
@@ -23,7 +24,8 @@
     "confirm": "Confirm",
     "submit": "Submit",
     "search": "Search",
-    "reset": "Reset"
+    "reset": "Reset",
+    "assign": "Assign"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -38,6 +40,20 @@
     "loginFrameTagline": "Manage your business with clarity, speed, and control.",
     "loginFrameNote": "Your gateway to smarter, faster, and organized business operations."
   },
+  "usersManagement": {
+    "usersManagement": "Users Management",
+    "usersManagementDesc": "Manage user accounts and show all user information",
+    "addUser": "Add User",
+    "user": "User",
+    "department": "Department",
+    "lastLogin": "Last Login",
+    "allGroups":"All Groups",
+    "allStatus":"All status",
+    "allScopes":"All Scopes",
+    "allDepartment":"All Department",
+    "assignRoleToUser":"Assign  Role to user",
+    "assignRoleToUserDesc": "Add Role to users and manage assigned permissions."
+  },
   "userGroup": {
     "groupName": "Group Name",
     "description": "Description",
@@ -48,8 +64,8 @@
     "searchPlaceholder": "Search for user groups...",
     "userGroup": "User Group",
     "userGroupDescription": "Organize users into groups and assign roles",
-    "AssignRolesToUserGroup":"Assign Roles to User group",
-    "AddRolesGroupDesc":"Add Roles to the group and manage assigned permissions",
+    "AssignRolesToUserGroup": "Assign Roles to User group",
+    "AddRolesGroupDesc": "Add Roles to the group and manage assigned permissions",
     "editUserGroup": "Edit User Group",
     "addNewUserGroup": "Add New User Group",
     "userGroupInfo": "User groups help organize users and assign roles collectively.",

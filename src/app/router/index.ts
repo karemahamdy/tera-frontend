@@ -4,6 +4,7 @@ import { authRoutes } from "@/modules/auth/routes.ts";
 import { homeRoutes } from "@/modules/home/routes.ts";
 import { userGroupRoutes } from "@/modules/user-group/routes";
 import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
+import { userManagementRoutes } from "@/modules/user-management/routes";
 
 // const defaultTitle = "Tera ERP";
 
@@ -17,6 +18,7 @@ const routes = [
     meta: { requiresAuth: true, permission: null },
     children: [
       ...homeRoutes,
+      ...userManagementRoutes,
        ...userGroupRoutes,
        ...rolesPermissionsRoutes,
       {

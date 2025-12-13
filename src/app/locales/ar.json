@@ -7,9 +7,10 @@
   "export": "تصدير",
   "permission": "الصلاحية",
   "action": "الإجراء",
+  "status": "الحالة",
+  "accessControl": "التحكم في الوصول",
   "layout": {
-    "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة",
-    "accessControl": "التحكم في الوصول"
+    "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
   "button": {
     "addNew": "إضافة جديد",
@@ -37,6 +38,20 @@
     "login": "تسجيل الدخول",
     "loginFrameTagline": "أدر عملك بوضوح وسرعة وتحكم",
     "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً"
+  },
+  "usersManagement": {
+    "usersManagement": "مجموعة المستخدمين",
+    "usersManagementDesc":"إدارة حسابات المستخدمين وعرض جميع معلومات المستخدم",
+    "addUser": "اضافة مستخدم",
+    "user": "المستخدم",
+    "department": "القسم",
+    "lastLogin": "اخر دخول",
+    "allGroups": "كل الاقسام ",
+    "allStatus": " كل الحالات",
+    "allScopes": "كل النطاق",
+    "allDepartment":  "كل الاقسام",
+    "assignRoleToUser": "تعيين الأدوار إلى المستخدمين",
+    "assignRoleToUserDesc": "أضف أدوارًا للمستخدمين وقم بإدارة الصلاحيات الممنوحة لهم."
   },
   "userGroup": {
     "groupName": "اسم المجموعة",
