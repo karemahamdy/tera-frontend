@@ -47,7 +47,7 @@ const columns = computed(() => {
     return Columns;
 });
 
-const confirmDelete = (row) => {
+const confirmDelete = (row: any) => {
     rowToDelete.value = row;
     showDeleteDialog.value = true;
 };
@@ -56,7 +56,7 @@ const onEdit = () => {
   router.push("/add-group-roles/:id");
 };
 
-const handleActionMenu = ({ action, data }) => {
+const handleActionMenu = ({ action, data }: { action: string; data: any }) => {
     if (action === 'delete') {
         confirmDelete(data);
     }

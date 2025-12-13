@@ -48,7 +48,7 @@ const permissionItems = [
         label: "New",
         icon: "Star1",
         color: "#12B76A",
-        command: (row) => {
+        command: (row: any) => {
             console.log("ROW", row);
             router.push(`/roles-permissions/add-group-roles/${row.id}`);
         }
@@ -57,13 +57,13 @@ const permissionItems = [
         label: "view",
         icon: "Eye",
         color: "#3F5FAC",
-        command: (row) => {
+        command: (row: any) => {
             router.push(`/roles-permissions/list-group-roles/${row.id}`);
         }
     }
 ];
 
-const { onSearch, filteredData } = useSearch(props.data);
+const { onSearch, filteredData } = useSearch(props.data as any[]);
 
 const columns = computed(() => {
     const Columns = [
@@ -79,13 +79,13 @@ const columns = computed(() => {
     return Columns;
 });
 
-const confirmDelete = (row) => {
+const confirmDelete = (row: any) => {
     rowToDelete.value = row;
     console.log("Row to delete:", rowToDelete.value);
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }) => {
+const handleActionMenu = ({ action, data }: { action: string; data: any }) => {
     console.log("ActionMenu Data:", data);
     if (action === 'delete') {
         confirmDelete(data);
@@ -93,9 +93,13 @@ const handleActionMenu = ({ action, data }) => {
 };
 
 const handleDeleteConfirm = () => {
-    console.log("Deleted user with ID:", rowToDelete.value?.id);
+    console.log("Deleted user with ID:", rowToDelete.value);
     showDeleteDialog.value = false;
     rowToDelete.value = null;
+};
+
+const addUserGroup = () => {
+    router.push('/user-group/create');
 };
 
 </script>
@@ -108,7 +112,7 @@ const handleDeleteConfirm = () => {
             <template #title>
                 <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription"
                     :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    searchPlaceholder="Search user group..." @search="onSearch" />
+                    searchPlaceholder="Search user group..." @search="onSearch" :onMainBtnClick="addUserGroup" />
             </template>
             <!-- DynamicTable component -->
             <template #content>

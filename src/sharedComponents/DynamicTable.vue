@@ -18,7 +18,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["action-menu-click"]);
-
 const menu = ref(null);
 const permissionMenu = ref(null);
 const permissionRow = ref(null);
