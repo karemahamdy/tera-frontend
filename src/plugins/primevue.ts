@@ -23,6 +23,10 @@ import InputGroupAddon from 'primevue/inputgroupaddon';
 import Textarea from 'primevue/textarea';
 import ToggleSwitch from 'primevue/toggleswitch';
 import RadioButton from "primevue/radiobutton";
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
 import { FileUpload } from 'primevue';
 
 export function setupPrimeVue(app: App) {
@@ -59,5 +63,9 @@ export function setupPrimeVue(app: App) {
   app.component('Textarea', Textarea);
   app.component('ToggleSwitch', ToggleSwitch);
   app.component('RadioButton', RadioButton);
+  app.component('Accordion', Accordion);
+  app.component('AccordionPanel', AccordionPanel);
+  app.component('AccordionHeader', AccordionHeader);
+  app.component('AccordionContent', AccordionContent);
   app.component('FileUpload', FileUpload)
 }

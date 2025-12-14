@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axiosWrapper from '@/app/http/axios-wrapper';
+import axiosWrapper from '@/app/http/axiosWrapper';
 import { i18n } from '@/plugins/i18n';
 
 interface User {
