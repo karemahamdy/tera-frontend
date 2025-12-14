@@ -4,11 +4,10 @@ import { useRoute } from "vue-router";
 
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
-import FileUpload from "@/sharedComponents/FileUpload.vue";
-
-import FormInput from "@/sharedComponents/FormInput.vue";
-import FormDropdown from "@/sharedComponents/FormDropdown.vue";
-import ToggleItem from "@/sharedComponents/ToggleItem.vue";
+import FileUpload from "@/sharedComponents/inputs/FileUpload.vue";
+import FormInput from "@/sharedComponents/inputs/FormInput.vue";
+import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
+import ToggleItem from "@/sharedComponents/inputs/ToggleItem.vue";
 
 const props = defineProps<{
     mode: "edit" | "create";
@@ -86,11 +85,11 @@ const handleSubmit = () => {
                             v-model="form.group" />
                     </div>
 
-                    <div class="flex justify-between">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <ToggleItem title="Account Type" label="Is Admin" v-model="form.isAdmin" />
                         <ToggleItem title="Account Status" label="Active" v-model="form.isActive" />
                     </div>
-                    
+
                     <div class="flex gap-8">
                         <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
                         <BaseButton :label="editMode ? 'button.save' : 'usersManagement.addUser'" variant="primary"
@@ -101,6 +100,4 @@ const handleSubmit = () => {
         </Card>
     </div>
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>
