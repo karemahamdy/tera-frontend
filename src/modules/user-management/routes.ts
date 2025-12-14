@@ -2,10 +2,10 @@ export const userManagementRoutes = [
   {
     path: "/user-management",
     component: () => import("@/modules/user-management/pages/UserManagement.vue"),
-    name: "userManagement",
+    name: "UserManagement",
     meta: {
       hide: true,
-      localizedTitle: " userManagement",
+      localizedTitle: " UserManagement",
     },
   },
  {

@@ -98,7 +98,7 @@ const handleSubmit = () => {
                     </div>
 
                     <div class="flex justify-between gap-8 mb-4  w-full">
-                        <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'userManagement' }" />
+                        <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
                         <BaseButton :label="editMode ? 'button.save' : 'usersManagement.addUser'" variant="primary"
                             block />
                     </div>

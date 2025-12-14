@@ -119,7 +119,7 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
       </template>
       <template #footer>
         <div class="flex justify-between gap-4 mb-4 container px-20">
-          <BaseButton label="cancel" variant="ghost" block />
+          <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserManagement' }"/>
           <BaseButton label="Assign" variant="primary" block />
         </div>
       </template>
