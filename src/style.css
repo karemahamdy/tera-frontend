@@ -78,7 +78,7 @@ html {
 }
 
 body {
-  /* color: white !important; */
+  color: white !important;
   font-family: 'Inter', sans-serif !important;
 }
 
@@ -151,7 +151,12 @@ body {
 }
 
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
-  color: white !important;
+  color: var(--color-primary-500) !important;
+}
+
+.p-checkbox-checked .p-checkbox-box {
+  border-color: var(--color-primary-500) !important;
+  background: transparent !important;
 }
 
 .p-checkbox-label {

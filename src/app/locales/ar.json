@@ -24,7 +24,8 @@
     "confirm": "تأكيد",
     "submit": "إرسال",
     "search": "بحث",
-    "reset": "إعادة تعيين"
+    "reset": "إعادة تعيين",
+    "create": "إنشاء"
   },
   "table": {
     "description": "الوصف",
@@ -102,6 +103,7 @@
     "addRoleInfo": "إنشاء دور جديد بصلاحيات مخصصة.",
     "updateRoleInfo": "تحديث الدور بصلاحيات مخصصة.",
     "descriptionPlaceholder": "وصف الغرض من هذا الدور..",
-    "createRole": "إنشاء دور"
+    "createRole": "إنشاء دور",
+    "moduleScreen": "الوحدة / الشاشة"
   }
 }

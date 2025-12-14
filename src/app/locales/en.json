@@ -25,7 +25,8 @@
     "submit": "Submit",
     "search": "Search",
     "reset": "Reset",
-    "assign": "Assign"
+    "assign": "Assign",
+    "create": "Create"
   },
   "table": {
     "description": "Description",
@@ -103,6 +104,7 @@
     "addRoleInfo": "Create a new role with custom permissions.",
     "updateRoleInfo": "Update the role with custom permissions.",
     "descriptionPlaceholder": "Describe what this role is for..",
-    "createRole": "Create Role"
+    "createRole": "Create Role",
+    "moduleScreen": "Module / Screen"
   }
 }

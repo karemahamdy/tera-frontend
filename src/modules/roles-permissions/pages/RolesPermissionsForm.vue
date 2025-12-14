@@ -22,6 +22,10 @@ const data = ref([
   {
     id: 1,
     module: "User Management",
+    view: true,
+    create: true,
+    edit: false,
+    delete: false,
     data: [
       {
         permission: "Create User",
@@ -49,6 +53,10 @@ const data = ref([
   {
     id: 2,
     module: "Role Management",
+    view: true,
+    create: true,
+    edit: false,
+    delete: false,
     data: [
       {
         permission: "Create Role",
@@ -115,48 +123,58 @@ const data = ref([
             />
           </div>
 
-          <div>
-            <div class="row justify-between items-center">
-              <div class="col-12 md:col-3 lg:col-3 font-medium">
-                {{ $t("roles.permission") }}
+          <div class="p-5 border border-[#DCDCDC4D] bg-[#FAF9F9] rounded">
+            <div class="">
+              <div
+                class="grid grid-cols-5 justify-between items-center w-content p-5"
+              >
+                <div class="font-bold">{{ $t("roles.moduleScreen") }}</div>
+                <div class="font-bold m-auto">{{ $t("button.view") }}</div>
+                <div class="font-bold m-auto">{{ $t("button.create") }}</div>
+                <div class="font-bold m-auto">{{ $t("button.edit") }}</div>
+                <div class="font-bold m-auto">{{ $t("button.delete") }}</div>
               </div>
-              <div class="col-12 md:2 lg:2 font-medium text-center">
-                {{ $t("roles.view") }}
-              </div>
-              <div class="col-12 md:2 lg:2 font-medium text-center">
-                {{ $t("roles.create") }}
-              </div>
-              <div class="col-12 md:2 lg:2 font-medium text-center">
-                {{ $t("roles.edit") }}
-              </div>
-              <div class="col-12 md:2 lg:2 font-medium text-center">
-                {{ $t("roles.delete") }}
-              </div>
-            </div>
-            <div class="card">
               <Accordion value="0">
                 <template v-for="(item, index) in data" :key="item.id">
                   <AccordionPanel :value="String(index)">
-                    <AccordionHeader>{{ item.module }}</AccordionHeader>
+                    <AccordionHeader class="bg-[#F0F3FA]">
+                      <div
+                        class="grid grid-cols-5 justify-between items-center w-full p-2"
+                      >
+                        <div class="font-bold">{{ item.module }}</div>
+                        <div class="m-auto">
+                          <Checkbox v-model="item.view" binary @click.stop />
+                        </div>
+                        <div class="m-auto">
+                          <Checkbox v-model="item.create" binary @click.stop />
+                        </div>
+                        <div class="m-auto">
+                          <Checkbox v-model="item.edit" binary @click.stop />
+                        </div>
+                        <div class="m-auto">
+                          <Checkbox v-model="item.delete" binary @click.stop />
+                        </div>
+                      </div>
+                    </AccordionHeader>
                     <AccordionContent>
                       <div
-                        class="row justify-between items-center"
                         v-for="permission in item.data"
+                        class="grid grid-cols-5 justify-between items-center w-content p-2"
                       >
-                        <div class="col-12 md:col-3 lg:col-3 font-medium">
+                        <div class="font-medium">
                           {{ permission.permission }}
                         </div>
-                        <div class="col-12 md:2 lg:2 font-medium text-center">
-                          <Checkbox v-model="permission.view" />
+                        <div class="m-auto">
+                          <Checkbox v-model="permission.view" binary />
                         </div>
-                        <div class="col-12 md:2 lg:2 font-medium text-center">
-                          <Checkbox v-model="permission.create" />
+                        <div class="m-auto">
+                          <Checkbox v-model="permission.create" binary />
                         </div>
-                        <div class="col-12 md:2 lg:2 font-medium text-center">
-                          <Checkbox v-model="permission.edit" />
+                        <div class="m-auto">
+                          <Checkbox v-model="permission.edit" binary />
                         </div>
-                        <div class="col-12 md:2 lg:2 font-medium text-center">
-                          <Checkbox v-model="permission.delete" />
+                        <div class="m-auto">
+                          <Checkbox v-model="permission.delete" binary />
                         </div>
                       </div>
                     </AccordionContent>
@@ -184,4 +202,11 @@ const data = ref([
     </card>
   </div>
 </template>
-<style scoped></style>
+<style scoped>
+:deep(.p-accordionheader) {
+  background: #f0f3fa !important;
+}
+.w-content {
+  width: calc(100% - 14px);
+}
+</style>
