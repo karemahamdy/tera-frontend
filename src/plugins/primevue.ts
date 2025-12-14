@@ -27,7 +27,7 @@ import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
-
+import { FileUpload } from 'primevue';
 
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
@@ -67,5 +67,5 @@ export function setupPrimeVue(app: App) {
   app.component('AccordionPanel', AccordionPanel);
   app.component('AccordionHeader', AccordionHeader);
   app.component('AccordionContent', AccordionContent);
-
+  app.component('FileUpload', FileUpload)
 }
