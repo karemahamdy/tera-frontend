@@ -22,10 +22,10 @@ const navItems: NavItem[] = [
       { label: "Users Management", route: "/user-management" },
       { label: "User Groups", route: "/user-group" },
       { label: "Branch Management", route: "/roles" },
-      { label: "Roles Management", route: "/roles" },
+      { label: "Roles Management", route: "/roles-permissions" },
       { label: "Active Sessions", route: "/roles" },
       { label: "Security Settings", route: "/roles" },
-      { label: "Audit Log", route: "/" },
+      { label: "Audit Log", route: "/roles" },
     ],
   },
 ];

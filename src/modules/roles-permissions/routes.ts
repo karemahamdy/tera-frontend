@@ -1,13 +1,13 @@
 export const rolesPermissionsRoutes = [
-  // {
-  //   path: "/roles-permissions",
-  //   component: () => import("@/modules/roles-permissions/pages/RolesPermissions.vue"),
-  //   name: "RolesPermissions",
-  //   meta: {
-  //     hide: true,
-  //     localizedTitle: "Home",
-  //   },
-  // },
+  {
+    path: "/roles-permissions",
+    component: () => import("@/modules/roles-permissions/pages/RolesPermissions.vue"),
+    name: "RolesPermissions",
+    meta: {
+      hide: true,
+      localizedTitle: "Home",
+    },
+  },
    {
     path: '/roles-permissions/add-user-roles/:id',
     name: 'AddUserRoles',

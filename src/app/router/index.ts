@@ -5,7 +5,7 @@ import { homeRoutes } from "@/modules/home/routes.ts";
 import { userGroupRoutes } from "@/modules/user-group/routes";
 import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
 import { userManagementRoutes } from "@/modules/user-management/routes";
-
+import { notFoundRoutes } from "@/modules/not-found/routes";
 // const defaultTitle = "Tera ERP";
 
 const routes = [
@@ -29,6 +29,7 @@ const routes = [
       },
     ],
   },
+  ...notFoundRoutes,
 ];
 
 const router = createRouter({
