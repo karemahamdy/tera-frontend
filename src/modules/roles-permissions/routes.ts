@@ -1,48 +1,66 @@
 export const rolesPermissionsRoutes = [
   {
     path: "/roles-permissions",
-    component: () => import("@/modules/roles-permissions/pages/RolesPermissions.vue"),
+    component: () =>
+      import("@/modules/roles-permissions/pages/RolesPermissions.vue"),
     name: "RolesPermissions",
     meta: {
       hide: true,
       localizedTitle: "Home",
     },
   },
-   {
-    path: '/roles-permissions/add-user-roles/:id',
-    name: 'AddUserRoles',
-    component: () => import('@/modules/roles-permissions/pages/AddUserRoles.vue'),
+  {
+    path: "/roles-permissions/create",
+    name: "RolesPermissionsCreate",
+    component: () => import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
+    meta: { permission: null },
+    props: { mode: "create" },
+  },
+  {
+    path: "/roles-permissions/edit/:id",
+    name: "RolesPermissionsEdit",
+    component: () => import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
+    props: { mode: "edit" },
+    meta: { permission: null },
+  },
+  {
+    path: "/roles-permissions/add-user-roles/:id",
+    name: "AddUserRoles",
+    component: () =>
+      import("@/modules/roles-permissions/pages/AddUserRoles.vue"),
     meta: {
       hide: true,
       localizedTitle: "RolesPermissions",
     },
   },
   {
-    path: '/roles-permissions/list-user-roles/:id',
-    name: 'ListUserRoles',
-    component: () => import('@/modules/roles-permissions/pages/ListUserRoles.vue'),
+    path: "/roles-permissions/list-user-roles/:id",
+    name: "ListUserRoles",
+    component: () =>
+      import("@/modules/roles-permissions/pages/ListUserRoles.vue"),
     meta: {
       hide: true,
       localizedTitle: "RolesPermissions",
     },
   },
   {
-    path: '/roles-permissions/add-group-roles/:id',
-    name: 'AddGroupRoles',
-    component: () => import('@/modules/roles-permissions/pages/AddGroupRoles.vue'),
+    path: "/roles-permissions/add-group-roles/:id",
+    name: "AddGroupRoles",
+    component: () =>
+      import("@/modules/roles-permissions/pages/AddGroupRoles.vue"),
     meta: {
       hide: true,
       localizedTitle: "RolesPermissions",
     },
   },
   {
-    path: '/roles-permissions/list-group-roles/:id',
-    name: 'ListGroupRoles',
-    component: () => import('@/modules/roles-permissions/pages/ListGroupRoles.vue'),
+    path: "/roles-permissions/list-group-roles/:id",
+    name: "ListGroupRoles",
+    component: () =>
+      import("@/modules/roles-permissions/pages/ListGroupRoles.vue"),
     meta: {
       hide: true,
       localizedTitle: "RolesPermissions",
     },
   },
-
 ];

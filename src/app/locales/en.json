@@ -98,6 +98,11 @@
     "addRole": "Add Role",
     "rolesInfo": "Define what each role can do",
     "searchPlaceholder": "Search for roles...",
-    "deleteRoleConfirm": "Are you sure you want to delete this Role ?"
+    "deleteRoleConfirm": "Are you sure you want to delete this Role ?",
+    "editRole": "Edit Role Info",
+    "addRoleInfo": "Create a new role with custom permissions.",
+    "updateRoleInfo": "Update the role with custom permissions.",
+    "descriptionPlaceholder": "Describe what this role is for..",
+    "createRole": "Create Role"
   }
 }

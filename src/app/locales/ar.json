@@ -97,6 +97,11 @@
     "addRole": "إضافة دور",
     "rolesInfo": "حدد ما يمكن لكل دور أن يفعله",
     "searchPlaceholder": "ابحث عن الأدوار...",
-    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذا الدور؟"
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذا الدور؟",
+    "editRole": "تعديل معلومات الدور",
+    "addRoleInfo": "إنشاء دور جديد بصلاحيات مخصصة.",
+    "updateRoleInfo": "تحديث الدور بصلاحيات مخصصة.",
+    "descriptionPlaceholder": "وصف الغرض من هذا الدور..",
+    "createRole": "إنشاء دور"
   }
 }

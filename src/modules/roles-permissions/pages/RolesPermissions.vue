@@ -84,7 +84,7 @@ const handleDeleteConfirm = () => {
 };
 
 const addNew = () => {
-  router.push("/roles-permissions/create");
+  router.push({ name: "RolesPermissionsCreate" });
 };
 </script>
 
