@@ -10,11 +10,13 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
 import { useFilters } from "@/composables/useFilters";
+import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 
 const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);
 const showDeleteDialog = ref(false);
+const showDialog = ref(false);
 const rowToDelete = ref<any>(null);
 
 const props = defineProps({
@@ -150,8 +152,15 @@ const confirmDelete = (row: any) => {
     showDeleteDialog.value = true;
 };
 
+const showResetDialog = (row: any) => {
+    rowToDelete.value = row;
+    showDialog.value = true;
+}; 
+
 const handleActionMenu = ({ action, data }: any) => {
     if (action === "delete") confirmDelete(data);
+   if (action === "resetPassword") showResetDialog(data);
+
 };
 
 const handleDeleteConfirm = () => {
@@ -188,7 +197,7 @@ const addUserGroup = () => {
                 { label: 'Cancel', variant: 'ghost', action: 'cancel' },
                 { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
             ]" @confirm="handleDeleteConfirm" />
-
+         <ChangePassword v-model:visible="showDialog"/>
     </div>
 </template>
 

@@ -122,11 +122,12 @@ const getStatusText = (status) => {
                 <span>{{ item.label }}</span>
             </a>
         </template></Menu>
-    <ActionMenu ref="menu" :showEdit="true" :showView="true" :showDelete="true" :showPermission="true" showReset="true"
+    <ActionMenu ref="menu" :showEdit="true" :showView="true" :showDelete="true" :resetPassword="true" :showPermission="true" showReset="true"
         :customItems="menuItems" @edit="row => emit('action-menu-click', { action: 'edit', data: row })"
         @view="row => emit('action-menu-click', { action: 'view', data: row })"
         @delete="row => emit('action-menu-click', { action: 'delete', data: row })"
-        @permission="row => emit('action-menu-click', { action: 'permission', data: row })" >
+        @permission="row => emit('action-menu-click', { action: 'permission', data: row })"
+        @resetPassword="row => emit('action-menu-click', { action: 'resetPassword', data: row })" > >
          <template #item="{ item, props }">
 
             <!-- Custom Toggle Item -->

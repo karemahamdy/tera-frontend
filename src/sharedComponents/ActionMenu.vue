@@ -1,14 +1,18 @@
 <script setup>
 import { ref, computed } from "vue";
+const emit = defineEmits([
+    "edit",
+    "view",
+    "delete",
+    "permission",
+    "resetPassword"
+]);
 
 const props = defineProps({
-    onEdit: { type: Function, default: null },
-    onView: { type: Function, default: null },
-    onDelete: { type: Function, default: null },
-    onPermission: { type: Function, default: null },
     showEdit: { type: Boolean, default: true },
     showView: { type: Boolean, default: true },
     showDelete: { type: Boolean, default: true },
+    resetPassword: { type: Boolean, default: true },
     showPermission: { type: Boolean, default: false },
     customItems: { type: Array, default: () => [] }
 });
@@ -31,16 +35,23 @@ const menuItems = computed(() => {
             label: "View",
             icon: "Eye",
             color: "#3F5FAC",
-            command: () => props.onView && props.onView(currentRow.value)
+          command: () => emit("view", currentRow.value)
         });
     }
-
+  if (props.resetPassword) {
+        items.push({
+            label: "resetPassword",
+            icon: "PasswordCheck",
+            color: "#027A48",
+            command: () => emit("resetPassword", currentRow.value)
+        });
+    }
     if (props.showEdit) {
         items.push({
             label: "Edit",
             icon: "Edit",
             color: "#F79009",
-            command: () => props.onEdit && props.onEdit(currentRow.value)
+            command: () => emit("edit", currentRow.value)
         });
     }
 
@@ -49,7 +60,7 @@ const menuItems = computed(() => {
             label: "Delete",
             icon: "Trash",
             color: "#F04438",
-            command: () => props.onDelete && props.onDelete(currentRow.value)
+             command: () => emit("delete", currentRow.value)
         });
     }
 
