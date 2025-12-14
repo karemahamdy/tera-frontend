@@ -3,6 +3,7 @@ import { ref } from "vue";
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useRoute } from "vue-router";
+import FileUpload from "@/sharedComponents/FileUpload.vue";
 
 const props = defineProps<{
     mode: "edit" | "create";
@@ -12,7 +13,8 @@ const editMode = props.mode === "edit";
 const route = useRoute();
 const groupId = ref<string | null>(route.params.id ? String(route.params.id) : null);
 const groupName = ref<string>("");
-const description = ref<string>("");
+const isAdmin = ref<boolean>(false);
+const isActive = ref<boolean>(true)
 const options = ref<Array<{ label: string; value: string }>>([
     { label: "Admin", value: "admin" },
     { label: "Editor", value: "editor" },
@@ -39,6 +41,7 @@ const handleSubmit = () => {
             </template>
             <template #content>
                 <form @submit.prevent="handleSubmit" class="space-y-6 px-20">
+                    <FileUpload />
                     <div class="flex flex-row gap-8">
                         <div class="w-[50%]">
                             <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.fullName")
@@ -90,13 +93,29 @@ const handleSubmit = () => {
                         </div>
                         <div class="w-[50%]">
                             <label class="text-gray-700 font-medium mb-2 block">{{ $t("userGroup.userGroup") }}</label>
-                            <!-- <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" /> -->
                             <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
                                 :placeholder="$t('select ')" class="w-full mt-1" />
                         </div>
                     </div>
+                    <div class="flex items-start gap-72">
+                        <div>
+                            <p class="mb-3 font-medium text-gray-700">Account Type</p>
 
+                            <div class="flex flex-start gap-3">
+                                <ToggleSwitch v-model="isAdmin" />
+                                <span class="text-gray-600">Is Admin</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="mb-3 font-medium text-gray-700">Account Status</p>
+
+                            <div class="flex flex-start gap-3">
+                                <ToggleSwitch v-model="isActive" />
+                                <span class="text-gray-600">Active</span>
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="flex justify-between gap-8 mb-4  w-full">
                         <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
                         <BaseButton :label="editMode ? 'button.save' : 'usersManagement.addUser'" variant="primary"
