@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRoute } from "vue-router";
+
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { useRoute } from "vue-router";
+import FileUpload from "@/sharedComponents/inputs/FileUpload.vue";
+import FormInput from "@/sharedComponents/inputs/FormInput.vue";
+import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
+import ToggleItem from "@/sharedComponents/inputs/ToggleItem.vue";
 
 const props = defineProps<{
     mode: "edit" | "create";
@@ -10,101 +15,89 @@ const props = defineProps<{
 
 const editMode = props.mode === "edit";
 const route = useRoute();
-const groupId = ref<string | null>(route.params.id ? String(route.params.id) : null);
-const groupName = ref<string>("");
-const description = ref<string>("");
-const options = ref<Array<{ label: string; value: string }>>([
+
+const form = ref({
+    id: route.params.id ? String(route.params.id) : null,
+    fullName: "",
+    username: "",
+    email: "",
+    internalId: "",
+    password: "",
+    confirmPassword: "",
+    department: null,
+    group: null,
+    isAdmin: false,
+    isActive: true,
+});
+
+const options = [
     { label: "Admin", value: "admin" },
     { label: "Editor", value: "editor" },
     { label: "Viewer", value: "viewer" },
-]);
-const selectedOption = ref<{ label: string; value: string } | null>(null);
+];
 
 const handleSubmit = () => {
-    console.log(`form submited ${groupId.value}`);
-}
+    console.log("submitted", form.value);
+};
 </script>
+
 <template>
     <div>
         <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" />
-        <card class="p-6 bg-[#ffffff] rounded-[10px]">
+
+        <Card class="p-6 bg-white rounded-[10px]">
             <template #title>
                 <div class="flex flex-col pt-4 px-20">
-                    <h2 class="heading-title">{{ editMode ? $t("usersManagement.editusersManagement") :
-                        $t("usersManagement.addNewUserManagement") }}</h2>
+                    <h2 class="heading-title">
+                        {{ editMode ? $t("usersManagement.editusersManagement") :
+                            $t("usersManagement.addNewUserManagement") }}
+                    </h2>
                     <p class="subheading-title">
                         {{ editMode ? $t("usersManagement.updateUserInfo") : $t("usersManagement.addUserInfo") }}
                     </p>
                 </div>
             </template>
+
             <template #content>
                 <form @submit.prevent="handleSubmit" class="space-y-6 px-20">
-                    <div class="flex flex-row gap-8">
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.fullName")
-                                }}</label>
-                            <InputText v-model="groupName" placeholder="Enter full name"
-                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                        </div>
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.username")
-                                }}</label>
-                            <InputText v-model="groupName" placeholder="Enter Username"
-                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                        </div>
+                    <FileUpload />
+
+                    <div class="flex gap-8">
+                        <FormInput class="w-1/2" :label="$t('usersManagement.fullName')" v-model="form.fullName" />
+                        <FormInput class="w-1/2" :label="$t('usersManagement.username')" v-model="form.username" />
                     </div>
 
-                    <div class="flex flex-row gap-8">
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.email") }}</label>
-                            <InputText v-model="groupName" placeholder="user@company.com"
-                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                        </div>
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.internalID")
-                                }}</label>
-                            <InputText v-model="groupName" placeholder="Enter user id"
-                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                        </div>
+                    <div class="flex gap-8">
+                        <FormInput class="w-1/2" :label="$t('auth.email')" v-model="form.email" />
+                        <FormInput class="w-1/2" :label="$t('usersManagement.internalID')" v-model="form.internalId" />
                     </div>
 
-                    <div class="flex flex-row gap-8">
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.password") }}</label>
-                            <InputText v-model="groupName" placeholder="******"
-                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                        </div>
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("auth.confirmPassword") }}</label>
-                            <InputText v-model="groupName" placeholder="*****"
-                                class="mt-1 w-full p-3 border border-gray-300 rounded-lg" />
-                        </div>
+                    <div class="flex gap-8">
+                        <FormInput class="w-1/2" type="password" :label="$t('auth.password')" v-model="form.password" />
+                        <FormInput class="w-1/2" type="password" :label="$t('auth.confirmPassword')"
+                            v-model="form.confirmPassword" />
                     </div>
 
-                    <div class="flex flex-row gap-8">
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("usersManagement.department")
-                                }}</label>
-                            <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
-                                :placeholder="$t('select')" class="w-full mt-1" />
-                        </div>
-                        <div class="w-[50%]">
-                            <label class="text-gray-700 font-medium mb-2 block">{{ $t("userGroup.userGroup") }}</label>
-                            <!-- <InputText v-model="groupName" placeholder="e.g., Finance Team"
-                       class="mt-1 w-full p-3 border border-gray-300 rounded-lg" /> -->
-                            <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
-                                :placeholder="$t('select ')" class="w-full mt-1" />
-                        </div>
+                    <div class="flex gap-8">
+                        <FormDropdown class="w-1/2" :label="$t('usersManagement.department')" :options="options"
+                            v-model="form.department" />
+                        <FormDropdown class="w-1/2" :label="$t('userGroup.userGroup')" :options="options"
+                            v-model="form.group" />
                     </div>
 
-                    <div class="flex justify-between gap-8 mb-4  w-full">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <ToggleItem title="Account Type" label="Is Admin" v-model="form.isAdmin" />
+                        <ToggleItem title="Account Status" label="Active" v-model="form.isActive" />
+                    </div>
+
+                    <div class="flex gap-8">
                         <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
                         <BaseButton :label="editMode ? 'button.save' : 'usersManagement.addUser'" variant="primary"
                             block />
                     </div>
                 </form>
             </template>
-        </card>
+        </Card>
     </div>
 </template>
 <style scoped></style>
