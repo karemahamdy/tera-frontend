@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
-const email = ref<string>("");
-const password = ref<string>("");
+import * as yup from 'yup'
+import { useField, useForm } from 'vee-validate'
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+// const userName = ref<string>("");
+// const password = ref<string>("");
 const rememberMe = ref<boolean>(false);
 const selectedOption = ref<number | null>(null);
 
@@ -15,6 +18,23 @@ const options = [
 import { useUserStore } from '@/app/store/useUserStore';
 const userStore = useUserStore();
 
+const { handleSubmit } = useForm({
+  validationSchema: yup.object({
+    userName: yup.string().required(t('form.fieldRequired')),
+    password: yup.string().required(t('form.fieldRequired')),
+  })
+})
+
+const { value: userName, errorMessage: userNameError } = useField<string>("userName");
+const { value: password, errorMessage: passwordError } = useField<string>("password");
+
+const onSubmit = handleSubmit(async (values) => {
+  const payload = {
+    userName: values.userName as string,
+    password: values.password as string,
+  };
+  await userStore.login(payload);
+});
 // Change language via store so it persists and updates document attributes
 function switchLanguage() {
   userStore.toggleLang();
@@ -33,8 +53,7 @@ function switchLanguage() {
         {{ $t("auth.signInMsg") }}
       </p>
 
-      <form class="space-y-5 mt-4">
-
+      <form @submit.prevent="onSubmit" class="space-y-5 mt-4">
         <div>
           <label class="text-gray-700 font-medium">{{
             $t("auth.entity")
@@ -54,11 +73,13 @@ function switchLanguage() {
             $t("auth.userName")
           }}</label>
           <InputText
-            v-model="email"
-            autocomplete="username"
+            v-model="userName"
+            autocomplete="userName"
             placeholder="Example@email.com"
             class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
+            :invalid="!!userNameError"
           />
+          <small v-if="userNameError" class="text-danger-500">{{ userNameError }}</small>
         </div>
 
         <div>
@@ -71,8 +92,10 @@ function switchLanguage() {
             :inputProps="{ autocomplete: 'current-password' }"
             :placeholder="$t('auth.passwordPlaceholder')"
             class="mt-1 w-full"
+            :invalid="!!passwordError"
             inputClass="w-full p-3 border border-gray-300 rounded-lg"
           />
+          <small v-if="passwordError" class="text-danger-500">{{ passwordError }}</small>
         </div>
 
         <div class="flex items-center gap-2 mt-2">
@@ -86,7 +109,7 @@ function switchLanguage() {
         <Button v-slot="slotProps" asChild>
           <button
             v-bind="slotProps.a11yAttrs"
-            class="rounded-lg bg-primary-500 hover:bg-primary-600  text-white border-none p-2 cursor-pointer w-full font-medium"
+            class="rounded-lg bg-primary-500 hover:bg-primary-600  text-white border-none p-2 cursor-pointer w-full font-medium text-primary-25"
           >
             {{ $t("auth.login") }}
           </button>

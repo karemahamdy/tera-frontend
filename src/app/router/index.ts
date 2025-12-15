@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import { useUserStore } from "@/app/store/useUserStore";
+import { useUserStore } from "@/app/store/useUserStore";
 import { authRoutes } from "@/modules/auth/routes.ts";
 import { homeRoutes } from "@/modules/home/routes.ts";
 import { userGroupRoutes } from "@/modules/user-group/routes";
 import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
 import { userManagementRoutes } from "@/modules/user-management/routes";
 import { notFoundRoutes } from "@/modules/not-found/routes";
-// const defaultTitle = "Tera ERP";
+const defaultTitle = "Tera ERP";
 
 const routes = [
   ...authRoutes,
@@ -37,24 +37,24 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   window.scrollTo({ top: 0, behavior: "smooth" });
+router.beforeEach((to, from, next) => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-//   const userStore = useUserStore();
+  const userStore = useUserStore();
 
-//   const isAuthenticated = userStore.isAuthenticated;
+  const isAuthenticated = userStore.isAuthenticated;
 
-//   if (
-//     to.matched.some((record) => record.meta.requiresAuth) &&
-//     !isAuthenticated
-//   ) {
-//     return next("/auth/login");
-//   }
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !isAuthenticated
+  ) {
+    return next("/auth/login");
+  }
 
-//   const { title } = to.meta;
-//   document.title = (title as string) || defaultTitle;
+  const { title } = to.meta;
+  document.title = (title as string) || defaultTitle;
 
-//   next();
-// });
+  next();
+});
 
 export default router;

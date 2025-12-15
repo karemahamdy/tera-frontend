@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axiosWrapper from '@/app/http/axiosWrapper';
 import { i18n } from '@/plugins/i18n';
+import type { b } from 'node_modules/tailwindcss/dist/types-WlZgYgM8.d.mts';
 
 interface User {
   id: string;
@@ -9,13 +10,23 @@ interface User {
   roles: string[];
 }
 
+interface UserData {
+  "id": string,
+  "data": {
+    "accessToken": string,
+    "refreshToken": string,
+    "expiresAt": string,
+    "requiresPasswordReset": boolean
+  }
+}
+
 interface AuthTokens {
   accessToken: string;
   refreshToken: string;
 }
 
 interface LoginPayload {
-  email: string;
+  userName: string;
   password: string;
 }
 
@@ -94,10 +105,10 @@ export const useUserStore = defineStore('user', {
     // LOGIN
     // ------------------------------------
     async login(payload: LoginPayload) {
-      const tokens = await axiosWrapper.post<AuthTokens>('/Users/login', payload, {}, false);
-
+      const response = await axiosWrapper.post<UserData>('/Auth/login', payload, {}, false);
+      const tokens = response.data as AuthTokens;
       this.setTokens(tokens as AuthTokens);
-      await this.fetchUser();
+      // await this.fetchUser();
     },
 
     // ------------------------------------
@@ -113,7 +124,7 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     async refreshTokenAction(): Promise<boolean> {
       try {
-        const tokens = await axiosWrapper.post<AuthTokens>('/Users/refresh', {
+        const tokens = await axiosWrapper.post<AuthTokens>('/Auth/refresh-token', {
           refreshToken: this.refreshToken
         });
 
