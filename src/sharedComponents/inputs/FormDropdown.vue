@@ -4,6 +4,7 @@ defineProps<{
   modelValue: any;
   options: any[];
   error?: string;
+ placeholder?: string
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -18,10 +19,11 @@ defineEmits(["update:modelValue"]);
       optionLabel="label"
       :options="options"
       :modelValue="modelValue"
+       :placeholder="placeholder"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
-    <small v-if="error" class="text-red-500">
+    <small v-if="error" class="text-danger-500">
       {{ error }}
     </small>
   </div>

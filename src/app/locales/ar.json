@@ -12,6 +12,10 @@
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
+    "changePassword": {
+      "title": "تغيير كلمة المرور",
+      "subtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك."
+    },
   "button": {
     "addNew": "إضافة جديد",
     "save": "حفظ",
@@ -25,7 +29,10 @@
     "submit": "إرسال",
     "search": "بحث",
     "reset": "إعادة تعيين",
-    "create": "إنشاء"
+    "create": "إنشاء",
+    "new": "جديد",
+    "active": "نشط",
+    "resetPassword": "تغيير الرقم السري"
   },
   "table": {
     "description": "الوصف",
@@ -63,6 +70,8 @@
     "allScopes": "كل النطاق",
     "allDepartment":  "كل الاقسام",
     "assignRoleToUser": "تعيين الأدوار إلى المستخدمين",
+    "searchPlaceholder": "ابحث عن مستخدم...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف المستخدم ",
     "assignRoleToUserDesc": "أضف أدوارًا للمستخدمين وقم بإدارة الصلاحيات الممنوحة لهم.",
     "addNewUserManagement":"اضافة مستخدم",
     "editUserManagement":"تعديل بيانات المستخدم",
@@ -80,6 +89,7 @@
     "created": "تم الإنشاء",
     "addUserGroup": "إضافة مجموعة مستخدمين",
     "searchPlaceholder": "ابحث عن مجموعة المستخدمين...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذة المجموعة ",
     "userGroup": "مجموعة المستخدمين",
     "userGroupDescription": "نظم المستخدمين في مجموعات و بتعيين الأدوار لهم",
     "AssignRolesToUserGroup":"تعيين الأدوار إلى مجموعة المستخدمين",
@@ -92,6 +102,7 @@
   },
   "roles": {
     "roleName": "اسم الدور",
+    "roles": "ألدور",
     "accessScope": "نطاق الوصول",
     "branches": "الفروع",
     "addNewRole": "إضافة أدوار جديدة",
@@ -112,6 +123,9 @@
     "viewInfo": "هذه هي الأذونات التي قمت بتحديدها. راجعها على اليسار.",
     "searchViewPlaceholder": "ابحث عن وحدة أو شاشة...",
     "noData": "لا يوجد داتا",
-    "adjustingSearch": "حاول تعديل البحث"
+    "adjustingSearch": "حاول تعديل البحث",
+    "assignRole": "تعيين الدور",
+    "branchSpecific":"الوصول مقتصر على الفرع المحدد فقط",
+    "globalAccess":"الوصول إلى جميع الفروع"
   }
 }

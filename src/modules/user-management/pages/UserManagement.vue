@@ -51,7 +51,7 @@ const props = defineProps({
 
 const permissionItems = [
     {
-        label: "New",
+       label:t("button.new"),
         icon: "Star1",
         color: "#12B76A",
         command: (row: any) => {
@@ -60,7 +60,7 @@ const permissionItems = [
         }
     },
     {
-        label: "view",
+        label:t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
         command: (row: any) => {
@@ -70,7 +70,7 @@ const permissionItems = [
 ];
 const customItems = [
     {
-        label: "Reset Password",
+        label:t("button.resetPassword"),
         icon: "PasswordCheck",
         color: "#027A48",
         slot: true,
@@ -79,7 +79,7 @@ const customItems = [
     {
         slot: true,
         changeStatus: true,
-        label: "Active",
+          label: t("button.active"),
         command: (row: any) => {
             console.log("toggle", row);
         }
@@ -198,7 +198,7 @@ const addUserGroup = () => {
             <template #title>
                 <PageHeader title="usersManagement.usersManagement" subtitle="usersManagement.usersManagementDesc"
                     :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="usersManagement.addUser"
-                    searchPlaceholder="Search Users..." @search="onSearch" :showFilter="true"
+                    searchPlaceholder="usersManagement.searchPlaceholder" @search="onSearch" :showFilter="true"
                     @filter-change="onFilterChange" :filters="filters" :onMainBtnClick="addUserGroup" />
             </template>
             <!-- DynamicTable component -->
@@ -217,9 +217,9 @@ const addUserGroup = () => {
         </card>
 
         <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
-            title="Are you sure you want to delete this user?" :buttons="[
-                { label: 'Cancel', variant: 'ghost', action: 'cancel' },
-                { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
+             :title="$t('usersManagement.deleteRoleConfirm')" :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
             ]" @confirm="handleDeleteConfirm" />
         <ChangePassword v-model:visible="showDialog" />
     </div>

@@ -119,7 +119,7 @@ const filteredData = computed(() => {
     <ScreenHeader title="Access Control" subtitle="roles.rolesPermissions" />
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
-        <div class="flex flex-col">
+        <div class="flex flex-col px-20">
           <h2 class="heading-title">
             <span v-if="editMode">{{ $t("roles.editRole") }}</span>
             <span v-else-if="isView">{{

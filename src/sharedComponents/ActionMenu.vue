@@ -1,5 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 const emit = defineEmits([
     "edit",
     "view",
@@ -30,18 +33,9 @@ defineExpose({
 
 const menuItems = computed(() => {
     const items = [];
-    // if (props.showView) {
-    //     items.push({
-    //         label: "View",
-    //         icon: "Eye",
-    //         color: "#3F5FAC",
-    //         command: () => emit("view", currentRow.value)
-    //     });
-    // }
-  
     if (props.showEdit) {
         items.push({
-            label: "Edit",
+            label:t("button.edit"),
             icon: "Edit",
             color: "#F79009",
             command: () => emit("edit", currentRow.value)
@@ -50,17 +44,16 @@ const menuItems = computed(() => {
 
     if (props.showDelete) {
         items.push({
-            label: "Delete",
+            label:t("button.delete"),
             icon: "Trash",
             color: "#F04438",
             command: () => emit("delete", currentRow.value)
         });
     }
-
     if (props.customItems.length) {
         props.customItems.forEach(item => {
             items.push({
-                label: item.label,
+                label: t(item.label),
                 icon: item.icon,
                 color: item.color,
                 slot: item.slot,
