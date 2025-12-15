@@ -33,6 +33,9 @@
     "action": "الإجراء",
     "userAssigned": "المستخدم المعين"
   },
+  "form": {
+    "fieldRequired": "هذا الحقل مطلوب"
+  },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
     "signInMsg": "سجّل الدخول للوصول إلى لوحة التحكم",

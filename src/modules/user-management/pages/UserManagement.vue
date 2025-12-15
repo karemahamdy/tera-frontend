@@ -204,7 +204,8 @@ const addUserGroup = () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="tableData" :loading="loading" :permissionItems="permissionItems"
-                    :customItems="customItems" :showDelete="true" @action-menu-click="handleActionMenu">
+                :customItems="customItems" :showDelete="true" @action-menu-click="handleActionMenu">
+                    <!-- @vue-ignore -->
                     <template #menu-item="{ item, row }">
                         <div v-if="item.changeStatus" class="flex items-center gap-2 px-3 py-2">
                             <ToggleSwitch v-model="row.status" />
