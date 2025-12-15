@@ -19,11 +19,11 @@ defineEmits(["update:modelValue"]);
       optionLabel="label"
       :options="options"
       :modelValue="modelValue"
-        :placeholder="placeholder"
+       :placeholder="placeholder"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
-    <small v-if="error" class="text-red-500">
+    <small v-if="error" class="text-danger-500">
       {{ error }}
     </small>
   </div>

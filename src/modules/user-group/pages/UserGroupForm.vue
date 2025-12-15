@@ -4,7 +4,7 @@ import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useRoute } from "vue-router";
 
 import { useForm } from "vee-validate";
-import { groupFormSchema } from "../validation/GroupsListSchema";
+import { groupFormSchema } from "../validation/GroupsFormSchema";
 
 const props = defineProps<{
   mode: "edit" | "create";
