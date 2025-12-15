@@ -28,6 +28,7 @@ const { handleSubmit, errors, defineField } = useForm({
 const [groupName] = defineField("groupName");
 const [description] = defineField("description");
 const onSubmit = handleSubmit((values) => {
+  console.log(route);
   console.log("Form Values", values);
 });
 </script>
