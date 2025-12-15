@@ -63,18 +63,18 @@ const handleSubmit = () => {
                     <FileUpload />
 
                     <div class="flex gap-8">
-                        <FormInput class="w-1/2" :label="$t('usersManagement.fullName')" v-model="form.fullName" />
-                        <FormInput class="w-1/2" :label="$t('usersManagement.username')" v-model="form.username" />
+                        <FormInput class="w-1/2" :label="$t('usersManagement.fullName')" v-model="form.fullName"  placeholder="Enter full name"/>
+                        <FormInput class="w-1/2" :label="$t('usersManagement.username')" v-model="form.username" placeholder="Enter Username"/>
                     </div>
 
                     <div class="flex gap-8">
-                        <FormInput class="w-1/2" :label="$t('auth.email')" v-model="form.email" />
-                        <FormInput class="w-1/2" :label="$t('usersManagement.internalID')" v-model="form.internalId" />
+                        <FormInput class="w-1/2" :label="$t('auth.email')" v-model="form.email"  placeholder="user@company.com"/>
+                        <FormInput class="w-1/2" :label="$t('usersManagement.internalID')" v-model="form.internalId"  placeholder="Enter user id"/>
                     </div>
 
                     <div class="flex gap-8">
-                        <FormInput class="w-1/2" type="password" :label="$t('auth.password')" v-model="form.password" />
-                        <FormInput class="w-1/2" type="password" :label="$t('auth.confirmPassword')"
+                        <FormInput class="w-1/2" type="password" :label="$t('auth.password')" v-model="form.password"  placeholder="****"/>
+                        <FormInput class="w-1/2" type="password" :label="$t('auth.confirmPassword')" placeholder="****"
                             v-model="form.confirmPassword" />
                     </div>
 
@@ -85,9 +85,9 @@ const handleSubmit = () => {
 
                     <div class="flex gap-8">
                         <FormDropdown class="w-1/2" :label="$t('usersManagement.department')" :options="options"
-                            v-model="form.department" />
+                            v-model="form.department"  placeholder="Finance Team"/>
                         <FormDropdown class="w-1/2" :label="$t('userGroup.userGroup')" :options="options"
-                            v-model="form.group" />
+                            v-model="form.group"  placeholder="Finance Team"/>
                     </div>
 
                     <div class="flex gap-8">

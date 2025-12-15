@@ -15,7 +15,7 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" actionName="Assign role" />
+    <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" actionName="roles.assignRole" />
     <card class="bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col mb-4 pt-4 px-20">

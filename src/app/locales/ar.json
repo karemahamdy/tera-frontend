@@ -12,6 +12,10 @@
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
+    "changePassword": {
+      "title": "تغيير كلمة المرور",
+      "subtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك."
+    },
   "button": {
     "addNew": "إضافة جديد",
     "save": "حفظ",
@@ -27,7 +31,8 @@
     "reset": "إعادة تعيين",
     "create": "إنشاء",
     "new": "جديد",
-    "active": "نشط"
+    "active": "نشط",
+    "resetPassword": "تغيير الرقم السري"
   },
   "table": {
     "description": "الوصف",
@@ -65,6 +70,8 @@
     "allScopes": "كل النطاق",
     "allDepartment":  "كل الاقسام",
     "assignRoleToUser": "تعيين الأدوار إلى المستخدمين",
+    "searchPlaceholder": "ابحث عن مستخدم...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف المستخدم ",
     "assignRoleToUserDesc": "أضف أدوارًا للمستخدمين وقم بإدارة الصلاحيات الممنوحة لهم.",
     "addNewUserManagement":"اضافة مستخدم",
     "editUserManagement":"تعديل بيانات المستخدم",

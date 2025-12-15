@@ -4,6 +4,7 @@ defineProps<{
   modelValue: any;
   options: any[];
   error?: string;
+ placeholder?: string
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -18,6 +19,7 @@ defineEmits(["update:modelValue"]);
       optionLabel="label"
       :options="options"
       :modelValue="modelValue"
+        :placeholder="placeholder"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 

@@ -20,8 +20,8 @@ const confirmAction = () => {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="visible" title="Change Password"
-    subtitle="Update your password to keep your account secure." @cancel="closeDialog" @confirm="confirmAction">
+  <BaseDialog v-model:visible="visible"  :title="$t('changePassword.title')"
+  :subtitle="$t('changePassword.subtitle')" @cancel="closeDialog" @confirm="confirmAction">
 
     <form class="space-y-5">
       <div>
