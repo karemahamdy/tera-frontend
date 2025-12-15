@@ -35,8 +35,8 @@ const emits = defineEmits(["update:visible", "cancel", "confirm"]);
 
     <template #footer>
       <div class="flex justify-center gap-2 w-full">
-        <BaseButton label="Cancel" variant="ghost" @click="$emit('cancel')" block />
-        <BaseButton label="Save" variant="primary" @click="$emit('confirm')" block />
+        <BaseButton  :label="$t('button.cancel')" variant="ghost" @click="$emit('cancel')" block />
+        <BaseButton :label="$t('button.save')" variant="primary" @click="$emit('confirm')" block />
       </div>
     </template>
 

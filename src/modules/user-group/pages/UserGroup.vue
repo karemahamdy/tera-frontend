@@ -45,7 +45,7 @@ const emit = defineEmits(['search', 'action-menu-click']);
 
 const permissionItems = [
     {
-        label: "New",
+         label:t("button.new"),
         icon: "Star1",
         color: "#12B76A",
         command: (row) => {
@@ -54,7 +54,7 @@ const permissionItems = [
         }
     },
     {
-        label: "view",
+      label:t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
         command: (row) => {
@@ -66,7 +66,7 @@ const customItems = [
     {
         slot: true,
         changeStatus: true,
-        label: "Active",
+        label: t("button.active"),
         command: (row) => {
             console.log("toggle", row);
         }
@@ -121,7 +121,7 @@ const addUserGroup = () => {
             <template #title>
                 <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription" :showExport="true"
                     :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    searchPlaceholder="Search user group..." @search="onSearch" :onMainBtnClick="addUserGroup" />
+                    searchPlaceholder="userGroup.searchPlaceholder" @search="onSearch" :onMainBtnClick="addUserGroup" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
@@ -138,9 +138,9 @@ const addUserGroup = () => {
         </card>
 
         <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
-            title="Are you sure you want to delete this Group?" :buttons="[
-                { label: 'Cancel', variant: 'ghost', action: 'cancel' },
-                { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
+          :title="$t('userGroup.deleteRoleConfirm')" :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
             ]" @confirm="handleDeleteConfirm" />
 
     </div>

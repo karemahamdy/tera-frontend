@@ -88,7 +88,7 @@ const data = ref([
     <ScreenHeader title="Access Control" subtitle="roles.rolesPermissions" />
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
-        <div class="flex flex-col">
+        <div class="flex flex-col px-20">
           <h2 class="heading-title">
             {{ editMode ? $t("roles.editRole") : $t("roles.addNewRole") }}
           </h2>
@@ -100,7 +100,7 @@ const data = ref([
         </div>
       </template>
       <template #content>
-        <form @submit.prevent="handleSubmit" class="space-y-6">
+        <form @submit.prevent="handleSubmit" class="space-y-6 px-20">
           <div>
             <label class="text-gray-700 font-medium mb-2 block">{{
               $t("roles.roleName")

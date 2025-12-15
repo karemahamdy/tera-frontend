@@ -12,6 +12,10 @@
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
+  "changePassword": {
+      "title": "Change Password",
+      "subtitle": "Update your password to keep your account secure."
+    },
   "button": {
     "addNew": "Add New",
     "save": "Save",
@@ -26,7 +30,10 @@
     "search": "Search",
     "reset": "Reset",
     "assign": "Assign",
-    "create": "Create"
+    "create": "Create",
+    "new": "New",
+    "active": "Active",
+    "resetPassword": "Reset Password"
   },
   "table": {
     "description": "Description",
@@ -55,6 +62,8 @@
   "usersManagement": {
     "usersManagement": "Users Management",
     "usersManagementDesc": "Manage user accounts and show all user information",
+    "searchPlaceholder": "Search for user...",
+    "deleteRoleConfirm": "Are you sure you want to delete this user ?",
     "addUser": "Add User",
     "user": "User",
     "department": "Department",
@@ -81,6 +90,7 @@
     "addUserGroup": "Add User Group",
     "created": "Created",
     "searchPlaceholder": "Search for user groups...",
+    "deleteRoleConfirm": "Are you sure you want to delete this Group ?",
     "userGroup": "User Group",
     "userGroupDescription": "Organize users into groups and assign roles",
     "AssignRolesToUserGroup": "Assign Roles to User group",
@@ -93,6 +103,7 @@
   },
   "roles": {
     "roleName": "Role Name",
+     "roles": "Roles",
     "accessScope": "Access scope",
     "branches": "Branches",
     "addNewRole": "Add New Role",
@@ -108,6 +119,9 @@
     "updateRoleInfo": "Update the role with custom permissions.",
     "descriptionPlaceholder": "Describe what this role is for..",
     "createRole": "Create Role",
-    "moduleScreen": "Module / Screen"
+    "moduleScreen": "Module / Screen",
+    "assignRole": "Assign role",
+    "branchSpecific": "Branch-Specific Access /Limited to assigned branch only",
+    "globalAccess": "Global Access  /access to all branches"
   }
 }

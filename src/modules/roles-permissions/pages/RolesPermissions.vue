@@ -39,7 +39,7 @@ const props = defineProps({
 const customItems = [
   {
     slot: true,
-    label: "View",
+    label:t("button.view"),
     icon: "Eye",
     color: "#3F5FAC",
     command: (row) => {
@@ -111,7 +111,7 @@ const addNew = () => {
           :showImport="false"
           :mainBtn="true"
           mainBtnText="roles.addRole"
-          :searchPlaceholder="$t('roles.searchPlaceholder')"
+          searchPlaceholder="roles.searchPlaceholder"
           @search="onSearch"
           :onMainBtnClick="addNew"
         />

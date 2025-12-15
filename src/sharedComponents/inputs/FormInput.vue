@@ -4,6 +4,7 @@ defineProps<{
   modelValue: string;
   type?: string;
   error?: string;
+   placeholder?: string;
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -16,12 +17,13 @@ defineEmits(["update:modelValue"]);
     <InputText
       :type="type ?? 'text'"
       class="w-full p-3 border rounded-lg bg-gray-50"
-      :class="error ? 'border-red-500' : 'border-gray-300'"
+      :class="error ? 'border-danger-500' : 'border-gray-300'"
       :modelValue="modelValue"
+       :placeholder="placeholder"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
-    <small v-if="error" class="text-red-500">
+    <small v-if="error" class="text-danger-500">
       {{ error }}
     </small>
   </div>

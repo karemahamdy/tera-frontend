@@ -56,7 +56,7 @@ const onFilterChange = (filter, event) => {
     <!-- Search + Filters -->
     <div class="flex gap-[10px]  mt-2 flex-nowrap">
         <span class="p-input-icon-left search-input">
-            <InputText v-if="showSearch" v-model="searchQuery" :placeholder="searchPlaceholder"  @input="emit('search', $event.target.value)"/>
+            <InputText v-if="showSearch" v-model="searchQuery" :placeholder="$t(searchPlaceholder)"  @input="emit('search', $event.target.value)"/>
         </span>
         <Dropdown v-for="(filter, index) in filters" v-if="showFilter" :key="index" v-model="filter.value" :options="filter.options"
             :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
