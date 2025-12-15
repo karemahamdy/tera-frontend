@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import axiosWrapper from '@/app/http/axiosWrapper';
 import { i18n } from '@/plugins/i18n';
-import type { b } from 'node_modules/tailwindcss/dist/types-WlZgYgM8.d.mts';
 
 interface User {
   id: string;

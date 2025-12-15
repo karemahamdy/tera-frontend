@@ -114,7 +114,7 @@ const filtersOperation = [
     },
 ];
 
-const { searchQuery, onSearch, filteredData: searchedData } = useSearch(props.data);
+const { searchQuery, onSearch, filteredData: searchedData } = useSearch(props.data as Record<string, any>[]);
 const { filters, filteredData: filteredByFilters, onFilterChange } = useFilters(props.data, filtersOperation);
 
 const columns = computed(() => {

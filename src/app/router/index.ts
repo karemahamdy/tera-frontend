@@ -39,7 +39,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   window.scrollTo({ top: 0, behavior: "smooth" });
-
+  console.log(from);
+  
   const userStore = useUserStore();
 
   const isAuthenticated = userStore.isAuthenticated;
