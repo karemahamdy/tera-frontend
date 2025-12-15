@@ -36,6 +36,9 @@
     "action": "Action",
     "userAssigned": "User Assigned"
   },
+  "form": {
+    "fieldRequired": "This field is required"
+  },
   "auth": {
     "welcomeBack": "Welcome Back",
     "signInMsg": "Sign in to access your dashboard",
