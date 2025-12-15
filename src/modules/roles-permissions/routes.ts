@@ -24,6 +24,13 @@ export const rolesPermissionsRoutes = [
     meta: { permission: null },
   },
   {
+    path: "/roles-permissions/:id",
+    name: "RolesPermissionsView",
+    component: () => import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
+    props: { mode: "view" },
+    meta: { permission: null },
+  },
+  {
     path: "/roles-permissions/add-user-roles/:id",
     name: "AddUserRoles",
     component: () =>

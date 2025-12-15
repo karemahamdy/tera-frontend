@@ -120,6 +120,11 @@
     "descriptionPlaceholder": "Describe what this role is for..",
     "createRole": "Create Role",
     "moduleScreen": "Module / Screen",
+    "systemAdministrator": "System Administrator",
+    "viewInfo": "These are the permissions you have selected. Review them on the right.",
+    "searchViewPlaceholder": "Search for a module or screen...",
+    "noData": "No Data",
+    "adjustingSearch": "Try adjusting your search",
     "assignRole": "Assign role",
     "branchSpecific": "Branch-Specific Access /Limited to assigned branch only",
     "globalAccess": "Global Access  /access to all branches"

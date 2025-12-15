@@ -43,7 +43,7 @@ const customItems = [
     icon: "Eye",
     color: "#3F5FAC",
     command: (row) => {
-      console.log("toggle", row);
+      router.push({ name: "RolesPermissionsView", params: { row } });
     },
   },
 ];
@@ -81,9 +81,14 @@ const confirmDelete = (row) => {
 };
 
 const handleActionMenu = ({ action, data }) => {
-  console.log("ActionMenu Data:", data);
   if (action === "delete") {
     confirmDelete(data);
+  } else if (action === "edit") {
+    const id = data.id;
+    router.push({ name: "RolesPermissionsEdit", params: { id } });
+  } else {
+    const id = data.id;
+    router.push({ name: "RolesPermissionsView", params: { id } });
   }
 };
 
