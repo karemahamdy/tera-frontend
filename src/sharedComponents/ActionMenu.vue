@@ -5,7 +5,8 @@ const emit = defineEmits([
     "view",
     "delete",
     "permission",
-    "resetPassword"
+    "resetPassword",
+    "custom"
 ]);
 
 const props = defineProps({
@@ -29,23 +30,15 @@ defineExpose({
 
 const menuItems = computed(() => {
     const items = [];
-
-    if (props.showView) {
-        items.push({
-            label: "View",
-            icon: "Eye",
-            color: "#3F5FAC",
-          command: () => emit("view", currentRow.value)
-        });
-    }
-  if (props.resetPassword) {
-        items.push({
-            label: "resetPassword",
-            icon: "PasswordCheck",
-            color: "#027A48",
-            command: () => emit("resetPassword", currentRow.value)
-        });
-    }
+    // if (props.showView) {
+    //     items.push({
+    //         label: "View",
+    //         icon: "Eye",
+    //         color: "#3F5FAC",
+    //         command: () => emit("view", currentRow.value)
+    //     });
+    // }
+  
     if (props.showEdit) {
         items.push({
             label: "Edit",
@@ -60,32 +53,49 @@ const menuItems = computed(() => {
             label: "Delete",
             icon: "Trash",
             color: "#F04438",
-             command: () => emit("delete", currentRow.value)
+            command: () => emit("delete", currentRow.value)
         });
     }
 
     if (props.customItems.length) {
         props.customItems.forEach(item => {
             items.push({
-                ...item,
-                command: () => item.command?.(currentRow.value)
+                label: item.label,
+                icon: item.icon,
+                color: item.color,
+                slot: item.slot,
+                changeStatus: item.changeStatus,
+                command: () => {
+                    emit("custom", {
+                        action: item.action,
+                        data: currentRow.value
+                    });
+                }
             });
+
         });
     }
-    
+
+
     return items;
 });
 </script>
 
 <template>
     <Menu ref="menu" :model="menuItems" popup>
-        <template #item="{ item }">
-            <a class="p-menuitem-link flex items-center gap-2 py-2 px-3">
-                <VsxIcon :iconName="item.icon" :size="20" :color="item.color" type="linear" />
-                <span>{{ item.label }}</span>
+        <template #item="{ item, props }">
+            <!-- Toggle -->
+            <div v-if="item.changeStatus" class="flex items-center px-3 py-2 cursor-pointer" @click.stop="item.command">
+                <ToggleSwitch v-model="item.modelValue" />
+                <span class="ml-2">{{ item.label }}</span>
+            </div>
+            <a v-else class="flex items-center px-3 py-2 cursor-pointer" @click="item.command">
+                <VsxIcon :iconName="item.icon" :size="20" :color="item.color" />
+                <span class="ml-2">{{ item.label }}</span>
             </a>
         </template>
     </Menu>
+
 </template>
 
 <style scoped>

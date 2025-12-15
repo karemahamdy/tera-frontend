@@ -36,7 +36,17 @@ const props = defineProps({
     ],
   },
 });
-
+const customItems = [
+  {
+    slot: true,
+    label: "View",
+    icon: "Eye",
+    color: "#3F5FAC",
+    command: (row) => {
+      console.log("toggle", row);
+    },
+  },
+];
 const emit = defineEmits(["search", "action-menu-click"]);
 
 const { onSearch, filteredData } = useSearch(props.data);
@@ -113,6 +123,7 @@ const addNew = () => {
           :data="filteredData"
           :loading="loading"
           :permissionItems="permissionItems"
+          :customItems="customItems"
           @action-menu-click="handleActionMenu"
           :showDelete="true"
         >

@@ -289,7 +289,7 @@ const onPermissionClick = (data) => {
 
         <!-- DynamicTable component -->
         <template #content>
-            <DynamicTable :columns="columns" :data="filteredData" :paginator="paginator" :rows="rows" :loading="loading" 
+            <DynamicTable :columns="columns" :data="filteredData" :paginator="paginator" :rows="rows" :loading="loading"
                 :rowsPerPageOptions="[5, 10, 20, 50]" :menuItems="menuItems" :getStatusBadge="getStatusBadge" :permissionItems="permissionItems"
                 :getStatusText="getStatusText" @action-menu-click="(payload) => emit('action-menu-click', payload)">
                 <template #col-slot="{ data }">
