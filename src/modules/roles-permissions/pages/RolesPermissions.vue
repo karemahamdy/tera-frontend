@@ -111,7 +111,7 @@ const addNew = () => {
           :showImport="false"
           :mainBtn="true"
           mainBtnText="roles.addRole"
-          :searchPlaceholder="$t('roles.searchPlaceholder')"
+          searchPlaceholder="roles.searchPlaceholder"
           @search="onSearch"
           :onMainBtnClick="addNew"
         />

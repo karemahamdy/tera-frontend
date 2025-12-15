@@ -25,7 +25,9 @@
     "submit": "إرسال",
     "search": "بحث",
     "reset": "إعادة تعيين",
-    "create": "إنشاء"
+    "create": "إنشاء",
+    "new": "جديد",
+    "active": "نشط"
   },
   "table": {
     "description": "الوصف",
@@ -77,6 +79,7 @@
     "created": "تم الإنشاء",
     "addUserGroup": "إضافة مجموعة مستخدمين",
     "searchPlaceholder": "ابحث عن مجموعة المستخدمين...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذة المجموعة ",
     "userGroup": "مجموعة المستخدمين",
     "userGroupDescription": "نظم المستخدمين في مجموعات و بتعيين الأدوار لهم",
     "AssignRolesToUserGroup":"تعيين الأدوار إلى مجموعة المستخدمين",
@@ -89,6 +92,7 @@
   },
   "roles": {
     "roleName": "اسم الدور",
+    "roles": "ألدور",
     "accessScope": "نطاق الوصول",
     "branches": "الفروع",
     "addNewRole": "إضافة أدوار جديدة",
@@ -104,6 +108,9 @@
     "updateRoleInfo": "تحديث الدور بصلاحيات مخصصة.",
     "descriptionPlaceholder": "وصف الغرض من هذا الدور..",
     "createRole": "إنشاء دور",
-    "moduleScreen": "الوحدة / الشاشة"
+    "moduleScreen": "الوحدة / الشاشة",
+    "assignRole": "تعيين الدور",
+    "branchSpecific":"الوصول مقتصر على الفرع المحدد فقط",
+    "globalAccess":"الوصول إلى جميع الفروع"
   }
 }

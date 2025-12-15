@@ -26,7 +26,9 @@
     "search": "Search",
     "reset": "Reset",
     "assign": "Assign",
-    "create": "Create"
+    "create": "Create",
+    "new": "New",
+    "active": "Active"
   },
   "table": {
     "description": "Description",
@@ -78,6 +80,7 @@
     "addUserGroup": "Add User Group",
     "created": "Created",
     "searchPlaceholder": "Search for user groups...",
+    "deleteRoleConfirm": "Are you sure you want to delete this Group ?",
     "userGroup": "User Group",
     "userGroupDescription": "Organize users into groups and assign roles",
     "AssignRolesToUserGroup": "Assign Roles to User group",
@@ -90,6 +93,7 @@
   },
   "roles": {
     "roleName": "Role Name",
+     "roles": "Roles",
     "accessScope": "Access scope",
     "branches": "Branches",
     "addNewRole": "Add New Role",
@@ -105,6 +109,9 @@
     "updateRoleInfo": "Update the role with custom permissions.",
     "descriptionPlaceholder": "Describe what this role is for..",
     "createRole": "Create Role",
-    "moduleScreen": "Module / Screen"
+    "moduleScreen": "Module / Screen",
+    "assignRole": "Assign role",
+    "branchSpecific": "Branch-Specific Access /Limited to assigned branch only",
+    "globalAccess": "Global Access  /access to all branches"
   }
 }

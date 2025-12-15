@@ -15,11 +15,7 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader
-      title="accessControl"
-      subtitle="usersManagement.usersManagement"
-      actionName="Assign role"
-    />
+    <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" actionName="Assign role" />
     <card class="bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col mb-4 pt-4 px-20">
@@ -38,26 +34,17 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
               <label class="text-gray-700 font-bold">{{
                 $t("usersManagement.user")
               }}</label>
-              <InputText
-                v-model="name"
-                autocomplete="username"
-                placeholder=""
+              <InputText v-model="name" autocomplete="username" placeholder=""
                 class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
-                style="background-color: var(--color-gray-100)"
-              />
+                style="background-color: var(--color-gray-100)" />
             </div>
             <div>
               <label class="text-gray-700 font-bold">{{
                 $t("roles.roleName")
               }}</label>
 
-              <Dropdown
-                v-model="selectedOption"
-                :options="options"
-                optionLabel="label"
-                :placeholder="$t('select roles')"
-                class="w-full mt-1"
-              />
+              <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
+                :placeholder="$t('select roles')" class="w-full mt-1" />
             </div>
 
             <div class="flex flex-col gap-4 w-full">
@@ -67,25 +54,15 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
               }}</label>
               <div
                 class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer hover:border-primary-300 transition"
-                :class="
-                  accessScope === 'global'
+                :class="accessScope === 'global'
                     ? 'border-primary-400 bg-primary-25'
                     : 'border-gray-300'
-                "
-                @click="accessScope = 'global'"
-              >
+                  " @click="accessScope = 'global'">
                 <div class="flex items-center gap-3">
-                  <RadioButton
-                    inputId="global"
-                    name="access"
-                    value="global"
-                    v-model="accessScope"
-                  />
+                  <RadioButton inputId="global" name="access" value="global" v-model="accessScope" />
                   <div class="flex flex-col">
-                    <label class="font-medium text-gray-500 cursor-pointer"
-                      >Global Access /access to all branches</label
-                    >
-                    <!-- <span class="text-gray-500 text-sm">Access to all branches</span> -->
+                    <label class="font-medium text-gray-800 cursor-pointer">{{ $t("roles.globalAccess") }}</label>
+
                   </div>
                 </div>
               </div>
@@ -93,53 +70,31 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
               <!-- Branch-Specific -->
               <div
                 class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer hover:border-primary-300 transition"
-                :class="
-                  accessScope === 'branch'
+                :class="accessScope === 'branch'
                     ? 'border-primary-400 bg-primary-25'
                     : 'border-gray-300'
-                "
-                @click="accessScope = 'branch'"
-              >
+                  " @click="accessScope = 'branch'">
                 <div class="flex items-center gap-3">
-                  <RadioButton
-                    inputId="branch"
-                    name="access"
-                    value="branch"
-                    v-model="accessScope"
-                  />
+                  <RadioButton inputId="branch" name="access" value="branch" v-model="accessScope" />
                   <div class="flex flex-col">
-                    <label class="font-medium text-gray-800 cursor-pointer"
-                      >Branch-Specific Access /Limited to assigned branch
-                      only</label
-                    >
-                    <!-- <span class="text-gray-500 text-sm">Limited to assigned branch only</span> -->
+                    <label class="font-medium text-gray-800 cursor-pointer">{{ $t("roles.branchSpecific") }}</label>
+
                   </div>
                 </div>
               </div>
             </div>
 
             <div>
-              <label class="text-gray-700 font-bold">{{ $t("Roles") }}</label>
-
-              <Dropdown
-                v-model="selectedOption"
-                :options="options"
-                optionLabel="label"
-                :placeholder="$t('select roles')"
-                class="w-full mt-1"
-              />
+              <label class="text-gray-700 font-bold"> {{$t("roles.roles")}}</label>
+              <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
+                :placeholder="$t('select roles')" class="w-full mt-1" />
             </div>
           </form>
         </div>
       </template>
       <template #footer>
         <div class="flex justify-between gap-4 mb-4 container px-20">
-          <BaseButton
-            label="cancel"
-            variant="ghost"
-            block
-            :to="{ name: 'UserManagement' }"
-          />
+          <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
           <BaseButton label="Assign" variant="primary" block />
         </div>
       </template>
