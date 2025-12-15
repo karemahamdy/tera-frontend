@@ -34,7 +34,7 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
               <label class="text-gray-700 font-bold">{{
                 $t("usersManagement.user")
               }}</label>
-              <InputText v-model="name" autocomplete="username" placeholder=""
+              <InputText v-model="name" autocomplete="username" placeholder="Finance Team"
                 class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
                 style="background-color: var(--color-gray-100)" />
             </div>

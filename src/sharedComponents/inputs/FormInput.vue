@@ -4,6 +4,7 @@ defineProps<{
   modelValue: string;
   type?: string;
   error?: string;
+   placeholder?: string;
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -18,6 +19,7 @@ defineEmits(["update:modelValue"]);
       class="w-full p-3 border rounded-lg bg-gray-50"
       :class="error ? 'border-red-500' : 'border-gray-300'"
       :modelValue="modelValue"
+       :placeholder="placeholder"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
