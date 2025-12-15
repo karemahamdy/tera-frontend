@@ -4,6 +4,7 @@ import ar from '@/app/locales/ar.json';
 
 export const i18n = createI18n({
   legacy: false, // use Composition API
+  globalInjection: true,
   locale: 'en', // default language
   fallbackLocale: 'en',
   messages: {

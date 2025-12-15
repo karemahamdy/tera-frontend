@@ -78,15 +78,32 @@ html {
 }
 
 body {
-  /* color: white !important; */
+  color: white !important;
   font-family: 'Inter', sans-serif !important;
 }
+
+.heading-section {
+  @apply flex justify-between items-start
+}
+
+.screen-header-name {
+  @apply text-base font-medium  text-gray-700 ;
+}
+
 .heading-title {
   @apply text-lg font-bold  text-gray-700 ;
 }
 
 .subheading-title {
   @apply text-base font-normal text-gray-500 mb-4;
+}
+
+.dialog-heading-title {
+  @apply text-2xl font-medium text-primary-500 ;
+}
+
+.dialog-subheading-title {
+  @apply text-base font-light  text-[#4A5565] ;
 }
 
 .p-inputtext,
@@ -134,9 +151,13 @@ body {
 }
 
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
-  color: white !important;
+  color: var(--color-primary-500) !important;
 }
 
+.p-checkbox-checked .p-checkbox-box {
+  border-color: var(--color-primary-500) !important;
+  background: transparent !important;
+}
 
 .p-checkbox-label {
     color: black !important;
@@ -151,3 +172,5 @@ body {
 .p-toggleswitch .p-toggleswitch-slider {
     border-radius: 20px;
 }
+
+

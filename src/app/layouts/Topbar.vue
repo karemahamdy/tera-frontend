@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useI18n } from "vue-i18n";
-const { locale } = useI18n();
+import { useUserStore } from '@/app/store/useUserStore';
+const userStore = useUserStore();
 
 // Props
-const props = defineProps<{
+defineProps<{
   collapsed: boolean;
 }>();
 
@@ -16,9 +16,15 @@ const emit = defineEmits<{
 // State
 const q = ref("");
 
-// Change language dynamically
+const options = [
+  { label: "Option 1", value: 1 },
+  { label: "Option 2", value: 2 },
+  { label: "Option 3", value: 3 },
+];
+const selectedOption = ref<number | null>(null);
+// Change language via store so it persists and updates document attributes
 function switchLanguage() {
-  locale.value = locale.value === "en" ? "ar" : "en";
+  userStore.toggleLang();
 }
 </script>
 <template>
@@ -34,6 +40,14 @@ function switchLanguage() {
       </div>
 
       <div class="flex items-center gap-3">
+        <Dropdown
+            v-model="selectedOption"
+            :options="options"
+            optionLabel="label"
+            :placeholder="$t('Select Branches')"
+            class="w-48"
+          />
+
         <button class="p-2 text-gray-500 cursor-pointer" @click="switchLanguage">
           <VsxIcon iconName="Translate" :size="24" type="linear" />
         </button>

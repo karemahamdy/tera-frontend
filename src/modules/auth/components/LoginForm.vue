@@ -12,13 +12,12 @@ const options = [
   { label: "Option 3", value: 3 },
 ];
 
-import { useI18n } from "vue-i18n";
+import { useUserStore } from '@/app/store/useUserStore';
+const userStore = useUserStore();
 
-const { t, locale } = useI18n();
-
-// Change language dynamically
+// Change language via store so it persists and updates document attributes
 function switchLanguage() {
-  locale.value = locale.value === 'en' ? 'ar' : 'en';
+  userStore.toggleLang();
 }
 </script>
 

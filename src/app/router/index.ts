@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+// import { useUserStore } from "@/app/store/useUserStore";
 import { authRoutes } from "@/modules/auth/routes.ts";
 import { homeRoutes } from "@/modules/home/routes.ts";
-import { useUserStore } from "@/app/store/useUserStore";
-
-const defaultTitle = "Tera ERP";
+import { userGroupRoutes } from "@/modules/user-group/routes";
+import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
+import { userManagementRoutes } from "@/modules/user-management/routes";
+import { notFoundRoutes } from "@/modules/not-found/routes";
+// const defaultTitle = "Tera ERP";
 
 const routes = [
   ...authRoutes,
@@ -15,20 +18,18 @@ const routes = [
     meta: { requiresAuth: true, permission: null },
     children: [
       ...homeRoutes,
+      ...userManagementRoutes,
+       ...userGroupRoutes,
+       ...rolesPermissionsRoutes,
       {
         path: "",
-        component: () => import("@/components/HelloWorld.vue"),
+        component: () => import("@/sharedComponents/HelloWorld.vue"),
         name: "Dashboard",
         meta: { permission: null },
       },
-      {
-         path: "/system",
-        component: () => import("@/components/System.vue"),
-        name: "System",
-        meta: { permission: null },
-      }
     ],
   },
+  ...notFoundRoutes,
 ];
 
 const router = createRouter({
