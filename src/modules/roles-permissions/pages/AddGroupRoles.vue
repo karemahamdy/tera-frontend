@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
-
 import { useForm } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
 
-/* dropdown options */
 const options = [
   { label: "Admin", value: "admin" },
   { label: "Editor", value: "editor" },
   { label: "Viewer", value: "viewer" },
 ];
 
-/* vee-validate */
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: assignRolesSchema,
   initialValues: {
@@ -23,15 +20,13 @@ const { handleSubmit, errors, defineField } = useForm({
   },
 });
 
-/* fields */
 const [name] = defineField("name");
 const [role] = defineField("role");
 const [roles] = defineField("roles");
 const [accessScope] = defineField("accessScope");
 
-/* submit */
 const onSubmit = handleSubmit((values) => {
-  console.log("Assign Roles Payload 👉", values);
+  console.log("Assign Roles Payload", values);
 });
 </script>
 

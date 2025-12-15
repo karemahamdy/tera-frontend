@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const assignRolesSchema = yup.object({
   name: yup
     .string()
-    .required("User group is required")
+    .required("this field is required")
     .min(3, "Minimum 3 characters"),
 
   role: yup
