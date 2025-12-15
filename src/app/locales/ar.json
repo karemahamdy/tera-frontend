@@ -107,6 +107,11 @@
     "updateRoleInfo": "تحديث الدور بصلاحيات مخصصة.",
     "descriptionPlaceholder": "وصف الغرض من هذا الدور..",
     "createRole": "إنشاء دور",
-    "moduleScreen": "الوحدة / الشاشة"
+    "moduleScreen": "الوحدة / الشاشة",
+    "systemAdministrator": "مسؤول النظام",
+    "viewInfo": "هذه هي الأذونات التي قمت بتحديدها. راجعها على اليسار.",
+    "searchViewPlaceholder": "ابحث عن وحدة أو شاشة...",
+    "noData": "لا يوجد داتا",
+    "adjustingSearch": "حاول تعديل البحث"
   }
 }
