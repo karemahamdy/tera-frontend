@@ -39,7 +39,7 @@ const props = defineProps({
 const customItems = [
   {
     slot: true,
-    label: "View",
+    label:t("button.view"),
     icon: "Eye",
     color: "#3F5FAC",
     command: (row) => {
