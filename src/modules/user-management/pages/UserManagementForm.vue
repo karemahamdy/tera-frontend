@@ -78,16 +78,16 @@ const handleSubmit = () => {
                             v-model="form.confirmPassword" />
                     </div>
 
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <ToggleItem title="Account Type" label="Is Admin" v-model="form.isAdmin" />
+                        <ToggleItem title="Account Status" label="Active" v-model="form.isActive" />
+                    </div>
+
                     <div class="flex gap-8">
                         <FormDropdown class="w-1/2" :label="$t('usersManagement.department')" :options="options"
                             v-model="form.department" />
                         <FormDropdown class="w-1/2" :label="$t('userGroup.userGroup')" :options="options"
                             v-model="form.group" />
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <ToggleItem title="Account Type" label="Is Admin" v-model="form.isAdmin" />
-                        <ToggleItem title="Account Status" label="Active" v-model="form.isActive" />
                     </div>
 
                     <div class="flex gap-8">

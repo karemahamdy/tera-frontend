@@ -10,11 +10,13 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
 import { useFilters } from "@/composables/useFilters";
+import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 
 const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);
 const showDeleteDialog = ref(false);
+const showDialog = ref(false);
 const rowToDelete = ref<any>(null);
 
 const props = defineProps({
@@ -65,6 +67,23 @@ const permissionItems = [
             router.push(`/roles-permissions/list-user-roles/${row.id}`);
         }
     }
+];
+const customItems = [
+    {
+        label: "Reset Password",
+        icon: "PasswordCheck",
+        color: "#027A48",
+        slot: true,
+        action: "resetPassword"
+    },
+    {
+        slot: true,
+        changeStatus: true,
+        label: "Active",
+        command: (row: any) => {
+            console.log("toggle", row);
+        }
+    },
 ];
 
 const filtersOperation = [
@@ -141,7 +160,6 @@ const tableData = computed(() => {
     if (hasActiveFilter) {
         return filteredByFilters.value;
     }
-
     return props.data;
 });
 
@@ -150,8 +168,15 @@ const confirmDelete = (row: any) => {
     showDeleteDialog.value = true;
 };
 
+const showResetDialog = (row: any) => {
+    rowToDelete.value = row;
+    showDialog.value = true;
+};
+
 const handleActionMenu = ({ action, data }: any) => {
     if (action === "delete") confirmDelete(data);
+    if (action === "resetPassword") showResetDialog(data);
+
 };
 
 const handleDeleteConfirm = () => {
@@ -179,7 +204,14 @@ const addUserGroup = () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="tableData" :loading="loading" :permissionItems="permissionItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" />
+                    :customItems="customItems" :showDelete="true" @action-menu-click="handleActionMenu">
+                    <template #menu-item="{ item, row }">
+                        <div v-if="item.changeStatus" class="flex items-center gap-2 px-3 py-2">
+                            <ToggleSwitch v-model="row.status" />
+                            <span>{{ item.label }}</span>
+                        </div>
+                    </template>
+                </DynamicTable>
             </template>
         </card>
 
@@ -188,7 +220,7 @@ const addUserGroup = () => {
                 { label: 'Cancel', variant: 'ghost', action: 'cancel' },
                 { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
             ]" @confirm="handleDeleteConfirm" />
-
+        <ChangePassword v-model:visible="showDialog" />
     </div>
 </template>
 

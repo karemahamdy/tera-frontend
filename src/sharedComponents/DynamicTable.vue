@@ -2,7 +2,6 @@
 import { ref, computed } from "vue";
 import ActionMenu from './ActionMenu.vue';
 
-
 const props = defineProps({
     columns: { type: Array, default: () => [] },
     data: { type: Array, default: () => [] },
@@ -11,10 +10,11 @@ const props = defineProps({
     loading: { type: Boolean, default: false },
     rowsPerPageOptions: { type: Array, default: () => [5, 10, 20, 50] },
     menuItems: { type: Array, default: () => [] },
+    customItems: { type: Array, default: () => [] },
     permissionItems: { type: Array, default: () => [] },
     getStatusBadge: { type: Function, default: null },
     getStatusText: { type: Function, default: null },
-    
+
 });
 
 const emit = defineEmits(["action-menu-click"]);
@@ -22,18 +22,17 @@ const menu = ref(null);
 const permissionMenu = ref(null);
 const permissionRow = ref(null);
 
-const permissionItems = computed(() =>  {  return props.permissionItems.map(item => ({
+const permissionItems = computed(() => {
+    return props.permissionItems.map(item => ({
         ...item,
-        command: () => item.command(permissionRow.value)  
+        command: () => item.command(permissionRow.value)
     }))
 });
-
 
 const togglePermissionMenu = (event, row) => {
     permissionRow.value = row;
     if (permissionMenu.value) permissionMenu.value.toggle(event);
 };
-
 
 const toggleMenu = (event, row) => {
     if (menu.value && menu.value.toggle) {
@@ -82,7 +81,6 @@ const getStatusText = (status) => {
                             <div class="text-sm text-gray-500">{{ slotProps.data.email }}</div>
                         </div>
                     </div>
-
                     <!-- Tag -->
                     <Tag v-else-if="col.type === 'tag'" :value="slotProps.data[col.field]" :class="col.Class" />
                     <!-- badge -->
@@ -95,7 +93,6 @@ const getStatusText = (status) => {
                             {{ slotProps.data.status }}
                         </span>
                     </div>
-
                     <!-- Permission Icon -->
                     <Button v-else-if="col.field === 'permission'" text rounded class="permission-btn"
                         @click="togglePermissionMenu($event, slotProps.data)">
@@ -103,8 +100,6 @@ const getStatusText = (status) => {
                             <VsxIcon iconName="ShieldSecurity" :size="24" color="#3F5FAC" type="linear" />
                         </template>
                     </Button>
-
-
                     <!-- Action Column -->
                     <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
                         @click="toggleMenu($event, slotProps.data)" class="action-btn" />
@@ -122,29 +117,17 @@ const getStatusText = (status) => {
                 <span>{{ item.label }}</span>
             </a>
         </template></Menu>
-    <ActionMenu ref="menu" :showEdit="true" :showView="true" :showDelete="true" :showPermission="true" showReset="true"
-        :customItems="menuItems" @edit="row => emit('action-menu-click', { action: 'edit', data: row })"
-        @view="row => emit('action-menu-click', { action: 'view', data: row })"
-        @delete="row => emit('action-menu-click', { action: 'delete', data: row })"
-        @permission="row => emit('action-menu-click', { action: 'permission', data: row })" >
-         <template #item="{ item, props }">
 
-            <!-- Custom Toggle Item -->
-            <div v-if="item.changeStatus" class="flex items-center px-3 py-2 cursor-pointer"
-                @click.stop="item.command && item.command()">
-                <ToggleSwitch v-model="selectedRow.isActive" />
-                <span class="ml-2">{{ item.label }}</span>
-            </div>
-
-            <!-- Normal Menu Items -->
-            <a v-else v-ripple class="flex items-center px-3 py-2 cursor-pointer" @click="item.command"
-                v-bind="props.action">
-                <span :class="item.icon" />
-                <span class="ml-2">{{ item.label }}</span>
-            </a>
+    <ActionMenu ref="menu" :showView="true" :showEdit="true" :showDelete="true" :customItems="customItems"
+        @view="row => emit('action-menu-click', { action: 'view', row })"
+        @edit="row => emit('action-menu-click', { action: 'edit', row })"
+        @delete="row => emit('action-menu-click', { action: 'delete', row })"
+        @resetPassword="row => emit('action-menu-click', { action: 'resetPassword', row })"
+        @custom="payload => emit('action-menu-click', payload)">
+        <template #item="{ item, row }">
+            <slot name="menu-item" :item="item" :row="row" />
         </template>
-        </ActionMenu>
-
+    </ActionMenu>
 
 </template>
 
