@@ -29,6 +29,7 @@
     "submit": "إرسال",
     "search": "بحث",
     "reset": "إعادة تعيين",
+    "assign": "تعيين",
     "create": "إنشاء",
     "new": "جديد",
     "active": "نشط",
@@ -61,6 +62,8 @@
   "usersManagement": {
     "usersManagement": "مجموعة المستخدمين",
     "usersManagementDesc":"إدارة حسابات المستخدمين وعرض جميع معلومات المستخدم",
+    "searchPlaceholder": "ابحث عن مستخدم...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف المستخدم ",
     "addUser": "اضافة مستخدم",
     "user": "المستخدم",
     "department": "القسم",
@@ -70,8 +73,6 @@
     "allScopes": "كل النطاق",
     "allDepartment":  "كل الاقسام",
     "assignRoleToUser": "تعيين الأدوار إلى المستخدمين",
-    "searchPlaceholder": "ابحث عن مستخدم...",
-    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف المستخدم ",
     "assignRoleToUserDesc": "أضف أدوارًا للمستخدمين وقم بإدارة الصلاحيات الممنوحة لهم.",
     "addNewUserManagement":"اضافة مستخدم",
     "editUserManagement":"تعديل بيانات المستخدم",
@@ -161,14 +162,18 @@
     "searchPlaceholder": "ابحث عن الجلسات حسب المستخدم أو عنوان IP أو الفرع..."
   },  
   "branch": {
-    "addBranch": "اضافة فرع",
-    "branchName": "الفروع",
-    "branchDescription": "إدارة فروع ومواقع المنظمة",
-    "searchPlaceholder": "ابحث عن ألفروع...",
+    "addBranch": "إضافة فرع",
+    "branchName": "إدارة الفروع",
+    "branchDescription": "إدارة فروع ومواقع المؤسسة",
+    "searchPlaceholder": "البحث عن الفروع...",
     "address": "العنوان",
-    "code": "الكود",
-    "deleteBranchConfirm": "هل أنت متأكد أنك تريد حذف هذا الفرع",
-    "descriptionPlaceholder": "وصف الغرض من هذا الفرع.. ",
-    "createGroup": "إنشاء فرع"
+    "code": "الرمز",
+    "deleteBranchConfirm": "هل أنت متأكد أنك تريد حذف هذا الفرع؟",
+    "addNewBranch": "إضافة فرع جديد",
+    "userBranchInfo": "إدارة معلومات الفرع وتفاصيل الموقع.",
+    "descriptionPlaceholder": "صف الغرض من هذا الفرع..",
+    "createBranch": "إنشاء فرع",
+    "branchCode": "كود الفرع",
+    "branchStatus": "حالة الفرع"
   }
 }
