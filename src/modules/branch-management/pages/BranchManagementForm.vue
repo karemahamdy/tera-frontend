@@ -5,6 +5,8 @@ import { useRoute } from "vue-router";
 
 import { useForm } from "vee-validate";
 import { branchFormSchema } from "../validation/BranchSchema";
+import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
+import FormInput from "@/sharedComponents/inputs/FormInput.vue";
 
 const props = defineProps<{
   mode: "edit" | "create";
@@ -27,6 +29,13 @@ const { handleSubmit, errors, defineField } = useForm({
 
 const [groupName] = defineField("groupName");
 const [description] = defineField("description");
+
+const options = [
+  { label: "Admin", value: "admin" },
+  { label: "Editor", value: "editor" },
+  { label: "Viewer", value: "viewer" },
+];
+
 const onSubmit = handleSubmit((values) => {
   console.log(route);
   console.log("Form Values", values);
@@ -35,16 +44,16 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <div>
-    <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" />
+    <ScreenHeader title="accessControl" subtitle="branch.branchName" />
 
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">
           <h2 class="heading-title">
-            {{ editMode ? $t("userGroup.editUserGroup") : $t("userGroup.addNewUserGroup") }}
+            {{ editMode ? $t("branch.editUserGroup") : $t("branch.addNewBranch") }}
           </h2>
           <p class="subheading-title">
-            {{ $t("userGroup.userGroupInfo") }}
+            {{ $t("branch.userBranchInfo") }}
           </p>
         </div>
       </template>
@@ -53,7 +62,7 @@ const onSubmit = handleSubmit((values) => {
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
           <div>
             <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("userGroup.groupName") }}
+              {{ $t("branch.branchName") }}
             </label>
 
             <InputText v-model="groupName" placeholder="e.g., Finance Team" class="mt-1 w-full p-3 border rounded-lg"
@@ -65,10 +74,10 @@ const onSubmit = handleSubmit((values) => {
           </div>
           <div>
             <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("userGroup.description") }}
+              {{ $t("branch.address") }}
             </label>
 
-            <Textarea v-model="description" :placeholder="$t('userGroup.descriptionPlaceholder')"
+            <Textarea v-model="description" :placeholder="$t('branch.descriptionPlaceholder')"
               class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.description }" />
 
             <small v-if="errors.description" class="text-danger-500">
@@ -76,10 +85,19 @@ const onSubmit = handleSubmit((values) => {
             </small>
           </div>
 
+          <div class="flex gap-8">
+            <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="description"
+              :error="errors.description" placeholder="Enter full name" />
+
+            <FormDropdown class="w-1/2" :label="$t('branch.branchStatus')" :options="options" v-model="description"
+              :error="errors.description" placeholder="Finance Team" />
+
+          </div>
+
           <div class="flex justify-between gap-4 mb-4 w-full">
             <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
 
-            <BaseButton type="submit" :label="editMode ? 'button.save' : 'userGroup.createGroup'" variant="primary"
+            <BaseButton type="submit" :label="editMode ? 'button.save' : 'branch.createBranch'" variant="primary"
               block />
           </div>
 

@@ -116,7 +116,7 @@ const addBranch = () => {
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('branch.deleteRoleConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('branch.deleteBranchConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },

@@ -134,6 +134,9 @@
     "branchDescription": "إدارة فروع ومواقع المنظمة",
     "searchPlaceholder": "ابحث عن ألفروع...",
     "address": "العنوان",
-    "code": "الكود"
+    "code": "الكود",
+    "deleteBranchConfirm": "هل أنت متأكد أنك تريد حذف هذا الفرع",
+    "descriptionPlaceholder": "وصف الغرض من هذا الفرع.. ",
+    "createGroup": "إنشاء فرع"
   }
 }
