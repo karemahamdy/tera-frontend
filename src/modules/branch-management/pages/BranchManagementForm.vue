@@ -22,24 +22,28 @@ const route = useRoute();
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: branchFormSchema,
   initialValues: {
-    groupName: "",
-    description: "",
+    branchName: "",
+    address: "",
+    branchCode: "",
+    branchStatus: "",
   },
 });
 
-const [groupName] = defineField("groupName");
-const [description] = defineField("description");
+const [branchName] = defineField("branchName");
+const [address] = defineField("address");
+const [branchCode] = defineField("branchCode");
+const [branchStatus] = defineField("branchStatus");
 
 const options = [
-  { label: "Admin", value: "admin" },
-  { label: "Editor", value: "editor" },
-  { label: "Viewer", value: "viewer" },
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "inactive" },
 ];
 
 const onSubmit = handleSubmit((values) => {
   console.log(route);
   console.log("Form Values", values);
 });
+
 </script>
 
 <template>
@@ -65,11 +69,11 @@ const onSubmit = handleSubmit((values) => {
               {{ $t("branch.branchName") }}
             </label>
 
-            <InputText v-model="groupName" placeholder="e.g., Finance Team" class="mt-1 w-full p-3 border rounded-lg"
-              :class="{ 'border-danger-500': errors.groupName }" />
+            <InputText v-model="branchName" placeholder="e.g., Finance Team" class="mt-1 w-full p-3 border rounded-lg"
+              :class="{ 'border-danger-500': errors.branchName }" />
 
-            <small v-if="errors.groupName" class="text-danger-500">
-              {{ errors.groupName }}
+            <small v-if="errors.branchName" class="text-danger-500">
+              {{ errors.branchName }}
             </small>
           </div>
           <div>
@@ -77,20 +81,20 @@ const onSubmit = handleSubmit((values) => {
               {{ $t("branch.address") }}
             </label>
 
-            <Textarea v-model="description" :placeholder="$t('branch.descriptionPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.description }" />
+            <Textarea v-model="address" :placeholder="$t('branch.descriptionPlaceholder')"
+              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.address }" />
 
-            <small v-if="errors.description" class="text-danger-500">
-              {{ errors.description }}
+            <small v-if="errors.address" class="text-danger-500">
+              {{ errors.address }}
             </small>
           </div>
 
           <div class="flex gap-8">
-            <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="description"
-              :error="errors.description" placeholder="Enter full name" />
+            <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="branchCode"
+              :error="errors.branchCode" placeholder="Enter full name" />
 
-            <FormDropdown class="w-1/2" :label="$t('branch.branchStatus')" :options="options" v-model="description"
-              :error="errors.description" placeholder="Finance Team" />
+            <FormDropdown class="w-1/2" :label="$t('branch.branchStatus')" :options="options" v-model="branchStatus"
+              :error="errors.branchStatus" placeholder="Finance Team" />
 
           </div>
 
