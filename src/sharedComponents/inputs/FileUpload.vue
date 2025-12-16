@@ -1,114 +1,154 @@
-<script setup>
+
+<script setup lang="ts">
 import { ref } from 'vue';
-import { usePrimeVue } from 'primevue/config';
-import { useToast } from "primevue/usetoast";
 
-const $primevue = usePrimeVue();
+interface FileData {
+  name: string;
+  size: number;
+  type: string;
+}
 
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const selectedFile = ref<FileData | null>(null);
+const dragActive = ref(false);
+const imagePreview = ref<string | null>(null);
 
-const totalSize = ref(0);
-const totalSizePercent = ref(0);
-const files = ref([]);
-
-const onRemoveTemplatingFile = (file, removeFileCallback, index) => {
-    removeFileCallback(index);
-    totalSize.value -= parseInt(formatSize(file.size));
-    totalSizePercent.value = totalSize.value / 10;
+const triggerFileInput = () => {
+  fileInputRef.value?.click();
 };
 
-const onClearTemplatingUpload = (clear) => {
-    clear();
-    totalSize.value = 0;
-    totalSizePercent.value = 0;
+const handleDragEnter = () => {
+  dragActive.value = true;
 };
 
-const onSelectedFiles = (event) => {
-    files.value = event.files;
-    files.value.forEach((file) => {
-        totalSize.value += parseInt(formatSize(file.size));
-    });
+const handleDragLeave = () => {
+  dragActive.value = false;
 };
 
-const uploadEvent = (callback) => {
-    totalSizePercent.value = totalSize.value / 10;
-    callback();
+const handleDragOver = () => {
+  dragActive.value = true;
 };
 
-const onTemplatedUpload = () => {
-    toast.add({ severity: "info", summary: "Success", detail: "File Uploaded", life: 3000 });
+const showImagePreview = (file: File) => {
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imagePreview.value = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    imagePreview.value = null;
+  }
 };
 
-const formatSize = (bytes) => {
-    const k = 1024;
-    const dm = 3;
-    const sizes = $primevue.config.locale.fileSizeTypes;
+const handleDrop = (e: DragEvent) => {
+  dragActive.value = false;
+  
+  if (e.dataTransfer?.files && e.dataTransfer.files[0]) {
+    const file = e.dataTransfer.files[0];
+    selectedFile.value = {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    };
+    showImagePreview(file);
+  }
+};
 
-    if (bytes === 0) {
-        return `0 ${sizes[0]}`;
-    }
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
-
-    return `${formattedSize} ${sizes[i]}`;
+const handleFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  if (target.files && target.files[0]) {
+    const file = target.files[0];
+    selectedFile.value = {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    };
+    showImagePreview(file);
+  }
 };
 </script>
 
 <template>
-    <div class="card">
-       
-        <FileUpload name="demo[]" url="/api/upload" @upload="onTemplatedUpload($event)" :multiple="true" accept="image/*" :maxFileSize="1000000" @select="onSelectedFiles">
-            <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
-                <div class="flex flex-wrap justify-between items-center flex-1 gap-4">
-                    <div class="flex gap-2">
-                        <Button @click="chooseCallback()" icon="pi pi-images" rounded variant="outlined" severity="secondary"></Button>
-                        <Button @click="clearCallback()" icon="pi pi-times" rounded variant="outlined" severity="danger" :disabled="!files || files.length === 0"></Button>
-                    </div>
-                    <ProgressBar :value="totalSizePercent" :showValue="false" class="md:w-20rem h-1 w-full md:ml-auto">
-                        <span class="whitespace-nowrap">{{ totalSize }}B / 1Mb</span>
-                    </ProgressBar>
-                </div>
-            </template>
-            <template #content="{ files, uploadedFiles, removeUploadedFileCallback, removeFileCallback }">
-                <div class="flex flex-col gap-8 pt-4">
-                    <div v-if="files.length > 0">
-                        <h5>Pending</h5>
-                        <div class="flex flex-wrap gap-4">
-                            <div v-for="(file, index) of files" :key="file.name + file.type + file.size" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
-                                <div>
-                                    <img role="presentation" :alt="file.name" :src="file.objectURL" width="100" height="50" />
-                                </div>
-                                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                                <div>{{ formatSize(file.size) }}</div>
-                                <Badge value="Pending" severity="warn" />
-                                <Button icon="pi pi-times" @click="onRemoveTemplatingFile(file, removeFileCallback, index)" variant="outlined" rounded severity="danger" />
-                            </div>
-                        </div>
-                    </div>
+  <div class="bg-white flex items-start justify-start">
+<div class="w-full max-w-2xl">
+      <div class="flex items-start gap-6">
+        <!-- Upload Icon Area -->
+        <div 
+          :class="[
+            'relative flex-shrink-0 w-48 h-48 rounded-3xl flex items-center justify-center transition-colors cursor-pointer overflow-hidden',
+            dragActive ? 'bg-gray-200' : 'bg-gray-100'
+          ]"
+          @dragenter.prevent="handleDragEnter"
+          @dragleave.prevent="handleDragLeave"
+          @dragover.prevent="handleDragOver"
+          @drop.prevent="handleDrop"
+          @click="triggerFileInput"
+        >
+          <input
+            ref="fileInputRef"
+            type="file"
+            class="hidden"
+            @change="handleFileChange"
+            accept=".gpag,.png,.pdf"
+          />
+          
+          <!-- Image Preview (shows on top when available) -->
+          <img 
+            v-if="imagePreview"
+            :src="imagePreview" 
+            alt="Preview" 
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          
+          <div v-else class="relative">
+            <!-- Image Icon -->
+            <div class="w-20 h-20 flex items-center justify-center">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <rect x="8" y="12" width="48" height="40" rx="6" stroke="#9CA3AF" stroke-width="2.5" fill="none"/>
+                <circle cx="22" cy="26" r="5" stroke="#9CA3AF" stroke-width="2.5" fill="none"/>
+                <path d="M12 42 L24 30 L32 38 L42 28 L52 38 L52 46 C52 48.2 50.2 50 48 50 L16 50 C13.8 50 12 48.2 12 46 Z" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="2"/>
+              </svg>
+            </div>
+            
+            <!-- Plus Icon Badge -->
+            <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center border-2 border-gray-300">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#4B5563" stroke-width="2.5">
+                <line x1="8" y1="3" x2="8" y2="13"/>
+                <line x1="3" y1="8" x2="13" y2="8"/>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-                    <div v-if="uploadedFiles.length > 0">
-                        <h5>Completed</h5>
-                        <div class="flex flex-wrap gap-4">
-                            <div v-for="(file, index) of uploadedFiles" :key="file.name + file.type + file.size" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
-                                <div>
-                                    <img role="presentation" :alt="file.name" :src="file.objectURL" width="100" height="50" />
-                                </div>
-                                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                                <div>{{ formatSize(file.size) }}</div>
-                                <Badge value="Completed" class="mt-4" severity="success" />
-                                <Button icon="pi pi-times" @click="removeUploadedFileCallback(index)" variant="outlined" rounded severity="danger" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-            <template #empty>
-                <div class="flex items-center justify-center flex-col">
-                    <i class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color" />
-                    <p class="mt-6 mb-0">Drag and drop files to here to upload.</p>
-                </div>
-            </template>
-        </FileUpload>
+        <!-- Text Content -->
+        <div class="flex-1 pt-4">
+          <div class="flex items-center gap-3 mb-3">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <h3 class="text-xl font-medium text-gray-900">Upload Image</h3>
+          </div>
+          
+          <div class="relative">
+            <p class="text-gray-400 text-base leading-relaxed">
+              GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design
+            </p>
+            
+            <!-- Red Dot -->
+            <div class="absolute -right-8 top-2 w-2 h-2 bg-red-500 rounded-full"></div>
+          </div>
+          
+          <div v-if="selectedFile" class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <p class="text-sm text-green-700">
+              Selected: {{ selectedFile.name }}
+            </p>
+          </div>
+         
+        </div>
+      </div>
     </div>
+  </div>
 </template>
-
