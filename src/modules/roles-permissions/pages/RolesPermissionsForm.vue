@@ -136,7 +136,7 @@ const filteredData = computed(() => {
       </template>
       <template #content>
         <div class="px-20">
-          <div>
+          <div v-if="isView">
             <div
               class="text-gray-500 flex items-center gap-2 border border-gray-300 px-2 rounded-lg"
             >
@@ -144,7 +144,7 @@ const filteredData = computed(() => {
               <InputText
                 v-model="search"
                 :placeholder="$t('roles.searchViewPlaceholder')"
-                class="w-full p-3"
+                class="w-full p-3 search-input"
               />
             </div>
           </div>
@@ -299,7 +299,6 @@ const filteredData = computed(() => {
 .w-content {
   width: calc(100% - 14px);
 }
-
 :deep(.p-inputtext, .p-inputtext:focus) {
   border: 0;
 }

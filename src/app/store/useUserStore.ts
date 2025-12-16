@@ -104,7 +104,11 @@ export const useUserStore = defineStore('user', {
     // LOGIN
     // ------------------------------------
     async login(payload: LoginPayload) {
-      const response = await axiosWrapper.post<UserData>('/Auth/login', payload, {}, false);
+      var data = {
+        ...payload,
+        "entityId": "019b2667-7634-7cfd-b45b-fb553ca88195",
+      }
+      const response = await axiosWrapper.post<UserData>('/Auth/login', data, {}, false);
       const tokens = response.data as AuthTokens;
       this.setTokens(tokens as AuthTokens);
       // await this.fetchUser();
