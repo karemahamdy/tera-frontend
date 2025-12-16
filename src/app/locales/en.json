@@ -128,5 +128,20 @@
     "assignRole": "Assign role",
     "branchSpecific": "Branch-Specific Access /Limited to assigned branch only",
     "globalAccess": "Global Access  /access to all branches"
+  },
+  "auditLog": {
+    "title": "Audit Log",
+    "subtitle": "Track who did what and when",
+    "dateTime": "Date & Time",
+    "user": "User",
+    "action": "Action",
+    "module": "Module",
+    "screen": "Screen",
+    "entity": "Entity",
+    "branch": "Branch",
+    "transactionID": "Transaction ID",
+    "searchPlaceholder": "Search audit log...",
+    "allUsers": "All Users",
+    "allActions": "All Actions"
   }
 }

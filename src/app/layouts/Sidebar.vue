@@ -25,7 +25,7 @@ const navItems: NavItem[] = [
       { label: "Roles Management", route: "/roles-permissions" },
       { label: "Active Sessions", route: "/roles" },
       { label: "Security Settings", route: "/roles" },
-      { label: "Audit Log", route: "/roles" },
+      { label: "Audit Log", route: "/audit-log" },
     ],
   },
 ];

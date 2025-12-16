@@ -127,5 +127,20 @@
     "assignRole": "تعيين الدور",
     "branchSpecific":"الوصول مقتصر على الفرع المحدد فقط",
     "globalAccess":"الوصول إلى جميع الفروع"
+  },
+  "auditLog": {
+    "title": "سجل التدقيق",
+    "subtitle": "تتبع من قام بماذا ومتى",
+    "dateTime": "التاريخ والوقت",
+    "user": "المستخدم",
+    "action": "الإجراء",
+    "module": "الوحدة",
+    "screen": "الشاشة",
+    "entity": "الكيان",
+    "branch": "الفرع",
+    "transactionID": "رقم العملية",
+    "searchPlaceholder": "ابحث عن سجل التدقيق...",
+    "allUsers": "كل المستخدمين",
+    "allActions": "كل الإجرئات"
   }
 }
