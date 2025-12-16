@@ -6,6 +6,7 @@ import { userGroupRoutes } from "@/modules/user-group/routes";
 import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
 import { userManagementRoutes } from "@/modules/user-management/routes";
 import { notFoundRoutes } from "@/modules/not-found/routes";
+import { branchesRoutes } from "@/modules/branch-management/routes";
 // const defaultTitle = "Tera ERP";
 
 const routes = [
@@ -20,6 +21,7 @@ const routes = [
       ...homeRoutes,
       ...userManagementRoutes,
        ...userGroupRoutes,
+       ...branchesRoutes,
        ...rolesPermissionsRoutes,
       {
         path: "",

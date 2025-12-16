@@ -128,5 +128,14 @@
     "assignRole": "Assign role",
     "branchSpecific": "Branch-Specific Access /Limited to assigned branch only",
     "globalAccess": "Global Access  /access to all branches"
+  },
+  "branch": {
+    "addBranch": "Add Branch",
+    "branchName": "Branch Management",
+    "branchDescription": "Manage organizational branches and locations",
+    "searchPlaceholder": "Search branches...",
+    "address": "Address",
+    "code": "Code"
+
   }
 }
