@@ -142,5 +142,22 @@
     "searchPlaceholder": "ابحث عن سجل التدقيق...",
     "allUsers": "كل المستخدمين",
     "allActions": "كل الإجرئات"
+  },
+  "activeSessions": {
+    "title": "الجلسات النشطة",
+    "subtitle": "مراقبة وإدارة جلسات المستخدمين",
+    "allIPAddress": "جميع عناوين IP",
+    "allBranches": "جميع الفروع",
+    "allStatus": "جميع الحالات",
+    "user": "المستخدم",
+    "branch": "الفرع",
+    "ipAddress": "عنوان IP",
+    "device": "الجهاز",
+    "status": "الحالة",
+    "loginTime": "وقت تسجيل الدخول",
+    "lastActivity": "آخر نشاط",
+    "action": "الإجراء",
+    "end": "إنهاء",
+    "searchPlaceholder": "ابحث عن الجلسات حسب المستخدم أو عنوان IP أو الفرع..."
   }
 }

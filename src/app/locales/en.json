@@ -143,5 +143,22 @@
     "searchPlaceholder": "Search audit log...",
     "allUsers": "All Users",
     "allActions": "All Actions"
+  },
+  "activeSessions": {
+    "title": "Active Sessions",
+    "subtitle": "Monitor and manage user sessions",
+    "allIPAddress": "All IP Address",
+    "allBranches": "All Branches",
+    "allStatus": "All Status",
+    "user": "User",
+    "branch": "Branch",
+    "ipAddress": "IP Address",
+    "device": "Device",
+    "status": "Status",
+    "loginTime": "Login Time",
+    "lastActivity": "Last Activity",
+    "action": "Action",
+    "end": "End",
+    "searchPlaceholder": "Search sessions by user, IP, or branch..."
   }
 }

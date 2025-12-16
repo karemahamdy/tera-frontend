@@ -4,8 +4,11 @@ import * as yup from 'yup'
 import { useField, useForm } from 'vee-validate'
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-// const userName = ref<string>("");
-// const password = ref<string>("");
+// import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+// const toast = useToast();
 const rememberMe = ref<boolean>(false);
 const selectedOption = ref<number | null>(null);
 
@@ -29,11 +32,18 @@ const { value: userName, errorMessage: userNameError } = useField<string>("userN
 const { value: password, errorMessage: passwordError } = useField<string>("password");
 
 const onSubmit = handleSubmit(async (values) => {
-  const payload = {
-    userName: values.userName as string,
-    password: values.password as string,
-  };
-  await userStore.login(payload);
+  try {
+    const payload = {
+      userName: values.userName as string,
+      password: values.password as string,
+    };
+    await userStore.login(payload);
+    // toast.add({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
+    router.push({ name: "home" });
+
+  } catch (error) {
+    // toast.add({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+  }
 });
 // Change language via store so it persists and updates document attributes
 function switchLanguage() {

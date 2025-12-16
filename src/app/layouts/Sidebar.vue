@@ -23,7 +23,7 @@ const navItems: NavItem[] = [
       { label: "User Groups", route: "/user-group" },
       { label: "Branch Management", route: "/roles" },
       { label: "Roles Management", route: "/roles-permissions" },
-      { label: "Active Sessions", route: "/roles" },
+      { label: "Active Sessions", route: "/active-sessions" },
       { label: "Security Settings", route: "/roles" },
       { label: "Audit Log", route: "/audit-log" },
     ],
