@@ -127,5 +127,16 @@
     "assignRole": "تعيين الدور",
     "branchSpecific":"الوصول مقتصر على الفرع المحدد فقط",
     "globalAccess":"الوصول إلى جميع الفروع"
+  },
+  "branch": {
+    "addBranch": "اضافة فرع",
+    "branchName": "الفروع",
+    "branchDescription": "إدارة فروع ومواقع المنظمة",
+    "searchPlaceholder": "ابحث عن ألفروع...",
+    "address": "العنوان",
+    "code": "الكود",
+    "deleteBranchConfirm": "هل أنت متأكد أنك تريد حذف هذا الفرع",
+    "descriptionPlaceholder": "وصف الغرض من هذا الفرع.. ",
+    "createGroup": "إنشاء فرع"
   }
 }
