@@ -8,6 +8,7 @@ import { userManagementRoutes } from "@/modules/user-management/routes";
 import { auditLogRoutes } from "@/modules/audit-log/routes";
 import { activeSessionsRoutes } from "@/modules/active-sessions/routes";
 import { notFoundRoutes } from "@/modules/not-found/routes";
+import { branchesRoutes } from "@/modules/branch-management/routes";
 // const defaultTitle = "Tera ERP";
 
 const routes = [
@@ -22,6 +23,7 @@ const routes = [
       ...homeRoutes,
       ...userManagementRoutes,
        ...userGroupRoutes,
+       ...branchesRoutes,
        ...rolesPermissionsRoutes,
        ...auditLogRoutes,
        ...activeSessionsRoutes,

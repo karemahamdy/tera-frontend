@@ -160,5 +160,20 @@
     "action": "Action",
     "end": "End",
     "searchPlaceholder": "Search sessions by user, IP, or branch..."
+  },  
+  "branch": {
+    "addBranch": "Add Branch",
+    "branchName": "Branch Management",
+    "branchDescription": "Manage organizational branches and locations",
+    "searchPlaceholder": "Search branches...",
+    "address": "Address",
+    "code": "Code",
+    "deleteBranchConfirm": "Are you sure you want to delete this Branch ?",
+    "addNewBranch": "Add New Branch",
+    "userBranchInfo": "Manage branch information and location details.",
+    "descriptionPlaceholder": "Describe the purpose of this branch.. ",
+    "createBranch": "Create Branch",
+    "branchCode": "Branch Code",
+    "branchStatus": "Branch Status"
   }
 }

@@ -159,5 +159,16 @@
     "action": "الإجراء",
     "end": "إنهاء",
     "searchPlaceholder": "ابحث عن الجلسات حسب المستخدم أو عنوان IP أو الفرع..."
+  },  
+  "branch": {
+    "addBranch": "اضافة فرع",
+    "branchName": "الفروع",
+    "branchDescription": "إدارة فروع ومواقع المنظمة",
+    "searchPlaceholder": "ابحث عن ألفروع...",
+    "address": "العنوان",
+    "code": "الكود",
+    "deleteBranchConfirm": "هل أنت متأكد أنك تريد حذف هذا الفرع",
+    "descriptionPlaceholder": "وصف الغرض من هذا الفرع.. ",
+    "createGroup": "إنشاء فرع"
   }
 }
