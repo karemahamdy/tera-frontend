@@ -4,6 +4,9 @@ import { i18n } from '@/plugins/i18n';
 import type { User, UserData, LoginPayload, Entity, AuthData } from "@/app/types/user";
 import router from "@/app/router";
 
+// ------------------------------------
+// LANGUAGE HELPER
+// ------------------------------------
 let Lang = (): string => {
   let lang;
   if (localStorage.getItem('lang') === null) {
@@ -22,7 +25,6 @@ let Lang = (): string => {
   }
   if (lang == 'en') {
     document.documentElement.setAttribute('lang', 'en');
-
     document.documentElement.setAttribute('dir', 'ltr');
   } else {
     document.documentElement.setAttribute('lang', 'ar');
@@ -35,10 +37,10 @@ let Lang = (): string => {
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: null as User | null,
-    accessToken: localStorage.getItem('accessToken') || '',
-    refreshToken: localStorage.getItem('refreshToken') || '',
-    rememberMe: localStorage.getItem('rememberMe') || false,
-    isAuthenticated: !!localStorage.getItem('accessToken'),
+    accessToken: localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken') || '',
+    refreshToken: localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken') || '',
+    rememberMe: localStorage.getItem("rememberMe") === "true",
+    isAuthenticated: !!(localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken')),
     lang: Lang() as string,
     entities: [] as Entity[]
   }),
@@ -55,50 +57,35 @@ export const useUserStore = defineStore('user', {
       if (!lang) return;
       this.lang = lang;
       localStorage.setItem('lang', lang);
-      if (lang === 'en') {
-        document.documentElement.setAttribute('lang', 'en');
-        document.documentElement.setAttribute('dir', 'ltr');
-      } else {
-        document.documentElement.setAttribute('lang', lang);
-        document.documentElement.setAttribute('dir', 'rtl');
-      }
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', lang === 'en' ? 'ltr' : 'rtl');
+
       try {
-        // update vue-i18n runtime locale
-        // `i18n.global.locale` is a Ref when using Composition API mode
-        // set to the new language
         // @ts-ignore
         i18n.global.locale.value = lang;
       } catch (e) {
-        // ignore if i18n not available
+        // ignore
       }
     },
 
     toggleLang() {
-      const newLang = this.lang === 'en' ? 'ar' : 'en';
-      this.setLang(newLang);
+      this.setLang(this.lang === 'en' ? 'ar' : 'en');
     },
+
     // ------------------------------------
     // LOGIN
     // ------------------------------------
     async login(payload: LoginPayload) {
-      let data = {
-        ...payload,
-        "isAdminLogin": true
-      }
+      const data = { ...payload, isAdminLogin: true };
       const response = await axiosWrapper.post<UserData>('/Auth/login', data, {}, false);
       const tokens = response.data as AuthData;
-      this.rememberMe = payload.rememberMe
+
+      this.rememberMe = payload.rememberMe;
+      localStorage.setItem("rememberMe", String(payload.rememberMe));
+
       this.setTokens(tokens);
-      // await this.fetchUser(payload);
-    },
-
-    // ------------------------------------
-    // LOAD CURRENT USER
-    // ------------------------------------
-    async fetchUser() {
-      // const user = await axiosWrapper.get<User>('/Users/me');
-      // this.user = user as User;
-
+      // optionally fetch user here
+      // await this.fetchUser();
     },
 
     // ------------------------------------
@@ -106,10 +93,7 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     async refreshTokenAction(): Promise<boolean> {
       try {
-        const tokens = await axiosWrapper.post<AuthData>('/Auth/refresh-token', {
-          refreshToken: this.refreshToken
-        });
-
+        const tokens = await axiosWrapper.post<AuthData>('/Auth/refresh-token', { refreshToken: this.refreshToken });
         this.setTokens(tokens as AuthData);
         return true;
       } catch {
@@ -125,9 +109,13 @@ export const useUserStore = defineStore('user', {
       this.accessToken = tokens.accessToken;
       this.refreshToken = tokens.refreshToken;
       this.isAuthenticated = true;
-      if(this.rememberMe){
+
+      if (this.rememberMe) {
         localStorage.setItem('accessToken', tokens.accessToken);
         localStorage.setItem('refreshToken', tokens.refreshToken);
+      } else {
+        sessionStorage.setItem('accessToken', tokens.accessToken);
+        sessionStorage.setItem('refreshToken', tokens.refreshToken);
       }
     },
 
@@ -140,16 +128,23 @@ export const useUserStore = defineStore('user', {
       this.refreshToken = '';
       this.isAuthenticated = false;
 
+      // Clear both storages
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      
+      localStorage.removeItem('rememberMe');
+
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
+
       router.push({ name: "Login" });
     },
-    
+
+    // ------------------------------------
+    // FETCH ENTITY LOOKUPS
+    // ------------------------------------
     async fetchEntityLookups() {
       const data = await axiosWrapper.get<any>('/EntityLookups');
       this.entities = data.data as Entity[];
     },
-
   }
 });
