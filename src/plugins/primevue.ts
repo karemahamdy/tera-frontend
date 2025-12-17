@@ -28,6 +28,8 @@ import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
 import { FileUpload } from 'primevue';
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
 
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
@@ -39,6 +41,7 @@ export function setupPrimeVue(app: App) {
       },
     },
   });
+  app.use(ToastService);
 
   app.component('Button', Button);
   app.component('InputText', InputText);
@@ -68,4 +71,5 @@ export function setupPrimeVue(app: App) {
   app.component('AccordionHeader', AccordionHeader);
   app.component('AccordionContent', AccordionContent);
   app.component('FileUpload', FileUpload)
+  app.component("Toast", Toast);
 }

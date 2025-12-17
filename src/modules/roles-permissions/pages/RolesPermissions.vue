@@ -36,7 +36,17 @@ const props = defineProps({
     ],
   },
 });
-
+const customItems = [
+  {
+    slot: true,
+    label:t("button.view"),
+    icon: "Eye",
+    color: "#3F5FAC",
+    command: (row) => {
+      router.push({ name: "RolesPermissionsView", params: { row } });
+    },
+  },
+];
 const emit = defineEmits(["search", "action-menu-click"]);
 
 const { onSearch, filteredData } = useSearch(props.data);
@@ -71,9 +81,14 @@ const confirmDelete = (row) => {
 };
 
 const handleActionMenu = ({ action, data }) => {
-  console.log("ActionMenu Data:", data);
   if (action === "delete") {
     confirmDelete(data);
+  } else if (action === "edit") {
+    const id = data.id;
+    router.push({ name: "RolesPermissionsEdit", params: { id } });
+  } else {
+    const id = data.id;
+    router.push({ name: "RolesPermissionsView", params: { id } });
   }
 };
 
@@ -101,7 +116,7 @@ const addNew = () => {
           :showImport="false"
           :mainBtn="true"
           mainBtnText="roles.addRole"
-          :searchPlaceholder="$t('roles.searchPlaceholder')"
+          searchPlaceholder="roles.searchPlaceholder"
           @search="onSearch"
           :onMainBtnClick="addNew"
         />
@@ -113,6 +128,7 @@ const addNew = () => {
           :data="filteredData"
           :loading="loading"
           :permissionItems="permissionItems"
+          :customItems="customItems"
           @action-menu-click="handleActionMenu"
           :showDelete="true"
         >

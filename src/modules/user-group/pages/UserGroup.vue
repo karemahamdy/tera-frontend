@@ -45,7 +45,7 @@ const emit = defineEmits(['search', 'action-menu-click']);
 
 const permissionItems = [
     {
-        label: "New",
+         label:t("button.new"),
         icon: "Star1",
         color: "#12B76A",
         command: (row) => {
@@ -54,7 +54,7 @@ const permissionItems = [
         }
     },
     {
-        label: "view",
+      label:t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
         command: (row) => {
@@ -62,7 +62,16 @@ const permissionItems = [
         }
     }
 ];
-
+const customItems = [
+    {
+        slot: true,
+        changeStatus: true,
+        label: t("button.active"),
+        command: (row) => {
+            console.log("toggle", row);
+        }
+    },
+];
 const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
@@ -72,7 +81,7 @@ const columns = computed(() => {
         { field: 'AssignedRoles', header: t('userGroup.assignedRoles'), sortable: true, type: 'tag', Class: 'custom-tag' },
         { field: 'UserCount', header: t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
         { field: 'Created', header: t('userGroup.created'), sortable: true },
-        { field: 'permission', header: t('permission') }, 
+        { field: 'permission', header: t('permission') },
         { field: 'action', header: t('action') }
     ];
 
@@ -110,13 +119,13 @@ const addUserGroup = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription"
-                    :showExport="true" :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    searchPlaceholder="Search user group..." @search="onSearch" :onMainBtnClick="addUserGroup" />
+                <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription" :showExport="true"
+                    :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
+                    searchPlaceholder="userGroup.searchPlaceholder" @search="onSearch" :onMainBtnClick="addUserGroup" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading"
+                <DynamicTable :columns="columns" :data="filteredData" :loading="loading" :customItems="customItems"
                     :permissionItems="permissionItems" @action-menu-click="handleActionMenu" :showDelete="true">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
@@ -129,11 +138,11 @@ const addUserGroup = () => {
         </card>
 
         <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
-            title="Are you sure you want to delete this Group?" :buttons="[
-                { label: 'Cancel', variant: 'ghost', action: 'cancel' },
-                { label: 'Yes, Delete', variant: 'danger', action: 'confirm' }
+          :title="$t('userGroup.deleteRoleConfirm')" :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
             ]" @confirm="handleDeleteConfirm" />
- 
+
     </div>
 </template>
 

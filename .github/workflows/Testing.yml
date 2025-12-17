@@ -30,8 +30,8 @@ jobs:
 
       - name: Copy Files to Web Server
         run: |
-          sudo rm -rf /var/www/teraerp-admin-testing/html/*
-          sudo cp -r dist/* /var/www/teraerp-admin-testing/html/
+          sudo rm -rf /var/www/vue-app/testing/html/*
+          sudo cp -r dist/* /var/www/vue-app/testing/html/
           
       - name: Reload Nginx
         run: sudo systemctl reload nginx

@@ -12,6 +12,10 @@
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
+    "changePassword": {
+      "title": "تغيير كلمة المرور",
+      "subtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك."
+    },
   "button": {
     "addNew": "إضافة جديد",
     "save": "حفظ",
@@ -25,13 +29,20 @@
     "submit": "إرسال",
     "search": "بحث",
     "reset": "إعادة تعيين",
-    "create": "إنشاء"
+    "assign": "تعيين",
+    "create": "إنشاء",
+    "new": "جديد",
+    "active": "نشط",
+    "resetPassword": "تغيير الرقم السري"
   },
   "table": {
     "description": "الوصف",
     "created": "تاريخ الإنشاء",
     "action": "الإجراء",
     "userAssigned": "المستخدم المعين"
+  },
+  "form": {
+    "fieldRequired": "هذا الحقل مطلوب"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -51,6 +62,8 @@
   "usersManagement": {
     "usersManagement": "مجموعة المستخدمين",
     "usersManagementDesc":"إدارة حسابات المستخدمين وعرض جميع معلومات المستخدم",
+    "searchPlaceholder": "ابحث عن مستخدم...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف المستخدم ",
     "addUser": "اضافة مستخدم",
     "user": "المستخدم",
     "department": "القسم",
@@ -77,6 +90,7 @@
     "created": "تم الإنشاء",
     "addUserGroup": "إضافة مجموعة مستخدمين",
     "searchPlaceholder": "ابحث عن مجموعة المستخدمين...",
+    "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذة المجموعة ",
     "userGroup": "مجموعة المستخدمين",
     "userGroupDescription": "نظم المستخدمين في مجموعات و بتعيين الأدوار لهم",
     "AssignRolesToUserGroup":"تعيين الأدوار إلى مجموعة المستخدمين",
@@ -89,6 +103,7 @@
   },
   "roles": {
     "roleName": "اسم الدور",
+    "roles": "ألدور",
     "accessScope": "نطاق الوصول",
     "branches": "الفروع",
     "addNewRole": "إضافة أدوار جديدة",
@@ -104,6 +119,61 @@
     "updateRoleInfo": "تحديث الدور بصلاحيات مخصصة.",
     "descriptionPlaceholder": "وصف الغرض من هذا الدور..",
     "createRole": "إنشاء دور",
-    "moduleScreen": "الوحدة / الشاشة"
+    "moduleScreen": "الوحدة / الشاشة",
+    "systemAdministrator": "مسؤول النظام",
+    "viewInfo": "هذه هي الأذونات التي قمت بتحديدها. راجعها على اليسار.",
+    "searchViewPlaceholder": "ابحث عن وحدة أو شاشة...",
+    "noData": "لا يوجد داتا",
+    "adjustingSearch": "حاول تعديل البحث",
+    "assignRole": "تعيين الدور",
+    "branchSpecific":"الوصول مقتصر على الفرع المحدد فقط",
+    "globalAccess":"الوصول إلى جميع الفروع"
+  },
+  "auditLog": {
+    "title": "سجل التدقيق",
+    "subtitle": "تتبع من قام بماذا ومتى",
+    "dateTime": "التاريخ والوقت",
+    "user": "المستخدم",
+    "action": "الإجراء",
+    "module": "الوحدة",
+    "screen": "الشاشة",
+    "entity": "الكيان",
+    "branch": "الفرع",
+    "transactionID": "رقم العملية",
+    "searchPlaceholder": "ابحث عن سجل التدقيق...",
+    "allUsers": "كل المستخدمين",
+    "allActions": "كل الإجرئات"
+  },
+  "activeSessions": {
+    "title": "الجلسات النشطة",
+    "subtitle": "مراقبة وإدارة جلسات المستخدمين",
+    "allIPAddress": "جميع عناوين IP",
+    "allBranches": "جميع الفروع",
+    "allStatus": "جميع الحالات",
+    "user": "المستخدم",
+    "branch": "الفرع",
+    "ipAddress": "عنوان IP",
+    "device": "الجهاز",
+    "status": "الحالة",
+    "loginTime": "وقت تسجيل الدخول",
+    "lastActivity": "آخر نشاط",
+    "action": "الإجراء",
+    "end": "إنهاء",
+    "searchPlaceholder": "ابحث عن الجلسات حسب المستخدم أو عنوان IP أو الفرع..."
+  },  
+  "branch": {
+    "addBranch": "إضافة فرع",
+    "branchName": "إدارة الفروع",
+    "branchDescription": "إدارة فروع ومواقع المؤسسة",
+    "searchPlaceholder": "البحث عن الفروع...",
+    "address": "العنوان",
+    "code": "الرمز",
+    "deleteBranchConfirm": "هل أنت متأكد أنك تريد حذف هذا الفرع؟",
+    "addNewBranch": "إضافة فرع جديد",
+    "userBranchInfo": "إدارة معلومات الفرع وتفاصيل الموقع.",
+    "descriptionPlaceholder": "صف الغرض من هذا الفرع..",
+    "createBranch": "إنشاء فرع",
+    "branchCode": "كود الفرع",
+    "branchStatus": "حالة الفرع"
   }
 }

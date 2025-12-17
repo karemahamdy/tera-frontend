@@ -76,7 +76,7 @@ const goToAddRole = () => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" actionName="Assign role"/>
+        <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" actionName="roles.assignRole"/>
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>

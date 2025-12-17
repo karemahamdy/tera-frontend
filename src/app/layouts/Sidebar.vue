@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-// import { useRoute } from "vue-router";
 import type { NavItem } from "src/app/types/navigation";
 import logoImg from "@/assets/Header.svg";
+import { useUserStore } from '@/app/store/useUserStore';
 
 // Props
 defineProps<{
@@ -11,7 +11,8 @@ defineProps<{
 }>();
 
 const router = useRouter();
-// const route = useRoute();
+const userStore = useUserStore();
+
 const logo = logoImg;
 // Navigation items
 const navItems: NavItem[] = [
@@ -21,11 +22,11 @@ const navItems: NavItem[] = [
     children: [
       { label: "Users Management", route: "/user-management" },
       { label: "User Groups", route: "/user-group" },
-      { label: "Branch Management", route: "/roles" },
+      { label: "Branch Management", route: "/branch-management" },
       { label: "Roles Management", route: "/roles-permissions" },
-      { label: "Active Sessions", route: "/roles" },
+      { label: "Active Sessions", route: "/active-sessions" },
       { label: "Security Settings", route: "/roles" },
-      { label: "Audit Log", route: "/roles" },
+      { label: "Audit Log", route: "/audit-log" },
     ],
   },
 ];
@@ -48,7 +49,8 @@ function isOpen(item: NavItem) {
 // }
 
 function logout() {
-  router.push("/auth/login");
+  userStore.logout()
+  // router.push("/auth/login");
 }
 </script>
 
@@ -260,5 +262,8 @@ aside {
   height: 100%;
   border-radius: 4px;
   background-color: var(--color-primary-500);
+}
+button {
+  cursor: pointer;
 }
 </style>

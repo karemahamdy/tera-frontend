@@ -7,15 +7,21 @@ const oldPass = ref("");
 const newPass = ref("");
 const confirmPass = ref("");
 
-const closeDialog = () => visible.value = false;
-const confirmAction = () => console.log("save clicked");
+const emit = defineEmits(["update:visible"]);
+
+const closeDialog = () => {
+  emit("update:visible", false);
+};
+
+const confirmAction = () => {
+  console.log("save clicked");
+  closeDialog();
+};
 </script>
 
 <template>
-  <Button label="Show" @click="visible = true" />
-
-  <BaseDialog v-model:visible="visible" title="Change Password"
-    subtitle="Update your password to keep your account secure." @cancel="closeDialog" @confirm="confirmAction">
+  <BaseDialog v-model:visible="visible"  :title="$t('changePassword.title')"
+  :subtitle="$t('changePassword.subtitle')" @cancel="closeDialog" @confirm="confirmAction">
 
     <form class="space-y-5">
       <div>

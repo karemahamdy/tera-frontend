@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useRoute } from "vue-router";
-
+import { useForm } from "vee-validate";
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
 import FileUpload from "@/sharedComponents/inputs/FileUpload.vue";
 import FormInput from "@/sharedComponents/inputs/FormInput.vue";
 import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
 import ToggleItem from "@/sharedComponents/inputs/ToggleItem.vue";
+import { userSchema } from "../validation/UserSchema";
 
 const props = defineProps<{
     mode: "edit" | "create";
@@ -16,19 +16,33 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const route = useRoute();
 
-const form = ref({
-    id: route.params.id ? String(route.params.id) : null,
-    fullName: "",
-    username: "",
-    email: "",
-    internalId: "",
-    password: "",
-    confirmPassword: "",
-    department: null,
-    group: null,
-    isAdmin: false,
-    isActive: true,
+const { handleSubmit, errors, defineField } = useForm({
+    validationSchema: userSchema,
+    initialValues: {
+        id: route.params.id ? String(route.params.id) : null,
+        fullName: "",
+        username: "",
+        email: "",
+        internalId: "",
+        password: "",
+        confirmPassword: "",
+        department: null,
+        group: null,
+        isAdmin: false,
+        isActive: true,
+    },
 });
+
+const [fullName] = defineField("fullName");
+const [username] = defineField("username");
+const [email] = defineField("email");
+const [internalId] = defineField("internalId");
+const [password] = defineField("password");
+const [confirmPassword] = defineField("confirmPassword");
+const [department] = defineField("department");
+const [group] = defineField("group");
+const [isAdmin] = defineField("isAdmin");
+const [isActive] = defineField("isActive");
 
 const options = [
     { label: "Admin", value: "admin" },
@@ -36,10 +50,11 @@ const options = [
     { label: "Viewer", value: "viewer" },
 ];
 
-const handleSubmit = () => {
-    console.log("submitted", form.value);
-};
+const onSubmit = handleSubmit((values) => {
+    console.log("User payload ", values);
+});
 </script>
+
 
 <template>
     <div>
@@ -59,43 +74,53 @@ const handleSubmit = () => {
             </template>
 
             <template #content>
-                <form @submit.prevent="handleSubmit" class="space-y-6 px-20">
+                <form @submit.prevent="onSubmit" class="space-y-6 px-20">
                     <FileUpload />
 
                     <div class="flex gap-8">
-                        <FormInput class="w-1/2" :label="$t('usersManagement.fullName')" v-model="form.fullName" />
-                        <FormInput class="w-1/2" :label="$t('usersManagement.username')" v-model="form.username" />
+                        <FormInput class="w-1/2" :label="$t('usersManagement.fullName')" v-model="fullName"
+                            :error="errors.fullName" placeholder="Enter full name" />
+
+                        <FormInput class="w-1/2" :label="$t('usersManagement.username')" v-model="username"
+                            :error="errors.username" placeholder="Enter Username" />
                     </div>
 
                     <div class="flex gap-8">
-                        <FormInput class="w-1/2" :label="$t('auth.email')" v-model="form.email" />
-                        <FormInput class="w-1/2" :label="$t('usersManagement.internalID')" v-model="form.internalId" />
+                        <FormInput class="w-1/2" :label="$t('auth.email')" v-model="email" :error="errors.email"
+                            placeholder="user@company.com" />
+
+                        <FormInput class="w-1/2" :label="$t('usersManagement.internalID')" v-model="internalId"
+                            :error="errors.internalId" placeholder="Enter user id" />
                     </div>
 
                     <div class="flex gap-8">
-                        <FormInput class="w-1/2" type="password" :label="$t('auth.password')" v-model="form.password" />
+                        <FormInput class="w-1/2" type="password" :label="$t('auth.password')" v-model="password"
+                            :error="errors.password" placeholder="****" />
+
                         <FormInput class="w-1/2" type="password" :label="$t('auth.confirmPassword')"
-                            v-model="form.confirmPassword" />
+                            v-model="confirmPassword" :error="errors.confirmPassword" placeholder="****" />
                     </div>
 
-                      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <ToggleItem title="Account Type" label="Is Admin" v-model="form.isAdmin" />
-                        <ToggleItem title="Account Status" label="Active" v-model="form.isActive" />
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <ToggleItem title="Account Type" label="Is Admin" v-model="isAdmin" />
+                        <ToggleItem title="Account Status" label="Active" v-model="isActive" />
                     </div>
 
                     <div class="flex gap-8">
                         <FormDropdown class="w-1/2" :label="$t('usersManagement.department')" :options="options"
-                            v-model="form.department" />
+                            v-model="department" :error="errors.department" placeholder="Finance Team" />
+
                         <FormDropdown class="w-1/2" :label="$t('userGroup.userGroup')" :options="options"
-                            v-model="form.group" />
+                            v-model="group" :error="errors.group" placeholder="Finance Team" />
                     </div>
 
                     <div class="flex gap-8">
                         <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
                         <BaseButton :label="editMode ? 'button.save' : 'usersManagement.addUser'" variant="primary"
-                            block />
+                            block type="submit" />
                     </div>
                 </form>
+
             </template>
         </Card>
     </div>
