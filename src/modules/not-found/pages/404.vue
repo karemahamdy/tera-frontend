@@ -6,7 +6,7 @@ import Button from "primevue/button";
 const router = useRouter();
 
 const goHome = () => {
-  router.push({ name: "home" }); // adjust to your home route
+  router.push({ name: "Home" }); // adjust to your home route
 };
 
 const goBack = () => {

@@ -1,34 +1,8 @@
 import { defineStore } from 'pinia';
 import axiosWrapper from '@/app/http/axiosWrapper';
 import { i18n } from '@/plugins/i18n';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  roles: string[]; 
-}
-
-interface UserData {
-  "id": string,
-  "data": {
-    "accessToken": string,
-    "refreshToken": string,
-    "expiresAt": string,
-    "requiresPasswordReset": boolean
-  }
-}
-
-interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-}
-
-interface LoginPayload {
-  userName: string;
-  password: string;
-}
-
+import type { User, UserData, LoginPayload, Entity, AuthData } from "@/app/types/user";
+import router from "@/app/router";
 
 let Lang = (): string => {
   let lang;
@@ -57,13 +31,16 @@ let Lang = (): string => {
   localStorage.setItem('lang', lang);
   return lang;
 };
+
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: null as User | null,
     accessToken: localStorage.getItem('accessToken') || '',
     refreshToken: localStorage.getItem('refreshToken') || '',
+    rememberMe: localStorage.getItem('rememberMe') || false,
     isAuthenticated: !!localStorage.getItem('accessToken'),
-    lang: Lang() as string
+    lang: Lang() as string,
+    entities: [] as Entity[]
   }),
 
   getters: {
@@ -104,22 +81,24 @@ export const useUserStore = defineStore('user', {
     // LOGIN
     // ------------------------------------
     async login(payload: LoginPayload) {
-      var data = {
+      let data = {
         ...payload,
-        "entityId": "019b2667-7634-7cfd-b45b-fb553ca88195",
+        "isAdminLogin": true
       }
       const response = await axiosWrapper.post<UserData>('/Auth/login', data, {}, false);
-      const tokens = response.data as AuthTokens;
-      this.setTokens(tokens as AuthTokens);
-      // await this.fetchUser();
+      const tokens = response.data as AuthData;
+      this.rememberMe = payload.rememberMe
+      this.setTokens(tokens);
+      // await this.fetchUser(payload);
     },
 
     // ------------------------------------
     // LOAD CURRENT USER
     // ------------------------------------
     async fetchUser() {
-      const user = await axiosWrapper.get<User>('/Users/me');
-      this.user = user as User;
+      // const user = await axiosWrapper.get<User>('/Users/me');
+      // this.user = user as User;
+
     },
 
     // ------------------------------------
@@ -127,11 +106,11 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     async refreshTokenAction(): Promise<boolean> {
       try {
-        const tokens = await axiosWrapper.post<AuthTokens>('/Auth/refresh-token', {
+        const tokens = await axiosWrapper.post<AuthData>('/Auth/refresh-token', {
           refreshToken: this.refreshToken
         });
 
-        this.setTokens(tokens as AuthTokens);
+        this.setTokens(tokens as AuthData);
         return true;
       } catch {
         this.logout();
@@ -142,13 +121,14 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     // SAVE TOKENS
     // ------------------------------------
-    setTokens(tokens: AuthTokens) {
+    setTokens(tokens: AuthData) {
       this.accessToken = tokens.accessToken;
       this.refreshToken = tokens.refreshToken;
       this.isAuthenticated = true;
-
-      localStorage.setItem('accessToken', tokens.accessToken);
-      localStorage.setItem('refreshToken', tokens.refreshToken);
+      if(this.rememberMe){
+        localStorage.setItem('accessToken', tokens.accessToken);
+        localStorage.setItem('refreshToken', tokens.refreshToken);
+      }
     },
 
     // ------------------------------------
@@ -162,7 +142,14 @@ export const useUserStore = defineStore('user', {
 
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
+      
+      router.push({ name: "Login" });
     },
     
+    async fetchEntityLookups() {
+      const data = await axiosWrapper.get<any>('/EntityLookups');
+      this.entities = data.data as Entity[];
+    },
+
   }
 });
