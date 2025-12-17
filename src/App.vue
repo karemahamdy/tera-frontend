@@ -16,6 +16,7 @@ watch(locale, (newLang) => {
 
 <template>
   <main class="bg-[#FFFFFF]">
+    <Toast />
     <RouterView />
   </main>
 </template>

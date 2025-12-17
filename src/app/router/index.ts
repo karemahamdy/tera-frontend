@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import { useUserStore } from "@/app/store/useUserStore";
 import { authRoutes } from "@/modules/auth/routes.ts";
 import { homeRoutes } from "@/modules/home/routes.ts";
 import { userGroupRoutes } from "@/modules/user-group/routes";
@@ -9,7 +8,9 @@ import { auditLogRoutes } from "@/modules/audit-log/routes";
 import { activeSessionsRoutes } from "@/modules/active-sessions/routes";
 import { notFoundRoutes } from "@/modules/not-found/routes";
 import { branchesRoutes } from "@/modules/branch-management/routes";
-// const defaultTitle = "Tera ERP";
+
+import { useUserStore } from "@/app/store/useUserStore";
+const defaultTitle = "Tera ERP";
 
 const routes = [
   ...authRoutes,
@@ -22,11 +23,11 @@ const routes = [
     children: [
       ...homeRoutes,
       ...userManagementRoutes,
-       ...userGroupRoutes,
-       ...branchesRoutes,
-       ...rolesPermissionsRoutes,
-       ...auditLogRoutes,
-       ...activeSessionsRoutes,
+      ...userGroupRoutes,
+      ...branchesRoutes,
+      ...rolesPermissionsRoutes,
+      ...auditLogRoutes,
+      ...activeSessionsRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
@@ -43,27 +44,23 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  // window.scrollTo({ top: 0, behavior: "smooth" });
-  // console.log(from);
-  
-  // const userStore = useUserStore();
+router.beforeEach((to, _from, next) => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  const userStore = useUserStore();
 
-  // const isAuthenticated = userStore.isAuthenticated;
+  const isAuthenticated = userStore.isAuthenticated;
 
-  // if (
-  //   to.matched.some((record) => record.meta.requiresAuth) &&
-  //   !isAuthenticated
-  // ) {
-  //   return next("/auth/login");
-  // }
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return next({ name: "Login" });
+  }
 
-  // const { title } = to.meta;
-  // document.title = (title as string) || defaultTitle;
+  if (to.meta.guestOnly && isAuthenticated) {
+    return next({ name: "Home"  });
+  }
 
-  // next();
+  const title = to.meta.title as string | undefined;
+  document.title = title || defaultTitle;
 
-  console.log(to, from);
   next();
 });
 
