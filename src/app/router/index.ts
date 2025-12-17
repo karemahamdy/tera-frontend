@@ -62,8 +62,6 @@ router.beforeEach((to, _from, next) => {
   document.title = title || defaultTitle;
 
   next();
-  // console.log(to, from);
-  // next();
 });
 
 export default router;
