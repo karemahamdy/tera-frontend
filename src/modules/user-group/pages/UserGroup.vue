@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
@@ -14,9 +14,13 @@ const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<GroupTableItem | null>(null);
+const isDeleting = ref(false);
 
-const { loading, fetchGroups, filteredTableData } = useGroups();
-fetchGroups();
+const { loading, fetchGroups, filteredTableData, deleteGroup } = useGroups();
+
+onMounted(() => {
+  fetchGroups();
+});
 
 const permissionItems = [
     {
@@ -67,12 +71,27 @@ const confirmDelete = (row: GroupTableItem) => {
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }: any) => {
-    if (action === "delete") confirmDelete(data);
+const handleActionMenu = (payload: any) => {
+    const action = payload.action || payload;
+    const data = payload.data || payload.row || payload;
+    if (action === "delete") {
+        if (data && data.id) {
+            confirmDelete(data);  
+        } 
+    }
 };
 
-const handleDeleteConfirm = () => {
-    console.log("Deleted:", rowToDelete.value?.id);
+const handleDeleteConfirm = async () => {
+    if (!rowToDelete.value) return;
+    isDeleting.value = true;
+    await deleteGroup(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
+};
+
+const handleDialogCancel = () => {
     showDeleteDialog.value = false;
     rowToDelete.value = null;
 };
@@ -87,14 +106,27 @@ const addUserGroup = () => {
         <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" />
         <card class="bg-white rounded-[10px]">
             <template #title>
-                <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription" :showExport="true"
-                    :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    :onMainBtnClick="addUserGroup" />
+                <PageHeader 
+                    title="userGroup.userGroup" 
+                    subtitle="userGroup.userGroupDescription" 
+                    :showExport="true"
+                    :showImport="true" 
+                    :mainBtn="true" 
+                    mainBtnText="userGroup.addUserGroup"
+                    :onMainBtnClick="addUserGroup" 
+                />
             </template>
 
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
-                    :permissionItems="permissionItems" :showDelete="true" @action-menu-click="handleActionMenu">
+                <DynamicTable 
+                    :columns="columns" 
+                    :data="filteredTableData" 
+                    :loading="loading || isDeleting" 
+                    :customItems="customItems"
+                    :permissionItems="permissionItems" 
+                    :showDelete="true" 
+                    @action-menu-click="handleActionMenu"
+                >
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" />
@@ -105,10 +137,16 @@ const addUserGroup = () => {
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('userGroup.deleteRoleConfirm')"
+        <StatusDialog 
+            v-model:visible="showDeleteDialog" 
+            :icon="alertIcon" 
+            :title="$t('userGroup.deleteRoleConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' }
-            ]" @confirm="handleDeleteConfirm" />
+            ]" 
+            @confirm="handleDeleteConfirm"
+            @cancel="handleDialogCancel"
+        />
     </div>
 </template>

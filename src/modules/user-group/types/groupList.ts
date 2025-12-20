@@ -31,3 +31,8 @@ export interface GroupTableItem {
   UserCount: number;
   Created?: string;
 }
+
+export interface AddGroup {
+  name: string;
+  description?: string | null;
+}
