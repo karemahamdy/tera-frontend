@@ -2,11 +2,14 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { Pagination, RoleListItem, RolePayload } from "../types/roles";
 import { RoleService } from "../services/roles.service";
+import { toastService } from "@/app/services/toastService";
+import { useI18n } from "vue-i18n";
 
 export const useRolesStore = defineStore("roles", () => {
   // -----------------------------
   // STATE
   // -----------------------------
+  const { t } = useI18n();
   const list = ref<RoleListItem[]>([]);
   const loading = ref(false);
 
@@ -26,10 +29,10 @@ export const useRolesStore = defineStore("roles", () => {
     loading.value = true;
     try {
       const res = await RoleService.getList(pagination.value);
-      console.log(res);
-      
       list.value = res.data;
       pagination.value.total = res.total;
+    } catch (error) {
+      toastService.error(error as string);
     } finally {
       loading.value = false;
     }
@@ -57,6 +60,9 @@ export const useRolesStore = defineStore("roles", () => {
     try {
       loading.value = true;
       await RoleService.create(payload);
+      toastService.success(t("roles.roleAdded"))
+    } catch (error) {
+      toastService.error(error as string);
     } finally {
       loading.value = false;
     }
@@ -66,6 +72,9 @@ export const useRolesStore = defineStore("roles", () => {
     try {
       loading.value = true;
       await RoleService.update(id, payload);
+      toastService.success(t("roles.roleUpdated"))
+    } catch (error) {
+      toastService.error(error as string);
     } finally {
       loading.value = false;
     }
@@ -77,6 +86,9 @@ export const useRolesStore = defineStore("roles", () => {
       await RoleService.delete(id);
       list.value = list.value.filter((item) => item.id !== id);
       pagination.value.total--;
+      toastService.success(t("roles.roleDeleted"))
+    } catch (error) {
+      toastService.error(error as string);
     } finally {
       loading.value = false;
     }
