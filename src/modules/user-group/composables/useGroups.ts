@@ -1,6 +1,6 @@
 import { ref, watch, computed } from "vue";
 import { GroupService } from "../services/groupService";
-import type { GroupApiItem, GroupTableItem } from "../types/groupList";
+import type { GroupApiItem, GroupTableItem } from "../types/groups";
 import { toastService } from "../../../app/services/toastService";
 
 export function useGroups() {
@@ -44,10 +44,9 @@ const deleteGroup = async (id: string) => {
     const response = await GroupService.delete(id);
     toastService.success("Group deleted successfully");
     console.log("Delete response:", response);
-    apiGroups.value = apiGroups.value.filter((g) => g.id !== id);
+    apiGroups.value = apiGroups.value.filter((group) => group.id !== id);
   } catch (err) {
      toastService.error("Failed to delete group")
-    console.error("Error deleting group:", err);
   } finally {
     loading.value = false;
   }

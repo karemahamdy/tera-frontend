@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useForm } from "vee-validate";
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { useRoute } from "vue-router";
-
-import { useForm } from "vee-validate";
 import { groupFormSchema } from "../validation/GroupsSchema";
+import { GroupService } from "../services/groupService";
+import { toastService } from "../../../app/services/toastService";
+import type { AddGroup } from "../types/groups";
 
 const props = defineProps<{
   mode: "edit" | "create";
@@ -12,12 +15,11 @@ const props = defineProps<{
 
 const editMode = props.mode === "edit";
 const route = useRoute();
+const router = useRouter();
+const isSubmitting = ref(false);
+const groupId = route.params.id ? String(route.params.id) : null;
 
-// const groupId = route.params.id
-//   ? String(route.params.id)
-//   : null;
-
-const { handleSubmit, errors, defineField } = useForm({
+const { handleSubmit, errors, defineField, setValues } = useForm({
   validationSchema: groupFormSchema,
   initialValues: {
     groupName: "",
@@ -27,9 +29,52 @@ const { handleSubmit, errors, defineField } = useForm({
 
 const [groupName] = defineField("groupName");
 const [description] = defineField("description");
-const onSubmit = handleSubmit((values) => {
-  console.log(route);
-  console.log("Form Values", values);
+
+// Fetch group data if in edit mode
+onMounted(async () => {
+  if (editMode && groupId) {
+    try {
+      const groupData = await GroupService.getById(groupId);
+      setValues({
+        groupName: groupData.name,
+        description: groupData.description || "",
+      });
+    } catch (error) {
+      console.error("Error fetching group:", error);
+      toastService.error("Failed to load group data");
+    }
+  }
+});
+
+const onSubmit = handleSubmit(async (values) => {
+  isSubmitting.value = true;
+
+  const payload: AddGroup = {
+    name: values.groupName,
+    description: values.description,
+  };
+
+  try {
+    if (editMode && groupId) {
+      // Update existing group
+      await GroupService.update(groupId, payload);
+      toastService.success("Group updated successfully");
+    } else {
+      // Create new group
+      await GroupService.create(payload);
+      toastService.success("Group created successfully");
+    }
+    
+    // Navigate back to groups list
+    router.push({ name: "UserGroup" });
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    toastService.error(
+      editMode ? "Failed to update group" : "Failed to create group"
+    );
+  } finally {
+    isSubmitting.value = false;
+  }
 });
 </script>
 
@@ -56,20 +101,32 @@ const onSubmit = handleSubmit((values) => {
               {{ $t("userGroup.groupName") }}
             </label>
 
-            <InputText v-model="groupName" placeholder="e.g., Finance Team" class="mt-1 w-full p-3 border rounded-lg"
-              :class="{ 'border-danger-500': errors.groupName }" />
+            <InputText 
+              v-model="groupName" 
+              placeholder="e.g., Finance Team" 
+              class="mt-1 w-full p-3 border rounded-lg"
+              :class="{ 'border-danger-500': errors.groupName }" 
+              :disabled="isSubmitting"
+            />
 
             <small v-if="errors.groupName" class="text-danger-500">
               {{ errors.groupName }}
             </small>
           </div>
+
           <div>
             <label class="text-gray-700 font-medium mb-2 block">
               {{ $t("userGroup.description") }}
             </label>
 
-            <Textarea v-model="description" :placeholder="$t('userGroup.descriptionPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.description }" />
+            <Textarea 
+              v-model="description" 
+              :placeholder="$t('userGroup.descriptionPlaceholder')"
+              class="mt-1 w-full p-3 border rounded-lg" 
+              rows="4" 
+              :class="{ 'border-danger-500': errors.description }"
+              :disabled="isSubmitting"
+            />
 
             <small v-if="errors.description" class="text-danger-500">
               {{ errors.description }}
@@ -77,12 +134,23 @@ const onSubmit = handleSubmit((values) => {
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
+            <BaseButton 
+              label="button.cancel" 
+              variant="ghost" 
+              block 
+              :to="{ name: 'UserGroup' }"
+              :disabled="isSubmitting"
+            />
 
-            <BaseButton type="submit" :label="editMode ? 'button.save' : 'userGroup.createGroup'" variant="primary"
-              block />
+            <BaseButton 
+              type="submit" 
+              :label="editMode ? 'button.save' : 'userGroup.createGroup'" 
+              variant="primary"
+              block
+              :disabled="isSubmitting"
+              :loading="isSubmitting"
+            />
           </div>
-
         </form>
       </template>
     </card>

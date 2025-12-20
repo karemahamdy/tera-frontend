@@ -8,7 +8,7 @@ import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from "@/assets/images/alert.png";
 import { useGroups } from "../composables/useGroups";
-import type { GroupTableItem } from "../types/groupList";
+import type { GroupTableItem } from "../types/groups";
 
 const { t } = useI18n();
 const router = useRouter();

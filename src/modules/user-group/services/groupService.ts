@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { AddGroup, GroupApiItem } from "../types/groupList";
+import type { AddGroup, GroupApiItem } from "../types/groups";
 
 export const GroupService = {
   async getAll(pageIndex = 1): Promise<GroupApiItem[]> {
