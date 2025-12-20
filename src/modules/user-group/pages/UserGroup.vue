@@ -1,78 +1,49 @@
-<script setup>
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import PageHeader from "@/sharedComponents/PageHeader.vue";
-import DynamicTable from "@/sharedComponents/DynamicTable.vue";
-import StatusDialog from "@/sharedComponents/StatusDialog.vue";
-import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
-import { useI18n } from "vue-i18n";
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
+import { useI18n } from "vue-i18n";
+import alertIcon from "@/assets/images/alert.png";
+import { useGroups } from "../composables/useGroups";
+import type { GroupTableItem } from "../types/groups";
 
 const { t } = useI18n();
 const router = useRouter();
-const loading = ref(false);
 const showDeleteDialog = ref(false);
-const rowToDelete = ref(null);
+const rowToDelete = ref<GroupTableItem | null>(null);
+const isDeleting = ref(false);
 
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                id: 1,
-                GroupName: 'Finance Team',
-                Description: 'Manage payment, budget..',
-                AssignedRoles: "Administration",
-                UserCount: '4',
-                slot: 'test1',
-                Created: 'Oct 11, 2025',
-            },
-            {
-                id: 5,
-                GroupName: 'Finance Team',
-                Description: 'Manage payment, budget..',
-                AssignedRoles: "HR",
-                UserCount: '2',
-                slot: 'test1',
-                Created: 'Oct 11, 2025',
-            },
-        ]
-    },
+const { loading, fetchGroups, filteredTableData, deleteGroup, toggleActive } = useGroups();
+
+onMounted(() => {
+    fetchGroups();
 });
-
-const emit = defineEmits(['search', 'action-menu-click']);
 
 const permissionItems = [
     {
-         label:t("button.new"),
+        label: t("button.new"),
         icon: "Star1",
         color: "#12B76A",
-        command: (row) => {
-            console.log("ROW", row);
+        command: (row: GroupTableItem) => {
             router.push(`/roles-permissions/add-group-roles/${row.id}`);
         }
     },
     {
-      label:t("button.view"),
+        label: t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
-        command: (row) => {
+        command: (row: GroupTableItem) => {
             router.push(`/roles-permissions/list-group-roles/${row.id}`);
         }
     }
 ];
+
 const customItems = [
     {
-        slot: true,
+        action: "toggleActive",
         changeStatus: true,
         label: t("button.active"),
-        command: (row) => {
-            console.log("toggle", row);
-        }
-    },
+    }
 ];
-const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
     const Columns = [
@@ -88,48 +59,69 @@ const columns = computed(() => {
     return Columns;
 });
 
-const confirmDelete = (row) => {
+const confirmDelete = (row: GroupTableItem) => {
     rowToDelete.value = row;
-    console.log("Row to delete:", rowToDelete.value);
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }) => {
-    console.log("ActionMenu Data:", data);
-    if (action === 'delete') {
-        confirmDelete(data);
+const handleActionMenu = async (payload: any) => {
+    const action = payload.action || payload;
+    const data = payload.data || payload.row || payload;
+    if (action === "delete") {
+        if (data && data.id) {
+            confirmDelete(data);
+        }
+    } if (action === "edit") {
+        if (data && data.id) {
+            handleEdit(data);
+        }
     }
+    if (action === "toggleActive") {
+        await toggleActive(data.id, !data.isActive);
+    }
+
 };
 
-const handleDeleteConfirm = () => {
-    console.log("Deleted user with ID:", rowToDelete.value);
+const handleDeleteConfirm = async () => {
+    if (!rowToDelete.value) return;
+    isDeleting.value = true;
+    await deleteGroup(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
+};
+
+const handleDialogCancel = () => {
     showDeleteDialog.value = false;
     rowToDelete.value = null;
 };
-
-const addUserGroup = () => {
-    router.push('/user-group/create');
+const handleEdit = (row: GroupTableItem) => {
+    router.push(`/user-group/edit/${row.id}`);
 };
 
+const addUserGroup = () => {
+    router.push("/user-group/create");
+};
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
         <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" />
-        <card class="bg-[#ffffff] rounded-[10px]">
-            <!-- PageHeader component -->
+        <card class="bg-white rounded-[10px]">
             <template #title>
                 <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription" :showExport="true"
                     :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
-                    searchPlaceholder="userGroup.searchPlaceholder" @search="onSearch" :onMainBtnClick="addUserGroup" />
+                    :onMainBtnClick="addUserGroup" />
             </template>
-            <!-- DynamicTable component -->
+
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading" :customItems="customItems"
-                    :permissionItems="permissionItems" @action-menu-click="handleActionMenu" :showDelete="true">
+                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading || isDeleting"
+                    :customItems="customItems" :permissionItems="permissionItems" :showDelete="true"
+                    @action-menu-click="handleActionMenu">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
-                            <VsxIcon iconName="People" :size="24" color="#717680" type="linear" />
+                            <VsxIcon iconName="People" :size="24" color="#717680" />
                             <span class="break-words">{{ data.GroupName }}</span>
                         </div>
                     </template>
@@ -137,26 +129,10 @@ const addUserGroup = () => {
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
-          :title="$t('userGroup.deleteRoleConfirm')" :buttons="[
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('userGroup.deleteRoleConfirm')"
+            :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
-                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
-            ]" @confirm="handleDeleteConfirm" />
-
+                { label: $t('button.delete'), variant: 'danger', action: 'confirm' }
+            ]" @confirm="handleDeleteConfirm" @cancel="handleDialogCancel" />
     </div>
 </template>
-
-<style scoped>
-:deep(.p-datatable .p-datatable-tbody > tr > td) {
-    padding: 16px;
-    color: var(--color-gray-500);
-}
-
-:deep(.p-datatable .p-datatable-thead > tr > th) {
-    background: #FAF9F9;
-    font-weight: 600;
-    color: var(--color-gray-700);
-    font-size: 13px;
-    padding: 20px 16px;
-}
-</style>
