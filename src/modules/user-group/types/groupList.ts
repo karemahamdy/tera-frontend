@@ -3,32 +3,31 @@ export interface Role {
   name: string;
 }
 
-export interface GroupItem {
+export interface GroupApiItem {
   id: string;
   name: string;
-  description: string;
+  description: string | null;
   groupAccessScope: number;
   rolesAssingedToGroup: Role[];
 }
 
-export interface PaginatedResponse<T> {
-  items: T[];
-  pageIndex: number;
-  pageSize: number;
-  totalCount: number;
-  totalPages: number;
-}
-
-export interface ApiResponse<T> {
-  data: T;
+export interface GroupApiResponse {
+  data: {
+    items: GroupApiItem[];
+    pageIndex: number;
+    pageSize: number;
+    totalCount: number;
+    totalPages: number;
+  };
   succeeded: boolean;
-  message: string | null;
   statusCode: number;
-  errorCode: string | null;
-  errors: unknown;
-  id: string | null;
 }
 
-export type GroupsListResponse = ApiResponse<
-  PaginatedResponse<GroupItem>
->;
+export interface GroupTableItem {
+  id: string;
+  GroupName: string;
+  Description: string;
+  AssignedRoles: string[];
+  UserCount: number;
+  Created?: string;
+}
