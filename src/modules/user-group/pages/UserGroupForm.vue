@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { useRoute } from "vue-router";
-
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useForm } from "vee-validate";
 import { groupFormSchema } from "../validation/GroupsSchema";
+import { useGroups } from "../composables/useGroups";
+import type { AddGroup } from "../types/groups";
 
 const props = defineProps<{
   mode: "edit" | "create";
@@ -12,12 +12,13 @@ const props = defineProps<{
 
 const editMode = props.mode === "edit";
 const route = useRoute();
+const router = useRouter();
+const isSubmitting = ref(false);
+const groupId = route.params.id ? String(route.params.id) : null;
 
-// const groupId = route.params.id
-//   ? String(route.params.id)
-//   : null;
+const { fetchGroupById, createGroup, updateGroup } = useGroups();
 
-const { handleSubmit, errors, defineField } = useForm({
+const { handleSubmit, errors, defineField, setValues } = useForm({
   validationSchema: groupFormSchema,
   initialValues: {
     groupName: "",
@@ -27,9 +28,39 @@ const { handleSubmit, errors, defineField } = useForm({
 
 const [groupName] = defineField("groupName");
 const [description] = defineField("description");
-const onSubmit = handleSubmit((values) => {
-  console.log(route);
-  console.log("Form Values", values);
+
+onMounted(async () => {
+  if (editMode && groupId) {
+    const groupData = await fetchGroupById(groupId);
+    if (groupData) {
+      setValues({
+        groupName: groupData.name,
+        description: groupData.description || "",
+      });
+    }
+  }
+});
+
+const onSubmit = handleSubmit(async (values) => {
+  isSubmitting.value = true;
+
+  const payload: AddGroup = {
+    name: values.groupName,
+    description: values.description,
+  };
+
+  try {
+    if (editMode && groupId) {
+      await updateGroup(groupId, payload);
+    } else {
+      await createGroup(payload);
+    }
+    router.push({ name: "UserGroup" });
+  } catch (error) {
+    console.error("Error submitting form:", error);
+  } finally {
+    isSubmitting.value = false;
+  }
 });
 </script>
 
@@ -52,24 +83,18 @@ const onSubmit = handleSubmit((values) => {
       <template #content>
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
           <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("userGroup.groupName") }}
-            </label>
-
-            <InputText v-model="groupName" placeholder="e.g., Finance Team" class="mt-1 w-full p-3 border rounded-lg"
-              :class="{ 'border-danger-500': errors.groupName }" />
-
-            <small v-if="errors.groupName" class="text-danger-500">
-              {{ errors.groupName }}
-            </small>
+            <FormInput :label="$t('userGroup.groupName')" v-model="groupName" :error="errors.groupName"
+              placeholder="Enter full name" :invalid="!!errors.groupName" />
           </div>
+
           <div>
             <label class="text-gray-700 font-medium mb-2 block">
               {{ $t("userGroup.description") }}
             </label>
 
             <Textarea v-model="description" :placeholder="$t('userGroup.descriptionPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.description }" />
+              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.description }"
+              :disabled="isSubmitting" />
 
             <small v-if="errors.description" class="text-danger-500">
               {{ errors.description }}
@@ -77,12 +102,12 @@ const onSubmit = handleSubmit((values) => {
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserGroup' }"
+              :disabled="isSubmitting" />
 
             <BaseButton type="submit" :label="editMode ? 'button.save' : 'userGroup.createGroup'" variant="primary"
-              block />
+              block :disabled="isSubmitting" :loading="isSubmitting" />
           </div>
-
         </form>
       </template>
     </card>
