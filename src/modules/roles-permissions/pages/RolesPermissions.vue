@@ -4,10 +4,13 @@ import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from "@/assets/images/alert.png";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
+import { useRolesStore } from "../store/useRolesStore";
+
+const store = useRolesStore();
 
 const { t } = useI18n();
 const router = useRouter();
@@ -101,6 +104,10 @@ const handleDeleteConfirm = () => {
 const addNew = () => {
   router.push({ name: "RolesPermissionsCreate" });
 };
+
+onMounted(()=>{
+  store.getList()
+})
 </script>
 
 <template>

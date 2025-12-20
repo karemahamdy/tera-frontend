@@ -127,7 +127,10 @@
     "adjustingSearch": "حاول تعديل البحث",
     "assignRole": "تعيين الدور",
     "branchSpecific":"الوصول مقتصر على الفرع المحدد فقط",
-    "globalAccess":"الوصول إلى جميع الفروع"
+    "globalAccess":"الوصول إلى جميع الفروع",
+    "roleAdded": "تمت إضافة الدور بنجاح",
+    "roleUpdated": "تم تحديث الدور بنجاح",
+    "roleDeleted": "تم حذف الدور بنجاح"
   },
   "auditLog": {
     "title": "سجل التدقيق",

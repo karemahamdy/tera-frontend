@@ -127,7 +127,10 @@
     "adjustingSearch": "Try adjusting your search",
     "assignRole": "Assign role",
     "branchSpecific": "Branch-Specific Access /Limited to assigned branch only",
-    "globalAccess": "Global Access  /access to all branches"
+    "globalAccess": "Global Access  /access to all branches",
+    "roleAdded": "Role added successfully",
+    "roleUpdated": "Role updated successfully",
+    "roleDeleted": "Role deleted successfully"
   },
   "auditLog": {
     "title": "Audit Log",
