@@ -2,8 +2,6 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useForm } from "vee-validate";
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { groupFormSchema } from "../validation/GroupsSchema";
 import { useGroups } from "../composables/useGroups";
 import type { AddGroup } from "../types/groups";
@@ -31,7 +29,6 @@ const { handleSubmit, errors, defineField, setValues } = useForm({
 const [groupName] = defineField("groupName");
 const [description] = defineField("description");
 
-// Fetch group data if in edit mode
 onMounted(async () => {
   if (editMode && groupId) {
     const groupData = await fetchGroupById(groupId);
@@ -58,11 +55,8 @@ const onSubmit = handleSubmit(async (values) => {
     } else {
       await createGroup(payload);
     }
-
-    // Navigate back to groups list
     router.push({ name: "UserGroup" });
   } catch (error) {
-    // Error is already handled in composable with toast
     console.error("Error submitting form:", error);
   } finally {
     isSubmitting.value = false;

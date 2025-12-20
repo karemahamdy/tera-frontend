@@ -8,6 +8,8 @@ export interface GroupApiItem {
   name: string;
   description: string | null;
   groupAccessScope: number;
+  UserCount: number,
+  isActive?: boolean
   rolesAssingedToGroup: Role[];
 }
 
@@ -30,6 +32,7 @@ export interface GroupTableItem {
   AssignedRoles: string[];
   UserCount: number;
   Created?: string;
+  isActive?: boolean
 }
 
 export interface AddGroup {

@@ -34,6 +34,22 @@ export function useGroups() {
     }
   };
 
+   const toggleActive = async (id: string, isActive: boolean) => {
+    loading.value = true;
+    try {
+      await GroupService.toggleActive(id, isActive);
+      const row = tableData.value.find(row => row.id === id);
+      if (row) row.isActive = isActive;
+      toastService.success(`Group is now ${isActive ? "Active" : "Inactive"}`);
+    } catch (err) {
+      console.error("Error toggling group status:", err);
+      toastService.error("Failed to update group status");
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   watch(
     apiGroups,
     (groups) => {
@@ -42,10 +58,11 @@ export function useGroups() {
         GroupName: group.name,
         Description: group.description ?? "-",
         AssignedRoles: group.rolesAssingedToGroup.length
-          ? group.rolesAssingedToGroup.map((r) => r.name).join(", ")
+          ? group.rolesAssingedToGroup.map((group) => group.name).join(", ")
           : "-",
-        UserCount: group.rolesAssingedToGroup.length,
+        UserCount: group.UserCount,
         Created: "-",
+        isActive: group.isActive ?? false,
       }));
     },
     { immediate: true }
@@ -110,5 +127,6 @@ export function useGroups() {
     createGroup,
     updateGroup,
     deleteGroup,
+    toggleActive
   };
 }

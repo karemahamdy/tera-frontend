@@ -12,10 +12,10 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<GroupTableItem | null>(null);
 const isDeleting = ref(false);
 
-const { loading, fetchGroups, filteredTableData, deleteGroup } = useGroups();
+const { loading, fetchGroups, filteredTableData, deleteGroup, toggleActive } = useGroups();
 
 onMounted(() => {
-  fetchGroups();
+    fetchGroups();
 });
 
 const permissionItems = [
@@ -39,12 +39,9 @@ const permissionItems = [
 
 const customItems = [
     {
-        slot: true,
+        action: "toggleActive",
         changeStatus: true,
         label: t("button.active"),
-        command: (row: GroupTableItem) => {
-            console.log("toggle", row);
-        }
     }
 ];
 
@@ -67,17 +64,22 @@ const confirmDelete = (row: GroupTableItem) => {
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = (payload: any) => {
+const handleActionMenu = async (payload: any) => {
     const action = payload.action || payload;
     const data = payload.data || payload.row || payload;
     if (action === "delete") {
         if (data && data.id) {
-            confirmDelete(data);  
-        } } else if (action === "edit") {
+            confirmDelete(data);
+        }
+    } if (action === "edit") {
         if (data && data.id) {
             handleEdit(data);
         }
     }
+    if (action === "toggleActive") {
+        await toggleActive(data.id, !data.isActive);
+    }
+
 };
 
 const handleDeleteConfirm = async () => {
@@ -108,27 +110,15 @@ const addUserGroup = () => {
         <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" />
         <card class="bg-white rounded-[10px]">
             <template #title>
-                <PageHeader 
-                    title="userGroup.userGroup" 
-                    subtitle="userGroup.userGroupDescription" 
-                    :showExport="true"
-                    :showImport="true" 
-                    :mainBtn="true" 
-                    mainBtnText="userGroup.addUserGroup"
-                    :onMainBtnClick="addUserGroup" 
-                />
+                <PageHeader title="userGroup.userGroup" subtitle="userGroup.userGroupDescription" :showExport="true"
+                    :showImport="true" :mainBtn="true" mainBtnText="userGroup.addUserGroup"
+                    :onMainBtnClick="addUserGroup" />
             </template>
 
             <template #content>
-                <DynamicTable 
-                    :columns="columns" 
-                    :data="filteredTableData" 
-                    :loading="loading || isDeleting" 
-                    :customItems="customItems"
-                    :permissionItems="permissionItems" 
-                    :showDelete="true" 
-                    @action-menu-click="handleActionMenu"
-                >
+                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading || isDeleting"
+                    :customItems="customItems" :permissionItems="permissionItems" :showDelete="true"
+                    @action-menu-click="handleActionMenu">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" />
@@ -139,16 +129,10 @@ const addUserGroup = () => {
             </template>
         </card>
 
-        <StatusDialog 
-            v-model:visible="showDeleteDialog" 
-            :icon="alertIcon" 
-            :title="$t('userGroup.deleteRoleConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('userGroup.deleteRoleConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' }
-            ]" 
-            @confirm="handleDeleteConfirm"
-            @cancel="handleDialogCancel"
-        />
+            ]" @confirm="handleDeleteConfirm" @cancel="handleDialogCancel" />
     </div>
 </template>
