@@ -73,7 +73,10 @@ const handleActionMenu = (payload: any) => {
     if (action === "delete") {
         if (data && data.id) {
             confirmDelete(data);  
-        } 
+        } } else if (action === "edit") {
+        if (data && data.id) {
+            handleEdit(data);
+        }
     }
 };
 
@@ -90,6 +93,9 @@ const handleDeleteConfirm = async () => {
 const handleDialogCancel = () => {
     showDeleteDialog.value = false;
     rowToDelete.value = null;
+};
+const handleEdit = (row: GroupTableItem) => {
+    router.push(`/user-group/edit/${row.id}`);
 };
 
 const addUserGroup = () => {

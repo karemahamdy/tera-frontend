@@ -10,7 +10,7 @@ export const GroupService = {
   },
 
   async getById(id: string): Promise<GroupApiItem> {
-    const data = await axiosWrapper.get(`/Group/GetGroupById?Id=${id}`);
+    const data = await axiosWrapper.get(`/Group/GetGroupById/${id}`);
     return data.data;
   },
 

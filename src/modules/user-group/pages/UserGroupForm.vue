@@ -2,9 +2,10 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useForm } from "vee-validate";
+import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
+import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { groupFormSchema } from "../validation/GroupsSchema";
-import { GroupService } from "../services/groupService";
-import { toastService } from "../../../app/services/toastService";
+import { useGroups } from "../composables/useGroups";
 import type { AddGroup } from "../types/groups";
 
 const props = defineProps<{
@@ -16,6 +17,8 @@ const route = useRoute();
 const router = useRouter();
 const isSubmitting = ref(false);
 const groupId = route.params.id ? String(route.params.id) : null;
+
+const { fetchGroupById, createGroup, updateGroup } = useGroups();
 
 const { handleSubmit, errors, defineField, setValues } = useForm({
   validationSchema: groupFormSchema,
@@ -31,15 +34,12 @@ const [description] = defineField("description");
 // Fetch group data if in edit mode
 onMounted(async () => {
   if (editMode && groupId) {
-    try {
-      const groupData = await GroupService.getById(groupId);
+    const groupData = await fetchGroupById(groupId);
+    if (groupData) {
       setValues({
         groupName: groupData.name,
         description: groupData.description || "",
       });
-    } catch (error) {
-      console.error("Error fetching group:", error);
-      toastService.error("Failed to load group data");
     }
   }
 });
@@ -54,18 +54,16 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     if (editMode && groupId) {
-      await GroupService.update(groupId, payload);
-      toastService.success("Group updated successfully");
+      await updateGroup(groupId, payload);
     } else {
-      await GroupService.create(payload);
-      toastService.success("Group created successfully");
+      await createGroup(payload);
     }
+
+    // Navigate back to groups list
     router.push({ name: "UserGroup" });
   } catch (error) {
+    // Error is already handled in composable with toast
     console.error("Error submitting form:", error);
-    toastService.error(
-      editMode ? "Failed to update group" : "Failed to create group"
-    );
   } finally {
     isSubmitting.value = false;
   }
@@ -101,8 +99,8 @@ const onSubmit = handleSubmit(async (values) => {
             </label>
 
             <Textarea v-model="description" :placeholder="$t('userGroup.descriptionPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-4xl" rows="4" :disabled="isSubmitting"
-              :invalid="!!errors.description" />
+              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.description }"
+              :disabled="isSubmitting" />
 
             <small v-if="errors.description" class="text-danger-500">
               {{ errors.description }}

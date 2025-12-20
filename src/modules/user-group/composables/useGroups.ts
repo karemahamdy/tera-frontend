@@ -1,6 +1,6 @@
 import { ref, watch, computed } from "vue";
 import { GroupService } from "../services/groupService";
-import type { GroupApiItem, GroupTableItem } from "../types/groups";
+import type { GroupApiItem, GroupTableItem, AddGroup } from "../types/groups";
 import { toastService } from "../../../app/services/toastService";
 
 export function useGroups() {
@@ -12,6 +12,23 @@ export function useGroups() {
     loading.value = true;
     try {
       apiGroups.value = await GroupService.getAll(1);
+    } catch (err) {
+      console.error("Error fetching groups:", err);
+      toastService.error("Failed to fetch groups");
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchGroupById = async (id: string): Promise<GroupApiItem | null> => {
+    loading.value = true;
+    try {
+      const group = await GroupService.getById(id);
+      return group;
+    } catch (err) {
+      console.error("Error fetching group:", err);
+      toastService.error("Failed to fetch group details");
+      return null;
     } finally {
       loading.value = false;
     }
@@ -38,24 +55,60 @@ export function useGroups() {
     tableData.value.map((row) => ({ ...row }))
   );
 
-const deleteGroup = async (id: string) => {
-  loading.value = true;
-  try {
-    const response = await GroupService.delete(id);
-    toastService.success("Group deleted successfully");
-    console.log("Delete response:", response);
-    apiGroups.value = apiGroups.value.filter((group) => group.id !== id);
-  } catch (err) {
-     toastService.error("Failed to delete group")
-  } finally {
-    loading.value = false;
-  }
-};
+  const createGroup = async (payload: AddGroup) => {
+    loading.value = true;
+    try {
+      const response = await GroupService.create(payload);
+      toastService.success("Group created successfully");
+      await fetchGroups();
+      return response;
+    } catch (err) {
+      console.error("Error creating group:", err);
+      toastService.error("Failed to create group");
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateGroup = async (id: string, payload: AddGroup) => {
+    loading.value = true;
+    try {
+      const response = await GroupService.update(id, payload);
+      toastService.success("Group updated successfully");
+      await fetchGroups();
+      return response;
+    } catch (err) {
+      console.error("Error updating group:", err);
+      toastService.error("Failed to update group");
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const deleteGroup = async (id: string) => {
+    loading.value = true;
+    try {
+      await GroupService.delete(id);
+      toastService.success("Group deleted successfully");
+      apiGroups.value = apiGroups.value.filter((group) => group.id !== id);
+    } catch (err) {
+      console.error("Error deleting group:", err);
+      toastService.error("Failed to delete group");
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
 
   return {
     loading,
     fetchGroups,
+    fetchGroupById,
     filteredTableData,
-    deleteGroup, 
+    createGroup,
+    updateGroup,
+    deleteGroup,
   };
 }

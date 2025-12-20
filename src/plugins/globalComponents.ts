@@ -14,6 +14,4 @@ export function GlobalComponents(app: App) {
     app.component('PageHeader', PageHeader);
     app.component('DynamicTable', DynamicTable);
     app.component('StatusDialog', StatusDialog);
-
-   
   }
