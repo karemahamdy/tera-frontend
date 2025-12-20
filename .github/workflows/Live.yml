@@ -5,7 +5,7 @@ on:
     branches:
       - main
 env:
-  VITE_API_URL:  https://teraerpapi.azurewebsites.net/api
+  VITE_API_URL:  https://teraerptesting-ffgxa9ejepc4bpfp.canadacentral-01.azurewebsites.net/api
 jobs:
   build-and-deploy:
     runs-on: self-hosted
