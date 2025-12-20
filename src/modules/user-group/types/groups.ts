@@ -34,5 +34,5 @@ export interface GroupTableItem {
 
 export interface AddGroup {
   name: string;
-  description?: string | null;
+  description: string | null;
 }

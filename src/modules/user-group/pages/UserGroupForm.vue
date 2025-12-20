@@ -2,8 +2,6 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useForm } from "vee-validate";
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { groupFormSchema } from "../validation/GroupsSchema";
 import { GroupService } from "../services/groupService";
 import { toastService } from "../../../app/services/toastService";
@@ -56,16 +54,12 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     if (editMode && groupId) {
-      // Update existing group
       await GroupService.update(groupId, payload);
       toastService.success("Group updated successfully");
     } else {
-      // Create new group
       await GroupService.create(payload);
       toastService.success("Group created successfully");
     }
-    
-    // Navigate back to groups list
     router.push({ name: "UserGroup" });
   } catch (error) {
     console.error("Error submitting form:", error);
@@ -97,21 +91,8 @@ const onSubmit = handleSubmit(async (values) => {
       <template #content>
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
           <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("userGroup.groupName") }}
-            </label>
-
-            <InputText 
-              v-model="groupName" 
-              placeholder="e.g., Finance Team" 
-              class="mt-1 w-full p-3 border rounded-lg"
-              :class="{ 'border-danger-500': errors.groupName }" 
-              :disabled="isSubmitting"
-            />
-
-            <small v-if="errors.groupName" class="text-danger-500">
-              {{ errors.groupName }}
-            </small>
+            <FormInput :label="$t('userGroup.groupName')" v-model="groupName" :error="errors.groupName"
+              placeholder="Enter full name" :invalid="!!errors.groupName" />
           </div>
 
           <div>
@@ -119,14 +100,9 @@ const onSubmit = handleSubmit(async (values) => {
               {{ $t("userGroup.description") }}
             </label>
 
-            <Textarea 
-              v-model="description" 
-              :placeholder="$t('userGroup.descriptionPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" 
-              rows="4" 
-              :class="{ 'border-danger-500': errors.description }"
-              :disabled="isSubmitting"
-            />
+            <Textarea v-model="description" :placeholder="$t('userGroup.descriptionPlaceholder')"
+              class="mt-1 w-full p-3 border rounded-4xl" rows="4" :disabled="isSubmitting"
+              :invalid="!!errors.description" />
 
             <small v-if="errors.description" class="text-danger-500">
               {{ errors.description }}
@@ -134,22 +110,11 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton 
-              label="button.cancel" 
-              variant="ghost" 
-              block 
-              :to="{ name: 'UserGroup' }"
-              :disabled="isSubmitting"
-            />
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserGroup' }"
+              :disabled="isSubmitting" />
 
-            <BaseButton 
-              type="submit" 
-              :label="editMode ? 'button.save' : 'userGroup.createGroup'" 
-              variant="primary"
-              block
-              :disabled="isSubmitting"
-              :loading="isSubmitting"
-            />
+            <BaseButton type="submit" :label="editMode ? 'button.save' : 'userGroup.createGroup'" variant="primary"
+              block :disabled="isSubmitting" :loading="isSubmitting" />
           </div>
         </form>
       </template>
