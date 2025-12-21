@@ -19,7 +19,7 @@ export const RoleService = {
   },
 
   delete(id: string) {
-    return axiosWrapper.delete(`/Role/Delete/${id}`);
+    return axiosWrapper.delete(`/Role/${id}`);
   },
 
   droplist() {
