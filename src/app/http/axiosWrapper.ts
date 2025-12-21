@@ -1,15 +1,23 @@
 import axios from 'axios';
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosError,
+} from 'axios';
 import { useUserStore } from '@/app/store/useUserStore';
+import { useLoadingStore } from "@/app/store/useLoadingStore";
 
 let refreshPromise: Promise<boolean> | null = null;
 
+// -----------------------------
+// AXIOS INSTANCE
+// -----------------------------
 const instance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 15000,
   headers: {
-    accept: 'application/json'
-  }
+    Accept: 'application/json',
+  },
 });
 
 // -----------------------------
@@ -21,11 +29,9 @@ instance.interceptors.request.use(
     const lang = localStorage.getItem('lang');
     const language = lang === 'en' ? 'en-US' : 'ar-SA';
 
-    if (!config.headers) {
-      config.headers = {};
-    }
+    config.headers = config.headers ?? {};
 
-    config.headers['Accept-language'] = language;
+    config.headers['Accept-Language'] = language;
 
     if (tenantId) {
       config.headers['X-TenantId'] = tenantId;
@@ -33,6 +39,7 @@ instance.interceptors.request.use(
 
     const userStore = useUserStore();
     const token = userStore.accessToken;
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -45,66 +52,67 @@ instance.interceptors.request.use(
 // -----------------------------
 // MAIN REQUEST HANDLER
 // -----------------------------
-async function makeRequest<T = any>(
+async function makeRequest<T>(
   method: AxiosRequestConfig['method'],
   url: string,
   data: any = null,
-  config: AxiosRequestConfig = {},
-  returnAll = false
-): Promise<T | AxiosResponse<T>> {
+  config: AxiosRequestConfig = {}
+): Promise<T> {
+  const loadingStore = useLoadingStore();
   try {
+    loadingStore.start();
     const response = await instance.request<T>({
       method,
       url,
       data,
-      ...config
+      ...config,
     });
 
-    return returnAll ? response : response.data;
+    return response.data;
   } catch (err) {
-    const error = err as AxiosError;
+    const error = err as AxiosError<any>;
 
-    if (!error.response) throw error;
+    if (!error.response) {
+      throw error;
+    }
 
     const status = error.response.status;
+    const userStore = useUserStore();
 
     // -----------------------------
     // 401 HANDLING + TOKEN REFRESH
     // -----------------------------
     if (status === 401) {
       if (url === '/Users/refresh') {
-        const userStore = useUserStore();
         userStore.logout();
         return Promise.reject('Session expired');
       }
 
       if (!refreshPromise) {
-        // refreshPromise = store.dispatch('refreshToken').finally(() => {
-        //   refreshPromise = null;
-        // });
+        refreshPromise = userStore.refreshTokenAction().finally(() => {
+          refreshPromise = null;
+        });
       }
 
       const refreshSuccess = await refreshPromise;
 
       if (refreshSuccess) {
-        return await makeRequest<T>(method, url, data, config, returnAll);
-      } else {
-        const userStore = useUserStore();
-        userStore.logout();
-        return Promise.reject('Session expired');
+        return makeRequest<T>(method, url, data, config);
       }
+
+      userStore.logout();
+      return Promise.reject('Session expired');
     }
 
     // -----------------------------
-    // NORMAL ERROR RETURN
+    // NORMAL ERROR
     // -----------------------------
-    if (returnAll) {
-      return Promise.reject(error.response.data ?? error);
-    }
-
     const message =
-      (error.response.data as any)?.message || error.message;
+      error.response.data?.message || error.message;
+
     return Promise.reject(message);
+  } finally {
+    loadingStore.stop();
   }
 }
 
@@ -112,21 +120,21 @@ async function makeRequest<T = any>(
 // PUBLIC WRAPPER METHODS
 // -----------------------------
 const axiosWrapper = {
-  get<T = any>(url: string, config: AxiosRequestConfig = {}, returnAll = false) {
-    return makeRequest<T>('get', url, null, config, returnAll);
+  get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return makeRequest<T>('get', url, null, config);
   },
 
-  post<T = any>(url: string, data: any, config: AxiosRequestConfig = {}, returnAll = false) {
-    return makeRequest<T>('post', url, data, config, returnAll);
+  post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    return makeRequest<T>('post', url, data, config);
   },
 
-  put<T = any>(url: string, data: any, config: AxiosRequestConfig = {}, returnAll = false) {
-    return makeRequest<T>('put', url, data, config, returnAll);
+  put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    return makeRequest<T>('put', url, data, config);
   },
 
-  delete<T = any>(url: string, config: AxiosRequestConfig = {}, returnAll = false) {
-    return makeRequest<T>('delete', url, null, config, returnAll);
-  }
+  delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return makeRequest<T>('delete', url, null, config);
+  },
 };
 
 export default axiosWrapper;

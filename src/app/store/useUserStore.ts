@@ -77,7 +77,7 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     async login(payload: LoginPayload) {
       const data = { ...payload, isAdminLogin: true };
-      const response = await axiosWrapper.post<UserData>('/Auth/login', data, {}, false);
+      const response = await axiosWrapper.post<UserData>('/Auth/login', data, {});
       const tokens = response.data as AuthData;
 
       this.rememberMe = payload.rememberMe;
