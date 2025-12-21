@@ -93,33 +93,20 @@ const handleActionMenu = async (payload) => {
     if (data && data.id) {
       confirmDelete(data);
     }
-  }
-  if (action === "edit") {
+  } else if (action === "edit") {
     if (data && data.id) {
       const id = data.id;
       router.push({ name: "RolesPermissionsEdit", params: { id } });
     }
-  }
-  if (action === "toggleActive") {
-    await toggleActive(data.id, !data.isActive);
+  } else {
+    const id = data.id;
+    router.push({ name: "RolesPermissionsView", params: { id } });
   }
 };
 
-// const handleActionMenu = ({ action, data }) => {
-//   if (action === "delete") {
-//     confirmDelete(data);
-//   } else if (action === "edit") {
-//     const id = data.id;
-//     router.push({ name: "RolesPermissionsEdit", params: { id } });
-//   } else {
-//     const id = data.id;
-//     router.push({ name: "RolesPermissionsView", params: { id } });
-//   }
-// };
-
 const handleDeleteConfirm = async () => {
   showDeleteDialog.value = false;
-  await store.deleteItem(rowToDelete.value.id)
+  await store.deleteItem(rowToDelete.value.id);
   rowToDelete.value = null;
 };
 
