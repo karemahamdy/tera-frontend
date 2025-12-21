@@ -39,3 +39,11 @@ export interface AddGroup {
   name: string;
   description: string | null;
 }
+
+export interface ListResponse {
+  data: { items: GroupApiItem[] }
+}
+
+export interface ItemResponse {
+  data: GroupApiItem
+}
