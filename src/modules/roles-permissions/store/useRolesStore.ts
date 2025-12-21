@@ -87,6 +87,7 @@ export const useRolesStore = defineStore("roles", () => {
       list.value = list.value.filter((item) => item.id !== id);
       pagination.value.total--;
       toastService.success(t("roles.roleDeleted"))
+      await getList();
     } catch (error) {
       toastService.error(error as string);
     } finally {

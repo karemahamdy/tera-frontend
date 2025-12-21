@@ -27,7 +27,7 @@ const props = defineProps({
 const customItems = [
   {
     slot: true,
-    label:t("button.view"),
+    label: t("button.view"),
     icon: "Eye",
     color: "#3F5FAC",
     command: (row) => {
@@ -55,7 +55,12 @@ const columns = computed(() => {
       type: "badge",
       Class: "custom-badge",
     },
-    { field: "createAt", header: t("table.created"), sortable: true, type: "date" },
+    {
+      field: "createAt",
+      header: t("table.created"),
+      sortable: true,
+      type: "date",
+    },
     { field: "action", header: t("table.action") },
   ];
 
@@ -63,9 +68,11 @@ const columns = computed(() => {
 });
 
 const firstRecord = computed(() => {
-  return store.list.length === 0 
-    ? 0 
-    : (store.pagination['PagenationDto.PageIndex'] - 1) * store.pagination['PagenationDto.PageSize'] + 1;
+  return store.list.length === 0
+    ? 0
+    : (store.pagination["PagenationDto.PageIndex"] - 1) *
+        store.pagination["PagenationDto.PageSize"] +
+        1;
 });
 
 const lastRecord = computed(() => {
@@ -76,25 +83,43 @@ const lastRecord = computed(() => {
 
 const confirmDelete = (row) => {
   rowToDelete.value = row;
-  console.log("Row to delete:", rowToDelete.value);
   showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }) => {
+const handleActionMenu = async (payload) => {
+  const action = payload.action || payload;
+  const data = payload.data || payload.row || payload;
   if (action === "delete") {
-    confirmDelete(data);
-  } else if (action === "edit") {
-    const id = data.id;
-    router.push({ name: "RolesPermissionsEdit", params: { id } });
-  } else {
-    const id = data.id;
-    router.push({ name: "RolesPermissionsView", params: { id } });
+    if (data && data.id) {
+      confirmDelete(data);
+    }
+  }
+  if (action === "edit") {
+    if (data && data.id) {
+      const id = data.id;
+      router.push({ name: "RolesPermissionsEdit", params: { id } });
+    }
+  }
+  if (action === "toggleActive") {
+    await toggleActive(data.id, !data.isActive);
   }
 };
 
-const handleDeleteConfirm = () => {
-  console.log("Deleted user with ID:", rowToDelete.value);
+// const handleActionMenu = ({ action, data }) => {
+//   if (action === "delete") {
+//     confirmDelete(data);
+//   } else if (action === "edit") {
+//     const id = data.id;
+//     router.push({ name: "RolesPermissionsEdit", params: { id } });
+//   } else {
+//     const id = data.id;
+//     router.push({ name: "RolesPermissionsView", params: { id } });
+//   }
+// };
+
+const handleDeleteConfirm = async () => {
   showDeleteDialog.value = false;
+  await store.deleteItem(rowToDelete.value.id)
   rowToDelete.value = null;
 };
 
@@ -102,9 +127,9 @@ const addNew = () => {
   router.push({ name: "RolesPermissionsCreate" });
 };
 
-onMounted(()=>{
-  store.getList()
-})
+onMounted(() => {
+  store.getList();
+});
 </script>
 
 <template>
