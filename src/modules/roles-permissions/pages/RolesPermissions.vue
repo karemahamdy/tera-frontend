@@ -21,22 +21,7 @@ const rowToDelete = ref(null);
 const props = defineProps({
   data: {
     type: Array,
-    default: () => [
-      {
-        id: 1,
-        RoleName: "System Administrator",
-        Description: "Full system access with all permission..",
-        UserCount: "4",
-        Created: "Oct 11, 2025",
-      },
-      {
-        id: 5,
-        RoleName: "Finance Manager",
-        Description: "Financial operations and reporting..",
-        UserCount: "1",
-        Created: "Oct 11, 2025",
-      },
-    ],
+    default: () => [],
   },
 });
 const customItems = [
@@ -52,29 +37,41 @@ const customItems = [
 ];
 const emit = defineEmits(["search", "action-menu-click"]);
 
-const { onSearch, filteredData } = useSearch(props.data);
+const { filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
   const Columns = [
     {
-      field: "RoleName",
+      field: "name",
       header: t("roles.roleName"),
       type: "slot",
       sortable: true,
     },
-    { field: "Description", header: t("table.description"), sortable: true },
+    { field: "discription", header: t("table.description"), sortable: true },
     {
-      field: "UserCount",
+      field: "userAssigned",
       header: t("table.userAssigned"),
       sortable: true,
       type: "badge",
       Class: "custom-badge",
     },
-    { field: "Created", header: t("table.created"), sortable: true },
+    { field: "createAt", header: t("table.created"), sortable: true, type: "date" },
     { field: "action", header: t("table.action") },
   ];
 
   return Columns;
+});
+
+const firstRecord = computed(() => {
+  return store.list.length === 0 
+    ? 0 
+    : (store.pagination['PagenationDto.PageIndex'] - 1) * store.pagination['PagenationDto.PageSize'] + 1;
+});
+
+const lastRecord = computed(() => {
+  if (store.list.length === 0) return 0;
+  const last = firstRecord.value + store.list.length - 1;
+  return last > store.pagination.total ? store.pagination.total : last;
 });
 
 const confirmDelete = (row) => {
@@ -124,7 +121,7 @@ onMounted(()=>{
           :mainBtn="true"
           mainBtnText="roles.addRole"
           searchPlaceholder="roles.searchPlaceholder"
-          @search="onSearch"
+          @search="store.search"
           :onMainBtnClick="addNew"
         />
       </template>
@@ -132,12 +129,19 @@ onMounted(()=>{
       <template #content>
         <DynamicTable
           :columns="columns"
-          :data="filteredData"
+          :data="store.list"
           :loading="loading"
           :permissionItems="permissionItems"
           :customItems="customItems"
           @action-menu-click="handleActionMenu"
+          @page-change="store.changePage"
+          @order-change="store.sort"
           :showDelete="true"
+          :first="firstRecord"
+          :last="lastRecord"
+          :rows="store.pagination['PagenationDto.PageSize']"
+          :totalRecords="store.pagination.total"
+          lazy
         >
         </DynamicTable>
       </template>

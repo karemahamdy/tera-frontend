@@ -1,6 +1,7 @@
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
+import { ref } from "vue";
 import BaseButton from './BaseButton.vue';
+import { debounce } from "@/app/utils/debounce";
 
 const props = defineProps({
     title: { type: String, default: "" },
@@ -25,6 +26,15 @@ const emit = defineEmits(['search', 'filter-change', 'action-click']);
 const onFilterChange = (filter, event) => {
     emit('filter-change', { filter, value: event.value });
 }
+
+const debouncedSearch = debounce((value) => {
+  emit("search", value);
+}, 500);
+
+const onInput = (event) => {
+  const value = event.target.value;
+  debouncedSearch(value);
+};
 
 </script>
 
@@ -56,7 +66,7 @@ const onFilterChange = (filter, event) => {
     <!-- Search + Filters -->
     <div class="flex gap-[10px]  mt-2 flex-nowrap">
         <span class="p-input-icon-left search-input">
-            <InputText v-if="showSearch" v-model="searchQuery" :placeholder="$t(searchPlaceholder)"  @input="emit('search', $event.target.value)"/>
+            <InputText v-if="showSearch" v-model="searchQuery" :placeholder="$t(searchPlaceholder)"  @input="onInput"/>
         </span>
         <Dropdown v-for="(filter, index) in filters" v-if="showFilter" :key="index" v-model="filter.value" :options="filter.options"
             :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"

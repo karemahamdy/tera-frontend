@@ -29,8 +29,8 @@ export const useRolesStore = defineStore("roles", () => {
     loading.value = true;
     try {
       const res = await RoleService.getList(pagination.value);
-      list.value = res.data;
-      pagination.value.total = res.total;
+      list.value = res.data.items;
+      pagination.value.total = res.data.totalCount;
     } catch (error) {
       toastService.error(error as string);
     } finally {
@@ -49,9 +49,9 @@ export const useRolesStore = defineStore("roles", () => {
     await getList();
   };
 
-  const sort = async (orderBy: string, direction: "asc" | "desc") => {
-    pagination.value["PagenationDto.OrderBy"] = orderBy;
-    pagination.value["PagenationDto.OrderDirection"] = direction;
+  const sort = async (orderData: { orderBy: string, direction: "asc" | "desc" } ) => {
+    pagination.value["PagenationDto.OrderBy"] = orderData.orderBy;
+    pagination.value["PagenationDto.OrderDirection"] = orderData.direction;
     pagination.value["PagenationDto.PageIndex"] = 1;
     await getList();
   };

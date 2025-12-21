@@ -32,8 +32,13 @@ export interface RoleListItem {
 }
 
 export interface RoleListResponse {
-  data: RoleListItem[];
-  total: number;
+  data: {
+    items: RoleListItem[];
+    pageIndex: number;
+    pageSize: number;
+    totalCount: number;
+    totalPages: number;
+  };
 }
 
 export interface RoleItem {
