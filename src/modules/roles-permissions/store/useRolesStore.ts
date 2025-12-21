@@ -6,9 +6,7 @@ import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
 
 export const useRolesStore = defineStore("roles", () => {
-  // -----------------------------
-  // STATE
-  // -----------------------------
+
   const { t } = useI18n();
   const list = ref<RoleListItem[]>([]);
   const loading = ref(false);
@@ -22,9 +20,7 @@ export const useRolesStore = defineStore("roles", () => {
     total: 0,
   });
 
-  // -----------------------------
-  // ACTIONS
-  // -----------------------------
+
   const getList = async () => {
     loading.value = true;
     try {
@@ -96,12 +92,10 @@ export const useRolesStore = defineStore("roles", () => {
   };
 
   return {
-    // state
     list,
     loading,
     pagination,
 
-    // actions
     getList,
     changePage,
     search,
