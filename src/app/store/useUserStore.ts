@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axiosWrapper from '@/app/http/axiosWrapper';
-import { i18n } from '@/plugins/i18n';
+import i18n from '@/plugins/i18n';
 import type { User, UserData, LoginPayload, Entity, AuthData } from "@/app/types/user";
 import router from "@/app/router";
 
@@ -76,8 +76,7 @@ export const useUserStore = defineStore('user', {
     // LOGIN
     // ------------------------------------
     async login(payload: LoginPayload) {
-      const data = { ...payload, isAdminLogin: true };
-      const response = await axiosWrapper.post<UserData>('/Auth/login', data, {});
+      const response = await axiosWrapper.post<UserData>('/Auth/login', payload, {});
       const tokens = response.data as AuthData;
 
       this.rememberMe = payload.rememberMe;
@@ -143,7 +142,7 @@ export const useUserStore = defineStore('user', {
     // FETCH ENTITY LOOKUPS
     // ------------------------------------
     async fetchEntityLookups() {
-      const data = await axiosWrapper.get<any>('/EntityLookups');
+      const data = await axiosWrapper.get<any>('/Lookups/EntityLookups');
       this.entities = data.data as Entity[];
     },
   }
