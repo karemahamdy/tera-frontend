@@ -138,7 +138,7 @@ const filteredData = computed(() => {
         <div class="px-20">
           <div v-if="isView">
             <div
-              class="text-gray-500 flex items-center gap-2 border border-gray-300 px-2 rounded-lg"
+              class="text-gray-500 flex items-center gap-2 border border-gray-300 px-2 rounded-lg search-container"
             >
               <VsxIcon iconName="SearchNormal" :size="24" type="linear" />
               <InputText
@@ -174,7 +174,7 @@ const filteredData = computed(() => {
                 />
               </div>
             </template>
-  
+
             <div class="p-5 border border-[#DCDCDC4D] bg-[#FAF9F9] rounded">
               <div class="">
                 <div
@@ -187,7 +187,10 @@ const filteredData = computed(() => {
                   <div class="font-bold m-auto">{{ $t("button.delete") }}</div>
                 </div>
                 <Accordion value="0" v-if="filteredData?.length > 0">
-                  <template v-for="(item, index) in filteredData" :key="item?.id">
+                  <template
+                    v-for="(item, index) in filteredData"
+                    :key="item?.id"
+                  >
                     <AccordionPanel v-if="item" :value="String(index)">
                       <AccordionHeader class="bg-[#F0F3FA]">
                         <div
@@ -272,7 +275,7 @@ const filteredData = computed(() => {
                 <NoData v-else />
               </div>
             </div>
-  
+
             <div class="flex justify-between gap-4 mb-4 w-full" v-if="!isView">
               <BaseButton
                 label="button.cancel"
@@ -299,7 +302,7 @@ const filteredData = computed(() => {
 .w-content {
   width: calc(100% - 14px);
 }
-:deep(.p-inputtext, .p-inputtext:focus) {
+.search-container :deep(.p-inputtext, .p-inputtext:focus) {
   border: 0;
 }
 </style>
