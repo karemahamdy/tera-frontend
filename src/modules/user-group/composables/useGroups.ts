@@ -53,17 +53,19 @@ export function useGroups() {
   watch(
     apiGroups,
     (groups) => {
-      tableData.value = groups.map((group) => ({
-        id: group.id,
-        GroupName: group.name,
-        Description: group.description ?? "-",
-        AssignedRoles: group.rolesAssingedToGroup.length
-          ? group.rolesAssingedToGroup.map((group) => group.name).join(", ")
-          : "-",
-        UserCount: group.UserCount,
-        Created: "-",
-        isActive: group.isActive ?? false,
-      }));
+      console.log(groups);
+      
+      // tableData.value = groups.map((group) => ({
+      //   id: group.id,
+      //   GroupName: group.name,
+      //   Description: group.description ?? "-",
+      //   AssignedRoles: group.rolesAssingedToGroup.length
+      //     ? group.rolesAssingedToGroup.map((group) => group.name).join(", ")
+      //     : "-",
+      //   UserCount: group.UserCount,
+      //   Created: "-",
+      //   isActive: group.isActive ?? false,
+      // }));
     },
     { immediate: true }
   );
