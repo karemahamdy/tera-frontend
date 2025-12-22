@@ -19,7 +19,7 @@ const { handleSubmit } = useForm({
   validationSchema: yup.object({
     userName: yup.string().required(t('form.fieldRequired')),
     password: yup.string().required(t('form.fieldRequired')),
-    entityId: yup.string().nullable(),
+    entityId: yup.string().required(t('form.fieldRequired')),
     rememberMe: yup.boolean()
   }),
   initialValues: {
@@ -29,7 +29,7 @@ const { handleSubmit } = useForm({
 
 const { value: userName, errorMessage: userNameError } = useField<string>("userName");
 const { value: password, errorMessage: passwordError } = useField<string>("password");
-const { value: entityId, errorMessage: entityIdError } = useField<string | null>("entityId");
+const { value: entityId, errorMessage: entityError } = useField<string | null>("entityId");
 const { value: rememberMe } = useField<boolean>("rememberMe");
 const loading = ref<boolean>(false)
 
@@ -82,9 +82,9 @@ const getEntityLookups = async () => {
             $t("auth.entity")
           }}</label>
 
-          <Dropdown v-model="entityId" :options="entities" optionLabel="name" :invalid="!!entityIdError"
+          <Dropdown v-model="entityId" :options="entities" optionLabel="name" :invalid="!!entityError"
             optionValue="id" :loading="loading" :placeholder="$t('auth.entityPlaceholder')" class="w-full mt-1" />
-          <small v-if="entityIdError" class="text-danger-500">{{ entityIdError }}</small>
+          <small v-if="entityError" class="text-danger-500">{{ entityError }}</small>
 
         </div>
 
