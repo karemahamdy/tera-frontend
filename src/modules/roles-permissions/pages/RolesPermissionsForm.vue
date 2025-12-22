@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useRoute } from "vue-router";
 import NoData from "../components/NoData.vue";
+import { useRolesStore } from "../store/useRolesStore";
+const store = useRolesStore();
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
@@ -113,6 +115,12 @@ const filteredData = computed(() => {
     })
     .filter(Boolean); // remove nulls
 });
+
+onMounted( async () => {
+  if((editMode || isView) && typeof id.value === 'string') {
+    await store.getItemById(id.value)
+  }
+})
 </script>
 <template>
   <div>

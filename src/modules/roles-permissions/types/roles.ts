@@ -45,3 +45,19 @@ export interface RoleItem {
   id: string;
   name: string;
 }
+
+export interface Permission {
+  moduleCode: string;
+  isCreate: boolean;
+  isUpdate: boolean;
+  isDelete: boolean;
+  isView: boolean;
+  permissionDtos: PermissionDto[];
+}
+
+export interface RoleByID {
+  id: string;
+  name: string;
+  description: string;
+  treeOfPermissions : Permission[]
+}
