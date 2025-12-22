@@ -56,7 +56,7 @@ export interface Permission {
 }
 
 export interface RoleByID {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   treeOfPermissions : Permission[]
