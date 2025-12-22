@@ -1,5 +1,5 @@
 import axiosWrapper from '@/app/http/axiosWrapper';
-import type { Pagination, RolePayload, RoleItem, RoleListResponse } from "../types/roles";
+import type { Pagination, RolePayload, RoleItem, RoleListResponse, RoleByID } from "../types/roles";
 
 export const RoleService = {
   getList(params: Pagination) {
@@ -7,7 +7,7 @@ export const RoleService = {
   },
 
   getById(id: string) {
-    return axiosWrapper.get<RolePayload>(`/Role/GetAllRole/${id}`);
+    return axiosWrapper.get<{ data: RoleByID }>(`/Role/GetAllRole?id=${id}`);
   },
 
   create(payload: RolePayload) {
@@ -19,7 +19,7 @@ export const RoleService = {
   },
 
   delete(id: string) {
-    return axiosWrapper.delete(`/Role/Delete/${id}`);
+    return axiosWrapper.delete(`/Role/${id}`);
   },
 
   droplist() {

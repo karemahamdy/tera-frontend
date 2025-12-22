@@ -1,16 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { Pagination, RoleListItem, RolePayload } from "../types/roles";
+import type { Pagination, RoleListItem, RolePayload, RoleByID } from "../types/roles";
 import { RoleService } from "../services/roles.service";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
 
 export const useRolesStore = defineStore("roles", () => {
-  // -----------------------------
-  // STATE
-  // -----------------------------
+
   const { t } = useI18n();
   const list = ref<RoleListItem[]>([]);
+  const role = ref<RoleByID | null>(null);
   const loading = ref(false);
 
   const pagination = ref<Pagination>({
@@ -22,15 +21,13 @@ export const useRolesStore = defineStore("roles", () => {
     total: 0,
   });
 
-  // -----------------------------
-  // ACTIONS
-  // -----------------------------
+
   const getList = async () => {
     loading.value = true;
     try {
       const res = await RoleService.getList(pagination.value);
-      list.value = res.data;
-      pagination.value.total = res.total;
+      list.value = res.data.items;
+      pagination.value.total = res.data.totalCount;
     } catch (error) {
       toastService.error(error as string);
     } finally {
@@ -49,9 +46,9 @@ export const useRolesStore = defineStore("roles", () => {
     await getList();
   };
 
-  const sort = async (orderBy: string, direction: "asc" | "desc") => {
-    pagination.value["PagenationDto.OrderBy"] = orderBy;
-    pagination.value["PagenationDto.OrderDirection"] = direction;
+  const sort = async (orderData: { orderBy: string, direction: "asc" | "desc" } ) => {
+    pagination.value["PagenationDto.OrderBy"] = orderData.orderBy;
+    pagination.value["PagenationDto.OrderDirection"] = orderData.direction;
     pagination.value["PagenationDto.PageIndex"] = 1;
     await getList();
   };
@@ -80,6 +77,18 @@ export const useRolesStore = defineStore("roles", () => {
     }
   };
 
+  const getItemById = async (id: string) => {
+    try {
+      loading.value = true;
+      const res = await RoleService.getById(id);
+      role.value = res.data
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const deleteItem = async (id: string) => {
     try {
       loading.value = true;
@@ -87,6 +96,7 @@ export const useRolesStore = defineStore("roles", () => {
       list.value = list.value.filter((item) => item.id !== id);
       pagination.value.total--;
       toastService.success(t("roles.roleDeleted"))
+      await getList();
     } catch (error) {
       toastService.error(error as string);
     } finally {
@@ -95,18 +105,17 @@ export const useRolesStore = defineStore("roles", () => {
   };
 
   return {
-    // state
     list,
     loading,
     pagination,
 
-    // actions
     getList,
     changePage,
     search,
     sort,
     createItem,
     updateItem,
+    getItemById,
     deleteItem,
   };
 });

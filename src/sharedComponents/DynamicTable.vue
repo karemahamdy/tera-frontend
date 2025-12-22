@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import ActionMenu from './ActionMenu.vue';
+import { formatDateTimeLang } from '@/app/utils/dates';
 
 const props = defineProps({
     columns: { type: Array, default: () => [] },
@@ -14,10 +15,14 @@ const props = defineProps({
     permissionItems: { type: Array, default: () => [] },
     getStatusBadge: { type: Function, default: null },
     getStatusText: { type: Function, default: null },
+    first: { type: Number, default: 1 },
+    last: { type: Number, default: 1 },
+    totalRecords: { type: Number, default: 1 },
+    lazy: { type: Boolean, default: false },
 
 });
 
-const emit = defineEmits(["action-menu-click"]);
+const emit = defineEmits(["action-menu-click", "page-change", "order-change"]);
 const menu = ref(null);
 const permissionMenu = ref(null);
 const permissionRow = ref(null);
@@ -50,17 +55,30 @@ const getStatusText = (status) => {
     return status === "Active" ? "status-text-active" : "status-text-inactive";
 }
 
+const onPage = (event) => {
+    let pageNo = event.page + 1;
+    emit("page-change", pageNo);
+};
+
+const onSort = (event) => {
+    let orderData = { 
+        orderBy: event.sortField, 
+        direction: event.sortOrder === 1 ? "asc" : "desc" 
+    }
+    emit("order-change", orderData);
+};
+
 </script>
 
 <template>
     <DataTable :value="filteredData" :paginator="true" :rows="rows" :rowsPerPageOptions="[5, 10, 20, 50]"
-        :loading="loading"
+        :loading="loading" :lazy="lazy" :totalRecords="totalRecords" @page="onPage" @sort="onSort"
         paginatorTemplate="paginatorstart FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink paginatorend"
         currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records"
         class="border-2 border-[#E7E6E8] rounded-md" responsiveLayout="scroll">
         <template #paginatorstart>
             <div class="text-gray-600 font-medium">
-                Showing {{ first }}–{{ last }} of {{ totalRecords }} Records
+                Showing <strong>{{ first }}–{{ last }}</strong> of <strong>{{ totalRecords }}</strong> Records
             </div>
         </template>
         <template #paginatorend>
@@ -92,6 +110,10 @@ const getStatusText = (status) => {
                         <span :class="getStatusText(slotProps.data.status)">
                             {{ slotProps.data.status }}
                         </span>
+                    </div>
+
+                    <div v-else-if="col.type == 'date'">
+                        {{ formatDateTimeLang(slotProps.data[col.field]) }}
                     </div>
                     <!-- Permission Icon -->
                     <Button v-else-if="col.field === 'permission'" text rounded class="permission-btn"

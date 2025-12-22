@@ -32,11 +32,32 @@ export interface RoleListItem {
 }
 
 export interface RoleListResponse {
-  data: RoleListItem[];
-  total: number;
+  data: {
+    items: RoleListItem[];
+    pageIndex: number;
+    pageSize: number;
+    totalCount: number;
+    totalPages: number;
+  };
 }
 
 export interface RoleItem {
   id: string;
   name: string;
+}
+
+export interface Permission {
+  moduleCode: string;
+  isCreate: boolean;
+  isUpdate: boolean;
+  isDelete: boolean;
+  isView: boolean;
+  permissionDtos: PermissionDto[];
+}
+
+export interface RoleByID {
+  id: string;
+  name: string;
+  description: string;
+  treeOfPermissions : Permission[]
 }
