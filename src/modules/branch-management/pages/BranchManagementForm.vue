@@ -64,29 +64,41 @@ const onSubmit = handleSubmit((values) => {
 
       <template #content>
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
-          <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("branch.branchName") }}
-            </label>
-
-            <InputText v-model="branchName" placeholder="e.g., Finance Team" class="mt-1 w-full p-3 border rounded-lg"
-              :class="{ 'border-danger-500': errors.branchName }" />
-
-            <small v-if="errors.branchName" class="text-danger-500">
-              {{ errors.branchName }}
-            </small>
+          <div class="flex gap-8">
+  
+            <FormInput class="w-1/2" :label="$t('branch.branchName')" v-model="branchName"
+              :error="errors.branchName" placeholder="Enter full name" :invalid="!!errors.branchName"/>
+              <FormInput class="w-1/2" :label="$t('branch.branchName')" v-model="branchName"
+              :error="errors.branchName" placeholder="Enter full name" :invalid="!!errors.branchName"/>
           </div>
-          <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("branch.address") }}
-            </label>
-
-            <Textarea v-model="address" :placeholder="$t('branch.descriptionPlaceholder')"
+          <div class="flex gap-8">
+            <div class="w-1/2">
+              
+              <label class="text-gray-700 font-medium mb-2 block">
+                {{ $t("branch.address") }}
+              </label>
+              
+              <Textarea v-model="address" :placeholder="$t('branch.descriptionPlaceholder')"
               class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.address }" />
+              
+              <small v-if="errors.address" class="text-danger-500">
+                {{ errors.address }}
+              </small>
+            </div>
 
-            <small v-if="errors.address" class="text-danger-500">
-              {{ errors.address }}
-            </small>
+             <div class="w-1/2">
+              
+              <label class="text-gray-700 font-medium mb-2 block">
+                {{ $t("branch.address") }}
+              </label>
+              
+              <Textarea v-model="address" :placeholder="$t('branch.descriptionPlaceholder')"
+              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.address }" />
+              
+              <small v-if="errors.address" class="text-danger-500">
+                {{ errors.address }}
+              </small>
+            </div>
           </div>
 
           <div class="flex gap-8">
