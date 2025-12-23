@@ -30,8 +30,8 @@ jobs:
 
       - name: Copy Files to Web Server
         run: |
-          sudo rm -rf /var/www/vue-app/production/html/*
-          sudo cp -r dist/* /var/www/vue-app/production/html/
+          sudo rm -rf /var/www/vue-app/production/*
+          sudo cp -r dist/* /var/www/vue-app/production/
           
       - name: Reload Nginx
         run: sudo systemctl reload nginx
