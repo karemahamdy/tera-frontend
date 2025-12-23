@@ -4,6 +4,7 @@ import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useRoute } from "vue-router";
 import NoData from "../components/NoData.vue";
+import type { Permission } from "../types/roles";
 import { useRolesStore } from "../store/useRolesStore";
 const store = useRolesStore();
 
@@ -15,77 +16,12 @@ const editMode = props.mode === "edit";
 const isView = props.mode === "view";
 const route = useRoute();
 const id = ref<string | null>(route.params.id ? String(route.params.id) : null);
-const name = ref<string>("");
-const description = ref<string>("");
 const search = ref<string>("");
 const handleSubmit = () => {
   console.log(`form submited ${id.value}`);
 };
 
-const data = ref([
-  {
-    id: 1,
-    module: "User Management",
-    view: true,
-    create: true,
-    edit: false,
-    delete: false,
-    data: [
-      {
-        permission: "Create User",
-        view: true,
-        create: true,
-        edit: false,
-        delete: false,
-      },
-      {
-        permission: "Edit User",
-        view: true,
-        create: false,
-        edit: true,
-        delete: false,
-      },
-      {
-        permission: "Delete User",
-        view: true,
-        create: false,
-        edit: false,
-        delete: true,
-      },
-    ],
-  },
-  {
-    id: 2,
-    module: "Role Management",
-    view: true,
-    create: true,
-    edit: false,
-    delete: false,
-    data: [
-      {
-        permission: "Create Role",
-        view: true,
-        create: true,
-        edit: false,
-        delete: false,
-      },
-      {
-        permission: "Edit Role",
-        view: true,
-        create: false,
-        edit: true,
-        delete: false,
-      },
-      {
-        permission: "Delete Role",
-        view: true,
-        create: false,
-        edit: false,
-        delete: true,
-      },
-    ],
-  },
-]);
+const data = ref<Permission[]>([]);
 
 // Computed property to filter modules and permissions based on search
 const filteredData = computed(() => {
@@ -96,13 +32,13 @@ const filteredData = computed(() => {
   return data.value
     .map((moduleItem) => {
       // Filter module's permissions
-      const filteredPermissions = moduleItem.data.filter((perm) =>
-        perm.permission.toLowerCase().includes(term)
+      const filteredPermissions = moduleItem.permissionDtos.filter((perm) =>
+        perm.name.toLowerCase().includes(term)
       );
 
       // Include module if module name matches OR it has matching permissions
       if (
-        moduleItem.module.toLowerCase().includes(term) ||
+        moduleItem.moduleCode.toLowerCase().includes(term) ||
         filteredPermissions.length
       ) {
         return {
@@ -116,11 +52,12 @@ const filteredData = computed(() => {
     .filter(Boolean); // remove nulls
 });
 
-onMounted( async () => {
-  if((editMode || isView) && typeof id.value === 'string') {
-    await store.getItemById(id.value)
+onMounted(async () => {
+  if ((editMode || isView) && typeof id.value === "string") {
+    await store.getItemById(id.value);
+    data.value = store.role.treeOfPermissions;
   }
-})
+});
 </script>
 <template>
   <div>
@@ -163,7 +100,7 @@ onMounted( async () => {
                   $t("roles.roleName")
                 }}</label>
                 <InputText
-                  v-model="name"
+                  v-model="store.role.name"
                   :disabled="isView"
                   placeholder="e.g., Finance Manager"
                   class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
@@ -174,7 +111,7 @@ onMounted( async () => {
                   $t("userGroup.description")
                 }}</label>
                 <Textarea
-                  v-model="description"
+                  v-model="store.role.description"
                   :disabled="isView"
                   :placeholder="$t('roles.descriptionPlaceholder')"
                   class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
@@ -194,21 +131,21 @@ onMounted( async () => {
                   <div class="font-bold m-auto">{{ $t("button.edit") }}</div>
                   <div class="font-bold m-auto">{{ $t("button.delete") }}</div>
                 </div>
-                <Accordion value="0" v-if="filteredData?.length > 0">
+                <Accordion value="0" v-if="filteredData.length > 0">
                   <template
                     v-for="(item, index) in filteredData"
-                    :key="item?.id"
+                    :key="item?.moduleCode"
                   >
                     <AccordionPanel v-if="item" :value="String(index)">
                       <AccordionHeader class="bg-[#F0F3FA]">
                         <div
                           class="grid grid-cols-5 justify-between items-center w-full p-2"
                         >
-                          <div class="font-bold">{{ item?.module }}</div>
+                          <div class="font-bold">{{ item?.moduleCode }}</div>
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="item.view"
+                              v-model="item.isView"
                               binary
                               @click.stop
                             />
@@ -216,7 +153,7 @@ onMounted( async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="item.create"
+                              v-model="item.isCreate"
                               binary
                               @click.stop
                             />
@@ -224,7 +161,7 @@ onMounted( async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="item.edit"
+                              v-model="item.isUpdate"
                               binary
                               @click.stop
                             />
@@ -232,7 +169,7 @@ onMounted( async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="item.delete"
+                              v-model="item.isDelete"
                               binary
                               @click.stop
                             />
@@ -241,37 +178,37 @@ onMounted( async () => {
                       </AccordionHeader>
                       <AccordionContent>
                         <div
-                          v-for="permission in item?.data"
+                          v-for="permission in item?.permissionDtos"
                           class="grid grid-cols-5 justify-between items-center w-content p-2"
                         >
                           <div class="font-medium">
-                            {{ permission.permission }}
+                            {{ permission.name }}
                           </div>
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="permission.view"
+                              v-model="permission.isView"
                               binary
                             />
                           </div>
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="permission.create"
+                              v-model="permission.isCreate"
                               binary
                             />
                           </div>
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="permission.edit"
+                              v-model="permission.isUpdate"
                               binary
                             />
                           </div>
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
-                              v-model="permission.delete"
+                              v-model="permission.isDelete"
                               binary
                             />
                           </div>

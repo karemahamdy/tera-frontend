@@ -3,11 +3,11 @@ import type { Pagination, RolePayload, RoleItem, RoleListResponse, RoleByID } fr
 
 export const RoleService = {
   getList(params: Pagination) {
-    return axiosWrapper.get<RoleListResponse>("/Role/View", { params });
+    return axiosWrapper.get<RoleListResponse>("/Role/GetAllRole", { params });
   },
 
   getById(id: string) {
-    return axiosWrapper.get<{ data: RoleByID }>(`/Role/GetAllRole?id=${id}`);
+    return axiosWrapper.get<{ data: RoleByID }>(`/Role/${id}`);
   },
 
   create(payload: RolePayload) {
