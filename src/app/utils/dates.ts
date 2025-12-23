@@ -1,7 +1,7 @@
 // date-utils.ts
 import { format, formatDistance } from 'date-fns';
 import { enUS, arSA } from 'date-fns/locale'; 
-import i18n from '@/plugins/i18n';
+import i18n from '@/app/i18n/index';
 import { toastService } from "@/app/services/toastService";
 
 export function formatDateTimeLang(date: Date | string, withTime = true): string {
