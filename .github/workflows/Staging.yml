@@ -16,13 +16,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Enable Corepack
+      - name: enable corepack
         run: corepack enable
-
-      - name: Setup Node.js
+        
+      - name: set node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 'lts/*'
+          cache: 'yarn'
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
