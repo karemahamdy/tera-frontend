@@ -1,7 +1,7 @@
 // plugins/i18n.ts
 import { createI18n } from 'vue-i18n';
-
-const messages = import.meta.glob('../app/locales/*.json', { eager: true });
+import en from '@/app/locales/en.json';
+import ar from '@/app/locales/ar.json';
 
 function getLanguage(): string {
   let lang = localStorage.getItem('lang');
@@ -16,17 +16,10 @@ function getLanguage(): string {
   return lang;
 }
 
-// Map messages to locale
-const mappedMessages: Record<string, any> = {};
-for (const path in messages) {
-  const fileName = path.split('/').pop()?.replace('.json', '');
-  if (fileName) mappedMessages[fileName] = (messages as any)[path];
-}
-
 export default createI18n({
-  legacy: false,
+  legacy: true,
   locale: getLanguage(),
   fallbackLocale: 'en',
   globalInjection: true,
-  messages: mappedMessages,
+  messages: { en, ar }
 });
