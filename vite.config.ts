@@ -9,8 +9,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
-  }
-  ,
+  },
   server: {
     // Use polling to improve file-change detection on some Windows setups
     watch: {
@@ -24,5 +23,8 @@ export default defineConfig({
       // show overlay for errors
       overlay: true
     }
+  },
+  build: {
+    reportCompressedSize: false
   }
 })
