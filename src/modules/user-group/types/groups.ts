@@ -29,7 +29,7 @@ export interface GroupTableItem {
   id: string;
   GroupName: string;
   Description: string;
-  AssignedRoles: string[];
+  AssignedRoles: string[] | string;
   UserCount: number;
   Created?: string;
   isActive?: boolean

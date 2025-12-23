@@ -9,7 +9,7 @@ export const supportedLocales = {
 };
 
 const i18n = createI18n({
-  legacy: true,
+  legacy: false,
   locale: getStartingLocale(),
   fallbackLocale: defaultLocale,
   globalInjection: true,
