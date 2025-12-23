@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axiosWrapper from '@/app/http/axiosWrapper';
-import i18n from '@/plugins/i18n';
+import i18n from '@/app/i18n/index';
 import type { User, UserData, LoginPayload, Entity, AuthData } from "@/app/types/user";
 import router from "@/app/router";
 
