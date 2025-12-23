@@ -1,37 +1,40 @@
-name: Build and Deploy to Staging environment
+name: Build and Deploy Vue.js App
 
 on:
   push:
     branches:
       - staging
+
 env:
-  VITE_API_URL:  https://teraerptesting-ffgxa9ejepc4bpfp.canadacentral-01.azurewebsites.net/api
+  VITE_API_URL: https://teraerptesting-ffgxa9ejepc4bpfp.canadacentral-01.azurewebsites.net/api
+
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: enable corepack
+      - name: Enable Corepack
         run: corepack enable
-        
-      - name: set node
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: 'yarn'
+          node-version: '18'
 
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
-      - name: Build Vue.js Project
-        run: yarn build --mode staging
+      - name: Build Vue App
+        run: yarn build
 
-      - name: Copy Files to Web Server
+      - name: Deploy to Server
         run: |
-          sudo rm -rf /var/www/vue-app/staging/*
-          sudo cp -r dist/* /var/www/vue-app/staging/
-          
+          sudo rm -rf /var/www/vue-app/staging/dist
+          sudo mkdir -p /var/www/vue-app/staging/dist
+          sudo cp -r dist/* /var/www/vue-app/staging/dist/
+
       - name: Reload Nginx
         run: sudo systemctl reload nginx
