@@ -69,7 +69,7 @@ export function useGroups() {
         GroupName: group.name,
         Description: group.description ?? "-",
         AssignedRoles: group.rolesAssingedToGroup.length
-          ? group.rolesAssingedToGroup.map((group) => group.name).join(", ")
+          ? group.rolesAssingedToGroup.map((group) => group.name)
           : "-",
         userAssigned: group.userAssigned,
         createAt: group.createAt,

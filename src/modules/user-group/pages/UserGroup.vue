@@ -132,9 +132,16 @@ const addUserGroup = () => {
                     @action-menu-click="handleActionMenu" @page-change="setPage" :first="firstRecord" :last="lastRecord"
                     :rows="pageSize" :totalRecords="totalCount" lazy>
                     <template #col-GroupName="{ data }">
-                        <div class="flex items-start gap-2 flex-wrap">
+                        <div class="flex items-start gap-2 flex-nowrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" />
                             <span class="break-words">{{ data.GroupName }}</span>
+                        </div>
+                    </template>
+                    <template #col-AssignedRoles="{ data }">
+                        <div class="flex flex-wrap gap-2">
+                            <Tag v-for="(role, index) in data.AssignedRoles" :key="index" :value="role"
+                                class="custom-tag" />
+                            <span v-if="data.AssignedRoles.length === 0" class="text-gray-400">-</span>
                         </div>
                     </template>
                 </DynamicTable>
@@ -148,3 +155,13 @@ const addUserGroup = () => {
             ]" @confirm="handleDeleteConfirm" @cancel="handleDialogCancel" />
     </div>
 </template>
+<style scoped>
+.custom-tag {
+    background: var(--color-primary-25);
+    color: var(--color-gray-700);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 300;
+}
+</style>

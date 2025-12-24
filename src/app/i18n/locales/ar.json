@@ -89,6 +89,7 @@
     "userCount": "عدد المستخدمين",
     "created": "تم الإنشاء",
     "addUserGroup": "إضافة مجموعة مستخدمين",
+    "addNewGroup": "إضافة مجموعة جديدة",
     "searchPlaceholder": "ابحث عن مجموعة المستخدمين...",
     "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذة المجموعة ",
     "userGroup": "مجموعة المستخدمين",
