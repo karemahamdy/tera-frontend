@@ -60,9 +60,9 @@ export function useGroups() {
         AssignedRoles: group.rolesAssingedToGroup.length
           ? group.rolesAssingedToGroup.map((group) => group.name).join(", ")
           : "-",
-        UserCount: group.UserCount,
-        Created: "-",
-        isActive: group.isActive ?? false,
+        userAssigned: group.userAssigned,
+        createAt: group.createAt,
+        isActive: group.isActive,
       }));
     },
     { immediate: true }

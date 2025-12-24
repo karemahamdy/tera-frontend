@@ -166,7 +166,8 @@
   },  
   "branch": {
     "addBranch": "إضافة فرع",
-    "branchName": "إدارة الفروع",
+    "branchManagement": "إدارة الفروع",
+    "branchName": "أسم الفرع",
     "branchDescription": "إدارة فروع ومواقع المؤسسة",
     "searchPlaceholder": "البحث عن الفروع...",
     "address": "العنوان",

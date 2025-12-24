@@ -42,6 +42,8 @@ const customItems = [
         action: "toggleActive",
         changeStatus: true,
         label: t("button.active"),
+        type: "switch",
+        key: "isActive" 
     }
 ];
 
@@ -50,8 +52,8 @@ const columns = computed(() => {
         { field: 'GroupName', header: t('userGroup.groupName'), type: 'slot', sortable: true },
         { field: 'Description', header: t('userGroup.description'), sortable: true },
         { field: 'AssignedRoles', header: t('userGroup.assignedRoles'), sortable: true, type: 'tag', Class: 'custom-tag' },
-        { field: 'UserCount', header: t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'Created', header: t('userGroup.created'), sortable: true },
+        { field: 'userAssigned', header: t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
+        { field: 'createAt', header: t('userGroup.created'), type: 'date', sortable: true },
         { field: 'permission', header: t('permission') },
         { field: 'action', header: t('action') }
     ];

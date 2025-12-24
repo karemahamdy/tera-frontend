@@ -94,11 +94,11 @@ const addBranch = () => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="accessControl" subtitle="branch.branchName" />
+        <ScreenHeader title="accessControl" subtitle="branch.branchManagement" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="branch.branchName" subtitle="branch.branchDescription" :showExport="true"
+                <PageHeader title="branch.branchManagement" subtitle="branch.branchDescription" :showExport="true"
                     :showImport="true" :mainBtn="true" mainBtnText="branch.addBranch"
                     searchPlaceholder="branch.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
             </template>

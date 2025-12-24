@@ -19,9 +19,9 @@ export const GroupService = {
     return data.data;
   },
 
- async toggleActive(groupId: string, isActive: boolean) {
+ async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.post<any>(`/Group/GroupActivation`, {
-      groupId,
+      id,
       isActive
     });
     return data.data;

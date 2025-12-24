@@ -166,7 +166,8 @@
   },  
   "branch": {
     "addBranch": "Add Branch",
-    "branchName": "Branch Management",
+    "branchManagement": "Branch Management",
+    "branchName": "Branch Name",
     "branchDescription": "Manage organizational branches and locations",
     "searchPlaceholder": "Search branches...",
     "address": "Address",
