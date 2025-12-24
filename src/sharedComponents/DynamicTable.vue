@@ -115,13 +115,13 @@ const onSort = (event) => {
                     <div v-else-if="col.type == 'date'" class="whitespace-nowrap">
                         {{ formatDateTimeLang(slotProps.data[col.field], false) }}
                     </div>
-                    <div v-else-if="col.type == 'dateTime'" class="whitespace-nowrap">
+                    <div v-else-if="col.type == 'dateTime'">
                         {{ formatDateTimeLang(slotProps.data[col.field]) }}
                     </div>
-                    <div v-else-if="col.type == 'dateDetailed'" class="whitespace-nowrap">
+                    <div v-else-if="col.type == 'dateDetailed'">
                         {{ formatDateTimeDetailedLang(slotProps.data[col.field], false) }}
                     </div>
-                    <div v-else-if="col.type == 'dateTimeDetailed'" class="whitespace-nowrap">
+                    <div v-else-if="col.type == 'dateTimeDetailed'">
                         {{ formatDateTimeDetailedLang(slotProps.data[col.field]) }}
                     </div>
                     <div v-else-if="col.type == 'relativeTime'">
