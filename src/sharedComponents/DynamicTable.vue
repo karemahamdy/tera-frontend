@@ -113,6 +113,9 @@ const onSort = (event) => {
                     </div>
 
                     <div v-else-if="col.type == 'date'">
+                        {{ formatDateTimeLang(slotProps.data[col.field], false) }}
+                    </div>
+                    <div v-else-if="col.type == 'dateTime'">
                         {{ formatDateTimeLang(slotProps.data[col.field]) }}
                     </div>
                     <!-- Permission Icon -->
