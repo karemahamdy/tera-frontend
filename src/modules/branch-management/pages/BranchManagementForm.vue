@@ -48,7 +48,7 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <div>
-    <ScreenHeader title="accessControl" subtitle="branch.branchName" />
+    <ScreenHeader title="accessControl" subtitle="branch.branchName" :actionName="editMode ? $t('branch.editBranch') : $t('branch.addNewBranch')" />
 
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
