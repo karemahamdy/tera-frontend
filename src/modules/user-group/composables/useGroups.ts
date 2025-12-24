@@ -1,5 +1,5 @@
 import { ref, watch, computed } from "vue";
-import { GroupService } from "../services/groupService";
+import { GroupService } from "../services/group.service";
 import type { GroupApiItem, GroupTableItem, AddGroup } from "../types/groups";
 import { toastService } from "../../../app/services/toastService";
 
@@ -8,10 +8,21 @@ export function useGroups() {
   const apiGroups = ref<GroupApiItem[]>([]);
   const tableData = ref<GroupTableItem[]>([]);
 
-  const fetchGroups = async () => {
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1)
+
+  const fetchGroups = async (page = 1) => {
     loading.value = true;
     try {
-      apiGroups.value = await GroupService.getAll(1);
+      const response: any = await GroupService.getAll(page, pageSize.value);
+      const payload = response && response.data ? response.data : response;
+      apiGroups.value = payload.items ?? [];
+      pageIndex.value = payload.pageIndex ?? page;
+      pageSize.value = payload.pageSize ?? pageSize.value;
+      totalCount.value = payload.totalCount ?? 0;
+      totalPages.value = payload.totalPages ?? 1;
     } catch (err) {
       console.error("Error fetching groups:", err);
       toastService.error("Failed to fetch groups");
@@ -58,11 +69,11 @@ export function useGroups() {
         GroupName: group.name,
         Description: group.description ?? "-",
         AssignedRoles: group.rolesAssingedToGroup.length
-          ? group.rolesAssingedToGroup.map((group) => group.name).join(", ")
+          ? group.rolesAssingedToGroup.map((group) => group.name)
           : "-",
-        UserCount: group.UserCount,
-        Created: "-",
-        isActive: group.isActive ?? false,
+        userAssigned: group.userAssigned,
+        createAt: group.createAt,
+        isActive: group.isActive,
       }));
     },
     { immediate: true }
@@ -119,14 +130,19 @@ export function useGroups() {
     }
   };
 
-  return {
-    loading,
-    fetchGroups,
-    fetchGroupById,
-    filteredTableData,
-    createGroup,
-    updateGroup,
-    deleteGroup,
-    toggleActive
-  };
+return {
+  loading,
+  fetchGroups,
+  fetchGroupById,
+  filteredTableData,
+  createGroup,
+  updateGroup,
+  deleteGroup,
+  toggleActive,
+  pageIndex,
+  pageSize,
+  totalCount,
+  totalPages,
+  setPage: (page: number) => fetchGroups(page),
+}
 }

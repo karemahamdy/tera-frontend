@@ -15,7 +15,7 @@ export const branchFormSchema = yup.object({
     .string()
     .required("Branch code is required"),
 
-  branchStatus: yup
-    .string()
+  isActive: yup
+    .boolean()
     .required("Branch status is required"),
 });

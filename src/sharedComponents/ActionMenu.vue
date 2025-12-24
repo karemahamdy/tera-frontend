@@ -50,26 +50,23 @@ const menuItems = computed(() => {
             command: () => emit("delete", currentRow.value)
         });
     }
-    if (props.customItems.length) {
-        props.customItems.forEach(item => {
-            items.push({
-                label: t(item.label),
-                icon: item.icon,
-                color: item.color,
-                slot: item.slot,
-                changeStatus: item.changeStatus,
-                command: () => {
-                    emit("custom", {
-                        action: item.action,
-                        data: currentRow.value
-                    });
-                }
-            });
-
-        });
-    }
-
-
+  if (props.customItems.length) {
+    props.customItems.forEach(item => {
+      items.push({
+        ...item,
+        modelValue: currentRow.value
+          ? currentRow.value[item.key]
+          : false,
+        command: (val) => {
+          emit("custom", {
+            action: item.action,
+            data: currentRow.value,
+            value: val
+          });
+        }
+      });
+    });
+  }
     return items;
 });
 </script>
@@ -79,7 +76,10 @@ const menuItems = computed(() => {
         <template #item="{ item, props }">
             <!-- Toggle -->
             <div v-if="item.changeStatus" class="flex items-center px-3 py-2 cursor-pointer" @click.stop="item.command">
-                <ToggleSwitch v-model="item.modelValue" />
+                 <ToggleSwitch
+      :modelValue="item.modelValue"
+      @update:modelValue="item.command"
+    />
                 <span class="ml-2">{{ item.label }}</span>
             </div>
             <a v-else class="flex items-center px-3 py-2 cursor-pointer" @click="item.command">

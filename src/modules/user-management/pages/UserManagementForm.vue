@@ -58,7 +58,8 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
     <div>
-        <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" />
+        <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" :actionName="editMode ? $t('usersManagement.editusersManagement') :
+            $t('usersManagement.addNewUserManagement')" />
 
         <Card class="p-6 bg-white rounded-[10px]">
             <template #title>

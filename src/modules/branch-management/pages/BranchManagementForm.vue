@@ -5,7 +5,8 @@ import { useRoute } from "vue-router";
 
 import { useForm } from "vee-validate";
 import { branchFormSchema } from "../validation/BranchSchema";
-import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
+// import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
+import ToggleItem from "@/sharedComponents/inputs/ToggleItem.vue";
 import FormInput from "@/sharedComponents/inputs/FormInput.vue";
 
 const props = defineProps<{
@@ -26,18 +27,14 @@ const { handleSubmit, errors, defineField } = useForm({
     address: "",
     branchCode: "",
     branchStatus: "",
+    isActive: true,
   },
 });
 
 const [branchName] = defineField("branchName");
 const [address] = defineField("address");
 const [branchCode] = defineField("branchCode");
-const [branchStatus] = defineField("branchStatus");
-
-const options = [
-  { label: "Active", value: "active" },
-  { label: "Inactive", value: "inactive" },
-];
+const [isActive] = defineField("isActive");
 
 const onSubmit = handleSubmit((values) => {
   console.log(route);
@@ -48,7 +45,8 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <div>
-    <ScreenHeader title="accessControl" subtitle="branch.branchName" />
+    <ScreenHeader title="accessControl" subtitle="branch.branchName"
+      :actionName="editMode ? $t('branch.editBranch') : $t('branch.addNewBranch')" />
 
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
@@ -64,37 +62,47 @@ const onSubmit = handleSubmit((values) => {
 
       <template #content>
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
-          <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("branch.branchName") }}
-            </label>
+          <div class="flex gap-8">
 
-            <InputText v-model="branchName" placeholder="e.g., Finance Team" class="mt-1 w-full p-3 border rounded-lg"
-              :class="{ 'border-danger-500': errors.branchName }" />
-
-            <small v-if="errors.branchName" class="text-danger-500">
-              {{ errors.branchName }}
-            </small>
+            <FormInput class="w-1/2" :label="$t('branch.branchName')" v-model="branchName" :error="errors.branchName"
+              placeholder="Enter full name" :invalid="!!errors.branchName" />
+            <FormInput class="w-1/2" :label="$t('branch.branchNameAr')" v-model="branchName" :error="errors.branchName"
+              placeholder="Enter full name" :invalid="!!errors.branchName" />
           </div>
-          <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("branch.address") }}
-            </label>
+          <div class="flex gap-8">
+            <div class="w-1/2">
 
-            <Textarea v-model="address" :placeholder="$t('branch.descriptionPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.address }" />
+              <label class="text-gray-700 font-medium mb-2 block">
+                {{ $t("branch.address") }}
+              </label>
 
-            <small v-if="errors.address" class="text-danger-500">
-              {{ errors.address }}
-            </small>
+              <Textarea v-model="address" :placeholder="$t('branch.descriptionPlaceholder')"
+                class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.address }" />
+
+              <small v-if="errors.address" class="text-danger-500">
+                {{ errors.address }}
+              </small>
+            </div>
+
+            <div class="w-1/2">
+
+              <label class="text-gray-700 font-medium mb-2 block">
+                {{ $t("branch.addressAr") }}
+              </label>
+
+              <Textarea v-model="address" :placeholder="$t('branch.descriptionPlaceholder')"
+                class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.address }" />
+
+              <small v-if="errors.address" class="text-danger-500">
+                {{ errors.address }}
+              </small>
+            </div>
           </div>
 
           <div class="flex gap-8">
-            <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="branchCode"
-              :error="errors.branchCode" placeholder="Enter full name" />
-
-            <FormDropdown class="w-1/2" :label="$t('branch.branchStatus')" :options="options" v-model="branchStatus"
-              :error="errors.branchStatus" placeholder="Finance Team" />
+            <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="branchCode" :error="errors.branchCode"
+              placeholder="Enter full name" />
+            <ToggleItem :title="$t('branch.branchStatus')" :label="$t('branch.branchStatus')" v-model="isActive" />
 
           </div>
 

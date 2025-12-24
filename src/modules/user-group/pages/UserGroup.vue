@@ -12,7 +12,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<GroupTableItem | null>(null);
 const isDeleting = ref(false);
 
-const { loading, fetchGroups, filteredTableData, deleteGroup, toggleActive } = useGroups();
+const { loading, fetchGroups, filteredTableData, deleteGroup, toggleActive, pageIndex, pageSize, totalCount, setPage } = useGroups();
 
 onMounted(() => {
     fetchGroups();
@@ -42,6 +42,8 @@ const customItems = [
         action: "toggleActive",
         changeStatus: true,
         label: t("button.active"),
+        type: "switch",
+        key: "isActive"
     }
 ];
 
@@ -50,13 +52,22 @@ const columns = computed(() => {
         { field: 'GroupName', header: t('userGroup.groupName'), type: 'slot', sortable: true },
         { field: 'Description', header: t('userGroup.description'), sortable: true },
         { field: 'AssignedRoles', header: t('userGroup.assignedRoles'), sortable: true, type: 'tag', Class: 'custom-tag' },
-        { field: 'UserCount', header: t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'Created', header: t('userGroup.created'), sortable: true },
+        { field: 'userAssigned', header: t('userGroup.userCount'), sortable: true, type: 'badge', Class: 'custom-badge' },
+        { field: 'createAt', header: t('userGroup.created'), type: 'date', sortable: true },
         { field: 'permission', header: t('permission') },
         { field: 'action', header: t('action') }
     ];
 
     return Columns;
+});
+
+const firstRecord = computed(() => {
+    return ((pageIndex.value - 1) * pageSize.value) + 1;
+});
+
+const lastRecord = computed(() => {
+    const last = pageIndex.value * pageSize.value;
+    return Math.min(last, totalCount.value || last);
 });
 
 const confirmDelete = (row: GroupTableItem) => {
@@ -118,11 +129,19 @@ const addUserGroup = () => {
             <template #content>
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading || isDeleting"
                     :customItems="customItems" :permissionItems="permissionItems" :showDelete="true"
-                    @action-menu-click="handleActionMenu">
+                    @action-menu-click="handleActionMenu" @page-change="setPage" :first="firstRecord" :last="lastRecord"
+                    :rows="pageSize" :totalRecords="totalCount" lazy>
                     <template #col-GroupName="{ data }">
-                        <div class="flex items-start gap-2 flex-wrap">
+                        <div class="flex items-start gap-2 flex-nowrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" />
                             <span class="break-words">{{ data.GroupName }}</span>
+                        </div>
+                    </template>
+                    <template #col-AssignedRoles="{ data }">
+                        <div class="flex flex-wrap gap-2">
+                            <Tag v-for="(role, index) in data.AssignedRoles" :key="index" :value="role"
+                                class="custom-tag" />
+                            <span v-if="data.AssignedRoles.length === 0" class="text-gray-400">-</span>
                         </div>
                     </template>
                 </DynamicTable>
@@ -136,3 +155,13 @@ const addUserGroup = () => {
             ]" @confirm="handleDeleteConfirm" @cancel="handleDialogCancel" />
     </div>
 </template>
+<style scoped>
+.custom-tag {
+    background: var(--color-primary-25);
+    color: var(--color-gray-700);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 300;
+}
+</style>
