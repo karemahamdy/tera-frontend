@@ -7,9 +7,9 @@ export interface GroupApiItem {
   id: string;
   name: string;
   description: string | null;
-  createAt?: string,
-  userAssigned: number,
-  isActive?: boolean
+  createAt?: string;
+  userAssigned: number;
+  isActive?: boolean;
   rolesAssingedToGroup: Role[];
 }
 
@@ -32,7 +32,7 @@ export interface GroupTableItem {
   AssignedRoles: string[] | string;
   userAssigned: number;
   createAt?: string;
-  isActive?: boolean
+  isActive?: boolean;
 }
 
 export interface AddGroup {
@@ -41,9 +41,9 @@ export interface AddGroup {
 }
 
 export interface ListResponse {
-  data: { items: GroupApiItem[] }
+  data: { items: GroupApiItem[] };
 }
 
 export interface ItemResponse {
-  data: GroupApiItem
+  data: GroupApiItem;
 }

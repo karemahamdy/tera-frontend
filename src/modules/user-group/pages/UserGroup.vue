@@ -12,7 +12,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<GroupTableItem | null>(null);
 const isDeleting = ref(false);
 
-const { loading, fetchGroups, filteredTableData, deleteGroup, toggleActive } = useGroups();
+const { loading, fetchGroups, filteredTableData, deleteGroup, toggleActive, pageIndex, pageSize, totalCount, setPage } = useGroups();
 
 onMounted(() => {
     fetchGroups();
@@ -43,7 +43,7 @@ const customItems = [
         changeStatus: true,
         label: t("button.active"),
         type: "switch",
-        key: "isActive" 
+        key: "isActive"
     }
 ];
 
@@ -59,6 +59,15 @@ const columns = computed(() => {
     ];
 
     return Columns;
+});
+
+const firstRecord = computed(() => {
+    return ((pageIndex.value - 1) * pageSize.value) + 1;
+});
+
+const lastRecord = computed(() => {
+    const last = pageIndex.value * pageSize.value;
+    return Math.min(last, totalCount.value || last);
 });
 
 const confirmDelete = (row: GroupTableItem) => {
@@ -120,7 +129,8 @@ const addUserGroup = () => {
             <template #content>
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading || isDeleting"
                     :customItems="customItems" :permissionItems="permissionItems" :showDelete="true"
-                    @action-menu-click="handleActionMenu">
+                    @action-menu-click="handleActionMenu" @page-change="setPage" :first="firstRecord" :last="lastRecord"
+                    :rows="pageSize" :totalRecords="totalCount" lazy>
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="People" :size="24" color="#717680" />
