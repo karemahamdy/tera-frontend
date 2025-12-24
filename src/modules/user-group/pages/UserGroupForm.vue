@@ -66,8 +66,8 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div>
-    <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" />
-
+    <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" :actionName="editMode ? $t('userGroup.editUserGroup') : $t('userGroup.addNewGroup')" />
+    
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">

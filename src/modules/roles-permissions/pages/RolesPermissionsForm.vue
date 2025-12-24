@@ -61,7 +61,7 @@ onMounted(async () => {
 </script>
 <template>
   <div>
-    <ScreenHeader title="Access Control" subtitle="roles.rolesPermissions" />
+    <ScreenHeader title="Access Control" subtitle="roles.rolesPermissions" :actionName="editMode ? $t('roles.editRole') : $t('roles.systemAdministrator')"/>
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">

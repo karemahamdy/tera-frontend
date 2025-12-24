@@ -1,12 +1,12 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { AddGroup, GroupApiItem, ListResponse, ItemResponse } from "../types/groups";
+import type { AddGroup, GroupApiItem, ItemResponse } from "../types/groups";
 
 export const GroupService = {
-  async getAll(pageIndex = 1): Promise<GroupApiItem[]> {
-    const data = await axiosWrapper.get<ListResponse>(
-      `/Group/GetAllGroup?PagenationDto.PageIndex=${pageIndex}`
+  async getAll(pageIndex = 1, pageSize = 10) {
+    const resp = await axiosWrapper.get<any>(
+      `/Group/GetAllGroup?PagenationDto.PageIndex=${pageIndex}&PagenationDto.PageSize=${pageSize}`
     );
-    return data.data.items;
+    return resp.data;
   },
 
   async getById(id: string): Promise<GroupApiItem> {
@@ -19,9 +19,9 @@ export const GroupService = {
     return data.data;
   },
 
- async toggleActive(groupId: string, isActive: boolean) {
+ async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.post<any>(`/Group/GroupActivation`, {
-      groupId,
+      id,
       isActive
     });
     return data.data;
