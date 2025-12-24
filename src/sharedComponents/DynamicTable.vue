@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import ActionMenu from './ActionMenu.vue';
-import { formatDateTimeLang } from '@/app/utils/dates';
+import { formatDateTimeLang, formatDateTimeDetailedLang, formatDistanceLang } from '@/app/utils/dates';
 
 const props = defineProps({
     columns: { type: Array, default: () => [] },
@@ -118,6 +118,16 @@ const onSort = (event) => {
                     <div v-else-if="col.type == 'dateTime'">
                         {{ formatDateTimeLang(slotProps.data[col.field]) }}
                     </div>
+                    <div v-else-if="col.type == 'dateDetailed'">
+                        {{ formatDateTimeDetailedLang(slotProps.data[col.field], false) }}
+                    </div>
+                    <div v-else-if="col.type == 'dateTimeDetailed'">
+                        {{ formatDateTimeDetailedLang(slotProps.data[col.field]) }}
+                    </div>
+                    <div v-else-if="col.type == 'relativeTime'">
+                        {{ formatDistanceLang(slotProps.data[col.field]) }}
+                    </div>
+                    
                     <!-- Permission Icon -->
                     <Button v-else-if="col.field === 'permission'" text rounded class="permission-btn"
                         @click="togglePermissionMenu($event, slotProps.data)">

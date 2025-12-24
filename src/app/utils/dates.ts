@@ -1,40 +1,72 @@
 // date-utils.ts
-import { format, formatDistance } from 'date-fns';
-import { enUS, arSA } from 'date-fns/locale'; 
-import i18n from '@/app/i18n/index';
+import { format, formatDistance, isValid } from "date-fns";
+import { enUS, arSA } from "date-fns/locale";
+import i18n from "@/app/i18n/index";
 import { toastService } from "@/app/services/toastService";
 
-export function formatDateTimeLang(date: Date | string, withTime = true): string {
+export function formatDateTimeLang(
+  date: Date | string,
+  withTime = false
+): string {
   try {
-    const currentLanguage = i18n.global.locale.value ?? 'en'; // fix for TS
-    const d = typeof date === 'string' ? new Date(date) : date;
+    const currentLanguage = i18n.global.locale.value ?? "en";
 
-    const dateArFormat = withTime ? 'do MMMM yyyy, hh:mm a' : 'do MMMM yyyy';
-    const dateEnFormat = withTime ? 'EEEE, MMMM do, yyyy hh:mm a' : 'EEEE, MMMM do, yyyy';
+    const d = typeof date === "string" ? new Date(date) : date;
+    if (!isValid(d)) return "";
 
-    if (currentLanguage === 'ar') {
+    const baseFormat = "MMM d, yyyy";
+    const timeFormat = "hh:mm a";
+
+    const formatString = withTime ? `${baseFormat} ${timeFormat}` : baseFormat;
+
+    const locale = currentLanguage === "ar" ? arSA : enUS;
+
+    return format(d, formatString, { locale });
+  } catch (error) {
+    toastService.error(String(error));
+    return "";
+  }
+}
+
+export function formatDateTimeDetailedLang(
+  date: Date | string,
+  withTime = true
+): string {
+  try {
+    const currentLanguage = i18n.global.locale.value ?? "en";
+
+    const d = typeof date === "string" ? new Date(date) : date;
+    if (!isValid(d)) return "";
+
+    const dateArFormat = withTime ? "do MMMM yyyy, hh:mm a" : "do MMMM yyyy";
+    const dateEnFormat = withTime
+      ? "EEEE, MMMM do, yyyy hh:mm a"
+      : "EEEE, MMMM do, yyyy";
+
+    if (currentLanguage === "ar") {
       return format(d, dateArFormat, { locale: arSA });
     } else {
       return format(d, dateEnFormat, { locale: enUS });
     }
   } catch (error) {
     toastService.error(error as string);
-    return '';
+    return "";
   }
 }
 
 export function formatDistanceLang(date: Date | string): string {
   try {
-    const currentLanguage = i18n.global.locale.value ?? 'en';
-    const d = typeof date === 'string' ? new Date(date) : date;
-
-    if (currentLanguage === 'ar') {
+    const currentLanguage = i18n.global.locale.value ?? "en";
+    const d = typeof date === "string" ? new Date(date) : date;
+    if (!isValid(d)) return "";
+    
+    if (currentLanguage === "ar") {
       return formatDistance(d, new Date(), { addSuffix: true, locale: arSA });
     } else {
       return formatDistance(d, new Date(), { addSuffix: true, locale: enUS });
     }
   } catch (error) {
     toastService.error(error as string);
-    return '';
+    return "";
   }
 }
