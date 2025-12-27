@@ -41,7 +41,8 @@
     "description": "الوصف",
     "created": "تاريخ الإنشاء",
     "action": "الإجراء",
-    "userAssigned": "المستخدم المعين"
+    "userAssigned": "المستخدم المعين",
+    "search": "بـــــحث ...."
   },
   "form": {
     "fieldRequired": "هذا الحقل مطلوب"
