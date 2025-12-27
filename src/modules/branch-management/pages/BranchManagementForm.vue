@@ -129,13 +129,8 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <div class="flex gap-8">
-<<<<<<< HEAD
-            <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="branchCode" :error="errors.branchCode"
-              :placeholder="$t('form.fullNamePlaceholder')" />
-=======
             <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="code" :error="errors.code"
               placeholder="e.g., HQ" />
->>>>>>> bbe04705fbf066c11d6c5255cbb4387be8cd47f8
             <ToggleItem :title="$t('branch.branchStatus')" :label="$t('branch.branchStatus')" v-model="isActive" />
 
           </div>
