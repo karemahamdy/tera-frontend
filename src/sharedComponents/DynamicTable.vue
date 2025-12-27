@@ -71,7 +71,7 @@ const onSort = (event) => {
 </script>
 
 <template>
-    <DataTable :value="filteredData" :paginator="true" :rows="rows" :rowsPerPageOptions="[5, 10, 20, 50]"
+    <DataTable :value="filteredData" :paginator="paginator" :rows="rows" :rowsPerPageOptions="[5, 10, 20, 50]"
         :loading="loading" :lazy="lazy" :totalRecords="totalRecords" @page="onPage" @sort="onSort"
         paginatorTemplate="paginatorstart FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink paginatorend"
         currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records"

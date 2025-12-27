@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import { useFilters } from "@/composables/useFilters";
-import { useI18n } from "vue-i18n";
 import ReportFilters from "../components/ReportFilters.vue";
+import { useI18n } from "vue-i18n";
+import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 const { t } = useI18n();
 const data = ref([
   {
@@ -13,7 +14,7 @@ const data = ref([
     email: "johndoe@example.com",
   },
 ]);
-
+const loading = ref(false);
 const filtersOperation = [
   {
     placeholder: "reports.allDepartments",
@@ -58,6 +59,22 @@ const {
   filteredData: filteredByFilters,
   onFilterChange,
 } = useFilters(data.value, filtersOperation);
+
+const columns = computed(() => {
+    const Columns = [
+        { field: 'internalID', header: t('reports.internalID'), sortable: true },
+        { field: 'userName', header: t('reports.userName'), sortable: true },
+        { field: 'fullName', header: t('reports.fullName'), sortable: true },
+        { field: 'email', header: t('reports.email'), sortable: true },
+        { field: 'department', header: t('reports.department'), sortable: true },
+        { field: 'userGroup', header: t('reports.userGroup'), sortable: true },
+        { field: 'isAdmin', header: t('reports.isAdmin'), sortable: true },
+        { field: 'status', header: t('reports.status'), sortable: true },
+        { field: 'accessScope', header: t('reports.accessScope'), sortable: true },
+        { field: 'lastLogin', header: t('reports.lastLogin'), sortable: true, type: "date" },
+    ];
+    return Columns;
+});
 </script>
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
@@ -79,7 +96,9 @@ const {
         />
       </template>
       <!-- DynamicTable component -->
-      <template #content></template>
+      <template #content>
+        <DynamicTable :columns="columns" :data="filteredByFilters" :loading="loading" :paginator="false" />
+      </template>
     </card>
   </div>
 </template>
