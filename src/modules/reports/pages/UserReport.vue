@@ -10,8 +10,16 @@ const { t } = useI18n();
 const data = ref([
   {
     id: 1,
-    username: "johndoe",
+    internalID: "johndoe",
+    userName: "johndoe",
+    fullName: "John Doe",
     email: "johndoe@example.com",
+    department: "johndoe",
+    userGroup: "johndoe",
+    isAdmin: "yes",
+    status: "Actuive",
+    accessScope: "yes",
+    lastLogin: "2023-01-01",
   },
 ]);
 const loading = ref(false);
@@ -62,16 +70,16 @@ const {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'internalID', header: t('reports.internalID'), sortable: true },
-        { field: 'userName', header: t('reports.userName'), sortable: true },
-        { field: 'fullName', header: t('reports.fullName'), sortable: true },
-        { field: 'email', header: t('reports.email'), sortable: true },
-        { field: 'department', header: t('reports.department'), sortable: true },
-        { field: 'userGroup', header: t('reports.userGroup'), sortable: true },
-        { field: 'isAdmin', header: t('reports.isAdmin'), sortable: true },
-        { field: 'status', header: t('reports.status'), sortable: true },
-        { field: 'accessScope', header: t('reports.accessScope'), sortable: true },
-        { field: 'lastLogin', header: t('reports.lastLogin'), sortable: true, type: "date" },
+        { field: 'internalID', header: t('reports.internalID') },
+        { field: 'userName', header: t('reports.userName') },
+        { field: 'fullName', header: t('reports.fullName') },
+        { field: 'email', header: t('reports.email') },
+        { field: 'department', header: t('reports.department') },
+        { field: 'userGroup', header: t('reports.userGroup') },
+        { field: 'isAdmin', header: t('reports.isAdmin') },
+        { field: 'status', header: t('reports.status') },
+        { field: 'accessScope', header: t('reports.accessScope') },
+        { field: 'lastLogin', header: t('reports.lastLogin'), type: "date" },
     ];
     return Columns;
 });

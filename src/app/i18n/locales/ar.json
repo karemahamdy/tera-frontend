@@ -212,7 +212,16 @@
     "allDepartments": "جميع الأقسام",
     "allGroups": "جميع المجموعات",
     "status": "الحالة",
-    "scope": "النطاق"
+    "scope": "النطاق",
+    "internalID": "المعرف الداخلي",
+    "userName": "اسم المستخدم",
+    "fullName": "الاسم بالكامل",
+    "email": "البريد الإلكتروني",
+    "department": "القسم",
+    "userGroup": "مجموعة المستخدمين",
+    "isAdmin": "مسؤول",
+    "accessScope": "نطاق الوصول",
+    "lastLogin": "آخر تسجيل دخول"
   },
   "licenseInfo": {
     "title": "معلومات الترخيص",
