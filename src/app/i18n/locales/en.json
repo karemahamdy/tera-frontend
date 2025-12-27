@@ -181,7 +181,7 @@
     "editBranch": "Edit Branch",
     "userBranchInfo": "Manage branch information and location details.",
     "editBranchInfo": "Update branch information and location details.",
-    "descriptionPlaceholder": "Describe the purpose of this branch.. ",
+    "descriptionPlaceholder": "Describe the Address of this branch.. ",
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
     "branchStatus": "Branch Status"
