@@ -10,6 +10,7 @@ import { notFoundRoutes } from "@/modules/not-found/routes";
 import { branchesRoutes } from "@/modules/branch-management/routes";
 import { reportsRoutes } from "@/modules/reports/routes";
 import { useUserStore } from "@/app/store/useUserStore";
+import { LicenseRoutes } from "@/modules/license-info/routes";
 const defaultTitle = "Tera ERP";
 
 const routes = [
@@ -29,6 +30,7 @@ const routes = [
       ...auditLogRoutes,
       ...activeSessionsRoutes,
       ...reportsRoutes,
+      ...LicenseRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
@@ -50,15 +52,14 @@ router.beforeEach((to, _from, next) => {
   const userStore = useUserStore();
 
   const isAuthenticated = userStore.isAuthenticated;
-  console.log(isAuthenticated);
   
-  // if (to.meta.requiresAuth && !isAuthenticated) {
-  //   return next({ name: "Login" });
-  // }
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return next({ name: "Login" });
+  }
 
-  // if (to.meta.guestOnly && isAuthenticated) {
-  //   return next({ name: "Home"  });
-  // }
+  if (to.meta.guestOnly && isAuthenticated) {
+    return next({ name: "Home"  });
+  }
 
   const title = to.meta.title as string | undefined;
   document.title = title || defaultTitle;

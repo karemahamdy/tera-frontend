@@ -5,17 +5,18 @@
   "language": "تغيير إلى العربية",
   "import": "Import",
   "export": "Export",
-  "permission":"Permission",
+  "permission": "Permission",
   "action": "action",
   "status": "Status",
   "accessControl": "Access Control",
+  "Adminstration": "Administration",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
   "changePassword": {
-      "title": "Change Password",
-      "subtitle": "Update your password to keep your account secure."
-    },
+    "title": "Change Password",
+    "subtitle": "Update your password to keep your account secure."
+  },
   "button": {
     "addNew": "Add New",
     "save": "Save",
@@ -69,11 +70,11 @@
     "user": "User",
     "department": "Department",
     "lastLogin": "Last Login",
-    "allGroups":"All Groups",
-    "allStatus":"All status",
-    "allScopes":"All Scopes",
-    "allDepartment":"All Department",
-    "assignRoleToUser":"Assign  Role to user",
+    "allGroups": "All Groups",
+    "allStatus": "All status",
+    "allScopes": "All Scopes",
+    "allDepartment": "All Department",
+    "assignRoleToUser": "Assign  Role to user",
     "assignRoleToUserDesc": "Add Role to users and manage assigned permissions.",
     "editUserManagement": "Edit Account Info",
     "addNewUserManagement": "Add New User",
@@ -105,7 +106,7 @@
   },
   "roles": {
     "roleName": "Role Name",
-     "roles": "Roles",
+    "roles": "Roles",
     "accessScope": "Access scope",
     "branches": "Branches",
     "addNewRole": "Add New Role",
@@ -165,7 +166,7 @@
     "action": "Action",
     "end": "End",
     "searchPlaceholder": "Search sessions by user, IP, or branch..."
-  },  
+  },
   "branch": {
     "addBranch": "Add Branch",
     "branchManagement": "Branch Management",
@@ -200,5 +201,9 @@
     "allGroups": "All Groups",
     "status": "Status",
     "scope": "Scope"
+  },
+  "licenseInfo": {
+    "title": "License Information",
+    "subtitle": "Manage your enterpriselicense ,user quotas and active sessions."
   }
 }

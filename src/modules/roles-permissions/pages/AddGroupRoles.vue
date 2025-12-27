@@ -61,7 +61,7 @@ const onSubmit = handleSubmit((values) => {
                 {{ $t("roles.roleName") }}
               </label>
 
-              <Dropdown v-model="role" :options="options" optionLabel="label" class="w-full mt-1"
+              <MultiSelect v-model="role" :options="options" optionLabel="label" class="w-full mt-1"
                 :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
 
               <small v-if="errors.role" class="text-danger-500">
@@ -101,12 +101,12 @@ const onSubmit = handleSubmit((values) => {
             </div>
             <div>
               <label class="text-gray-700 font-bold">
-                {{ $t("roles.roles") }}
+                {{ $t("branch.branch") }}
               </label>
 
-              <Dropdown v-model="roles" :options="options" optionLabel="label" class="w-full mt-1"
-                :class="{ 'p-invalid': errors.roles }" :placeholder="$t('select roles')" />
-
+              <MultiSelect  v-model="roles" :options="options" optionLabel="label" class="w-full mt-1 rounded-2xl"
+                :class="{ 'p-invalid': errors.roles }" :placeholder="$t('select branches')" />
+               
               <small v-if="errors.roles" class="text-danger-500">
                 {{ errors.roles }}
               </small>

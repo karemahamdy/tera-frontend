@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useForm } from "vee-validate";
 import { groupFormSchema } from "../validation/GroupsSchema";
-import { useGroups } from "../composables/useGroups";
+import { useGroups } from "../../roles-permissions/composables/assignRolesToGroup";
 import type { AddGroup } from "../types/groups";
 
 const props = defineProps<{
