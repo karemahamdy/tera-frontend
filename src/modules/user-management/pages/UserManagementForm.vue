@@ -80,7 +80,7 @@ const onSubmit = handleSubmit((values) => {
 
                     <div class="flex gap-8">
                         <FormInput class="w-1/2" :label="$t('usersManagement.fullName')" v-model="fullName"
-                            :error="errors.fullName" placeholder="Enter full name" />
+                            :error="errors.fullName" :placeholder="$t('form.fullNamePlaceholder')" />
 
                         <FormInput class="w-1/2" :label="$t('usersManagement.username')" v-model="username"
                             :error="errors.username" placeholder="Enter Username" />

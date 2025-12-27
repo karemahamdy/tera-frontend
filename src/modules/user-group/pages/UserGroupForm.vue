@@ -84,7 +84,7 @@ const onSubmit = handleSubmit(async (values) => {
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
           <div>
             <FormInput :label="$t('userGroup.groupName')" v-model="groupName" :error="errors.groupName"
-              placeholder="Enter full name" :invalid="!!errors.groupName" />
+              :placeholder="$t('form.fullNamePlaceholder')" :invalid="!!errors.groupName" />
           </div>
 
           <div>

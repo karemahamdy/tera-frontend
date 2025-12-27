@@ -79,7 +79,7 @@ const columns = computed(() => {
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
     <ScreenHeader title="reports.title" subtitle="reports.userReport" />
-    <card class="bg-[#ffffff] rounded-[10px]">
+    <card class="bg-[#ffffff] rounded-[10px] w-full overflow-x-auto">
       <!-- PageHeader component -->
       <template #title>
         <PageHeader
