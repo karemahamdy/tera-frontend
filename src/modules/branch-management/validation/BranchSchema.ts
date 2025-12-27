@@ -1,17 +1,27 @@
 import * as yup from "yup";
 
 export const branchFormSchema = yup.object({
-  branchName: yup
+  nameAr: yup
     .string()
     .required("Branch name is required")
     .min(3, "Branch name must be at least 3 characters"),
 
-  address: yup
+  nameEn: yup
     .string()
-    .required("Address is required")
-    .min(10, "Address must be at least 10 characters"),
+    .required("Branch name is required")
+    .min(3, "Branch name must be at least 3 characters"),
 
-  branchCode: yup
+  addressAr: yup
+    .string(),
+    // .required("Address is required")
+    // .min(10, "Address must be at least 10 characters"),
+
+  addressEn: yup
+    .string(),
+    // .required("Address is required")
+    // .min(10, "Address must be at least 10 characters"),
+
+  code: yup
     .string()
     .required("Branch code is required"),
 
