@@ -46,25 +46,24 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, _from, next) => {
-//   window.scrollTo({ top: 0, behavior: "smooth" });
-//   const userStore = useUserStore();
+router.beforeEach((to, _from, next) => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  const userStore = useUserStore();
 
   const isAuthenticated = userStore.isAuthenticated;
-  console.log(isAuthenticated);
-  
-  // if (to.meta.requiresAuth && !isAuthenticated) {
-  //   return next({ name: "Login" });
-  // }
 
-  // if (to.meta.guestOnly && isAuthenticated) {
-  //   return next({ name: "Home"  });
-  // }
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return next({ name: "Login" });
+  }
 
-//   const title = to.meta.title as string | undefined;
-//   document.title = title || defaultTitle;
+  if (to.meta.guestOnly && isAuthenticated) {
+    return next({ name: "Home"  });
+  }
 
-//   next();
-// });
+  const title = to.meta.title as string | undefined;
+  document.title = title || defaultTitle;
+
+  next();
+});
 
 export default router;
