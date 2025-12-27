@@ -36,7 +36,7 @@ function switchLanguage() {
     <div class="flex-1 flex items-center justify-between w-full">
       <div class="text-gray-500 flex items-center gap-2">
         <VsxIcon iconName="SearchNormal" :size="24" type="linear" />
-        <input v-model="q" placeholder="Search..." class="p-2 rounded w-64" />
+        <input v-model="q" :placeholder="$t('table.search')" class="p-2 rounded w-64" />
       </div>
 
       <div class="flex items-center gap-3">
