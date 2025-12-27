@@ -8,6 +8,9 @@
   "permission": "الصلاحية",
   "action": "الإجراء",
   "status": "الحالة",
+  "enterFullName": "أدخل الاسم الكامل",
+  "enterUsername" : "أدخل اسم المستخدم",
+  "enterUserID": "أدخل معرف المستخدم",
   "accessControl": "التحكم في الوصول",
   "Adminstration": "الإدارة",
   "layout": {
@@ -84,7 +87,11 @@
     "addUserInfo": "أضف حساب مستخدم جديد مع الصلاحيات المناسبة.",
     "fullName": "الاسم بالكامل",
     "username": "اسم المستخدم",
-    "internalID": "internalID"
+    "internalID": "المعرف الداخلي",
+    "accountType": "نوع الحساب",
+    "accountStatus": "حالة الحساب",
+    "uploadImage": "رفع صورة",
+    "uploadImageDesc": "يجب تحميل ملفات GPAG/PNG/PDF > يجب أن تكون الصورة عالية الدقة وأصلية في التصميم"
   },
   "userGroup": {
     "groupName": "اسم المجموعة",

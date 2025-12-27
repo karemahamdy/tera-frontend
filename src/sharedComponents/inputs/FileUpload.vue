@@ -118,13 +118,12 @@ const handleFileChange = (e: Event) => {
                             <polyline points="17 8 12 3 7 8" />
                             <line x1="12" y1="3" x2="12" y2="15" />
                         </svg>
-                        <h3 class="text-xl font-medium text-gray-900">Upload Image</h3>
+                        <h3 class="text-xl font-medium text-gray-900">{{ $t('usersManagement.uploadImage') }}</h3>
                     </div>
 
                     <div class="relative">
                         <p class="text-gray-400 text-base leading-relaxed">
-                            GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in
-                            design
+                           {{ $t('usersManagement.uploadImageDesc') }}
                         </p>
 
                         <!-- Red Dot -->
