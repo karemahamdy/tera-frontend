@@ -3,6 +3,8 @@
 @theme {
      --color-*: initial;
     /* Primary palette */
+    --color-white: #ffffff;
+    --color-black: #000000;
     --color-primary-25: #f0f3fa;
     --color-primary-50: #e1e7f4;
     --color-primary-100: #cbd4ec;
@@ -125,7 +127,16 @@ body {
   border-radius: 0.75rem !important;
   color:black !important;
 }
-
+.p-multiselect  {
+    padding: 0.25rem !important;
+  background-color: var(--color-gray-50) !important;
+  border-radius: 0.75rem !important;
+  color:black !important;
+}
+.p-multiselect:focus {
+    border-color: var(--color-primary-500) !important;
+    outline: none !important;
+}
 .p-select .p-select-label {
   background-color: var(--color-gray-50) !important;
   color:black !important;

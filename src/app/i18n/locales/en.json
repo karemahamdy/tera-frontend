@@ -9,6 +9,7 @@
   "action": "action",
   "status": "Status",
   "accessControl": "Access Control",
+  "Adminstration" : "Administration",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
@@ -182,5 +183,10 @@
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
     "branchStatus": "Branch Status"
+  },
+    "licenseInfo": {
+      "title": "License Information",
+      "subtitle": "Manage your enterpriselicense ,user quotas and active sessions."
+
   }
 }

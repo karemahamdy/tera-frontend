@@ -29,6 +29,13 @@ const navItems: NavItem[] = [
       { label: "Audit Log", route: "/audit-log" },
     ],
   },
+  {
+    label: "Adminstration",
+    icon: "KeySquare",
+    children: [
+      { label: "License Info", route: "/license-info" },
+    ],
+  },
 ];
 
 // track which parent items are open
