@@ -13,13 +13,9 @@ export const branchFormSchema = yup.object({
 
   addressAr: yup
     .string(),
-    // .required("Address is required")
-    // .min(10, "Address must be at least 10 characters"),
 
   addressEn: yup
     .string(),
-    // .required("Address is required")
-    // .min(10, "Address must be at least 10 characters"),
 
   code: yup
     .string()

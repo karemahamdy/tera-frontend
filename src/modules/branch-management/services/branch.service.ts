@@ -28,7 +28,7 @@ export const BranchService = {
 //   },
 
   async update(id: string, payload: AddBranch) {
-    const data = await axiosWrapper.put<any>(`/Branch/UpdateBranch/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/Branch/${id}`, payload);
     return data.data;
   },
 

@@ -22,7 +22,24 @@ export function useBranches() {
       loading.value = false;
     }
   };
+   const updateBranch = async (id: string, payload: AddBranch) => {
+      loading.value = true;
+      try {
+        const response = await BranchService.update(id, payload);
+        toastService.success("Branch updated successfully");
+        // await fetchGroups();
+        return response;
+      } catch (err) {
+        console.error("Error updating branch:", err);
+        toastService.error("Failed to update branch");
+        throw err;
+      } finally {
+        loading.value = false;
+      }
+    };
+
   return {
     createBranch,
+    updateBranch
   };
 }

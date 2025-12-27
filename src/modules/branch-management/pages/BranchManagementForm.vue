@@ -15,15 +15,13 @@ const props = defineProps<{
   mode: "edit" | "create";
 }>();
 
-const isSubmitting = ref(false);
-const editMode = props.mode === "edit";
 const route = useRoute();
 const router = useRouter();
-const { createBranch } = useBranches();
+const isSubmitting = ref(false);
+const editMode = props.mode === "edit";
+const branchId = route.params.id ? String(route.params.id) : null;
 
-// const groupId = route.params.id
-//   ? String(route.params.id)
-//   : null;
+const { createBranch, updateBranch } = useBranches();
 
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: branchFormSchema,
@@ -54,14 +52,12 @@ const onSubmit = handleSubmit(async (values) => {
     addressAr: values.addressAr,
     addressEn: values.addressEn,
     code: values.code,
-    // isActive: values.isActive,
     isActive: values.isActive
   };
 
   try {
-    if (editMode) {
-      await createBranch(payload);
-      // await updateBranch(groupId, payload);
+    if (editMode && branchId) {
+      await updateBranch(branchId , payload);
     } else {
       await createBranch(payload);
     }
@@ -84,10 +80,10 @@ const onSubmit = handleSubmit(async (values) => {
       <template #title>
         <div class="flex flex-col px-20">
           <h2 class="heading-title">
-            {{ editMode ? $t("branch.editUserGroup") : $t("branch.addNewBranch") }}
+            {{ editMode ? $t("branch.editBranch") : $t("branch.addNewBranch") }}
           </h2>
           <p class="subheading-title">
-            {{ $t("branch.userBranchInfo") }}
+              {{ editMode ? $t("branch.editBranchInfo") : $t("branch.userBranchInfo") }}
           </p>
         </div>
       </template>
@@ -139,7 +135,7 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'BranchManagement' }" />
 
             <BaseButton type="submit" :label="editMode ? 'button.save' : 'branch.createBranch'" variant="primary"
               block />
