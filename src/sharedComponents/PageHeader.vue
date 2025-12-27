@@ -7,7 +7,7 @@ const props = defineProps({
     title: { type: String, default: "" },
     subtitle: { type: String, default: "" },
     showSearch: { type: Boolean, default: true },
-    searchPlaceholder: { type: String, default: 'Search ..' },
+    searchPlaceholder: { type: String, default: 'table.search' },
     showFilter: { type: Boolean, default: false},
     mainBtn: { type: Boolean, default: false },
     mainBtnText: { type: String, default: "" },
