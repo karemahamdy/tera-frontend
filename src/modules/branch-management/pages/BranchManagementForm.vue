@@ -64,10 +64,10 @@ const onSubmit = handleSubmit((values) => {
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
           <div class="flex gap-8">
 
-            <FormInput class="w-1/2" :label="$t('branch.branchName')" v-model="branchName" :error="errors.branchName"
-              placeholder="Enter full name" :invalid="!!errors.branchName" />
+            <FormInput class="w-1/2" :label="$t('form.fullNamePlaceholder')" v-model="branchName" :error="errors.branchName"
+              :placeholder="$t('form.fullNamePlaceholder')" :invalid="!!errors.branchName" />
             <FormInput class="w-1/2" :label="$t('branch.branchNameAr')" v-model="branchName" :error="errors.branchName"
-              placeholder="Enter full name" :invalid="!!errors.branchName" />
+              :placeholder="$t('form.fullNamePlaceholder')" :invalid="!!errors.branchName" />
           </div>
           <div class="flex gap-8">
             <div class="w-1/2">
@@ -101,7 +101,7 @@ const onSubmit = handleSubmit((values) => {
 
           <div class="flex gap-8">
             <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="branchCode" :error="errors.branchCode"
-              placeholder="Enter full name" />
+              :placeholder="$t('form.fullNamePlaceholder')" />
             <ToggleItem :title="$t('branch.branchStatus')" :label="$t('branch.branchStatus')" v-model="isActive" />
 
           </div>
