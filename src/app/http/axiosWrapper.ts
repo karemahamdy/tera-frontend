@@ -78,17 +78,18 @@ async function makeRequest<T>(
 
     const status = error.response.status;
     const userStore = useUserStore();
-
+    const message =
+      error.response.data?.message || error.message;
     // -----------------------------
     // 401 HANDLING + TOKEN REFRESH
     // -----------------------------
     if (status === 401) {
       if (url === '/Users/refresh') {
         userStore.logout();
-        return Promise.reject('Session expired');
+        return Promise.reject(message);
       }
 
-      if (!refreshPromise) {
+      if (!refreshPromise && userStore.isAuthenticated) {
         refreshPromise = userStore.refreshTokenAction().finally(() => {
           refreshPromise = null;
         });
@@ -101,14 +102,13 @@ async function makeRequest<T>(
       }
 
       userStore.logout();
-      return Promise.reject('Session expired');
+      return Promise.reject(message);
     }
 
     // -----------------------------
     // NORMAL ERROR
     // -----------------------------
-    const message =
-      error.response.data?.message || error.message;
+    
 
     return Promise.reject(message);
   } finally {
