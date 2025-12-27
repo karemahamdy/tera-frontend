@@ -9,6 +9,7 @@
   "action": "الإجراء",
   "status": "الحالة",
   "accessControl": "التحكم في الوصول",
+  "Adminstration" : "الإدارة",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
@@ -182,5 +183,9 @@
     "createBranch": "إنشاء فرع",
     "branchCode": "كود الفرع",
     "branchStatus": "حالة الفرع"
-  }
+  },
+    "licenseInfo": {
+      "title": "معلومات الترخيص",
+      "subtitle": "إدارة ترخيص المؤسسة، حصص المستخدمين والجلسات النشطة."
+    }
 }

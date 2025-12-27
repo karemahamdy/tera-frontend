@@ -3,6 +3,8 @@
 @theme {
      --color-*: initial;
     /* Primary palette */
+    --color-white: #ffffff;
+    --color-black: #000000;
     --color-primary-25: #f0f3fa;
     --color-primary-50: #e1e7f4;
     --color-primary-100: #cbd4ec;
