@@ -49,14 +49,15 @@ router.beforeEach((to, _from, next) => {
   const userStore = useUserStore();
 
   const isAuthenticated = userStore.isAuthenticated;
+  console.log(isAuthenticated);
+  
+  // if (to.meta.requiresAuth && !isAuthenticated) {
+  //   return next({ name: "Login" });
+  // }
 
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    return next({ name: "Login" });
-  }
-
-  if (to.meta.guestOnly && isAuthenticated) {
-    return next({ name: "Home"  });
-  }
+  // if (to.meta.guestOnly && isAuthenticated) {
+  //   return next({ name: "Home"  });
+  // }
 
   const title = to.meta.title as string | undefined;
   document.title = title || defaultTitle;
