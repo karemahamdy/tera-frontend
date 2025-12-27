@@ -12,7 +12,7 @@ defineEmits(["update:modelValue"]);
 
 <template>
   <div>
-    <label class="block mb-1 font-medium">{{ label }}</label>
+    <label class="block mb-1 font-medium"><strong>{{ label }}</strong></label>
 
     <Dropdown
       class="w-full n"

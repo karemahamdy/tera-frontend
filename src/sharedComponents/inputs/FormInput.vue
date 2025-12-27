@@ -13,7 +13,7 @@ defineEmits(["update:modelValue"]);
 
 <template>
   <div>
-    <label class="block mb-1 font-medium">{{ label }}</label>
+    <label class="block mb-1 font-medium"><strong>{{ label }}</strong></label>
     <InputText
       :type="type ?? 'text'"
       class="w-full p-3 border rounded-lg bg-gray-50 border-gray-300"
