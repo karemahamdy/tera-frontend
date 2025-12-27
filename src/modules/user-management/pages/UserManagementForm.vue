@@ -109,10 +109,10 @@ const onSubmit = handleSubmit((values) => {
 
                     <div class="flex gap-8">
                         <FormDropdown class="w-1/2" :label="$t('usersManagement.department')" :options="options"
-                            v-model="department" :error="errors.department" placeholder="Finance Team" />
+                            v-model="department" :error="errors.department" placeholder="Finance" />
 
                         <FormDropdown class="w-1/2" :label="$t('userGroup.userGroup')" :options="options"
-                            v-model="group" :error="errors.group" placeholder="Finance Team" />
+                            v-model="group" :error="errors.group" placeholder="IT" />
                     </div>
 
                     <div class="flex gap-8">
