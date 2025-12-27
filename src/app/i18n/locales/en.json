@@ -212,7 +212,16 @@
     "allDepartments": "All Departments",
     "allGroups": "All Groups",
     "status": "Status",
-    "scope": "Scope"
+    "scope": "Scope",
+    "internalID": "Internal ID",
+    "userName": "User Name",
+    "fullName": "Full Name",
+    "email": "Email",
+    "department": "Department",
+    "userGroup": "User Group",
+    "isAdmin": "Is Admin",
+    "accessScope": "Access Scope",
+    "lastLogin": "Last Login"
   },
   "licenseInfo": {
     "title": "License Information",
