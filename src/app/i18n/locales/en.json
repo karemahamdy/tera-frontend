@@ -45,7 +45,8 @@
     "search": "Search ...."
   },
   "form": {
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "fullNamePlaceholder": "Enter full name"
   },
   "auth": {
     "welcomeBack": "Welcome Back",

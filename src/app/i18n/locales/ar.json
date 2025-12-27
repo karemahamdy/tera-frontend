@@ -45,7 +45,8 @@
     "search": "بـــــحث ...."
   },
   "form": {
-    "fieldRequired": "هذا الحقل مطلوب"
+    "fieldRequired": "هذا الحقل مطلوب",
+    "fullNamePlaceholder": "أدخل الاسم الكامل"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
