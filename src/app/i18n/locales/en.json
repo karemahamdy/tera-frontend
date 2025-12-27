@@ -8,6 +8,9 @@
   "permission":"Permission",
   "action": "action",
   "status": "Status",
+  "enterFullName": "Enter full name",
+  "enterUsername" : "Enter Username",
+  "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
   "Adminstration" : "Administration",
   "layout": {
@@ -81,7 +84,11 @@
     "addUserInfo": "Add a new user account with appropriate permissions.",
     "fullName": "Full Name",
     "username": "Username",
-    "internalID": "internal ID"
+    "internalID": "internal ID",
+    "accountType": "Account Type",
+    "accountStatus": "Account Status",
+    "uploadImage": "Upload Image",
+    "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design"
   },
   "userGroup": {
     "groupName": "Group Name",
