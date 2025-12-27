@@ -83,7 +83,7 @@ const onSubmit = handleSubmit((values) => {
                             :error="errors.fullName" :placeholder="$t('form.fullNamePlaceholder')" />
 
                         <FormInput class="w-1/2" :label="$t('usersManagement.username')" v-model="username"
-                            :error="errors.username" placeholder="Enter Username" />
+                            :error="errors.username" :placeholder="$t('enterUsername')" />
                     </div>
 
                     <div class="flex gap-8">
@@ -91,7 +91,7 @@ const onSubmit = handleSubmit((values) => {
                             placeholder="user@company.com" />
 
                         <FormInput class="w-1/2" :label="$t('usersManagement.internalID')" v-model="internalId"
-                            :error="errors.internalId" placeholder="Enter user id" />
+                            :error="errors.internalId" :placeholder="$t('enterUserID')" />
                     </div>
 
                     <div class="flex gap-8">
@@ -103,8 +103,8 @@ const onSubmit = handleSubmit((values) => {
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <ToggleItem title="Account Type" label="Is Admin" v-model="isAdmin" />
-                        <ToggleItem title="Account Status" label="Active" v-model="isActive" />
+                        <ToggleItem :title="$t('usersManagement.accountType')" label="Is Admin" v-model="isAdmin" />
+                        <ToggleItem :title="$t('usersManagement.accountStatus')" label="Active" v-model="isActive" />
                     </div>
 
                     <div class="flex gap-8">

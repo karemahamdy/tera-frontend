@@ -101,7 +101,7 @@ const onSubmit = handleSubmit((values) => {
             </div>
             <div>
               <label class="text-gray-700 font-bold">
-                {{ $t("roles.branch") }}
+              {{ $t("roles.branches") }}
               </label>
 
               <MultiSelect  v-model="roles" :options="options" optionLabel="label" class="w-full mt-1 rounded-2xl"
