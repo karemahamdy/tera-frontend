@@ -101,11 +101,11 @@ const onSubmit = handleSubmit((values) => {
             </div>
             <div>
               <label class="text-gray-700 font-bold">
-                {{ $t("branch.branch") }}
+                {{ $t("roles.branch") }}
               </label>
 
               <MultiSelect  v-model="roles" :options="options" optionLabel="label" class="w-full mt-1 rounded-2xl"
-                :class="{ 'p-invalid': errors.roles }" :placeholder="$t('select branches')" />
+                :class="{ 'p-invalid': errors.roles }" :placeholder="$t('branch.selectbranches')" />
                
               <small v-if="errors.roles" class="text-danger-500">
                 {{ errors.roles }}

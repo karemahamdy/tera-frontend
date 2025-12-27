@@ -8,6 +8,7 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
+// import  { BranchTableItem } from "../types/branches";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -74,7 +75,11 @@ const confirmDelete = (row) => {
 };
 
 const handleActionMenu = ({ action, data }) => {
-    console.log("ActionMenu Data:", data);
+    if (action === "edit") {
+        if (data && data.id) {
+            handleEdit(data);
+        }
+    }
     if (action === 'delete') {
         confirmDelete(data);
     }
@@ -84,6 +89,9 @@ const handleDeleteConfirm = () => {
     console.log("Deleted user with ID:", rowToDelete.value);
     showDeleteDialog.value = false;
     rowToDelete.value = null;
+};
+const handleEdit = (row) => {
+    router.push(`/branch-management/edit/${row.id}`);
 };
 
 const addBranch = () => {
