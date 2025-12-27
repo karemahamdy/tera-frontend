@@ -10,6 +10,7 @@ import { notFoundRoutes } from "@/modules/not-found/routes";
 import { branchesRoutes } from "@/modules/branch-management/routes";
 
 import { useUserStore } from "@/app/store/useUserStore";
+import { LicenseRoutes } from "@/modules/license-info/routes";
 const defaultTitle = "Tera ERP";
 
 const routes = [
@@ -28,6 +29,7 @@ const routes = [
       ...rolesPermissionsRoutes,
       ...auditLogRoutes,
       ...activeSessionsRoutes,
+      ...LicenseRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
@@ -44,9 +46,9 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, _from, next) => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  const userStore = useUserStore();
+// router.beforeEach((to, _from, next) => {
+//   window.scrollTo({ top: 0, behavior: "smooth" });
+//   const userStore = useUserStore();
 
   const isAuthenticated = userStore.isAuthenticated;
   console.log(isAuthenticated);
@@ -59,10 +61,10 @@ router.beforeEach((to, _from, next) => {
   //   return next({ name: "Home"  });
   // }
 
-  const title = to.meta.title as string | undefined;
-  document.title = title || defaultTitle;
+//   const title = to.meta.title as string | undefined;
+//   document.title = title || defaultTitle;
 
-  next();
-});
+//   next();
+// });
 
 export default router;
