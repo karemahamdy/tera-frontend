@@ -178,8 +178,10 @@
     "code": "Code",
     "deleteBranchConfirm": "Are you sure you want to delete this Branch ?",
     "addNewBranch": "Add New Branch",
+    "editBranch": "Edit Branch",
     "userBranchInfo": "Manage branch information and location details.",
-    "descriptionPlaceholder": "Describe the purpose of this branch.. ",
+    "editBranchInfo": "Update branch information and location details.",
+    "descriptionPlaceholder": "Describe the Address of this branch.. ",
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
     "branchStatus": "Branch Status"
