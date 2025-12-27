@@ -184,7 +184,8 @@
     "descriptionPlaceholder": "Describe the Address of this branch.. ",
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
-    "branchStatus": "Branch Status"
+    "branchStatus": "Branch Status", 
+    "selectbranches": "Select Branches"
   },
     "licenseInfo": {
       "title": "License Information",

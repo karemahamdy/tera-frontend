@@ -86,10 +86,10 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
 
             <div>
                 <label class="text-gray-700 font-bold">
-                {{ $t("branch.branch") }}
+                {{ $t("roles.branches") }}
               </label>
               <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
-                :placeholder="$t('select roles')" class="w-full mt-1" />
+                :placeholder="$t('select branch')" class="w-full mt-1" />
             </div>
           </form>
         </div>

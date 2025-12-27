@@ -184,7 +184,8 @@
     "descriptionPlaceholder": "ضع العنوان ل هذا الفرع..",
     "createBranch": "إنشاء فرع",
     "branchCode": "كود الفرع",
-    "branchStatus": "حالة الفرع"
+    "branchStatus": "حالة الفرع",
+    "selectbranches": "اختر الفروع"
   },
     "licenseInfo": {
       "title": "معلومات الترخيص",
