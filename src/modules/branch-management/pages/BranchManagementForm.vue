@@ -93,9 +93,9 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="flex gap-8">
 
             <FormInput class="w-1/2" :label="$t('branch.branchName')" v-model="nameAr" :error="errors.nameAr"
-              placeholder="Enter full name" :invalid="!!errors.nameAr" />
+              placeholder="e.g., Head Office" :invalid="!!errors.nameAr" />
             <FormInput class="w-1/2" :label="$t('branch.branchNameAr')" v-model="nameEn" :error="errors.nameEn"
-              placeholder="Enter full name" :invalid="!!errors.nameEn" />
+              placeholder=" المكتب الرئيسي" :invalid="!!errors.nameEn" />
           </div>
           <div class="flex gap-8">
             <div class="w-1/2">
@@ -104,7 +104,8 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ $t("branch.address") }}
               </label>
 
-              <Textarea v-model="addressAr" :placeholder="$t('branch.descriptionPlaceholder')"
+              <Textarea v-model="addressAr"
+                placeholder="Describe full address for this branch.."
                 class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.addressAr }" />
 
               <small v-if="errors.addressAr" class="text-danger-500">
@@ -118,7 +119,7 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ $t("branch.addressAr") }}
               </label>
 
-              <Textarea v-model="addressEn" :placeholder="$t('branch.descriptionPlaceholder')"
+              <Textarea v-model="addressEn" placeholder="وصف العنوان الكامل لهذا الفرع.."
                 class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.addressEn }" />
 
               <small v-if="errors.addressEn" class="text-danger-500">
@@ -129,7 +130,7 @@ const onSubmit = handleSubmit(async (values) => {
 
           <div class="flex gap-8">
             <FormInput class="w-1/2" :label="$t('branch.branchCode')" v-model="code" :error="errors.code"
-              placeholder="HQ" />
+              placeholder="e.g., HQ" />
             <ToggleItem :title="$t('branch.branchStatus')" :label="$t('branch.branchStatus')" v-model="isActive" />
 
           </div>
