@@ -33,7 +33,8 @@
     "create": "إنشاء",
     "new": "جديد",
     "active": "نشط",
-    "resetPassword": "تغيير الرقم السري"
+    "resetPassword": "تغيير الرقم السري",
+    "clearFilters": "مسح الفلاتر"
   },
   "table": {
     "description": "الوصف",
@@ -182,5 +183,22 @@
     "createBranch": "إنشاء فرع",
     "branchCode": "كود الفرع",
     "branchStatus": "حالة الفرع"
+  },
+  "reports": {
+    "title": "التقارير",
+    "subtitle": "عرض وتحليل بيانات النظام",
+    "generateReport": "إنشاء تقرير",
+    "reportType": "نوع التقرير",
+    "dateRange": "نطاق التاريخ",
+    "exportFormat": "تنسيق التصدير",
+    "viewReport": "عرض التقرير",
+    "downloadReport": "تحميل التقرير",
+    "noReportsFound": "لم يتم العثور على تقارير",
+    "userReport": "تقرير المستخدم",
+    "userReportInfo": "تقرير بيانات المستخدم الرئيسية",
+    "allDepartments": "جميع الأقسام",
+    "allGroups": "جميع المجموعات",
+    "status": "الحالة",
+    "scope": "النطاق"
   }
 }

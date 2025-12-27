@@ -33,7 +33,8 @@
     "create": "Create",
     "new": "New",
     "active": "Active",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "clearFilters": "Clear Filters"
   },
   "table": {
     "description": "Description",
@@ -182,5 +183,22 @@
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
     "branchStatus": "Branch Status"
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Generate and view system reports",
+    "generateReport": "Generate Report",
+    "reportType": "Report Type",
+    "dateRange": "Date Range",
+    "exportFormat": "Export Format",
+    "viewReport": "View Report",
+    "noReportsFound": "No reports found for the selected criteria.",
+    "selectReportType": "Please select a report type.",
+    "userReport": "User Report",
+    "userReportInfo": "User Master Data Report",
+    "allDepartments": "All Departments",
+    "allGroups": "All Groups",
+    "status": "Status",
+    "scope": "Scope"
   }
 }

@@ -68,10 +68,12 @@ const onInput = (event) => {
         <span class="p-input-icon-left search-input">
             <InputText v-if="showSearch" v-model="searchQuery" :placeholder="$t(searchPlaceholder)"  @input="onInput"/>
         </span>
-        <Dropdown v-for="(filter, index) in filters" v-if="showFilter" :key="index" v-model="filter.value" :options="filter.options"
-            :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
-            :optionValue="filter.optionValue || 'value'" :showClear="filter.showClear"
-            @change="(e) => onFilterChange(filter, e)" />
+        <template v-if="showFilter">
+            <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
+                :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
+                :optionValue="filter.optionValue || 'value'" :showClear="filter.showClear"
+                @change="(e) => onFilterChange(filter, e)" />
+        </template>
     </div>
 </template>
 
