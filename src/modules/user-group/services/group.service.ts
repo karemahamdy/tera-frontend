@@ -28,7 +28,7 @@ export const GroupService = {
   },
 
   async update(id: string, payload: AddGroup) {
-    const data = await axiosWrapper.put<any>(`/Group/UpdateGroup/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/Group/${id}`, payload);
     return data.data;
   },
 
