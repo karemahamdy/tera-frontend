@@ -215,7 +215,9 @@
     "noReportsFound": "No reports found for the selected criteria.",
     "selectReportType": "Please select a report type.",
     "userReport": "User Report",
+    "userGroupReport": "User Group Report",
     "userReportInfo": "User Master Data Report",
+    "userGroupReportInfo": "User Group Master Data Report",
     "allDepartments": "All Departments",
     "allGroups": "All Groups",
     "status": "Status",
@@ -228,7 +230,13 @@
     "userGroup": "User Group",
     "isAdmin": "Is Admin",
     "accessScope": "Access Scope",
-    "lastLogin": "Last Login"
+    "lastLogin": "Last Login",
+    "groupName": "Group Name",
+    "description": "Description",
+    "assignedRoles": "Assigned Roles",
+    "userCount": "User Count",
+    "created": "Created",
+    "allRoles": "All Roles"
   },
   "licenseInfo": {
     "title": "License Information",

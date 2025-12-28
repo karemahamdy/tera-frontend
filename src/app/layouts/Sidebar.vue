@@ -41,6 +41,7 @@ const navItems: NavItem[] = [
     icon: "ClipboardText",
     children: [
       { label: "User Report", route: "/reports/user" },
+      { label: "User Group Report", route: "/reports/user-group" },
     ],
   },
 ];
