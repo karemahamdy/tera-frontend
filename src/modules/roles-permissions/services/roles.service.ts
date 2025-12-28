@@ -1,5 +1,5 @@
 import axiosWrapper from '@/app/http/axiosWrapper';
-import type { Pagination, RolePayload, RoleItem, RoleListResponse, RoleByID, Permission } from "../types/roles";
+import type { Pagination, RoleItem, RoleListResponse, RoleByID, Permission } from "../types/roles";
 
 export const RoleService = {
   getList(params: Pagination) {
