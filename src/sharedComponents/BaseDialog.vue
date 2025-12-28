@@ -24,8 +24,8 @@ const emits = defineEmits(["update:visible", "cancel", "confirm"]);
 
     <template #header>
       <div class="flex flex-col mb-2 mt-4 gap-1 text-center">
-        <p class="dialog-heading-title ">{{ props.title }}</p>
-        <p class="dialog-subheading-title px-3">{{ props.subtitle }}</p>
+        <p class="dialog-heading-title px-12">{{ props.title }}</p>
+        <p class="dialog-subheading-title px-12">{{ props.subtitle }}</p>
       </div>
     </template>
 
