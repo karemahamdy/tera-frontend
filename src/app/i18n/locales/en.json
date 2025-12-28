@@ -216,6 +216,13 @@
   },
   "licenseInfo": {
     "title": "License Information",
-    "subtitle": "Manage your enterpriselicense ,user quotas and active sessions."
+    "subtitle": "Manage your enterpriselicense ,user quotas and active sessions.",
+    "licenseExpire": "License Expire",
+    "expiresDec312025": "Expires Dec 31, 2025",
+    "urgent": "Urgent", 
+    "userCapacity": "User Capacity",
+    "approachingLimit": "Approaching Limit",
+    "concurrentSession": "Concurrent Session",
+    "steadyHighUsage": "Steady High Usage"
   }
 }
