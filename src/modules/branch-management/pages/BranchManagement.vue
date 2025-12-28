@@ -24,19 +24,18 @@ onMounted(() => {
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
     {
-        slot: true,
-        changeStatus: true,
-        label: t("button.active"),
-        command: (row) => {
-            console.log("toggle", row);
-        }
+      action: "toggleActive",
+      changeStatus: true,
+      label: t("button.active"),
+      type: "switch",
+      key: "isActive",
     },
 ];
 // const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'nameAr', header: t('branch.branchName'), type: 'slot', sortable: true },
+        // { field: 'nameAr', header: t('branch.branchNameAr'), type: 'slot', sortable: true },
         { field: 'nameEn', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
         { field: 'address', header: t('branch.address'), sortable: true },
@@ -105,10 +104,10 @@ const addBranch = () => {
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true"  @page-change="setPage" :first="firstRecord" :last="lastRecord"
                     :rows="pageSize" :totalRecords="totalCount" lazy>
-                    <template #col-GroupName="{ data }">
+                    <template #col-nameAr="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="Building4" :size="24" color="#717680" type="linear" />
-                            <span class="break-words">{{ data.GroupName }}</span>
+                            <span class="break-words">{{ data.nameAr }}</span>
                         </div>
                     </template>
                 </DynamicTable>

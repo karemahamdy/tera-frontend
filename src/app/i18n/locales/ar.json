@@ -188,7 +188,6 @@
     "addBranch": "إضافة فرع",
     "branchManagement": "إدارة الفروع",
     "branchName": "أسم الفرع",
-    "branchNameAr": "اسم الفرع بالعربية",
     "branchDescription": "إدارة فروع ومواقع المؤسسة",
     "searchPlaceholder": "البحث عن الفروع...",
     "address": "العنوان",
@@ -203,7 +202,10 @@
     "createBranch": "إنشاء فرع",
     "branchCode": "كود الفرع",
     "branchStatus": "حالة الفرع",
-    "selectbranches": "اختر الفروع"
+    "selectbranches": "اختر الفروع",
+    "active": "نشط",
+    "inactive": "غير نشط" 
+    
   },
   "reports": {
     "title": "التقارير",
