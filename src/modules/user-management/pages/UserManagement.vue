@@ -51,7 +51,7 @@ const props = defineProps({
 
 const permissionItems = [
     {
-       label:t("button.new"),
+       label: "button.new",
         icon: "Star1",
         color: "#12B76A",
         command: (row: any) => {
@@ -60,7 +60,7 @@ const permissionItems = [
         }
     },
     {
-        label:t("button.view"),
+        label: "button.view",
         icon: "Eye",
         color: "#3F5FAC",
         command: (row: any) => {

@@ -149,7 +149,7 @@ const onSort = (event) => {
     <Menu ref="permissionMenu" :model="permissionItems" popup> <template #item="{ item }">
             <a class="p-menuitem-link flex items-center gap-2 py-2 px-3">
                 <VsxIcon :iconName="item.icon" :size="20" :color="item.color" type="linear" />
-                <span>{{ item.label }}</span>
+                <span>{{ $t(item.label) }}</span>
             </a>
         </template></Menu>
 
