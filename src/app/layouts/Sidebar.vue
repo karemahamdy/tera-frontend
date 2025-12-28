@@ -36,6 +36,13 @@ const navItems: NavItem[] = [
       { label: "License Info", route: "/license-info" },
     ],
   },
+  {
+    label: "Reports",
+    icon: "ClipboardText",
+    children: [
+      { label: "User Report", route: "/reports/user" },
+    ],
+  },
 ];
 
 // track which parent items are open
