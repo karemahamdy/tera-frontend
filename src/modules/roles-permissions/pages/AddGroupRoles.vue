@@ -63,10 +63,6 @@ const onSubmit = handleSubmit((values) => {
 
               <MultiSelect v-model="role" :options="options" optionLabel="label" class="w-full mt-1"
                 :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
-
-              <small v-if="errors.role" class="text-danger-500">
-                {{ errors.role }}
-              </small>
             </div>
             <div class="flex flex-col gap-4 w-full">
               <label class="text-gray-700 font-bold">
@@ -106,10 +102,7 @@ const onSubmit = handleSubmit((values) => {
 
               <MultiSelect  v-model="roles" :options="options" optionLabel="label" class="w-full mt-1 rounded-2xl"
                 :class="{ 'p-invalid': errors.roles }" :placeholder="$t('branch.selectbranches')" />
-               
-              <small v-if="errors.roles" class="text-danger-500">
-                {{ errors.roles }}
-              </small>
+             
             </div>
           </form>
         </div>
