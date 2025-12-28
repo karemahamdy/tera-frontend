@@ -49,7 +49,9 @@
   },
   "form": {
     "fieldRequired": "This field is required",
-    "fullNamePlaceholder": "Enter full name"
+    "fullNamePlaceholder": "Enter full name",
+    "min_3": "Minimum 3 characters",
+    "max_255": "Maximum 255 characters"
   },
   "auth": {
     "welcomeBack": "Welcome Back",

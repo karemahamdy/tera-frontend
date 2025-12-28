@@ -186,7 +186,7 @@ const changePermissionStatus = () => {
                   :class="{ 'border-danger-500': errors.description }"
                 />
                 <small v-if="errors.description" class="text-danger-500">
-                  {{ errors.description }}
+                  {{ $t(errors.description) }}
                 </small>
               </div>
             </template>
