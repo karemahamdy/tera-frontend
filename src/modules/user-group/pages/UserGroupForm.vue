@@ -97,7 +97,7 @@ const onSubmit = handleSubmit(async (values) => {
               :disabled="isSubmitting" />
 
             <small v-if="errors.description" class="text-danger-500">
-              {{ errors.description }}
+              {{ $t(errors.description) }}
             </small>
           </div>
 
