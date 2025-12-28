@@ -10,38 +10,16 @@ const { t } = useI18n();
 const data = ref([
   {
     id: 1,
-    internalID: "johndoe",
-    userName: "johndoe",
-    fullName: "John Doe",
-    email: "johndoe@example.com",
-    department: "johndoe",
-    userGroup: "johndoe",
-    isAdmin: "yes",
+    groupName: "Administration",
+    description: "Controls system settings",
+    assignedRoles: "System Administrator",
+    userCount: "4",
     status: "Actuive",
-    accessScope: "yes",
-    lastLogin: "2023-01-01",
+    created: "2023-01-01",
   },
 ]);
 const loading = ref(false);
 const filtersOperation = [
-  {
-    placeholder: "reports.allDepartments",
-    value: null,
-    field: "allDepartments",
-    options: [
-      { label: "All Departments", value: null },
-      { label: "Department 1", value: "Department 1" },
-    ],
-  },
-  {
-    placeholder: "reports.allGroups",
-    value: null,
-    field: "allGroups",
-    options: [
-      { label: "All Groups", value: null },
-      { label: "Group 1", value: "Group 1" },
-    ],
-  },
   {
     placeholder: "reports.status",
     value: null,
@@ -52,14 +30,24 @@ const filtersOperation = [
     ],
   },
   {
-    placeholder: "reports.scope",
+    placeholder: "reports.userCount",
     value: null,
-    field: "scope",
+    field: "userCount",
     options: [
-      { label: "All Scope", value: null },
-      { label: "Scope 1", value: "scope 1" },
+      { label: "User Count", value: null },
+      { label: "User 1", value: "User 1" },
     ],
   },
+  {
+    placeholder: "reports.allRoles",
+    value: null,
+    field: "allRoles",
+    options: [
+      { label: "All Roles", value: null },
+      { label: "Role 1", value: "Role 1" },
+    ],
+  },
+  
 ];
 
 const {
@@ -70,28 +58,24 @@ const {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'internalID', header: t('reports.internalID') },
-        { field: 'userName', header: t('reports.userName') },
-        { field: 'fullName', header: t('reports.fullName') },
-        { field: 'email', header: t('reports.email') },
-        { field: 'department', header: t('reports.department') },
-        { field: 'userGroup', header: t('reports.userGroup') },
-        { field: 'isAdmin', header: t('reports.isAdmin') },
+        { field: 'groupName', header: t('reports.groupName') },
+        { field: 'description', header: t('reports.description') },
+        { field: 'assignedRoles', header: t('reports.assignedRoles') },
+        { field: 'userCount', header: t('reports.userCount') },
         { field: 'status', header: t('reports.status') },
-        { field: 'accessScope', header: t('reports.accessScope') },
-        { field: 'lastLogin', header: t('reports.lastLogin'), type: "date" },
+        { field: 'created', header: t('reports.created'), type: "date" },
     ];
     return Columns;
 });
 </script>
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader title="reports.title" subtitle="reports.userReport" />
+    <ScreenHeader title="reports.title" subtitle="reports.userGroupReport" />
     <card class="bg-white rounded-[10px] w-full overflow-x-auto">
       <!-- PageHeader component -->
       <template #title>
         <PageHeader
-          title="reports.userReportInfo"
+          title="reports.userGroupReportInfo"
           :showExport="false"
           :showSearch="false"
         />
