@@ -64,7 +64,10 @@
     "rememberMe": "Remember Me",
     "login": "Sign in",
     "loginFrameTagline": "Manage your business with clarity, speed, and control.",
-    "loginFrameNote": "Your gateway to smarter, faster, and organized business operations."
+    "loginFrameNote": "Your gateway to smarter, faster, and organized business operations.",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",  
+    "newpasswordPlaceholder": "Re-enter new password"
   },
   "usersManagement": {
     "usersManagement": "Users Management",

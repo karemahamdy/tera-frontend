@@ -64,7 +64,10 @@
     "rememberMe": "تذكرني",
     "login": "تسجيل الدخول",
     "loginFrameTagline": "أدر عملك بوضوح وسرعة وتحكم",
-    "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً"
+    "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "newpasswordPlaceholder": "أعد إدخال كلمة المرور الجديدة"
   },
   "usersManagement": {
     "usersManagement": "مجموعة المستخدمين",
