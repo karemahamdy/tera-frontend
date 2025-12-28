@@ -45,7 +45,7 @@ const cards = ref([
         </template>
         <template #content>
             <div class="grid gap-6 md:grid-cols-3 sm:grid-cols-1">
-                <StatusCard v-for="(card, index in cards" :key="index" v-bind="card" />
+                <StatusCard v-for="(card, index) in cards" :key="index" v-bind="card" />
             </div>
         </template>
     </card>
