@@ -57,12 +57,10 @@ export function useBranches() {
     try {
       const response = await BranchService.create(payload);
       toastService.success("Branch created successfully");
-      // refresh current page
       await fetchBranches(pageIndex.value);
       return response;
     } catch (err: any) {
       console.error("Error creating branch:", err);
-      // try to capture validation errors if provided by backend
       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
@@ -116,7 +114,7 @@ export function useBranches() {
       await BranchService.toggleActive(id, isActive);
       const row = apiBranches.value.find((r) => r.id === id);
       if (row) row.isActive = isActive;
-      toastService.success(`Branch is now ${isActive ? 'Active' : 'Inactive'}`);
+      toastService.success(`Branch is now ${isActive ? 'Active' : 'in Active'}`);
     } catch (err) {
       console.error('Error toggling branch status:', err);
       toastService.error('Failed to update branch status');
@@ -135,7 +133,8 @@ export function useBranches() {
       nameEn: b.nameEn,
       code: b.code,
       address: b.address,
-      isActive: b.isActive,
+     isActive: b.isActive ,
+     status: b.isActive ? "Active" : "in Active",
       createAt: b.createAt,
     }));
   },

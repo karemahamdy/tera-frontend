@@ -39,7 +39,7 @@ const columns = computed(() => {
         { field: 'nameEn', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
         { field: 'address', header: t('branch.address'), sortable: true },
-        { field: 'isActive', header: t('status'), sortable: true },
+        { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'createAt', header: t('table.created'), type: 'date', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -59,7 +59,6 @@ const lastRecord = computed(() => {
 
 const confirmDelete = (row) => {
     rowToDelete.value = row;
-    console.log("Row to delete:", rowToDelete.value);
     showDeleteDialog.value = true;
 };
 
@@ -75,7 +74,6 @@ const handleActionMenu = ({ action, data }) => {
 };
 
 const handleDeleteConfirm = () => {
-    console.log("Deleted user with ID:", rowToDelete.value);
     showDeleteDialog.value = false;
     rowToDelete.value = null;
 };
