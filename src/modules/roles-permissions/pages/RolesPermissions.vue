@@ -7,23 +7,23 @@ import alertIcon from "@/assets/images/alert.png";
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
-import { useRolesStore } from "../store/useRolesStore";
+import { useRoles } from "../composables/useRoles";
 
-const store = useRolesStore();
+const {
+  list,
+  loading,
+  pagination,
+  getList,
+  changePage,
+  search,
+  sort,
+  deleteItem,
+} = useRoles();
 
 const { t } = useI18n();
 const router = useRouter();
-const loading = ref(false);
 const showDeleteDialog = ref(false);
 const rowToDelete = ref(null);
-
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [],
-  },
-});
 
 const customItems = computed(() => {
   return [
@@ -40,7 +40,6 @@ const customItems = computed(() => {
 });
 const emit = defineEmits(["search", "action-menu-click"]);
 
-const { filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
   const Columns = [
@@ -71,17 +70,17 @@ const columns = computed(() => {
 });
 
 const firstRecord = computed(() => {
-  return store.list.length === 0
+  return list.value.length === 0
     ? 0
-    : (store.pagination["PagenationDto.PageIndex"] - 1) *
-        store.pagination["PagenationDto.PageSize"] +
+    : (pagination.value["PagenationDto.PageIndex"] - 1) *
+        pagination.value["PagenationDto.PageSize"] +
         1;
 });
 
 const lastRecord = computed(() => {
-  if (store.list.length === 0) return 0;
-  const last = firstRecord.value + store.list.length - 1;
-  return last > store.pagination.total ? store.pagination.total : last;
+  if (list.value.length === 0) return 0;
+  const last = firstRecord.value + list.value.length - 1;
+  return last > pagination.value.total ? pagination.value.total : last;
 });
 
 const confirmDelete = (row) => {
@@ -109,7 +108,7 @@ const handleActionMenu = async (payload) => {
 
 const handleDeleteConfirm = async () => {
   showDeleteDialog.value = false;
-  await store.deleteItem(rowToDelete.value.id);
+  await deleteItem(rowToDelete.value.id);
   rowToDelete.value = null;
 };
 
@@ -118,7 +117,7 @@ const addNew = () => {
 };
 
 onMounted(() => {
-  store.getList();
+  getList();
 });
 </script>
 
@@ -136,7 +135,7 @@ onMounted(() => {
           :mainBtn="true"
           mainBtnText="roles.addRole"
           searchPlaceholder="roles.searchPlaceholder"
-          @search="store.search"
+          @search="search"
           :onMainBtnClick="addNew"
         />
       </template>
@@ -144,18 +143,18 @@ onMounted(() => {
       <template #content>
         <DynamicTable
           :columns="columns"
-          :data="store.list"
+          :data="list"
           :loading="loading"
           :permissionItems="permissionItems"
           :customItems="customItems"
           @action-menu-click="handleActionMenu"
-          @page-change="store.changePage"
-          @order-change="store.sort"
+          @page-change="changePage"
+          @order-change="sort"
           :showDelete="true"
           :first="firstRecord"
           :last="lastRecord"
-          :rows="store.pagination['PagenationDto.PageSize']"
-          :totalRecords="store.pagination.total"
+          :rows="pagination['PagenationDto.PageSize']"
+          :totalRecords="pagination.total"
           lazy
         >
         </DynamicTable>

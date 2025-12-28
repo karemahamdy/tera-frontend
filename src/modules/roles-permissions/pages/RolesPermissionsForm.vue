@@ -4,39 +4,50 @@ import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useRoute } from "vue-router";
 import NoData from "../components/NoData.vue";
-import type { Permission } from "../types/roles";
-import { useRolesStore } from "../store/useRolesStore";
-const store = useRolesStore();
+import type { Permission, RoleByID } from "../types/roles";
+import { useRoles } from "../composables/useRoles";
+import { useForm } from "vee-validate";
+import { roleSchema } from "../validation/RolesSchema";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
 }>();
 
+const {
+  role,
+  createItem,
+  updateItem,
+  getItemById,
+  getModuleslistData,
+  getAllModulesStatus,
+} = useRoles();
+
+const { handleSubmit, errors, defineField, setValues } = useForm({
+  validationSchema: roleSchema,
+});
+
+const [name] = defineField("name");
+const [description] = defineField("description");
+
 const editMode = props.mode === "edit";
 const isView = props.mode === "view";
+const title = ref<string>(t("roles.systemAdministrator"));
 const route = useRoute();
 const id = ref<string | null>(route.params.id ? String(route.params.id) : null);
 const search = ref<string>("");
-const handleSubmit = () => {
-  console.log(`form submited ${id.value}`);
-};
-
 const data = ref<Permission[]>([]);
 
-// Computed property to filter modules and permissions based on search
-const filteredData = computed(() => {
+const filteredData = computed((): Permission[] => {
   if (!search.value) return data.value;
-
   const term = search.value.toLowerCase();
-
-  return data.value
+  let list = data.value
     .map((moduleItem) => {
-      // Filter module's permissions
       const filteredPermissions = moduleItem.permissionDtos.filter((perm) =>
         perm.name.toLowerCase().includes(term)
       );
-
-      // Include module if module name matches OR it has matching permissions
       if (
         moduleItem.moduleCode.toLowerCase().includes(term) ||
         filteredPermissions.length
@@ -49,20 +60,78 @@ const filteredData = computed(() => {
 
       return null;
     })
-    .filter(Boolean); // remove nulls
+    .filter(Boolean);
+  return list as Permission[];
 });
 
 onMounted(async () => {
   if ((editMode || isView) && typeof id.value === "string") {
-    await store.getItemById(id.value);
-    data.value = store.role.treeOfPermissions;
+    await getItemById(id.value);
+    setValues({
+      name: role.value.name,
+      description: role.value.description,
+    });
+    data.value = role.value.treeOfPermissions;
+    if (editMode) {
+      title.value = t("roles.editRole");
+    } else if (isView) {
+      title.value = t("roles.systemAdministrator");
+    }
+  } else {
+    title.value = t("roles.addNewRole");
+    await getModuleslistData();
+    data.value = role.value.treeOfPermissions;
   }
 });
+
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    let payload: RoleByID = {
+      name: values.name,
+      description: values.description || "",
+      treeOfPermissions: filteredData.value,
+    };
+    if (editMode && id.value) {
+      await updateItem(id.value, payload);
+    } else {
+      await createItem(payload);
+    }
+  } catch (error) {
+    console.error("Error submitting form:", error);
+  }
+});
+
+const changeMainStatus = (action: string, item: Permission) => {
+  if (action === "view") {
+    item.permissionDtos?.forEach((perm) => {
+      perm.isView = item.isView;
+    });
+  } else if (action === "create") {
+    item.permissionDtos?.forEach((perm) => {
+      perm.isCreate = item.isCreate;
+    });
+  } else if (action === "update") {
+    item.permissionDtos?.forEach((perm) => {
+      perm.isUpdate = item.isUpdate;
+    });
+  } else if (action === "delete") {
+    item.permissionDtos?.forEach((perm) => {
+      perm.isDelete = item.isDelete;
+    });
+  }
+};
+const changePermissionStatus = () => {
+  data.value = getAllModulesStatus(filteredData.value);
+};
 </script>
 <template>
   <div>
-    <ScreenHeader title="Access Control" subtitle="roles.rolesPermissions" :actionName="editMode ? $t('roles.editRole') : $t('roles.systemAdministrator')"/>
-    <card class="p-6 bg-[#ffffff] rounded-[10px]">
+    <ScreenHeader
+      title="accessControl"
+      subtitle="roles.rolesPermissions"
+      :actionName="title"
+    />
+    <card class="p-6 bg-white rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">
           <h2 class="heading-title">
@@ -93,30 +162,32 @@ onMounted(async () => {
               />
             </div>
           </div>
-          <form @submit.prevent="handleSubmit" class="space-y-6 mt-5">
+          <form @submit.prevent="onSubmit" class="space-y-6 mt-5">
             <template v-if="!isView">
               <div>
-                <label class="text-gray-700 font-medium mb-2 block">{{
-                  $t("roles.roleName")
-                }}</label>
-                <InputText
-                  v-model="store.role.name"
-                  :disabled="isView"
-                  placeholder="e.g., Finance Manager"
-                  class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
+                <FormInput
+                  :label="$t('roles.roleName')"
+                  v-model="name"
+                  :placeholder="$t('e.g., Finance Manager')"
+                  :error="errors.name"
+                  :invalid="!!errors.name"
                 />
               </div>
               <div>
-                <label class="text-gray-700 font-medium mb-2 block">{{
-                  $t("userGroup.description")
-                }}</label>
+                <label class="text-gray-700 font-medium mb-2 block">
+                  {{ $t("userGroup.description") }}
+                </label>
                 <Textarea
-                  v-model="store.role.description"
+                  v-model="description"
                   :disabled="isView"
                   :placeholder="$t('roles.descriptionPlaceholder')"
-                  class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
+                  class="mt-1 w-full p-3 border rounded-lg"
                   rows="4"
+                  :class="{ 'border-danger-500': errors.description }"
                 />
+                <small v-if="errors.description" class="text-danger-500">
+                  {{ errors.description }}
+                </small>
               </div>
             </template>
 
@@ -146,6 +217,7 @@ onMounted(async () => {
                             <Checkbox
                               :disabled="isView"
                               v-model="item.isView"
+                              @change="changeMainStatus('view', item)"
                               binary
                               @click.stop
                             />
@@ -153,6 +225,7 @@ onMounted(async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
+                              @change="changeMainStatus('create', item)"
                               v-model="item.isCreate"
                               binary
                               @click.stop
@@ -161,6 +234,7 @@ onMounted(async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
+                              @change="changeMainStatus('update', item)"
                               v-model="item.isUpdate"
                               binary
                               @click.stop
@@ -169,6 +243,7 @@ onMounted(async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
+                              @change="changeMainStatus('delete', item)"
                               v-model="item.isDelete"
                               binary
                               @click.stop
@@ -187,6 +262,7 @@ onMounted(async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
+                              @change="changePermissionStatus"
                               v-model="permission.isView"
                               binary
                             />
@@ -194,6 +270,7 @@ onMounted(async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
+                              @change="changePermissionStatus"
                               v-model="permission.isCreate"
                               binary
                             />
@@ -201,6 +278,7 @@ onMounted(async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
+                              @change="changePermissionStatus"
                               v-model="permission.isUpdate"
                               binary
                             />
@@ -208,6 +286,7 @@ onMounted(async () => {
                           <div class="m-auto">
                             <Checkbox
                               :disabled="isView"
+                              @change="changePermissionStatus"
                               v-model="permission.isDelete"
                               binary
                             />

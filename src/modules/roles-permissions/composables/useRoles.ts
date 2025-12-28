@@ -1,9 +1,11 @@
 import { ref } from "vue";
+import router from "@/app/router";
+
 import type {
   Pagination,
   RoleListItem,
-  RolePayload,
   RoleByID,
+  Permission,
 } from "../types/roles";
 import { RoleService } from "../services/roles.service";
 import { toastService } from "@/app/services/toastService";
@@ -64,12 +66,12 @@ export function useRoles() {
     await getList();
   };
 
-  const createItem = async (payload: RolePayload) => {
+  const createItem = async (payload: RoleByID) => {
     loading.value = true;
     try {
       await RoleService.create(payload);
       toastService.success(t("roles.roleAdded"));
-      await getList();
+      router.replace({ name: "RolesPermissions" });
     } catch (error) {
       toastService.error(error as string);
     } finally {
@@ -77,37 +79,36 @@ export function useRoles() {
     }
   };
 
-  const updateItem = async (id: string, payload: RolePayload) => {
+  const updateItem = async (id: string, payload: RoleByID) => {
     loading.value = true;
     try {
       await RoleService.update(id, payload);
       toastService.success(t("roles.roleUpdated"));
-      await getList();
+      router.replace({ name: "RolesPermissions" });
     } catch (error) {
       toastService.error(error as string);
     } finally {
       loading.value = false;
     }
   };
-
+  const getAllModulesStatus = (data: Permission[]): Permission[] => {
+    data = data.map((permission) => {
+      const dtos = permission.permissionDtos;
+      return {
+        ...permission,
+        isCreate: dtos.every((d) => d.isCreate),
+        isUpdate: dtos.every((d) => d.isUpdate),
+        isDelete: dtos.every((d) => d.isDelete),
+        isView: dtos.every((d) => d.isView),
+      };
+    });
+    return data;
+  };
   const getItemById = async (id: string) => {
     loading.value = true;
     try {
       const res = await RoleService.getById(id);
-
-      res.data.treeOfPermissions = res.data.treeOfPermissions.map(
-        (permission) => {
-          const dtos = permission.permissionDtos;
-          return {
-            ...permission,
-            isCreate: dtos.every((d) => d.isCreate),
-            isUpdate: dtos.every((d) => d.isUpdate),
-            isDelete: dtos.every((d) => d.isDelete),
-            isView: dtos.every((d) => d.isView),
-          };
-        }
-      );
-
+      res.data.treeOfPermissions = getAllModulesStatus(res.data.treeOfPermissions);
       role.value = res.data;
     } catch (error) {
       toastService.error(error as string);
@@ -131,6 +132,18 @@ export function useRoles() {
     }
   };
 
+  const getModuleslistData = async () => {
+    loading.value = true;
+    try {
+      const response = await RoleService.getModuleslist();
+      role.value.treeOfPermissions = getAllModulesStatus(response);
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     // state
     list,
@@ -147,5 +160,7 @@ export function useRoles() {
     updateItem,
     getItemById,
     deleteItem,
+    getModuleslistData,
+    getAllModulesStatus
   };
 }
