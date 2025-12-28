@@ -49,7 +49,9 @@
   },
   "form": {
     "fieldRequired": "هذا الحقل مطلوب",
-    "fullNamePlaceholder": "أدخل الاسم الكامل"
+    "fullNamePlaceholder": "أدخل الاسم الكامل",
+    "min_3": "الحد الأدنى 3 أحرف",
+    "max_255": "الحد الأقصى 255 حرفًا"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
