@@ -20,7 +20,7 @@ onMounted(() => {
 
 const permissionItems = [
     {
-        label: t("button.new"),
+        label: "button.new",
         icon: "Star1",
         color: "#12B76A",
         command: (row: GroupTableItem) => {
@@ -28,7 +28,7 @@ const permissionItems = [
         }
     },
     {
-        label: t("button.view"),
+        label: "button.view",
         icon: "Eye",
         color: "#3F5FAC",
         command: (row: GroupTableItem) => {

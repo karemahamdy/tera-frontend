@@ -24,17 +24,20 @@ const props = defineProps({
     default: () => [],
   },
 });
-const customItems = [
-  {
-    slot: true,
-    label: t("button.view"),
-    icon: "Eye",
-    color: "#3F5FAC",
-    command: (row) => {
-      router.push({ name: "RolesPermissionsView", params: { row } });
+
+const customItems = computed(() => {
+  return [
+    {
+      slot: true,
+      label: t("button.view"),
+      icon: "Eye",
+      color: "#3F5FAC",
+      command: (row) => {
+        router.push({ name: "RolesPermissionsView", params: { row } });
+      },
     },
-  },
-];
+  ];
+});
 const emit = defineEmits(["search", "action-menu-click"]);
 
 const { filteredData } = useSearch(props.data);

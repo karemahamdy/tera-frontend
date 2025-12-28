@@ -235,6 +235,7 @@
     "userCapacity": "سعة المستخدم", 
     "approachingLimit": "الاقتراب من الحد",
     "expiresDec312025": "ينتهي في 31 ديسمبر 2025",
+    "urgent": "عاجل",
     "concurrentSession": "الجلسات المتزامنة",
     "steadyHighUsage": "استخدام مرتفع مستمر"
   }
