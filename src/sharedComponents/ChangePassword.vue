@@ -20,8 +20,8 @@ const confirmAction = () => {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="visible"  :title="$t('changePassword.title')"
-  :subtitle="$t('changePassword.subtitle')" @cancel="closeDialog" @confirm="confirmAction">
+  <BaseDialog v-model:visible="visible"  :title="$t('auth.resetPassword')"
+  :subtitle="$t('auth.resetPasswordInfo')" @cancel="closeDialog" @confirm="confirmAction">
 
     <form class="space-y-5">
       <!-- <div>
@@ -34,7 +34,7 @@ const confirmAction = () => {
       </div> -->
       <div>
         <label class="text-gray-700 font-medium">{{
-          $t("auth.password")
+          $t("auth.newpassword")
         }}</label>
         <Password v-model="password" toggleMask :inputProps="{ autocomplete: 'current-password' }"
           :placeholder="$t('auth.passwordPlaceholder')" class="mt-1 w-full"

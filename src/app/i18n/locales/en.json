@@ -67,7 +67,9 @@
     "loginFrameNote": "Your gateway to smarter, faster, and organized business operations.",
     "forgotPassword": "Forgot Password?",
     "resetPassword": "Reset Password",  
-    "newpasswordPlaceholder": "Re-enter new password"
+    "newpasswordPlaceholder": "Re-enter new password",
+    "newpassword": "New Password",
+    "resetPasswordInfo": "Enter the new password for the account."
   },
   "usersManagement": {
     "usersManagement": "Users Management",

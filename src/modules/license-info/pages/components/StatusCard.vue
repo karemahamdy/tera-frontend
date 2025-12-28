@@ -19,15 +19,15 @@ const props = defineProps({
       <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white shadow-md">
         <VsxIcon :iconName="icon" :size="24" :color="variant" type="linear" />
       </div>
-      <span class="status">{{ statusText }}</span>
+      <span class="status">{{$t( statusText )}}</span>
     </div>
     <div class="flex flex-col justify-between">
-      <h3 class="font-semibold text-lg">{{ title }}</h3>
+      <h3 class="font-semibold text-lg">{{$t(title)}}</h3>
       <div class="font-bold text-3xl unit">
-        {{ value }}
-        <span v-if="valueUnit" class="font-normal text-lg">{{ valueUnit }}</span>
+        {{$t( value )}}
+        <span v-if="valueUnit" class="font-normal text-lg">{{$t( valueUnit) }}</span>
       </div>
-      <div class="px-1 py-3 text-sm font-medium">{{ subtitle }}</div>
+      <div class="px-1 py-3 text-sm font-medium">{{$t( subtitle )}}</div>
     </div>
     <div class="overflow-hidden rounded-full h-[8px] progress-bg mt-4">
       <div class="progress" :style="{ width: progressPercent + '%' }"></div>

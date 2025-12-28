@@ -1,29 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import StatusCard from './components/StatusCard.vue'
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
- 
 
 const cards = ref([
     {
         variant: 'orange',
         icon: 'Clock',
-        title: t('licenseInfo.licenseExpire'),
+        title: 'licenseInfo.licenseExpire',
         value: '65',
         valueUnit: '/ Days',
-        subtitle: t('licenseInfo.expiresDec312025'),
-        statusText: t('licenseInfo.urgent'),
+        subtitle: 'licenseInfo.expiresDec312025',
+        statusText: 'licenseInfo.urgent',
         progressPercent: 65
     },
     {
         variant: 'green',
         borderClass: 'border-emerald-300',
         icon: 'Profile2User',
-        title: t('licenseInfo.userCapacity'),
+        title: 'licenseInfo.userCapacity',
         value: '96/100',
-        subtitle: t('licenseInfo.approachingLimit'),
+        subtitle: 'licenseInfo.approachingLimit',
         statusText: 'Active',
         progressPercent: 96
     },
@@ -31,9 +27,9 @@ const cards = ref([
         variant: 'blue',
         borderClass: 'border-blue-300',
         icon: 'VideoTick',
-        title: t('licenseInfo.concurrentSession'),
+        title: 'licenseInfo.concurrentSession',
         value: '24/40',
-        subtitle: t('licenseInfo.steadyHighUsage'),
+        subtitle: 'licenseInfo.steadyHighUsage',
         statusText: 'Active',
         progressPercent: 60
     }
@@ -49,7 +45,7 @@ const cards = ref([
         </template>
         <template #content>
             <div class="grid gap-6 md:grid-cols-3 sm:grid-cols-1">
-                <StatusCard v-for="(card, index) in cards" :key="index" v-bind="card" />
+                <StatusCard v-for="(card, index in cards" :key="index" v-bind="card" />
             </div>
         </template>
     </card>

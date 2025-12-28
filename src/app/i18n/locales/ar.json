@@ -67,7 +67,9 @@
     "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً",
     "forgotPassword": "هل نسيت كلمة المرور؟",
     "resetPassword": "إعادة تعيين كلمة المرور",
-    "newpasswordPlaceholder": "أعد إدخال كلمة المرور الجديدة"
+    "newpasswordPlaceholder": "أعد إدخال كلمة المرور الجديدة",
+    "newpassword": "كلمة المرور الجديدة",
+    "resetPasswordInfo": "أدخل كلمة المرور الجديدة للحساب."
   },
   "usersManagement": {
     "usersManagement": "مجموعة المستخدمين",
