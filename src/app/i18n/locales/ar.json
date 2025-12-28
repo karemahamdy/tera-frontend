@@ -64,7 +64,12 @@
     "rememberMe": "تذكرني",
     "login": "تسجيل الدخول",
     "loginFrameTagline": "أدر عملك بوضوح وسرعة وتحكم",
-    "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً"
+    "loginFrameNote": "بوابتك إلى عمليات تجارية أذكى وأسرع وأكثر تنظيماً",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "newpasswordPlaceholder": "أعد إدخال كلمة المرور الجديدة",
+    "newpassword": "كلمة المرور الجديدة",
+    "resetPasswordInfo": "أدخل كلمة المرور الجديدة للحساب."
   },
   "usersManagement": {
     "usersManagement": "مجموعة المستخدمين",
@@ -225,6 +230,12 @@
   },
   "licenseInfo": {
     "title": "معلومات الترخيص",
-    "subtitle": "إدارة ترخيص المؤسسة، حصص المستخدمين والجلسات النشطة."
+    "subtitle": "إدارة ترخيص المؤسسة، حصص المستخدمين والجلسات النشطة.",
+    "licenseExpire": "انتهاء الترخيص",
+    "userCapacity": "سعة المستخدم", 
+    "approachingLimit": "الاقتراب من الحد",
+    "expiresDec312025": "ينتهي في 31 ديسمبر 2025",
+    "concurrentSession": "الجلسات المتزامنة",
+    "steadyHighUsage": "استخدام مرتفع مستمر"
   }
 }
