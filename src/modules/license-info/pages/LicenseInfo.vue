@@ -6,20 +6,20 @@ const cards = ref([
     {
         variant: 'orange',
         icon: 'Clock',
-        title: 'License Expire',
+        title: 'licenseInfo.licenseExpire',
         value: '65',
         valueUnit: '/ Days',
-        subtitle: 'Expires Dec 31, 2025',
-        statusText: 'Urgent',
+        subtitle: 'licenseInfo.expiresDec312025',
+        statusText: 'licenseInfo.urgent',
         progressPercent: 65
     },
     {
         variant: 'green',
         borderClass: 'border-emerald-300',
         icon: 'Profile2User',
-        title: 'User Capacity',
+        title: 'licenseInfo.userCapacity',
         value: '96/100',
-        subtitle: 'Approaching Limit',
+        subtitle: 'licenseInfo.approachingLimit',
         statusText: 'Active',
         progressPercent: 96
     },
@@ -27,9 +27,9 @@ const cards = ref([
         variant: 'blue',
         borderClass: 'border-blue-300',
         icon: 'VideoTick',
-        title: 'Concurrent Session',
+        title: 'licenseInfo.concurrentSession',
         value: '24/40',
-        subtitle: 'Steady High Usage',
+        subtitle: 'licenseInfo.steadyHighUsage',
         statusText: 'Active',
         progressPercent: 60
     }
@@ -45,7 +45,7 @@ const cards = ref([
         </template>
         <template #content>
             <div class="grid gap-6 md:grid-cols-3 sm:grid-cols-1">
-                <StatusCard v-for="(card, index) in cards" :key="index" v-bind="card" />
+                <StatusCard v-for="(card, index in cards" :key="index" v-bind="card" />
             </div>
         </template>
     </card>
