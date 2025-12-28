@@ -74,6 +74,16 @@ const columns = computed(() => {
     return Columns;
 });
 
+const firstRecord = computed(() => {
+    return ((pageIndex.value - 1) * pageSize.value) + 1;
+});
+
+const lastRecord = computed(() => {
+    const last = pageIndex.value * pageSize.value;
+    return Math.min(last, totalCount.value || last);
+});
+
+
 const confirmDelete = (row) => {
     rowToDelete.value = row;
     console.log("Row to delete:", rowToDelete.value);
@@ -119,7 +129,8 @@ const addBranch = () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true">
+                    @action-menu-click="handleActionMenu" :showDelete="true"  @page-change="setPage" :first="firstRecord" :last="lastRecord"
+                    :rows="pageSize" :totalRecords="totalCount" lazy>
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="Building4" :size="24" color="#717680" type="linear" />
