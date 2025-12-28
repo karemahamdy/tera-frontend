@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import axiosWrapper from '@/app/http/axiosWrapper';
 import i18n from '@/app/i18n/index';
-import type { User, UserData, LoginPayload, Entity, AuthData } from "@/app/types/user";
+import type { User, UserData, LoginPayload, Entity, AuthData, AuthDataResponse } from "@/app/types/user";
 import router from "@/app/router";
 
 // ------------------------------------
@@ -92,8 +92,8 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     async refreshTokenAction(): Promise<boolean> {
       try {
-        const tokens = await axiosWrapper.post<AuthData>('/Auth/refresh-token', { refreshToken: this.refreshToken });
-        this.setTokens(tokens as AuthData);
+        const tokens = await axiosWrapper.post<AuthDataResponse>('/Auth/refresh-token', { refreshToken: this.refreshToken });
+        this.setTokens(tokens.data as AuthData);
         return true;
       } catch {
         this.logout();
