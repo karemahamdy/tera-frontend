@@ -2,9 +2,9 @@ import axiosWrapper from "@/app/http/axiosWrapper";
 import type { AddBranch, BranchResponse } from "../types/branches";
 
 export const BranchService = {
-  async getAll(pageIndex = 1, pageSize = 10) {
+  async getAll() {
     const resp = await axiosWrapper.get<BranchResponse>(
-      `/Branch/GetAllBranch?PagenationDto.PageIndex=${pageIndex}&PagenationDto.PageSize=${pageSize}`
+      `Branch/GetAllBranchs`
     );
     return resp.data;
   },

@@ -4,8 +4,7 @@ export interface Branch {
   code: string;
   nameAr: string;
   nameEn: string;
-  addressEn: string;
-  addressAr: string;
+  address: string;
   isActive: boolean;
   createAt: string;
 }

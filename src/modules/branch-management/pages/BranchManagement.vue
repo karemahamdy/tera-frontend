@@ -4,42 +4,47 @@ import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
+import { useBranches } from "../composables/useBranch";
 // import  { BranchTableItem } from "../types/branches";
 
 const { t } = useI18n();
 const router = useRouter();
-const loading = ref(false);
 const showDeleteDialog = ref(false);
 const rowToDelete = ref(null);
 
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                id: 1,
-                branchName: 'Finance Team',
-                address: 'Manage payment, budget..',
-                code: '4',
-                status: "in Active",
+const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, setPage } = useBranches();
 
-                Created: 'Oct 11, 2025',
-            },
-            {
-                id: 5,
-                branchName: 'Finance Team',
-                address: 'Manage payment, budget..',
-                code: '2',
-                status: "Active",
-                Created: 'Oct 11, 2025',
-            },
-        ]
-    },
+onMounted(() => {
+    fetchBranches();
 });
+// const props = defineProps({
+//     data: {
+//         type: Array,
+//         default: () => [
+//             {
+//                 id: 1,
+//                 branchName: 'Finance Team',
+//                 address: 'Manage payment, budget..',
+//                 code: '4',
+//                 status: "in Active",
+
+//                 Created: 'Oct 11, 2025',
+//             },
+//             {
+//                 id: 5,
+//                 branchName: 'Finance Team',
+//                 address: 'Manage payment, budget..',
+//                 code: '2',
+//                 status: "Active",
+//                 Created: 'Oct 11, 2025',
+//             },
+//         ]
+//     },
+// });
 
 const emit = defineEmits(['search', 'action-menu-click']);
 
@@ -53,15 +58,16 @@ const customItems = [
         }
     },
 ];
-const { onSearch, filteredData } = useSearch(props.data);
+// const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'branchName', header: t('branch.branchName'), type: 'slot', sortable: true },
+        { field: 'nameAr', header: t('branch.branchName'), type: 'slot', sortable: true },
+        { field: 'nameEn', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
         { field: 'address', header: t('branch.address'), sortable: true },
-        { field: 'status', header: t('status'), sortable: true },
-        { field: 'Created', header: t('table.created'), sortable: true },
+        { field: 'isActive', header: t('status'), sortable: true },
+        { field: 'createAt', header: t('table.created'), type: 'date', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -112,7 +118,7 @@ const addBranch = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true">
                     <template #col-GroupName="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">

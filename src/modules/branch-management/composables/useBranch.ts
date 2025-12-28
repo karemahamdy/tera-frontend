@@ -20,7 +20,7 @@ export function useBranches() {
     loading.value = true;
     lastError.value = null;
     try {
-      const response: any = await BranchService.getAll(page, pageSize.value);
+      const response: any = await BranchService.getAll();
       const payload = response && response.data ? response.data : response;
       apiBranches.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
@@ -125,21 +125,22 @@ export function useBranches() {
     }
   };
 
-  watch(
-    apiBranches,
-    (branches) => {
-      tableData.value = branches.map((b) => ({
-        id: b.id,
-        BranchCode: b.code,
-        NameAr: b.nameAr,
-        NameEn: b.nameEn,
-        Address: b.addressEn || b.addressAr || '-',
-        isActive: b.isActive,
-        createAt: b.createAt,
-      }));
-    },
-    { immediate: true }
-  );
+ watch(
+  apiBranches,
+  (branches) => {
+    tableData.value = branches.map((b) => ({
+      id: b.id,
+      nameAr: b.nameAr,
+      nameEn: b.nameEn,
+      code: b.code,
+      address: b.address,
+      isActive: b.isActive,
+      createAt: b.createAt,
+    }));
+  },
+  { immediate: true }
+);
+
 
   const filteredTableData = computed(() => tableData.value.map((r) => ({ ...r })));
 
