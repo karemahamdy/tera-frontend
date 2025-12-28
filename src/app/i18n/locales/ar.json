@@ -12,14 +12,14 @@
   "enterUsername" : "أدخل اسم المستخدم",
   "enterUserID": "أدخل معرف المستخدم",
   "accessControl": "التحكم في الوصول",
-  "Adminstration" : "الإدارة",
+  "Adminstration": "الإدارة",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
-    "changePassword": {
-      "title": "تغيير كلمة المرور",
-      "subtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك."
-    },
+  "changePassword": {
+    "title": "تغيير كلمة المرور",
+    "subtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك."
+  },
   "button": {
     "addNew": "إضافة جديد",
     "save": "حفظ",
@@ -37,16 +37,19 @@
     "create": "إنشاء",
     "new": "جديد",
     "active": "نشط",
-    "resetPassword": "تغيير الرقم السري"
+    "resetPassword": "تغيير الرقم السري",
+    "clearFilters": "مسح الفلاتر"
   },
   "table": {
     "description": "الوصف",
     "created": "تاريخ الإنشاء",
     "action": "الإجراء",
-    "userAssigned": "المستخدم المعين"
+    "userAssigned": "المستخدم المعين",
+    "search": "بـــــحث ...."
   },
   "form": {
-    "fieldRequired": "هذا الحقل مطلوب"
+    "fieldRequired": "هذا الحقل مطلوب",
+    "fullNamePlaceholder": "أدخل الاسم الكامل"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -65,7 +68,7 @@
   },
   "usersManagement": {
     "usersManagement": "مجموعة المستخدمين",
-    "usersManagementDesc":"إدارة حسابات المستخدمين وعرض جميع معلومات المستخدم",
+    "usersManagementDesc": "إدارة حسابات المستخدمين وعرض جميع معلومات المستخدم",
     "searchPlaceholder": "ابحث عن مستخدم...",
     "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف المستخدم ",
     "addUser": "اضافة مستخدم",
@@ -75,11 +78,11 @@
     "allGroups": "كل الاقسام ",
     "allStatus": " كل الحالات",
     "allScopes": "كل النطاق",
-    "allDepartment":  "كل الاقسام",
+    "allDepartment": "كل الاقسام",
     "assignRoleToUser": "تعيين الأدوار إلى المستخدمين",
     "assignRoleToUserDesc": "أضف أدوارًا للمستخدمين وقم بإدارة الصلاحيات الممنوحة لهم.",
-    "addNewUserManagement":"اضافة مستخدم",
-    "editUserManagement":"تعديل بيانات المستخدم",
+    "addNewUserManagement": "اضافة مستخدم",
+    "editUserManagement": "تعديل بيانات المستخدم",
     "updateUserInfo": "قم بتحديث معلومات المستخدم وأدواره وصلاحيات الوصول الخاصة به.",
     "addUserInfo": "أضف حساب مستخدم جديد مع الصلاحيات المناسبة.",
     "fullName": "الاسم بالكامل",
@@ -102,8 +105,8 @@
     "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف هذة المجموعة ",
     "userGroup": "مجموعة المستخدمين",
     "userGroupDescription": "نظم المستخدمين في مجموعات و بتعيين الأدوار لهم",
-    "AssignRolesToUserGroup":"تعيين الأدوار إلى مجموعة المستخدمين",
-    "AddRolesGroupDesc":"أضف الأدوار إلى المجموعة و إدارة الأذونات المعينة",
+    "AssignRolesToUserGroup": "تعيين الأدوار إلى مجموعة المستخدمين",
+    "AddRolesGroupDesc": "أضف الأدوار إلى المجموعة و إدارة الأذونات المعينة",
     "editUserGroup": "تعديل مجموعة المستخدمين",
     "addNewUserGroup": "إضافة مجموعة مستخدمين جديدة",
     "userGroupInfo": "تُساعد مجموعات المستخدمين في تنظيم المستخدمين وتخصيص الأدوار بشكل جماعي.",
@@ -117,8 +120,8 @@
     "branches": "الفروع",
     "addNewRole": "إضافة أدوار جديدة",
     "rolesTitle": "مسؤولي النظام",
-    "rolesDescription":"يتحكم في إعدادات النظام..",
-    "rolesPermissions":"أدوار وصلاحيات",
+    "rolesDescription": "يتحكم في إعدادات النظام..",
+    "rolesPermissions": "أدوار وصلاحيات",
     "addRole": "إضافة دور",
     "rolesInfo": "حدد ما يمكن لكل دور أن يفعله",
     "searchPlaceholder": "ابحث عن الأدوار...",
@@ -135,8 +138,8 @@
     "noData": "لا يوجد داتا",
     "adjustingSearch": "حاول تعديل البحث",
     "assignRole": "تعيين الدور",
-    "branchSpecific":"الوصول مقتصر على الفرع المحدد فقط",
-    "globalAccess":"الوصول إلى جميع الفروع",
+    "branchSpecific": "الوصول مقتصر على الفرع المحدد فقط",
+    "globalAccess": "الوصول إلى جميع الفروع",
     "roleAdded": "تمت إضافة الدور بنجاح",
     "roleUpdated": "تم تحديث الدور بنجاح",
     "roleDeleted": "تم حذف الدور بنجاح"
@@ -172,7 +175,7 @@
     "action": "الإجراء",
     "end": "إنهاء",
     "searchPlaceholder": "ابحث عن الجلسات حسب المستخدم أو عنوان IP أو الفرع..."
-  },  
+  },
   "branch": {
     "addBranch": "إضافة فرع",
     "branchManagement": "إدارة الفروع",
@@ -194,8 +197,25 @@
     "branchStatus": "حالة الفرع",
     "selectbranches": "اختر الفروع"
   },
-    "licenseInfo": {
-      "title": "معلومات الترخيص",
-      "subtitle": "إدارة ترخيص المؤسسة، حصص المستخدمين والجلسات النشطة."
-    }
+  "reports": {
+    "title": "التقارير",
+    "subtitle": "عرض وتحليل بيانات النظام",
+    "generateReport": "إنشاء تقرير",
+    "reportType": "نوع التقرير",
+    "dateRange": "نطاق التاريخ",
+    "exportFormat": "تنسيق التصدير",
+    "viewReport": "عرض التقرير",
+    "downloadReport": "تحميل التقرير",
+    "noReportsFound": "لم يتم العثور على تقارير",
+    "userReport": "تقرير المستخدم",
+    "userReportInfo": "تقرير بيانات المستخدم الرئيسية",
+    "allDepartments": "جميع الأقسام",
+    "allGroups": "جميع المجموعات",
+    "status": "الحالة",
+    "scope": "النطاق"
+  },
+  "licenseInfo": {
+    "title": "معلومات الترخيص",
+    "subtitle": "إدارة ترخيص المؤسسة، حصص المستخدمين والجلسات النشطة."
+  }
 }

@@ -5,21 +5,21 @@
   "language": "تغيير إلى العربية",
   "import": "Import",
   "export": "Export",
-  "permission":"Permission",
+  "permission": "Permission",
   "action": "action",
   "status": "Status",
   "enterFullName": "Enter full name",
   "enterUsername" : "Enter Username",
   "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
-  "Adminstration" : "Administration",
+  "Adminstration": "Administration",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
   "changePassword": {
-      "title": "Change Password",
-      "subtitle": "Update your password to keep your account secure."
-    },
+    "title": "Change Password",
+    "subtitle": "Update your password to keep your account secure."
+  },
   "button": {
     "addNew": "Add New",
     "save": "Save",
@@ -37,16 +37,19 @@
     "create": "Create",
     "new": "New",
     "active": "Active",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "clearFilters": "Clear Filters"
   },
   "table": {
     "description": "Description",
     "created": "Created",
     "action": "Action",
-    "userAssigned": "User Assigned"
+    "userAssigned": "User Assigned",
+    "search": "Search ...."
   },
   "form": {
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "fullNamePlaceholder": "Enter full name"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -72,11 +75,11 @@
     "user": "User",
     "department": "Department",
     "lastLogin": "Last Login",
-    "allGroups":"All Groups",
-    "allStatus":"All status",
-    "allScopes":"All Scopes",
-    "allDepartment":"All Department",
-    "assignRoleToUser":"Assign  Role to user",
+    "allGroups": "All Groups",
+    "allStatus": "All status",
+    "allScopes": "All Scopes",
+    "allDepartment": "All Department",
+    "assignRoleToUser": "Assign  Role to user",
     "assignRoleToUserDesc": "Add Role to users and manage assigned permissions.",
     "editUserManagement": "Edit Account Info",
     "addNewUserManagement": "Add New User",
@@ -112,7 +115,7 @@
   },
   "roles": {
     "roleName": "Role Name",
-     "roles": "Roles",
+    "roles": "Roles",
     "accessScope": "Access scope",
     "branches": "Branches",
     "addNewRole": "Add New Role",
@@ -172,7 +175,7 @@
     "action": "Action",
     "end": "End",
     "searchPlaceholder": "Search sessions by user, IP, or branch..."
-  },  
+  },
   "branch": {
     "addBranch": "Add Branch",
     "branchManagement": "Branch Management",
@@ -194,9 +197,25 @@
     "branchStatus": "Branch Status", 
     "selectbranches": "Select Branches"
   },
-    "licenseInfo": {
-      "title": "License Information",
-      "subtitle": "Manage your enterpriselicense ,user quotas and active sessions."
-
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Generate and view system reports",
+    "generateReport": "Generate Report",
+    "reportType": "Report Type",
+    "dateRange": "Date Range",
+    "exportFormat": "Export Format",
+    "viewReport": "View Report",
+    "noReportsFound": "No reports found for the selected criteria.",
+    "selectReportType": "Please select a report type.",
+    "userReport": "User Report",
+    "userReportInfo": "User Master Data Report",
+    "allDepartments": "All Departments",
+    "allGroups": "All Groups",
+    "status": "Status",
+    "scope": "Scope"
+  },
+  "licenseInfo": {
+    "title": "License Information",
+    "subtitle": "Manage your enterpriselicense ,user quotas and active sessions."
   }
 }
