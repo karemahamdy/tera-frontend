@@ -78,7 +78,7 @@ const onSort = (event) => {
         class="border-2 border-[#E7E6E8] rounded-md" responsiveLayout="scroll">
         <template #paginatorstart>
             <div class="text-gray-600 font-medium">
-                Showing <strong>{{ first }}–{{ last }}</strong> of <strong>{{ totalRecords }}</strong> Records
+              {{ $t('showing') }} <strong>{{ first }}–{{ last }}</strong> {{ $t('of') }} <strong>{{ totalRecords }}</strong> {{ $t('records') }}
             </div>
         </template>
         <template #paginatorend>

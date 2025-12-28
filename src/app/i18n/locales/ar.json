@@ -13,6 +13,9 @@
   "enterUserID": "أدخل معرف المستخدم",
   "accessControl": "التحكم في الوصول",
   "Adminstration": "الإدارة",
+  "showing": "عرض",
+  "of": "من",
+  "records": "العناصر",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },

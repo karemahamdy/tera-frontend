@@ -13,6 +13,9 @@
   "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
   "Adminstration": "Administration",
+  "showing": "Showing",
+  "of": "of",
+  "records": "Records",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },

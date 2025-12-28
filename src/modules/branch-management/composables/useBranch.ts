@@ -20,13 +20,14 @@ export function useBranches() {
     loading.value = true;
     lastError.value = null;
     try {
-      const response: any = await BranchService.getAll();
+      const response: any = await BranchService.getAll(page);
       const payload = response && response.data ? response.data : response;
       apiBranches.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
       totalCount.value = payload.totalCount ?? 0;
       totalPages.value = payload.totalPages ?? 1;
+      
     } catch (err: any) {
       console.error("Error fetching branches:", err);
       lastError.value = err?.message ?? "Failed to fetch branches";

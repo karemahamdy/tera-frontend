@@ -90,11 +90,11 @@ const customItems = computed(() => {
 
 const filtersOperation = [
   {
-    placeholder: t("usersManagement.allGroups"),
+    placeholder: "usersManagement.allGroups",
     value: null,
     field: "userGroup",
     options: [
-      { label: t("usersManagement.allGroups"), value: null },
+      { label: "usersManagement.allGroups", value: null },
       { label: "Administration", value: "Administration" },
       { label: "Finance Team", value: "Finance Team" },
       { label: "Sales Team", value: "Sales Team" },
@@ -102,31 +102,31 @@ const filtersOperation = [
     ],
   },
   {
-    placeholder: t("usersManagement.allStatus"),
+    placeholder: "usersManagement.allStatus",
     value: null,
     field: "status",
     options: [
-      { label: t("usersManagement.allStatus"), value: null },
+      { label: "usersManagement.allStatus", value: null },
       { label: "active", value: "Active" },
       { label: "inactive", value: "in Active" },
     ],
   },
   {
-    placeholder: t("usersManagement.allScopes"),
+    placeholder: "usersManagement.allScopes",
     value: null,
     field: "accessScope",
     options: [
-      { label: t("usersManagement.allScopes"), value: null },
+      { label: "usersManagement.allScopes", value: null },
       { label: "Global", value: "Global" },
       { label: "Branch", value: "Branch" },
     ],
   },
   {
-    placeholder: t("usersManagement.allDepartment"),
+    placeholder: "usersManagement.allDepartment",
     value: null,
     field: "department",
     options: [
-      { label: t("usersManagement.allDepartment"), value: null },
+      { label: "usersManagement.allDepartment", value: null },
       { label: "Administration", value: "Administration" },
       { label: "Finance Team", value: "Finance Team" },
       { label: "Sales Team", value: "Sales Team" },

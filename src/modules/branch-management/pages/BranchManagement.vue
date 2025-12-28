@@ -21,33 +21,7 @@ const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, p
 onMounted(() => {
     fetchBranches();
 });
-// const props = defineProps({
-//     data: {
-//         type: Array,
-//         default: () => [
-//             {
-//                 id: 1,
-//                 branchName: 'Finance Team',
-//                 address: 'Manage payment, budget..',
-//                 code: '4',
-//                 status: "in Active",
-
-//                 Created: 'Oct 11, 2025',
-//             },
-//             {
-//                 id: 5,
-//                 branchName: 'Finance Team',
-//                 address: 'Manage payment, budget..',
-//                 code: '2',
-//                 status: "Active",
-//                 Created: 'Oct 11, 2025',
-//             },
-//         ]
-//     },
-// });
-
 const emit = defineEmits(['search', 'action-menu-click']);
-
 const customItems = [
     {
         slot: true,
