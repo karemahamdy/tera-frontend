@@ -259,9 +259,14 @@ onMounted(() => {
           :permissionItems="permissionItems"
           :customItems="customItems"
           :showDelete="true"
+          :first="firstRecord"
+          :last="lastRecord"
+          :rows="pagination.PageSize"
+          :totalRecords="pagination.total"
           @action-menu-click="handleActionMenu"
           @page-change="changePage"
           @order-change="sort"
+          lazy
         >
           <template v-slot:["col-isGlobal"]="{ data }">
               <div>
