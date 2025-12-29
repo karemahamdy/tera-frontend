@@ -122,10 +122,6 @@ const onSubmit = handleSubmit(async (values) => {
               <Textarea v-model="addressAr"
                 placeholder="Describe full address for this branch.."
                 class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.addressAr }" />
-
-              <small v-if="errors.addressAr" class="text-danger-500">
-                {{ errors.addressAr }}
-              </small>
             </div>
 
             <div class="w-1/2">
@@ -136,10 +132,6 @@ const onSubmit = handleSubmit(async (values) => {
 
               <Textarea v-model="addressEn" placeholder="وصف العنوان الكامل لهذا الفرع.."
                 class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.addressEn }" />
-
-              <small v-if="errors.addressEn" class="text-danger-500">
-                {{ errors.addressEn }}
-              </small>
             </div>
           </div>
 
