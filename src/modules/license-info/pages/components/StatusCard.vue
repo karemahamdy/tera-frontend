@@ -24,7 +24,7 @@ const props = defineProps({
     <div class="flex flex-col justify-between">
       <h3 class="font-semibold text-lg">{{$t(title)}}</h3>
       <div class="font-bold text-3xl unit">
-        {{ $t(value) }}
+        {{ value }}
         <span v-if="valueUnit" class="font-normal text-lg">{{$t( valueUnit) }}</span>
       </div>
       <div class="px-1 py-3 text-sm font-medium">{{$t( subtitle )}}</div>
