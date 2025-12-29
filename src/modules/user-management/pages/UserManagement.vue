@@ -12,7 +12,7 @@ import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
 
-const { list, pagination, changePage, getList, search, sort, deleteItem } =
+const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange } =
   useUsers();
 
 const { t } = useI18n();
@@ -149,23 +149,6 @@ const filtersOperation = [
   },
 ];
 
-
-const onFilterChange = (filter: any) => {
-  const field = filter.field;
-  const value = filter.value;
-  if (field === "userGroup") {
-    pagination.value.GroupFilter = value;
-  } else if (field === "status") {
-    pagination.value.StatusFilter = value;
-  } else if (field === "accessScope") {
-    pagination.value.ScopeFilter = value;
-  } else if (field === "department") {
-    pagination.value.DepartmantFilter = value;
-  }
-  pagination.value.PageIndex = 1;
-  getList();
-};
-
 const columns = computed(() => {
   const Columns = [
     {
@@ -246,7 +229,7 @@ onMounted(() => {
       title="accessControl"
       subtitle="usersManagement.usersManagement"
     />
-    <card class="bg-[#ffffff] rounded-[10px]">
+    <card class="bg-white rounded-[10px]">
       <!-- PageHeader component -->
       <template #title>
         <PageHeader

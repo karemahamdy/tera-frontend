@@ -75,6 +75,22 @@ export function useUsers() {
     }
   };
 
+  const onFilterChange = (filter: any) => {
+  const field = filter.field;
+  const value = filter.value;
+  if (field === "userGroup") {
+    pagination.value.GroupFilter = value;
+  } else if (field === "status") {
+    pagination.value.StatusFilter = value;
+  } else if (field === "accessScope") {
+    pagination.value.ScopeFilter = value;
+  } else if (field === "department") {
+    pagination.value.DepartmantFilter = value;
+  }
+  pagination.value.PageIndex = 1;
+  getList();
+};
+
   return {
     list,
     loading,
@@ -84,5 +100,6 @@ export function useUsers() {
     search,
     sort,
     deleteItem,
+    onFilterChange
   };
 }
