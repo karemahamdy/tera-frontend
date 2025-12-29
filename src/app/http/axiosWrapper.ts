@@ -6,6 +6,7 @@ import type {
 } from 'axios';
 import { useUserStore } from '@/app/store/useUserStore';
 import { useLoadingStore } from "@/app/store/useLoadingStore";
+import type { patch } from 'node_modules/axios/index.d.cts';
 
 let refreshPromise: Promise<boolean> | null = null;
 
@@ -123,7 +124,9 @@ const axiosWrapper = {
   get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return makeRequest<T>('get', url, null, config);
   },
-
+patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    return makeRequest<T>('patch', url, data, config);
+  },
   post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
     return makeRequest<T>('post', url, data, config);
   },

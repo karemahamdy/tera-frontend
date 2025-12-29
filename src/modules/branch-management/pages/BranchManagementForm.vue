@@ -6,7 +6,7 @@ import { useForm } from "vee-validate";
 import { branchFormSchema } from "../validation/BranchSchema";
 import ToggleItem from "@/sharedComponents/inputs/ToggleItem.vue";
 import FormInput from "@/sharedComponents/inputs/FormInput.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import type { AddBranch } from "../types/branches";
 import { useBranches } from "../composables/useBranch";
 
@@ -21,9 +21,9 @@ const isSubmitting = ref(false);
 const editMode = props.mode === "edit";
 const branchId = route.params.id ? String(route.params.id) : null;
 
-const { createBranch, updateBranch } = useBranches();
+const { createBranch, updateBranch, fetchBranchById } = useBranches();
 
-const { handleSubmit, errors, defineField } = useForm({
+const { handleSubmit, errors, defineField, setValues} = useForm({
   validationSchema: branchFormSchema,
   initialValues: {
     nameAr: "",
@@ -31,7 +31,6 @@ const { handleSubmit, errors, defineField } = useForm({
     addressAr: "",
     addressEn: "",
     code: "",
-    // branchStatus: "",
     isActive: true,
   },
 });
@@ -42,6 +41,22 @@ const [addressAr] = defineField("addressAr");
 const [addressEn] = defineField("addressEn");
 const [code] = defineField("code");
 const [isActive] = defineField("isActive");
+
+onMounted(async () => {
+  if (editMode && branchId) {
+    const branchData = await fetchBranchById(branchId);
+    if (branchData) {
+      setValues({
+        nameAr: branchData.nameAr,
+        nameEn: branchData.nameEn,
+        addressAr: branchData.addressAr,
+        addressEn: branchData.addressEn,
+        code: branchData.code,
+        isActive: branchData.isActive
+      });
+    }
+  }
+});
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;

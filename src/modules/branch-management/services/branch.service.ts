@@ -19,13 +19,12 @@ export const BranchService = {
     return data.data;
   },
 
-//  async toggleActive(id: string, isActive: boolean) {
-//     const data = await axiosWrapper.post<any>(`/Branch/BranchActivation`, {
-//       id,
-//       isActive
-//     });
-//     return data.data;
-//   },
+ async toggleActive(id: string, isActive: boolean) {
+    const data = await axiosWrapper.patch<any>(`/Branch/activate-deactivate-branch/${id}`, {
+      isActive
+    });
+    return data.data;
+  },
 
   async update(id: string, payload: AddBranch) {
     const data = await axiosWrapper.put<any>(`/Branch/${id}`, payload);
@@ -33,18 +32,8 @@ export const BranchService = {
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/Branch/DeleteBranch/${id}`);
+    await axiosWrapper.delete(`/Branch/${id}`);
   },
 
-  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.post<any>(`/Branch/BranchActivation`, {
-      id,
-      isActive
-    });
-    return data.data;
-  },
 
-  // async delete(id: string): Promise<void> {
-  //   await axiosWrapper.delete(`/Branch/DeleteBranch/${id}`);
-  // }
 };

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
@@ -7,14 +7,14 @@ import alertIcon from '@/assets/images/alert.png';
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
 import { useBranches } from "../composables/useBranch";
-// import  { BranchTableItem } from "../types/branches";
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref(null);
+const isDeleting = ref(false);
+
 
 const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, setPage } = useBranches();
 
@@ -38,7 +38,7 @@ const columns = computed(() => {
         // { field: 'nameAr', header: t('branch.branchNameAr'), type: 'slot', sortable: true },
         { field: 'nameEn', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'address', header: t('branch.address'), sortable: true },
+        { field: 'addressEn', header: t('branch.address'), sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'createAt', header: t('table.created'), type: 'date', sortable: true },
         { field: 'action', header: t('action') }
@@ -57,12 +57,14 @@ const lastRecord = computed(() => {
 });
 
 
-const confirmDelete = (row) => {
+const confirmDelete = (row: any) => {
     rowToDelete.value = row;
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }) => {
+const handleActionMenu = async(payload: any) => {
+     const action = payload.action || payload;
+  const data = payload.data || payload.row || payload;
     if (action === "edit") {
         if (data && data.id) {
             handleEdit(data);
@@ -71,13 +73,23 @@ const handleActionMenu = ({ action, data }) => {
     if (action === 'delete') {
         confirmDelete(data);
     }
+     if (action === "toggleActive") {
+         if (loading.value) return;
+    await toggleActive(data.id, !data.isActive);
+  }
 };
 
-const handleDeleteConfirm = () => {
+const handleDeleteConfirm = async () => {
+  if (!rowToDelete.value) return;
+  isDeleting.value = true;
+  await deleteBranch(rowToDelete.value.id).finally(() => {
+    isDeleting.value = false;
     showDeleteDialog.value = false;
     rowToDelete.value = null;
+  });
 };
-const handleEdit = (row) => {
+
+const handleEdit = (row: any) => {
     router.push(`/branch-management/edit/${row.id}`);
 };
 
@@ -93,8 +105,8 @@ const addBranch = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="branch.branchManagement" subtitle="branch.branchDescription" :showExport="true"
-                    :showImport="true" :mainBtn="true" mainBtnText="branch.addBranch"
+                <PageHeader title="branch.branchManagement" subtitle="branch.branchDescription" :showExport="false"
+                    :showImport="false" :mainBtn="true" mainBtnText="branch.addBranch"
                     searchPlaceholder="branch.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
             </template>
             <!-- DynamicTable component -->

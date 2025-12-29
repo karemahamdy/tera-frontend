@@ -127,6 +127,7 @@ const handleActionMenu = async (payload: any) => {
     }
   }
   if (action === "toggleActive") {
+     if (loading.value) return;
     await toggleActive(data.id, !data.isActive);
   }
 };

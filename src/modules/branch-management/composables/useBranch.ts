@@ -26,10 +26,8 @@ export function useBranches() {
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
       totalCount.value = payload.totalCount ?? 0;
-      totalPages.value = payload.totalPages ?? 1;
-      
+      totalPages.value = payload.totalPages ?? 1;    
     } catch (err: any) {
-      console.error("Error fetching branches:", err);
       lastError.value = err?.message ?? "Failed to fetch branches";
       toastService.error("Failed to fetch branches");
     } finally {
@@ -43,7 +41,6 @@ export function useBranches() {
       const resp = await BranchService.getById(id);
       return resp;
     } catch (err) {
-      console.error("Error fetching branch:", err);
       toastService.error("Failed to fetch branch");
       return null;
     } finally {
@@ -60,7 +57,6 @@ export function useBranches() {
       await fetchBranches(pageIndex.value);
       return response;
     } catch (err: any) {
-      console.error("Error creating branch:", err);
       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
@@ -81,7 +77,6 @@ export function useBranches() {
       await fetchBranches(pageIndex.value);
       return response;
     } catch (err: any) {
-      console.error("Error updating branch:", err);
       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
@@ -100,7 +95,6 @@ export function useBranches() {
       toastService.success("Branch deleted successfully");
       apiBranches.value = apiBranches.value.filter((b) => b.id !== id);
     } catch (err) {
-      console.error("Error deleting branch:", err);
       toastService.error("Failed to delete branch");
       throw err;
     } finally {
@@ -112,11 +106,9 @@ export function useBranches() {
     loading.value = true;
     try {
       await BranchService.toggleActive(id, isActive);
-      const row = apiBranches.value.find((r) => r.id === id);
-      if (row) row.isActive = isActive;
       toastService.success(`Branch is now ${isActive ? 'Active' : 'in Active'}`);
+      await fetchBranches(pageIndex.value);
     } catch (err) {
-      console.error('Error toggling branch status:', err);
       toastService.error('Failed to update branch status');
       throw err;
     } finally {
