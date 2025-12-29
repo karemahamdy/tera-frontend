@@ -70,8 +70,8 @@ const onInput = (event) => {
         </span>
         <template v-if="showFilter">
             <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
-                :placeholder="filter.placeholder" :optionLabel="filter.optionLabel || 'label'"
-                :optionValue="filter.optionValue || 'value'" :showClear="filter.showClear"
+                :placeholder="filter.placeholder" :optionLabel="$t(filter.optionLabel || 'label')"
+                :optionValue="$t(filter.optionValue || 'value')" :showClear="filter.showClear"
                 @change="(e) => onFilterChange(filter, e)" />
         </template>
     </div>
