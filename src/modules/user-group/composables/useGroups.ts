@@ -2,19 +2,27 @@ import { ref, watch, computed } from "vue";
 import { GroupService } from "../../user-group/services/group.service";
 import type { GroupApiItem, GroupTableItem, AddGroup } from "../../user-group/types/groups";
 import { toastService } from "../../../app/services/toastService";
+import { useI18n } from "vue-i18n";
 
 export function useGroups() {
+  const { t } = useI18n();
+
   const loading = ref(false);
   const apiGroups = ref<GroupApiItem[]>([]);
   const tableData = ref<GroupTableItem[]>([]);
 
+const lastError = ref<string | null>(null);
+ const validationErrors = ref<Record<string, string[]>>({});
+
   const pageIndex = ref(1);
   const pageSize = ref(10);
   const totalCount = ref(0);
-  const totalPages = ref(1)
+  const totalPages = ref(1);
 
   const fetchGroups = async (page = 1) => {
+
     loading.value = true;
+    lastError.value = null;
     try {
       const response: any = await GroupService.getAll(page, pageSize.value);
       const payload = response && response.data ? response.data : response;
@@ -23,22 +31,29 @@ export function useGroups() {
       pageSize.value = payload.pageSize ?? pageSize.value;
       totalCount.value = payload.totalCount ?? 0;
       totalPages.value = payload.totalPages ?? 1;
-    } catch (err) {
-      console.error("Error fetching groups:", err);
-      toastService.error("Failed to fetch groups");
+    } catch (err: any) {
+       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === 'object') {
+        validationErrors.value = errors;
+      }
+      toastService.error( err);
     } finally {
       loading.value = false;
     }
   };
 
   const fetchGroupById = async (id: string): Promise<GroupApiItem | null> => {
-    loading.value = true;
+       loading.value = true;
+    validationErrors.value = {};
     try {
       const group = await GroupService.getById(id);
       return group;
-    } catch (err) {
-      console.error("Error fetching group:", err);
-      toastService.error("Failed to fetch group details");
+    } catch (err: any) {
+       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === 'object') {
+        validationErrors.value = errors;
+      }
+      toastService.error( err);
       return null;
     } finally {
       loading.value = false;
@@ -46,15 +61,19 @@ export function useGroups() {
   };
 
    const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
+       loading.value = true;
+    validationErrors.value = {};
     try {
       await GroupService.toggleActive(id, isActive);
       const row = tableData.value.find(row => row.id === id);
       if (row) row.isActive = isActive;
       toastService.success(`Group is now ${isActive ? "Active" : "Inactive"}`);
-    } catch (err) {
-      console.error("Error toggling group status:", err);
-      toastService.error("Failed to update group status");
+    } catch (err: any) {
+       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === 'object') {
+        validationErrors.value = errors;
+      }
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
@@ -84,15 +103,19 @@ export function useGroups() {
   );
 
   const createGroup = async (payload: AddGroup) => {
-    loading.value = true;
+       loading.value = true;
+      validationErrors.value = {};
     try {
       const response = await GroupService.create(payload);
-      toastService.success("Group created successfully");
+      toastService.success(t("userGroup.userGroupCreated"));
       await fetchGroups();
       return response;
-    } catch (err) {
-      console.error("Error creating group:", err);
-      toastService.error("Failed to create group");
+    } catch (err: any) {
+       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === 'object') {
+        validationErrors.value = errors;
+      }
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
@@ -100,15 +123,19 @@ export function useGroups() {
   };
 
   const updateGroup = async (id: string, payload: AddGroup) => {
-    loading.value = true;
+       loading.value = true;
+    validationErrors.value = {};
     try {
       const response = await GroupService.update(id, payload);
-      toastService.success("Group updated successfully");
+      toastService.success(t("userGroup.userGroupUpdated"));
       await fetchGroups();
       return response;
-    } catch (err) {
-      console.error("Error updating group:", err);
-      toastService.error("Failed to update group");
+    } catch (err: any) {
+       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === 'object') {
+        validationErrors.value = errors;
+      }
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
@@ -116,20 +143,29 @@ export function useGroups() {
   };
 
   const deleteGroup = async (id: string) => {
-    loading.value = true;
+       loading.value = true;
+    validationErrors.value = {};
     try {
       await GroupService.delete(id);
-      toastService.success("Group deleted successfully");
+            toastService.success(t("userGroup.userGroupDeleted"));
       apiGroups.value = apiGroups.value.filter((group) => group.id !== id);
-    } catch (err) {
-      console.error("Error deleting group:", err);
-      toastService.error("Failed to delete group");
+    } catch (err: any) {
+       const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === 'object') {
+        validationErrors.value = errors;
+      }
+      toastService.error("Failed to delete group", err);
       throw err;
     } finally {
       loading.value = false;
     }
   };
 
+   const clearErrors = () => {
+    validationErrors.value = {};
+    lastError.value = null;
+  };
+  
 return {
   loading,
   fetchGroups,
@@ -143,6 +179,9 @@ return {
   pageSize,
   totalCount,
   totalPages,
+  clearErrors,
+  validationErrors,
+  lastError,
   setPage: (page: number) => fetchGroups(page),
 }
 }

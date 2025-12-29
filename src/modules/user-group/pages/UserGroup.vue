@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import alertIcon from "@/assets/images/alert.png";
-import { useGroups } from "../../roles-permissions/composables/assignRolesToGroup";
+import { useGroups } from "../composables/useGroups";
 import type { GroupTableItem } from "../types/groups";
 
 const { t } = useI18n();
@@ -127,6 +127,7 @@ const handleActionMenu = async (payload: any) => {
     }
   }
   if (action === "toggleActive") {
+     if (loading.value) return;
     await toggleActive(data.id, !data.isActive);
   }
 };

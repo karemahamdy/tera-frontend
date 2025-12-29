@@ -2,14 +2,27 @@ import axiosWrapper from "@/app/http/axiosWrapper";
 import type { AddBranch, BranchResponse } from "../types/branches";
 
 export const BranchService = {
-  async getAll(pageIndex = 1, pageSize = 10) {
-    const resp = await axiosWrapper.get<BranchResponse>(
-      `/Branch/GetAllBranch?PagenationDto.PageIndex=${pageIndex}&PagenationDto.PageSize=${pageSize}`
-    );
-    return resp.data;
-  },
+ async getAll(params: {
+  pageIndex: number;
+  pageSize?: number;
+  searchingWord?: string;
+  orderBy?: string;
+  orderDirection?: 'asc' | 'desc';
+}) {
+  const query = new URLSearchParams();
+  query.append('PageIndex', params.pageIndex.toString());
+  if (params.pageSize) query.append('PageSize', params.pageSize.toString());
+  if (params.searchingWord) query.append('SearchingWord', params.searchingWord);
+  if (params.orderBy) query.append('OrderBy', params.orderBy);
+  if (params.orderDirection) query.append('OrderDirection', params.orderDirection);
 
-  async getById(id: string): Promise<BranchResponse> {
+  const resp = await axiosWrapper.get<BranchResponse>(
+    `/Branch/GetAllBranchs?${query.toString()}`
+  );
+  return resp.data;
+},
+
+  async getById(id: string): Promise<AddBranch> {
     const data = await axiosWrapper.get<any>(`/Branch/${id}`);
     return data.data;
   },
@@ -19,13 +32,12 @@ export const BranchService = {
     return data.data;
   },
 
-//  async toggleActive(id: string, isActive: boolean) {
-//     const data = await axiosWrapper.post<any>(`/Branch/BranchActivation`, {
-//       id,
-//       isActive
-//     });
-//     return data.data;
-//   },
+ async toggleActive(id: string, isActive: boolean) {
+    const data = await axiosWrapper.patch<any>(`/Branch/activate-deactivate-branch/${id}`, {
+      isActive
+    });
+    return data.data;
+  },
 
   async update(id: string, payload: AddBranch) {
     const data = await axiosWrapper.put<any>(`/Branch/${id}`, payload);
@@ -33,18 +45,8 @@ export const BranchService = {
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/Branch/DeleteBranch/${id}`);
+    await axiosWrapper.delete(`/Branch/${id}`);
   },
 
-  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.post<any>(`/Branch/BranchActivation`, {
-      id,
-      isActive
-    });
-    return data.data;
-  },
 
-  // async delete(id: string): Promise<void> {
-  //   await axiosWrapper.delete(`/Branch/DeleteBranch/${id}`);
-  // }
 };

@@ -13,12 +13,21 @@
   "enterUserID": "أدخل معرف المستخدم",
   "accessControl": "التحكم في الوصول",
   "Adminstration": "الإدارة",
+  "showing": "عرض",
+  "of": "من",
+  "records": "العناصر",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
   "changePassword": {
     "title": "تغيير كلمة المرور",
     "subtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك."
+  },
+  "toast": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "info": "ملاحظة",
+    "warning": "تحذير"
   },
   "button": {
     "addNew": "إضافة جديد",
@@ -118,7 +127,10 @@
     "addNewUserGroup": "إضافة مجموعة مستخدمين جديدة",
     "userGroupInfo": "تُساعد مجموعات المستخدمين في تنظيم المستخدمين وتخصيص الأدوار بشكل جماعي.",
     "descriptionPlaceholder": "وصف الغرض من هذه المجموعة.. ",
-    "createGroup": "إنشاء مجموعة"
+    "createGroup": "إنشاء مجموعة",
+    "userGroupCreated": "تم إنشاء مجموعة المستخدمين بنجاح",
+    "userGroupUpdated": "تم تحديث مجموعة المستخدمين بنجاح",
+    "userGroupDeleted": "تم حذف مجموعة المستخدمين بنجاح"
   },
   "roles": {
     "roleName": "اسم الدور",
@@ -202,7 +214,12 @@
     "createBranch": "إنشاء فرع",
     "branchCode": "كود الفرع",
     "branchStatus": "حالة الفرع",
-    "selectbranches": "اختر الفروع"
+    "selectbranches": "اختر الفروع",
+    "active": "نشط",
+    "inactive": "غير نشط" ,
+    "branchCreatedSuccessfully": "تم إنشاء الفرع بنجاح",
+    "branchUpdatedSuccessfully": "تم تحديث الفرع بنجاح",
+    "branchDeletedSuccessfully": "تم حذف الفرع بنجاح"
   },
   "reports": {
     "title": "التقارير",
@@ -247,11 +264,14 @@
     "expiresDec312025": "ينتهي في 31 ديسمبر 2025",
     "urgent": "عاجل",
     "concurrentSession": "الجلسات المتزامنة",
-    "steadyHighUsage": "استخدام مرتفع مستمر"
+    "steadyHighUsage": "استخدام مرتفع مستمر",
+    "active": "نشط",
+    "days": "يوم "
   },
   "users": {
     "userAdded": "تمت إضافة المستخدم بنجاح",
     "userUpdated": "تم تحديث المستخدم بنجاح",
     "userDeleted": "تم حذف المستخدم بنجاح"
   }
+
 }

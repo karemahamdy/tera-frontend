@@ -13,6 +13,9 @@
   "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
   "Adminstration": "Administration",
+  "showing": "Showing",
+  "of": "of",
+  "records": "Records",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
@@ -118,7 +121,9 @@
     "addNewUserGroup": "Add New User Group",
     "userGroupInfo": "User groups help organize users and assign roles collectively.",
     "descriptionPlaceholder": "Describe the purpose of this group.. ",
-    "createGroup": "Create Group"
+    "createGroup": "Create Group",
+    "userGroupCreated": "User Group created successfully",
+    "userGroupUpdated": "User Group updated successfully"
   },
   "roles": {
     "roleName": "Role Name",
@@ -187,7 +192,6 @@
     "addBranch": "Add Branch",
     "branchManagement": "Branch Management",
     "branchName": "Branch Name",
-    "branchNameAr": "Branch Name in Arabic",
     "branchDescription": "Manage organizational branches and locations",
     "searchPlaceholder": "Search branches...",
     "address": "Address",
@@ -202,7 +206,12 @@
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
     "branchStatus": "Branch Status", 
-    "selectbranches": "Select Branches"
+    "selectbranches": "Select Branches",
+    "active": "Active",
+    "inactive": "Inactive",
+    "branchCreatedSuccessfully": "Branch created successfully",
+    "branchUpdatedSuccessfully": "Branch updated successfully",
+    "branchDeletedSuccessfully": "Branch deleted successfully"
   },
   "reports": {
     "title": "Reports",
@@ -247,11 +256,20 @@
     "userCapacity": "User Capacity",
     "approachingLimit": "Approaching Limit",
     "concurrentSession": "Concurrent Session",
-    "steadyHighUsage": "Steady High Usage"
+    "steadyHighUsage": "Steady High Usage",
+    "active": "Active",
+    "days": "Days"
   },
   "users": {
     "userAdded": "User added successfully",
     "userUpdated": "User updated successfully",
     "userDeleted": "User deleted successfully"
+  }
+  ,
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "info": "Info",
+    "warning": "Warning"
   }
 }

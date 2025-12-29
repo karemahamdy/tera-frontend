@@ -1,80 +1,67 @@
-<script setup>
+<script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
-// import  { BranchTableItem } from "../types/branches";
+import { useBranches } from "../composables/useBranch";
 
 const { t } = useI18n();
 const router = useRouter();
-const loading = ref(false);
 const showDeleteDialog = ref(false);
-const rowToDelete = ref(null);
+const rowToDelete = ref<any | null>(null);
+const isDeleting = ref(false);
 
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                id: 1,
-                branchName: 'Finance Team',
-                address: 'Manage payment, budget..',
-                code: '4',
-                status: "in Active",
+const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useBranches();
 
-                Created: 'Oct 11, 2025',
-            },
-            {
-                id: 5,
-                branchName: 'Finance Team',
-                address: 'Manage payment, budget..',
-                code: '2',
-                status: "Active",
-                Created: 'Oct 11, 2025',
-            },
-        ]
-    },
+onMounted(() => {
+    fetchBranches();
 });
-
 const emit = defineEmits(['search', 'action-menu-click']);
-
 const customItems = [
     {
-        slot: true,
+        action: "toggleActive",
         changeStatus: true,
         label: t("button.active"),
-        command: (row) => {
-            console.log("toggle", row);
-        }
+        type: "switch",
+        key: "isActive",
     },
 ];
-const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'branchName', header: t('branch.branchName'), type: 'slot', sortable: true },
+        // { field: 'nameAr', header: t('branch.branchNameAr'), type: 'slot', sortable: true },
+        { field: 'nameEn', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'address', header: t('branch.address'), sortable: true },
-        { field: 'status', header: t('status'), sortable: true },
-        { field: 'Created', header: t('table.created'), sortable: true },
+        { field: 'addressEn', header: t('branch.address'), sortable: true },
+        { field: 'status', header: t('status'), type: 'status', sortable: true },
+        { field: 'createAt', header: t('table.created'), type: 'date', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
     return Columns;
 });
 
-const confirmDelete = (row) => {
+const firstRecord = computed(() => {
+    return ((pageIndex.value - 1) * pageSize.value) + 1;
+});
+
+const lastRecord = computed(() => {
+    const last = pageIndex.value * pageSize.value;
+    return Math.min(last, totalCount.value || last);
+});
+
+const confirmDelete = (row: any) => {
     rowToDelete.value = row;
-    console.log("Row to delete:", rowToDelete.value);
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }) => {
+const handleActionMenu = async (payload: any) => {
+    const action = payload.action || payload;
+    const data = payload.data || payload.row || payload;
     if (action === "edit") {
         if (data && data.id) {
             handleEdit(data);
@@ -83,14 +70,23 @@ const handleActionMenu = ({ action, data }) => {
     if (action === 'delete') {
         confirmDelete(data);
     }
+    if (action === "toggleActive") {
+        if (loading.value) return;
+        await toggleActive(data.id, !data.isActive);
+    }
 };
 
-const handleDeleteConfirm = () => {
-    console.log("Deleted user with ID:", rowToDelete.value);
-    showDeleteDialog.value = false;
-    rowToDelete.value = null;
+const handleDeleteConfirm = async () => {
+    if (!rowToDelete.value) return;
+    isDeleting.value = true;
+    await deleteBranch(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
 };
-const handleEdit = (row) => {
+
+const handleEdit = (row: any) => {
     router.push(`/branch-management/edit/${row.id}`);
 };
 
@@ -106,18 +102,20 @@ const addBranch = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="branch.branchManagement" subtitle="branch.branchDescription" :showExport="true"
-                    :showImport="true" :mainBtn="true" mainBtnText="branch.addBranch"
+                <PageHeader title="branch.branchManagement" subtitle="branch.branchDescription" :showExport="false"
+                    :showImport="false" :mainBtn="true" mainBtnText="branch.addBranch"
                     searchPlaceholder="branch.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true">
-                    <template #col-GroupName="{ data }">
+                 <!-- @search="onSearch" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" -->
+                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy>
+                    <template v-slot:["col-nameEn"]="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="Building4" :size="24" color="#717680" type="linear" />
-                            <span class="break-words">{{ data.GroupName }}</span>
+                            <span class="break-words">{{ data.nameEn }}</span>
                         </div>
                     </template>
                 </DynamicTable>
