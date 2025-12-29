@@ -5,19 +5,29 @@ import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from "@/assets/images/alert.png";
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
 import { useFilters } from "@/composables/useFilters";
 import ChangePassword from "@/sharedComponents/ChangePassword.vue";
+import type { UserListItem } from "../types/User";
+import { useUsers } from "../composables/useUsers";
+
+const {
+  list,
+  pagination,
+  changePage,
+  getList,
+  search,
+  sort,
+  deleteItem,
+} = useUsers();
 
 const { t } = useI18n();
 const router = useRouter();
-const loading = ref(false);
 const showDeleteDialog = ref(false);
 const showDialog = ref(false);
-const rowToDelete = ref<any>(null);
+const rowToDelete = ref<UserListItem | null>(null);
 
 const props = defineProps({
   data: {
@@ -88,6 +98,20 @@ const customItems = computed(() => {
   ];
 });
 
+const firstRecord = computed(() => {
+  return list.value.length === 0
+    ? 0
+    : (pagination.value.PageIndex - 1) *
+        pagination.value.PageSize +
+        1;
+});
+
+const lastRecord = computed(() => {
+  if (list.value.length === 0) return 0;
+  const last = firstRecord.value + list.value.length - 1;
+  return last > pagination.value.total ? pagination.value.total : last;
+});
+
 const filtersOperation = [
   {
     placeholder: "usersManagement.allGroups",
@@ -135,27 +159,22 @@ const filtersOperation = [
   },
 ];
 
-const {
-  searchQuery,
-  onSearch,
-  filteredData: searchedData,
-} = useSearch(props.data as Record<string, any>[]);
+
 const {
   filters,
-  filteredData: filteredByFilters,
   onFilterChange,
 } = useFilters(props.data, filtersOperation);
 
 const columns = computed(() => {
   const Columns = [
     {
-      field: "user",
+      field: "fullName",
       header: t("usersManagement.user"),
-      type: "avatar",
+      // type: "avatar",
       sortable: true,
     },
     {
-      field: "userGroup",
+      field: "group.name",
       header: t("userGroup.userGroup"),
       sortable: true,
       type: "tag",
@@ -166,8 +185,8 @@ const columns = computed(() => {
       header: t("usersManagement.department"),
       sortable: true,
     },
-    { field: "accessScope", header: t("roles.accessScope"), sortable: true },
-    { field: "status", header: t("status"), sortable: true },
+    { field: "isGlobal", header: t("roles.accessScope"), sortable: true },
+    { field: "isActive", header: t("status"), sortable: true },
     {
       field: "lastLogin",
       header: t("usersManagement.lastLogin"),
@@ -180,19 +199,8 @@ const columns = computed(() => {
   return Columns;
 });
 
-const tableData = computed(() => {
-  if (searchQuery.value) {
-    return searchedData.value;
-  }
 
-  const hasActiveFilter = filters.value.some((f) => f.value !== null);
-  if (hasActiveFilter) {
-    return filteredByFilters.value;
-  }
-  return props.data;
-});
-
-const confirmDelete = (row: any) => {
+const confirmDelete = (row: UserListItem) => {
   rowToDelete.value = row;
   showDeleteDialog.value = true;
 };
@@ -202,19 +210,39 @@ const showResetDialog = (row: any) => {
   showDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }: any) => {
-  if (action === "delete") confirmDelete(data);
-  if (action === "resetPassword") showResetDialog(data);
+const handleActionMenu = (payload: any) => {
+  const action = payload.action || payload;
+  const data = payload.data || payload.row || payload;
+  if (action === "delete") {
+    if (data && data.userId) {
+      confirmDelete(data);
+    }
+  } else if (action === "edit") {
+    if (data && data.userId) {
+      const id = data.userId;
+      router.push({ name: "UserManagementEdit", params: { id } });
+    }
+  } else if (action === "resetPassword") showResetDialog(data);
 };
 
-const handleDeleteConfirm = () => {
+const handleDeleteConfirm = async () => {
+  console.log(rowToDelete.value);
+  if(!rowToDelete.value) return;
   showDeleteDialog.value = false;
+  
+  await deleteItem(rowToDelete.value.userId);
   rowToDelete.value = null;
 };
 
 const addUserGroup = () => {
   router.push("/user-management/create");
 };
+
+
+onMounted(() => {
+  getList();
+});
+
 </script>
 
 <template>
@@ -234,9 +262,13 @@ const addUserGroup = () => {
           :mainBtn="true"
           mainBtnText="usersManagement.addUser"
           searchPlaceholder="usersManagement.searchPlaceholder"
-          @search="onSearch"
+          @search="search"
           :showFilter="true"
           @filter-change="onFilterChange"
+          :rows="pagination.PageSize"
+          :totalRecords="pagination.total"
+          :first="firstRecord"
+          :last="lastRecord"
           :filters="filters"
           :onMainBtnClick="addUserGroup"
         />
@@ -245,12 +277,13 @@ const addUserGroup = () => {
       <template #content>
         <DynamicTable
           :columns="columns"
-          :data="tableData"
-          :loading="loading"
+          :data="list"
           :permissionItems="permissionItems"
           :customItems="customItems"
           :showDelete="true"
           @action-menu-click="handleActionMenu"
+          @page-change="changePage"
+          @order-change="sort"
         >
           <!-- @vue-ignore -->
           <template #menu-item="{ item, row }">

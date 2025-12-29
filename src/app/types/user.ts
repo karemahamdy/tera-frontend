@@ -30,6 +30,10 @@ export interface AuthData {
   requiresPasswordReset: boolean;
 }
 
+export interface AuthDataResponse {
+  data: AuthData;
+}
+
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;

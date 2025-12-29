@@ -19,7 +19,7 @@ function toggleSidebar() {
       <Topbar @toggle="toggleSidebar" :collapsed="sidebarCollapsed" />
       <main class="main-container">
         <div class="p-6 w-full h-full bg-gray-100">
-          <router-view />
+          <router-view :key="$route.fullPath" />
         </div>
         <Footer />
       </main>

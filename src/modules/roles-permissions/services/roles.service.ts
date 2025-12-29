@@ -1,5 +1,5 @@
 import axiosWrapper from '@/app/http/axiosWrapper';
-import type { Pagination, RolePayload, RoleItem, RoleListResponse, RoleByID } from "../types/roles";
+import type { Pagination, RoleItem, RoleListResponse, RoleByID, Permission } from "../types/roles";
 
 export const RoleService = {
   getList(params: Pagination) {
@@ -10,16 +10,27 @@ export const RoleService = {
     return axiosWrapper.get<{ data: RoleByID }>(`/Role/${id}`);
   },
 
-  create(payload: RolePayload) {
-    return axiosWrapper.post<RolePayload>("/Role/Create", payload);
+  create(payload: RoleByID) {
+    let data = {
+      createRoleDto: payload
+    }
+    return axiosWrapper.post<RoleByID>("/Role/Create", data);
   },
 
-  update(id: string, payload: RolePayload) {
-    return axiosWrapper.put<RolePayload>(`/Role/Update/${id}`, payload);
+  update(id: string, payload: RoleByID) {
+    let data = {
+      updateRoleDto: payload,
+      id: id
+    }
+    return axiosWrapper.put<RoleByID>(`/Role/${id}`, data);
   },
 
   delete(id: string) {
     return axiosWrapper.delete(`/Role/${id}`);
+  },
+
+  getModuleslist() {
+    return axiosWrapper.get<Permission[]>(`/Role/Permissions`);
   },
 
   droplist() {

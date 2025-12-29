@@ -52,7 +52,9 @@
   },
   "form": {
     "fieldRequired": "هذا الحقل مطلوب",
-    "fullNamePlaceholder": "أدخل الاسم الكامل"
+    "fullNamePlaceholder": "أدخل الاسم الكامل",
+    "min_3": "الحد الأدنى 3 أحرف",
+    "max_255": "الحد الأقصى 255 حرفًا"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -219,7 +221,9 @@
     "downloadReport": "تحميل التقرير",
     "noReportsFound": "لم يتم العثور على تقارير",
     "userReport": "تقرير المستخدم",
+    "userGroupReport": "تقرير مجموعة المستخدمين",
     "userReportInfo": "تقرير بيانات المستخدم الرئيسية",
+    "userGroupReportInfo": "تقرير بيانات مجموعة المستخدمين الرئيسية",
     "allDepartments": "جميع الأقسام",
     "allGroups": "جميع المجموعات",
     "status": "الحالة",
@@ -232,7 +236,13 @@
     "userGroup": "مجموعة المستخدمين",
     "isAdmin": "مسؤول",
     "accessScope": "نطاق الوصول",
-    "lastLogin": "آخر تسجيل دخول"
+    "lastLogin": "آخر تسجيل دخول",
+    "groupName": "اسم المجموعة",
+    "description": "الوصف",
+    "assignedRoles": "الأدوار المعينة",
+    "userCount": "عدد المستخدمين",
+    "created": "تم الإنشاء",
+    "allRoles": "جميع الأدوار"
   },
   "licenseInfo": {
     "title": "معلومات الترخيص",
