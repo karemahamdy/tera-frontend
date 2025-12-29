@@ -28,7 +28,10 @@ export interface UserByID {
 export interface UserListItem {
   userId: string;
   fullName: string;
-  department: string | null;
+  department: {
+    id: string;
+    name: string;
+  } | null;
   isGlobal: boolean;
   isActive: boolean;
   isAdmin: boolean;

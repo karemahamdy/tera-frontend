@@ -267,6 +267,12 @@
     "steadyHighUsage": "استخدام مرتفع مستمر",
     "active": "نشط",
     "days": "يوم "
+  },
+  "users": {
+    "userAdded": "تمت إضافة المستخدم بنجاح",
+    "userUpdated": "تم تحديث المستخدم بنجاح",
+    "userDeleted": "تم حذف المستخدم بنجاح",
+    "global": "عام",
+    "branch": "فرع"
   }
-
 }
