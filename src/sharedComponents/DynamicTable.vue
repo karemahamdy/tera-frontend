@@ -112,6 +112,14 @@ const onSort = (event) => {
                         </span>
                     </div>
 
+                    <div v-else-if="col.field === 'isActive'" class="flex  align-items-center gap-2">
+                        <Badge :class="getStatusBadge(slotProps.data.isActive ? 'Active' : 'Inactive')"
+                            style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
+                        <span :class="getStatusText(slotProps.data.isActive ? 'Active' : 'Inactive')">
+                            {{ slotProps.data.isActive ? $t('branch.active') : $t('branch.inactive') }}
+                        </span>
+                    </div>
+
                     <div v-else-if="col.type == 'date'" class="whitespace-nowrap">
                         {{ formatDateTimeLang(slotProps.data[col.field], false) }}
                     </div>

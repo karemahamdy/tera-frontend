@@ -8,7 +8,6 @@ import alertIcon from "@/assets/images/alert.png";
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useFilters } from "@/composables/useFilters";
 import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
@@ -122,8 +121,8 @@ const filtersOperation = [
     field: "status",
     options: [
       { label: "usersManagement.allStatus", value: null },
-      { label: "active", value: "Active" },
-      { label: "inactive", value: "in Active" },
+      { label: "active", value: "IsActive" },
+      { label: "inactive", value: "InActive" },
     ],
   },
   {
@@ -133,7 +132,7 @@ const filtersOperation = [
     options: [
       { label: "usersManagement.allScopes", value: null },
       { label: "Global", value: "Global" },
-      { label: "Branch", value: "Branch" },
+      { label: "Branch", value: "BranchLimited" },
     ],
   },
   {
@@ -150,7 +149,22 @@ const filtersOperation = [
   },
 ];
 
-const { filters, onFilterChange } = useFilters(props.data, filtersOperation);
+
+const onFilterChange = (filter: any) => {
+  const field = filter.field;
+  const value = filter.value;
+  if (field === "userGroup") {
+    pagination.value.GroupFilter = value;
+  } else if (field === "status") {
+    pagination.value.StatusFilter = value;
+  } else if (field === "accessScope") {
+    pagination.value.ScopeFilter = value;
+  } else if (field === "department") {
+    pagination.value.DepartmantFilter = value;
+  }
+  pagination.value.PageIndex = 1;
+  getList();
+};
 
 const columns = computed(() => {
   const Columns = [
@@ -163,8 +177,6 @@ const columns = computed(() => {
       field: "group",
       header: t("userGroup.userGroup"),
       sortable: true,
-      type: "tag",
-      Class: "custom-tag",
     },
     {
       field: "department",
@@ -252,7 +264,7 @@ onMounted(() => {
           :totalRecords="pagination.total"
           :first="firstRecord"
           :last="lastRecord"
-          :filters="filters"
+          :filters="filtersOperation"
           :onMainBtnClick="addUserGroup"
         />
       </template>
@@ -268,8 +280,35 @@ onMounted(() => {
           @page-change="changePage"
           @order-change="sort"
         >
+          <template v-slot:["col-isGlobal"]="{ data }">
+              <div>
+                {{ data.isGlobal ? $t('users.global') : $t('users.branch') }}
+              </div>
+          </template>
+          <template v-slot:["col-fullName"]="{ data }">
+            <div class="flex items-center gap-2">
+              <Badge v-if="data.isAdmin" severity="warn">
+                <VsxIcon iconName="Award" :size="24" type="linear" />
+              </Badge>
+              <Avatar :image="data.userProfileImageUrl"
+                  :label="!data.userProfileImageUrl ? data.fullName.charAt(0) : ''" shape="circle"
+                  class="w-10 h-10 bg-gray-800" />
+              <div class="flex flex-col">
+                  <div class="text-base text-gray-700">{{ data.fullName }}</div>
+                  <div class="text-sm text-gray-500">{{ data.email }}</div>
+              </div>
+            </div>
+          </template>
+          <template v-slot:["col-department"]="{ data }">
+              <div>
+                {{ data.department ? data.department.name : "" }}
+              </div>
+          </template>
+          <template v-slot:["col-group"]="{ data }">
+            <Tag v-if="data.group" :value="data.group.name" class="custom-tag" />
+          </template>
           <!-- @vue-ignore -->
-          <template #menu-item="{ item, row }">
+          <template #menu-item="{ item, row }" class="">
             <div
               v-if="item.changeStatus"
               class="flex items-center gap-2 px-3 py-2"
@@ -308,5 +347,14 @@ onMounted(() => {
   color: var(--color-gray-700);
   font-size: 13px;
   padding: 20px 16px;
+}
+
+.custom-tag {
+    background: var(--color-primary-25);
+    color: var(--color-gray-700);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 300;
 }
 </style>

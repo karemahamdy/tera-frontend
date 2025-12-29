@@ -263,9 +263,10 @@
   "users": {
     "userAdded": "User added successfully",
     "userUpdated": "User updated successfully",
-    "userDeleted": "User deleted successfully"
-  }
-  ,
+    "userDeleted": "User deleted successfully",
+    "global": "Global",
+    "branch": "Branch"
+  },
   "toast": {
     "success": "Success",
     "error": "Error",
