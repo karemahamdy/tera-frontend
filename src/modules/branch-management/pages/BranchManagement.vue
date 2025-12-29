@@ -12,7 +12,7 @@ import { useBranches } from "../composables/useBranch";
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
-const rowToDelete = ref(null);
+const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
 const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, setPage } = useBranches();
@@ -23,14 +23,13 @@ onMounted(() => {
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
     {
-      action: "toggleActive",
-      changeStatus: true,
-      label: t("button.active"),
-      type: "switch",
-      key: "isActive",
+        action: "toggleActive",
+        changeStatus: true,
+        label: t("button.active"),
+        type: "switch",
+        key: "isActive",
     },
 ];
-// const { onSearch, filteredData } = useSearch(props.data);
 
 const columns = computed(() => {
     const Columns = [
@@ -61,9 +60,9 @@ const confirmDelete = (row: any) => {
     showDeleteDialog.value = true;
 };
 
-const handleActionMenu = async(payload: any) => {
-     const action = payload.action || payload;
-  const data = payload.data || payload.row || payload;
+const handleActionMenu = async (payload: any) => {
+    const action = payload.action || payload;
+    const data = payload.data || payload.row || payload;
     if (action === "edit") {
         if (data && data.id) {
             handleEdit(data);
@@ -72,20 +71,20 @@ const handleActionMenu = async(payload: any) => {
     if (action === 'delete') {
         confirmDelete(data);
     }
-     if (action === "toggleActive") {
-         if (loading.value) return;
-    await toggleActive(data.id, !data.isActive);
-  }
+    if (action === "toggleActive") {
+        if (loading.value) return;
+        await toggleActive(data.id, !data.isActive);
+    }
 };
 
 const handleDeleteConfirm = async () => {
-  if (!rowToDelete.value) return;
-  isDeleting.value = true;
-  await deleteBranch(rowToDelete.value.id).finally(() => {
-    isDeleting.value = false;
-    showDeleteDialog.value = false;
-    rowToDelete.value = null;
-  });
+    if (!rowToDelete.value) return;
+    isDeleting.value = true;
+    await deleteBranch(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
 };
 
 const handleEdit = (row: any) => {
@@ -111,12 +110,13 @@ const addBranch = () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true"  @page-change="setPage" :first="firstRecord" :last="lastRecord"
-                    :rows="pageSize" :totalRecords="totalCount" lazy>
-                    <template #col-nameAr="{ data }">
+                    @search="onSearch" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)"
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" lazy>
+                    <template v-slot:["col-nameEn"]="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="Building4" :size="24" color="#717680" type="linear" />
-                            <span class="break-words">{{ data.nameAr }}</span>
+                            <span class="break-words">{{ data.nameEn }}</span>
                         </div>
                     </template>
                 </DynamicTable>
