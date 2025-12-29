@@ -129,7 +129,8 @@
     "descriptionPlaceholder": "وصف الغرض من هذه المجموعة.. ",
     "createGroup": "إنشاء مجموعة",
     "userGroupCreated": "تم إنشاء مجموعة المستخدمين بنجاح",
-    "userGroupUpdated": "تم تحديث مجموعة المستخدمين بنجاح"
+    "userGroupUpdated": "تم تحديث مجموعة المستخدمين بنجاح",
+    "userGroupDeleted": "تم حذف مجموعة المستخدمين بنجاح"
   },
   "roles": {
     "roleName": "اسم الدور",
@@ -217,8 +218,8 @@
     "active": "نشط",
     "inactive": "غير نشط" ,
     "branchCreatedSuccessfully": "تم إنشاء الفرع بنجاح",
-    "branchUpdatedSuccessfully": "تم تحديث الفرع بنجاح"
-    
+    "branchUpdatedSuccessfully": "تم تحديث الفرع بنجاح",
+    "branchDeletedSuccessfully": "تم حذف الفرع بنجاح"
   },
   "reports": {
     "title": "التقارير",
