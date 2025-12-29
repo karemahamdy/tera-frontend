@@ -31,8 +31,6 @@ export function useUsers() {
     try {
       const res = await UserService.getList(pagination.value);
       list.value = res.data.items;
-      console.log(res.data.items);
-      
       pagination.value.total = res.data.totalCount;
     } catch (error) {
       toastService.error(error as string);

@@ -81,8 +81,8 @@ const onSort = (event) => {
               {{ $t('showing') }} <strong>{{ first }}–{{ last }}</strong> {{ $t('of') }} <strong>{{ totalRecords }}</strong> {{ $t('records') }}
             </div>
         </template>
-        <template #paginatorend>
-        </template>
+        <!-- <template #paginatorend>
+        </template> -->
 
         <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="col.sortable"
             :style="col.style">
@@ -109,6 +109,14 @@ const onSort = (event) => {
                             style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
                         <span :class="getStatusText(slotProps.data.status)">
                             {{ slotProps.data.status }}
+                        </span>
+                    </div>
+
+                    <div v-else-if="col.field === 'isActive'" class="flex  align-items-center gap-2">
+                        <Badge :class="getStatusBadge(slotProps.data.isActive ? 'Active' : 'Inactive')"
+                            style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
+                        <span :class="getStatusText(slotProps.data.isActive ? 'Active' : 'Inactive')">
+                            {{ slotProps.data.isActive ? $t('branch.active') : $t('branch.inactive') }}
                         </span>
                     </div>
 
