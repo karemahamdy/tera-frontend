@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import router from "@/app/router";
+// import router from "@/app/router";
 
 import type { Pagination, UserListItem } from "../types/User";
 import { UserService } from "../services/user.service";

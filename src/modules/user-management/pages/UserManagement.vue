@@ -210,14 +210,26 @@ const showResetDialog = (row: any) => {
   showDialog.value = true;
 };
 
-const handleActionMenu = ({ action, data }: any) => {
-  if (action === "delete") confirmDelete(data as UserListItem);
-  if (action === "resetPassword") showResetDialog(data);
+const handleActionMenu = (payload: any) => {
+  const action = payload.action || payload;
+  const data = payload.data || payload.row || payload;
+  if (action === "delete") {
+    if (data && data.userId) {
+      confirmDelete(data);
+    }
+  } else if (action === "edit") {
+    if (data && data.userId) {
+      const id = data.userId;
+      router.push({ name: "UserManagementEdit", params: { id } });
+    }
+  } else if (action === "resetPassword") showResetDialog(data);
 };
 
 const handleDeleteConfirm = async () => {
+  console.log(rowToDelete.value);
   if(!rowToDelete.value) return;
   showDeleteDialog.value = false;
+  
   await deleteItem(rowToDelete.value.userId);
   rowToDelete.value = null;
 };
