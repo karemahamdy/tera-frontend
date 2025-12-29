@@ -2,12 +2,25 @@ import axiosWrapper from "@/app/http/axiosWrapper";
 import type { AddBranch, BranchResponse } from "../types/branches";
 
 export const BranchService = {
-  async getAll(pageIndex: number) {
-    const resp = await axiosWrapper.get<BranchResponse>(
-      `/Branch/GetAllBranchs?PageIndex=${pageIndex}`
-    );
-    return resp.data;
-  },
+ async getAll(params: {
+  pageIndex: number;
+  pageSize?: number;
+  searchingWord?: string;
+  orderBy?: string;
+  orderDirection?: 'asc' | 'desc';
+}) {
+  const query = new URLSearchParams();
+  query.append('PageIndex', params.pageIndex.toString());
+  if (params.pageSize) query.append('PageSize', params.pageSize.toString());
+  if (params.searchingWord) query.append('SearchingWord', params.searchingWord);
+  if (params.orderBy) query.append('OrderBy', params.orderBy);
+  if (params.orderDirection) query.append('OrderDirection', params.orderDirection);
+
+  const resp = await axiosWrapper.get<BranchResponse>(
+    `/Branch/GetAllBranchs?${query.toString()}`
+  );
+  return resp.data;
+},
 
   async getById(id: string): Promise<BranchResponse> {
     const data = await axiosWrapper.get<any>(`/Branch/${id}`);

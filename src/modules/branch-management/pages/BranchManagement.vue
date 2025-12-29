@@ -15,7 +15,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, setPage } = useBranches();
+const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useBranches();
 
 onMounted(() => {
     fetchBranches();
@@ -109,10 +109,10 @@ const addBranch = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
+                 <!-- @search="onSearch" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" -->
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
-                    @search="onSearch" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" lazy>
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy>
                     <template v-slot:["col-nameEn"]="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="Building4" :size="24" color="#717680" type="linear" />

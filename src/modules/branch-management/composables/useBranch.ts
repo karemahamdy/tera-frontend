@@ -12,28 +12,41 @@ const pageSize = ref(10);
 const totalCount = ref(0);
 const totalPages = ref(1);
 
+const searchTerm = ref('');
+const orderBy = ref('');
+const orderDirection = ref<'asc' | 'desc'>('asc');
+
+
 const lastError = ref<string | null>(null);
 const validationErrors = ref<Record<string, string[]>>({});
 
 export function useBranches() {
-  const fetchBranches = async (page = 1) => {
-    loading.value = true;
-    lastError.value = null;
-    try {
-      const response: any = await BranchService.getAll(page);
-      const payload = response && response.data ? response.data : response;
-      apiBranches.value = payload.items ?? [];
-      pageIndex.value = payload.pageIndex ?? page;
-      pageSize.value = payload.pageSize ?? pageSize.value;
-      totalCount.value = payload.totalCount ?? 0;
-      totalPages.value = payload.totalPages ?? 1;    
-    } catch (err: any) {
-      lastError.value = err?.message ?? "Failed to fetch branches";
-      toastService.error("Failed to fetch branches", err);
-    } finally {
-      loading.value = false;
-    }
-  };
+ const fetchBranches = async (page = 1) => {
+  loading.value = true;
+  lastError.value = null;
+  try {
+    const response: any = await BranchService.getAll({
+      pageIndex: page,
+      pageSize: pageSize.value,
+      searchingWord: searchTerm.value,
+      orderBy: orderBy.value,
+      orderDirection: orderDirection.value
+    });
+
+    const payload = response && response.data ? response.data : response;
+    apiBranches.value = payload.items ?? [];
+    pageIndex.value = payload.pageIndex ?? page;
+    pageSize.value = payload.pageSize ?? pageSize.value;
+    totalCount.value = payload.totalCount ?? 0;
+    totalPages.value = payload.totalPages ?? 1;  
+  } catch (err: any) {
+    lastError.value = err?.message ?? "Failed to fetch branches";
+    toastService.error("Failed to fetch branches", err);
+  } finally {
+    loading.value = false;
+  }
+};
+
 
   const fetchBranchById = async (id: string) => {
     loading.value = true;
@@ -134,7 +147,15 @@ export function useBranches() {
   { immediate: true }
 );
 
-
+const onSearch = (term: string) => {
+  searchTerm.value = term;
+  fetchBranches(1);     
+};
+const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+  orderBy.value = orderByField;
+  orderDirection.value = direction;
+  fetchBranches(1);
+} 
   const filteredTableData = computed(() => tableData.value.map((r) => ({ ...r })));
 
   const clearErrors = () => {
@@ -161,5 +182,7 @@ export function useBranches() {
     lastError,
     validationErrors,
     clearErrors,
+    onSearch,
+    onSort
   };
 }
