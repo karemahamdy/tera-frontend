@@ -108,7 +108,7 @@ export function useGroups() {
       return response;
     } catch (err) {
       console.error("Error updating group:", err);
-      toastService.error("Failed to update group");
+      toastService.error("Failed to update group" , );
       throw err;
     } finally {
       loading.value = false;

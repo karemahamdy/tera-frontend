@@ -81,6 +81,8 @@ async function makeRequest<T>(
     if (data) {
       if (Array.isArray(data.errors) && data.errors.length > 0) {
         message = data.errors.map((e: any) => e.message).join(" , ");
+        console.log(message);
+        
       } else if (
         data.validationErrors &&
         typeof data.validationErrors === "object"
