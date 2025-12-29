@@ -269,10 +269,15 @@ onMounted(() => {
               </div>
           </template>
           <template v-slot:["col-fullName"]="{ data }">
-            <div class="flex items-center gap-2">
-              <Badge v-if="data.isAdmin" severity="warn">
-                <VsxIcon iconName="Award" :size="24" type="linear" />
+            <div class="flex items-center gap-2 rounded">
+              <Badge
+                v-if="data.isAdmin"
+                severity="warn"
+                class="circle-badge-sm"
+              >
+                <VsxIcon iconName="Award" :size="20" type="linear" />
               </Badge>
+
               <Avatar :image="data.userProfileImageUrl"
                   :label="!data.userProfileImageUrl ? data.fullName.charAt(0) : ''" shape="circle"
                   class="w-10 h-10 bg-gray-800" />
@@ -340,4 +345,15 @@ onMounted(() => {
     font-size: 13px;
     font-weight: 300;
 }
+
+.circle-badge-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>
