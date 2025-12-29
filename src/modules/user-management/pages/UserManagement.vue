@@ -13,15 +13,8 @@ import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
 
-const {
-  list,
-  pagination,
-  changePage,
-  getList,
-  search,
-  sort,
-  deleteItem,
-} = useUsers();
+const { list, pagination, changePage, getList, search, sort, deleteItem } =
+  useUsers();
 
 const { t } = useI18n();
 const router = useRouter();
@@ -101,9 +94,7 @@ const customItems = computed(() => {
 const firstRecord = computed(() => {
   return list.value.length === 0
     ? 0
-    : (pagination.value.PageIndex - 1) *
-        pagination.value.PageSize +
-        1;
+    : (pagination.value.PageIndex - 1) * pagination.value.PageSize + 1;
 });
 
 const lastRecord = computed(() => {
@@ -159,22 +150,17 @@ const filtersOperation = [
   },
 ];
 
-
-const {
-  filters,
-  onFilterChange,
-} = useFilters(props.data, filtersOperation);
+const { filters, onFilterChange } = useFilters(props.data, filtersOperation);
 
 const columns = computed(() => {
   const Columns = [
     {
       field: "fullName",
       header: t("usersManagement.user"),
-      // type: "avatar",
       sortable: true,
     },
     {
-      field: "group.name",
+      field: "group",
       header: t("userGroup.userGroup"),
       sortable: true,
       type: "tag",
@@ -190,15 +176,14 @@ const columns = computed(() => {
     {
       field: "lastLogin",
       header: t("usersManagement.lastLogin"),
+      type: "date",
       sortable: true,
     },
     { field: "permission", header: t("permission") },
     { field: "action", header: t("action") },
   ];
-
   return Columns;
 });
-
 
 const confirmDelete = (row: UserListItem) => {
   rowToDelete.value = row;
@@ -227,9 +212,9 @@ const handleActionMenu = (payload: any) => {
 
 const handleDeleteConfirm = async () => {
   console.log(rowToDelete.value);
-  if(!rowToDelete.value) return;
+  if (!rowToDelete.value) return;
   showDeleteDialog.value = false;
-  
+
   await deleteItem(rowToDelete.value.userId);
   rowToDelete.value = null;
 };
@@ -238,11 +223,9 @@ const addUserGroup = () => {
   router.push("/user-management/create");
 };
 
-
 onMounted(() => {
   getList();
 });
-
 </script>
 
 <template>

@@ -248,5 +248,10 @@
     "urgent": "عاجل",
     "concurrentSession": "الجلسات المتزامنة",
     "steadyHighUsage": "استخدام مرتفع مستمر"
+  },
+  "users": {
+    "userAdded": "تمت إضافة المستخدم بنجاح",
+    "userUpdated": "تم تحديث المستخدم بنجاح",
+    "userDeleted": "تم حذف المستخدم بنجاح"
   }
 }

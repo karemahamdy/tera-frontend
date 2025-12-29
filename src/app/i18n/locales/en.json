@@ -248,5 +248,10 @@
     "approachingLimit": "Approaching Limit",
     "concurrentSession": "Concurrent Session",
     "steadyHighUsage": "Steady High Usage"
+  },
+  "users": {
+    "userAdded": "User added successfully",
+    "userUpdated": "User updated successfully",
+    "userDeleted": "User deleted successfully"
   }
 }

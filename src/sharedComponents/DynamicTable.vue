@@ -81,8 +81,8 @@ const onSort = (event) => {
                 Showing <strong>{{ first }}–{{ last }}</strong> of <strong>{{ totalRecords }}</strong> Records
             </div>
         </template>
-        <template #paginatorend>
-        </template>
+        <!-- <template #paginatorend>
+        </template> -->
 
         <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="col.sortable"
             :style="col.style">
