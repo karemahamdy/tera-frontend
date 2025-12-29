@@ -29,7 +29,7 @@ export function useBranches() {
       totalPages.value = payload.totalPages ?? 1;    
     } catch (err: any) {
       lastError.value = err?.message ?? "Failed to fetch branches";
-      toastService.error("Failed to fetch branches");
+      toastService.error("Failed to fetch branches", err);
     } finally {
       loading.value = false;
     }
@@ -61,7 +61,7 @@ export function useBranches() {
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
       }
-      toastService.error("Failed to create branch");
+      toastService.error("Failed to create branch", err);
       throw err;
     } finally {
       loading.value = false;
@@ -81,7 +81,7 @@ export function useBranches() {
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
       }
-      toastService.error("Failed to update branch");
+      toastService.error("Failed to update branch" , err);
       throw err;
     } finally {
       loading.value = false;
@@ -94,8 +94,8 @@ export function useBranches() {
       await BranchService.delete(id);
       toastService.success("Branch deleted successfully");
       apiBranches.value = apiBranches.value.filter((b) => b.id !== id);
-    } catch (err) {
-      toastService.error("Failed to delete branch");
+    } catch (err: any) {
+      toastService.error("Failed to delete branch", err);
       throw err;
     } finally {
       loading.value = false;

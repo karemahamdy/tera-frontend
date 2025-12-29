@@ -15,7 +15,6 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref(null);
 const isDeleting = ref(false);
 
-
 const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, setPage } = useBranches();
 
 onMounted(() => {
