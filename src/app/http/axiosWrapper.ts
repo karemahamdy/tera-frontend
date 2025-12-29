@@ -1,11 +1,8 @@
-import axios from 'axios';
-import type {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosError,
-} from 'axios';
-import { useUserStore } from '@/app/store/useUserStore';
+import axios from "axios";
+import type { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
+import { useUserStore } from "@/app/store/useUserStore";
 import { useLoadingStore } from "@/app/store/useLoadingStore";
+import type { patch } from "node_modules/axios/index.d.cts";
 
 let refreshPromise: Promise<boolean> | null = null;
 
@@ -16,7 +13,7 @@ const instance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 15000,
   headers: {
-    Accept: 'application/json',
+    Accept: "application/json",
   },
 });
 
@@ -25,16 +22,16 @@ const instance: AxiosInstance = axios.create({
 // -----------------------------
 instance.interceptors.request.use(
   (config: AxiosRequestConfig | any) => {
-    const tenantId = localStorage.getItem('tenantId');
-    const lang = localStorage.getItem('lang');
-    const language = lang === 'en' ? 'en-US' : 'ar-SA';
+    const tenantId = localStorage.getItem("tenantId");
+    const lang = localStorage.getItem("lang");
+    const language = lang === "en" ? "en-US" : "ar-SA";
 
     config.headers = config.headers ?? {};
 
-    config.headers['Accept-Language'] = language;
+    config.headers["Accept-Language"] = language;
 
     if (tenantId) {
-      config.headers['X-TenantId'] = tenantId;
+      config.headers["X-TenantId"] = tenantId;
     }
 
     const userStore = useUserStore();
@@ -53,7 +50,7 @@ instance.interceptors.request.use(
 // MAIN REQUEST HANDLER
 // -----------------------------
 async function makeRequest<T>(
-  method: AxiosRequestConfig['method'],
+  method: AxiosRequestConfig["method"],
   url: string,
   data: any = null,
   config: AxiosRequestConfig = {}
@@ -78,8 +75,27 @@ async function makeRequest<T>(
 
     const status = error.response.status;
     const userStore = useUserStore();
-    const message =
-      error.response.data?.message || error.message;
+    const data = error.response.data;
+    let message = "Failed to Fetch data";
+
+    if (data) {
+      if (Array.isArray(data.errors) && data.errors.length > 0) {
+        message = data.errors.map((e: any) => e.message).join(" , ");
+        console.log(message);
+        
+      } else if (
+        data.validationErrors &&
+        typeof data.validationErrors === "object"
+      ) {
+        message = Object.values(data.validationErrors).flat().join(" , ");
+      } else if (data.message && data.message !== "ValidationError") {
+        message = data.message;
+      }
+    }
+    if (!message && error.message) {
+      message = error.message;
+    }
+
     // -----------------------------
     // 401 HANDLING + TOKEN REFRESH
     // -----------------------------
@@ -108,7 +124,6 @@ async function makeRequest<T>(
     // -----------------------------
     // NORMAL ERROR
     // -----------------------------
-    
 
     return Promise.reject(message);
   } finally {
@@ -121,19 +136,21 @@ async function makeRequest<T>(
 // -----------------------------
 const axiosWrapper = {
   get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return makeRequest<T>('get', url, null, config);
+    return makeRequest<T>("get", url, null, config);
   },
-
+  patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    return makeRequest<T>("patch", url, data, config);
+  },
   post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return makeRequest<T>('post', url, data, config);
+    return makeRequest<T>("post", url, data, config);
   },
 
   put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return makeRequest<T>('put', url, data, config);
+    return makeRequest<T>("put", url, data, config);
   },
 
   delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return makeRequest<T>('delete', url, null, config);
+    return makeRequest<T>("delete", url, null, config);
   },
 };
 

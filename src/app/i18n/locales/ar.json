@@ -13,6 +13,9 @@
   "enterUserID": "أدخل معرف المستخدم",
   "accessControl": "التحكم في الوصول",
   "Adminstration": "الإدارة",
+  "showing": "عرض",
+  "of": "من",
+  "records": "العناصر",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
@@ -202,7 +205,10 @@
     "createBranch": "إنشاء فرع",
     "branchCode": "كود الفرع",
     "branchStatus": "حالة الفرع",
-    "selectbranches": "اختر الفروع"
+    "selectbranches": "اختر الفروع",
+    "active": "نشط",
+    "inactive": "غير نشط" 
+    
   },
   "reports": {
     "title": "التقارير",
@@ -247,6 +253,8 @@
     "expiresDec312025": "ينتهي في 31 ديسمبر 2025",
     "urgent": "عاجل",
     "concurrentSession": "الجلسات المتزامنة",
-    "steadyHighUsage": "استخدام مرتفع مستمر"
+    "steadyHighUsage": "استخدام مرتفع مستمر",
+    "active": "نشط",
+    "days": "يوم "
   }
 }

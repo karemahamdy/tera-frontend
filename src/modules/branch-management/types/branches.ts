@@ -4,16 +4,17 @@ export interface Branch {
   code: string;
   nameAr: string;
   nameEn: string;
-  addressEn: string;
-  addressAr: string;
+ addressEn?: string;
+ addressAr?: string;
   isActive: boolean;
   createAt: string;
 }
 
 export interface BranchResponse {
   data: {
+    
     items: Branch[];
-    pageIndex: number;
+    PageIndex: number;
     pageSize: number;
     totalCount: number;
     totalPages: number;

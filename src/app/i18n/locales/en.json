@@ -13,6 +13,9 @@
   "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
   "Adminstration": "Administration",
+  "showing": "Showing",
+  "of": "of",
+  "records": "Records",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
@@ -187,7 +190,6 @@
     "addBranch": "Add Branch",
     "branchManagement": "Branch Management",
     "branchName": "Branch Name",
-    "branchNameAr": "Branch Name in Arabic",
     "branchDescription": "Manage organizational branches and locations",
     "searchPlaceholder": "Search branches...",
     "address": "Address",
@@ -247,6 +249,8 @@
     "userCapacity": "User Capacity",
     "approachingLimit": "Approaching Limit",
     "concurrentSession": "Concurrent Session",
-    "steadyHighUsage": "Steady High Usage"
+    "steadyHighUsage": "Steady High Usage",
+    "active": "Active",
+    "days": "Days"
   }
 }
