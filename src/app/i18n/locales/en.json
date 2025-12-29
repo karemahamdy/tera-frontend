@@ -121,7 +121,9 @@
     "addNewUserGroup": "Add New User Group",
     "userGroupInfo": "User groups help organize users and assign roles collectively.",
     "descriptionPlaceholder": "Describe the purpose of this group.. ",
-    "createGroup": "Create Group"
+    "createGroup": "Create Group",
+    "userGroupCreated": "User Group created successfully",
+    "userGroupUpdated": "User Group updated successfully"
   },
   "roles": {
     "roleName": "Role Name",
@@ -204,7 +206,11 @@
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
     "branchStatus": "Branch Status", 
-    "selectbranches": "Select Branches"
+    "selectbranches": "Select Branches",
+    "active": "Active",
+    "inactive": "Inactive",
+    "branchCreatedSuccessfully": "Branch created successfully",
+    "branchUpdatedSuccessfully": "Branch updated successfully"
   },
   "reports": {
     "title": "Reports",
@@ -252,5 +258,12 @@
     "steadyHighUsage": "Steady High Usage",
     "active": "Active",
     "days": "Days"
+  }
+  ,
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "info": "Info",
+    "warning": "Warning"
   }
 }

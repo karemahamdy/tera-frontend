@@ -23,6 +23,12 @@
     "title": "تغيير كلمة المرور",
     "subtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك."
   },
+  "toast": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "info": "ملاحظة",
+    "warning": "تحذير"
+  },
   "button": {
     "addNew": "إضافة جديد",
     "save": "حفظ",
@@ -121,7 +127,9 @@
     "addNewUserGroup": "إضافة مجموعة مستخدمين جديدة",
     "userGroupInfo": "تُساعد مجموعات المستخدمين في تنظيم المستخدمين وتخصيص الأدوار بشكل جماعي.",
     "descriptionPlaceholder": "وصف الغرض من هذه المجموعة.. ",
-    "createGroup": "إنشاء مجموعة"
+    "createGroup": "إنشاء مجموعة",
+    "userGroupCreated": "تم إنشاء مجموعة المستخدمين بنجاح",
+    "userGroupUpdated": "تم تحديث مجموعة المستخدمين بنجاح"
   },
   "roles": {
     "roleName": "اسم الدور",
@@ -207,7 +215,9 @@
     "branchStatus": "حالة الفرع",
     "selectbranches": "اختر الفروع",
     "active": "نشط",
-    "inactive": "غير نشط" 
+    "inactive": "غير نشط" ,
+    "branchCreatedSuccessfully": "تم إنشاء الفرع بنجاح",
+    "branchUpdatedSuccessfully": "تم تحديث الفرع بنجاح"
     
   },
   "reports": {
@@ -257,4 +267,5 @@
     "active": "نشط",
     "days": "يوم "
   }
+
 }
