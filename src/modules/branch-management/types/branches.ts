@@ -12,6 +12,7 @@ export interface Branch {
 
 export interface BranchResponse {
   data: {
+    
     items: Branch[];
     PageIndex: number;
     pageSize: number;

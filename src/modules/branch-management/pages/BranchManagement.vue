@@ -54,7 +54,6 @@ const lastRecord = computed(() => {
     return Math.min(last, totalCount.value || last);
 });
 
-
 const confirmDelete = (row: any) => {
     rowToDelete.value = row;
     showDeleteDialog.value = true;

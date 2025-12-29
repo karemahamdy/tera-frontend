@@ -22,7 +22,7 @@ export const BranchService = {
   return resp.data;
 },
 
-  async getById(id: string): Promise<BranchResponse> {
+  async getById(id: string): Promise<AddBranch> {
     const data = await axiosWrapper.get<any>(`/Branch/${id}`);
     return data.data;
   },
