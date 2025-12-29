@@ -135,7 +135,7 @@ const lastError = ref<string | null>(null);
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
       }
-      toastService.error("Failed to update group", err);
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
@@ -147,7 +147,7 @@ const lastError = ref<string | null>(null);
     validationErrors.value = {};
     try {
       await GroupService.delete(id);
-      toastService.success("Group deleted successfully");
+            toastService.success(t("userGroup.userGroupDeleted"));
       apiGroups.value = apiGroups.value.filter((group) => group.id !== id);
     } catch (err: any) {
        const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;

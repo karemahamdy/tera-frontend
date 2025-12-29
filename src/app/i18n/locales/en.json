@@ -210,7 +210,8 @@
     "active": "Active",
     "inactive": "Inactive",
     "branchCreatedSuccessfully": "Branch created successfully",
-    "branchUpdatedSuccessfully": "Branch updated successfully"
+    "branchUpdatedSuccessfully": "Branch updated successfully",
+    "branchDeletedSuccessfully": "Branch deleted successfully"
   },
   "reports": {
     "title": "Reports",
