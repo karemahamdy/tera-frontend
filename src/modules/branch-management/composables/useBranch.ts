@@ -35,7 +35,6 @@ export function useBranches() {
       orderBy: orderBy.value,
       orderDirection: orderDirection.value
     });
-
     const payload = response && response.data ? response.data : response;
     apiBranches.value = payload.items ?? [];
     pageIndex.value = payload.pageIndex ?? page;
@@ -49,7 +48,6 @@ export function useBranches() {
     loading.value = false;
   }
 };
-
 
   const fetchBranchById = async (id: string) => {
     loading.value = true;
