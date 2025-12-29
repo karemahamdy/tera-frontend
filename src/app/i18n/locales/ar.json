@@ -188,6 +188,7 @@
     "addBranch": "إضافة فرع",
     "branchManagement": "إدارة الفروع",
     "branchName": "أسم الفرع",
+    "branchNameAr": "اسم الفرع بالعربية",
     "branchDescription": "إدارة فروع ومواقع المؤسسة",
     "searchPlaceholder": "البحث عن الفروع...",
     "address": "العنوان",
@@ -242,6 +243,8 @@
     "expiresDec312025": "ينتهي في 31 ديسمبر 2025",
     "urgent": "عاجل",
     "concurrentSession": "الجلسات المتزامنة",
-    "steadyHighUsage": "استخدام مرتفع مستمر"
+    "steadyHighUsage": "استخدام مرتفع مستمر",
+    "active": "نشط",
+    "days": "يوم "
   }
 }

@@ -8,7 +8,7 @@ const cards = ref([
         icon: 'Clock',
         title: 'licenseInfo.licenseExpire',
         value: '65',
-        valueUnit: '/ Days',
+        valueUnit: 'licenseInfo.days',
         subtitle: 'licenseInfo.expiresDec312025',
         statusText: 'licenseInfo.urgent',
         progressPercent: 65
@@ -20,7 +20,7 @@ const cards = ref([
         title: 'licenseInfo.userCapacity',
         value: '96/100',
         subtitle: 'licenseInfo.approachingLimit',
-        statusText: 'Active',
+        statusText: 'licenseInfo.active',
         progressPercent: 96
     },
     {
@@ -30,7 +30,7 @@ const cards = ref([
         title: 'licenseInfo.concurrentSession',
         value: '24/40',
         subtitle: 'licenseInfo.steadyHighUsage',
-        statusText: 'Active',
+        statusText: 'licenseInfo.active',
         progressPercent: 60
     }
 ])

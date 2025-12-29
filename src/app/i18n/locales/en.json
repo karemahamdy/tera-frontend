@@ -239,6 +239,8 @@
     "userCapacity": "User Capacity",
     "approachingLimit": "Approaching Limit",
     "concurrentSession": "Concurrent Session",
-    "steadyHighUsage": "Steady High Usage"
+    "steadyHighUsage": "Steady High Usage",
+    "active": "Active",
+    "days": "Days"
   }
 }
