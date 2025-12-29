@@ -100,7 +100,7 @@ async function makeRequest<T>(
     // 401 HANDLING + TOKEN REFRESH
     // -----------------------------
     if (status === 401) {
-      if (url === "/Users/refresh") {
+      if (url === '/Auth/refresh-token') {
         userStore.logout();
         return Promise.reject(message);
       }

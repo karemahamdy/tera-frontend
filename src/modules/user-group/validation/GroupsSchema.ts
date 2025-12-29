@@ -3,11 +3,11 @@ import * as yup from "yup";
 export const groupFormSchema = yup.object({
   groupName: yup
     .string()
-    .required("Group name is required")
-    .min(3, "Minimum 3 characters"),
+    .required("form.fieldRequired")
+    .min(3, "form.min_3"),
 
   description: yup
     .string()
     .nullable()
-    .max(250, "Max 250 characters"),
+    .max(255, "form.max_255"),
 });
