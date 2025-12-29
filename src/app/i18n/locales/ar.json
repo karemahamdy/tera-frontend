@@ -205,7 +205,9 @@
     "branchStatus": "حالة الفرع",
     "selectbranches": "اختر الفروع",
     "active": "نشط",
-    "inactive": "غير نشط" 
+    "inactive": "غير نشط" ,
+    "branchCreatedSuccessfully": "تم إنشاء الفرع بنجاح",
+    "branchUpdatedSuccessfully": "تم تحديث الفرع بنجاح"
     
   },
   "reports": {

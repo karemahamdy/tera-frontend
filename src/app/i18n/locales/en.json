@@ -202,7 +202,11 @@
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
     "branchStatus": "Branch Status", 
-    "selectbranches": "Select Branches"
+    "selectbranches": "Select Branches",
+    "active": "Active",
+    "inactive": "Inactive",
+    "branchCreatedSuccessfully": "Branch created successfully",
+    "branchUpdatedSuccessfully": "Branch updated successfully"
   },
   "reports": {
     "title": "Reports",

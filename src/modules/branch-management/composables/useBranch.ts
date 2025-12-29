@@ -2,6 +2,7 @@ import { toastService } from "@/app/services/toastService";
 import { ref, watch, computed } from "vue";
 import { BranchService } from "../services/branch.service";
 import type { AddBranch, Branch } from "../types/branches";
+import { useI18n } from "vue-i18n";
 
 const loading = ref(false);
 const apiBranches = ref<Branch[]>([]);
@@ -21,6 +22,8 @@ const lastError = ref<string | null>(null);
 const validationErrors = ref<Record<string, string[]>>({});
 
 export function useBranches() {
+  const { t } = useI18n();
+
  const fetchBranches = async (page = 1) => {
   loading.value = true;
   lastError.value = null;
@@ -41,7 +44,7 @@ export function useBranches() {
     totalPages.value = payload.totalPages ?? 1;  
   } catch (err: any) {
     lastError.value = err?.message ?? "Failed to fetch branches";
-    toastService.error("Failed to fetch branches", err);
+    toastService.error(err);
   } finally {
     loading.value = false;
   }
@@ -53,8 +56,8 @@ export function useBranches() {
     try {
       const resp = await BranchService.getById(id);
       return resp;
-    } catch (err) {
-      toastService.error("Failed to fetch branch");
+    } catch (err: any) {
+      toastService.error(err);
       return null;
     } finally {
       loading.value = false;
@@ -66,7 +69,7 @@ export function useBranches() {
     validationErrors.value = {};
     try {
       const response = await BranchService.create(payload);
-      toastService.success("Branch created successfully");
+      toastService.success(t("branch.branchCreatedSuccessfully"));
       await fetchBranches(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -74,7 +77,7 @@ export function useBranches() {
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
       }
-      toastService.error("Failed to create branch", err);
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
@@ -86,7 +89,7 @@ export function useBranches() {
     validationErrors.value = {};
     try {
       const response = await BranchService.update(id, payload);
-      toastService.success("Branch updated successfully");
+      toastService.success(t("branch.branchUpdatedSuccessfully"));
       await fetchBranches(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -94,7 +97,7 @@ export function useBranches() {
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
       }
-      toastService.error("Failed to update branch" , err);
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
@@ -108,7 +111,7 @@ export function useBranches() {
       toastService.success("Branch deleted successfully");
       apiBranches.value = apiBranches.value.filter((b) => b.id !== id);
     } catch (err: any) {
-      toastService.error("Failed to delete branch", err);
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
@@ -121,8 +124,8 @@ export function useBranches() {
       await BranchService.toggleActive(id, isActive);
       toastService.success(`Branch is now ${isActive ? 'Active' : 'in Active'}`);
       await fetchBranches(pageIndex.value);
-    } catch (err) {
-      toastService.error('Failed to update branch status');
+    } catch (err: any) {
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;
