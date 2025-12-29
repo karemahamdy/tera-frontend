@@ -106,7 +106,7 @@ export function useBranches() {
     loading.value = true;
     try {
       await BranchService.delete(id);
-      toastService.success("Branch deleted successfully");
+      toastService.success((t("branch.branchDeletedSuccessfully")));
       apiBranches.value = apiBranches.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);

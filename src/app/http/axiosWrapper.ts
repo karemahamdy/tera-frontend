@@ -2,7 +2,6 @@ import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 import { useUserStore } from "@/app/store/useUserStore";
 import { useLoadingStore } from "@/app/store/useLoadingStore";
-import type { patch } from "node_modules/axios/index.d.cts";
 
 let refreshPromise: Promise<boolean> | null = null;
 
