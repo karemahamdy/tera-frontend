@@ -1,24 +1,21 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { AddGroup, GroupApiItem, ItemResponse } from "../types/groups";
+import type { AddGroup, GroupApiItem, ItemResponse, pageParams } from "../types/groups";
 
 export const GroupService = {
-  async getAll(params: {
-    pageIndex: number;
-    pageSize?: number;
-    searchingWord?: string;
-    orderBy?: string;
-    orderDirection?: "asc" | "desc";
-  }) {
-    const query = new URLSearchParams();
-    query.append("PageIndex", params.pageIndex.toString());
-    if (params.pageSize) query.append("PageSize", params.pageSize.toString());
-    if (params.searchingWord)
-      query.append("SearchingWord", params.searchingWord);
-    if (params.orderBy) query.append("OrderBy", params.orderBy);
-    if (params.orderDirection)
-      query.append("OrderDirection", params.orderDirection);
+  async getAll(params: pageParams) {
+   
+    // const query = new URLSearchParams();
+    // query.append("PageIndex", params.pageIndex.toString());
+    // if (params.pageSize) query.append("PageSize", params.pageSize.toString());
+    // if (params.searchingWord)
+    //   query.append("SearchingWord", params.searchingWord);
+    // if (params.orderBy) query.append("OrderBy", params.orderBy);
+    // if (params.orderDirection)
+    //   query.append("OrderDirection", params.orderDirection);
+
     const resp = await axiosWrapper.get<any>(
-      `/Group/GetAllGroup?${query.toString()}`
+      `/Group/GetAllGroup?${params}`
+      // `/Group/GetAllGroup?${query.toString()}`
     );
     return resp.data;
   },

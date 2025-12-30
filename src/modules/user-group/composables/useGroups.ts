@@ -1,4 +1,4 @@
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import { GroupService } from "../../user-group/services/group.service";
 import type {
   GroupApiItem,
@@ -13,7 +13,20 @@ export function useGroups() {
 
   const loading = ref(false);
   const apiGroups = ref<GroupApiItem[]>([]);
-  const tableData = ref<GroupTableItem[]>([]);
+  
+   const tableData = computed<GroupTableItem[]>(() =>
+    apiGroups.value.map((g) => ({
+      id: g.id,
+      GroupName: g.name,
+      Description: g.description ?? "-",
+      AssignedRoles: g.rolesAssingedToGroup.length
+        ? g.rolesAssingedToGroup.map((r) => r.name)
+        : "-",
+      userAssigned: g.userAssigned,
+      createAt: g.createAt,
+      isActive: g.isActive,
+    }))
+  );
 
   const lastError = ref<string | null>(null);
   const validationErrors = ref<Record<string, string[]>>({});
@@ -95,24 +108,6 @@ export function useGroups() {
       loading.value = false;
     }
   };
-
-  watch(
-    apiGroups,
-    (groups) => {
-      tableData.value = groups.map((group) => ({
-        id: group.id,
-        GroupName: group.name,
-        Description: group.description ?? "-",
-        AssignedRoles: group.rolesAssingedToGroup.length
-          ? group.rolesAssingedToGroup.map((group) => group.name)
-          : "-",
-        userAssigned: group.userAssigned,
-        createAt: group.createAt,
-        isActive: group.isActive,
-      }));
-    },
-    { immediate: true }
-  );
 
   const onSearch = (term: string) => {
     searchTerm.value = term;
