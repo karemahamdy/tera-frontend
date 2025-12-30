@@ -37,29 +37,29 @@ const props = defineProps({
 });
 const filtersOperation = [
     {
-        placeholder: t("activeSessions.allIPAddress"),
+        placeholder: "activeSessions.allIPAddress",
         value: null,
         field: "ipAddress",
         options: [
-            { label: t("activeSessions.allIPAddress"), value: null },
+            { label: "activeSessions.allIPAddress", value: null },
             { label: "option 1", value: "option 1" },
         ],
     },
     {
-        placeholder: t("activeSessions.allBranches"),
+        placeholder: "activeSessions.allBranches",
         value: null,
         field: "allUsers",
         options: [
-            { label: t("activeSessions.allBranches"), value: null },
+            { label: "activeSessions.allBranches", value: null },
             { label: "option 1", value: "option 1" },
         ],
     },
     {
-        placeholder: t("activeSessions.allStatus"),
+        placeholder: "activeSessions.allStatus",
         value: null,
         field: "allStatus",
         options: [
-            { label: t("activeSessions.allStatus"), value: null },
+            { label: "activeSessions.allStatus", value: null },
             { label: "option 1", value: "option 1" },
         ],
     }
