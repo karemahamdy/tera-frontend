@@ -41,6 +41,7 @@ const navItems: NavItem[] = [
     children: [
       { label: "User Report", route: "/reports/user" },
       { label: "User Group Report", route: "/reports/user-group" },
+      { label: "Permission Report", route: "/reports/permission-report" },
     ],
   },
 ];
