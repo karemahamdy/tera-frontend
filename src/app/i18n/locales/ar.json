@@ -46,6 +46,7 @@
     "create": "إنشاء",
     "new": "جديد",
     "active": "نشط",
+    "inactive": "غير نشط",
     "resetPassword": "تغيير الرقم السري",
     "clearFilters": "مسح الفلاتر"
   },

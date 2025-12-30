@@ -67,7 +67,7 @@ const lastError = ref<string | null>(null);
       await GroupService.toggleActive(id, isActive);
       const row = tableData.value.find(row => row.id === id);
       if (row) row.isActive = isActive;
-      toastService.success(`Group is now ${isActive ? "Active" : "Inactive"}`);
+      toastService.success(t("userGroup.userGroupUpdated"));
     } catch (err: any) {
        const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
       if (errors && typeof errors === 'object') {
@@ -154,7 +154,7 @@ const lastError = ref<string | null>(null);
       if (errors && typeof errors === 'object') {
         validationErrors.value = errors;
       }
-      toastService.error("Failed to delete group", err);
+      toastService.error(err);
       throw err;
     } finally {
       loading.value = false;

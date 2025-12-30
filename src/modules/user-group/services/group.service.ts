@@ -4,7 +4,7 @@ import type { AddGroup, GroupApiItem, ItemResponse } from "../types/groups";
 export const GroupService = {
   async getAll(pageIndex = 1, pageSize = 10) {
     const resp = await axiosWrapper.get<any>(
-      `/Group/GetAllGroup?PagenationDto.PageIndex=${pageIndex}&PagenationDto.PageSize=${pageSize}`
+      `/Group/GetAllGroup?PageIndex=${pageIndex}&PageSize=${pageSize}`
     );
     return resp.data;
   },
