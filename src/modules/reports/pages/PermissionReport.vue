@@ -169,8 +169,7 @@ const columns = computed(() => {
             <div class="text-center">{{ $t("button.delete") }}</div>
           </div>
 
-          <!-- Users Accordion -->
-          <Accordion multiple>
+          <!-- <Accordion multiple>
             <AccordionPanel v-for="(user, uIndex) in filteredByFilters" :key="user.id">
               <AccordionHeader class="bg-[#F0F3FA] hover:bg-[#E5E9F0] cursor-pointer">
                 <div class="grid grid-cols-8 p-2">
@@ -187,7 +186,7 @@ const columns = computed(() => {
 
               <AccordionContent>
                 <div v-for="module in user.modules" :key="module.moduleCode" class="border-t border-gray-200">
-                  <!-- Module header -->
+                
                   <Accordion >
                     <AccordionPanel>
                       <AccordionHeader class="bg-[#F9FAFC] hover:bg-[#EEF1F7] cursor-pointer">
@@ -207,7 +206,7 @@ const columns = computed(() => {
                 </div>
               </AccordionContent>
             </AccordionPanel>
-          </Accordion>
+          </Accordion> -->
         </div>
       </template>
     </card>
