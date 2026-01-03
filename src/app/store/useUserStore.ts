@@ -1,7 +1,14 @@
-import { defineStore } from 'pinia';
-import axiosWrapper from '@/app/http/axiosWrapper';
-import i18n from '@/app/i18n/index';
-import type { User, UserData, LoginPayload, Entity, AuthData, AuthDataResponse } from "@/app/types/user";
+import { defineStore } from "pinia";
+import axiosWrapper from "@/app/http/axiosWrapper";
+import i18n from "@/app/i18n/index";
+import type {
+  User,
+  UserData,
+  LoginPayload,
+  Entity,
+  AuthData,
+  AuthDataResponse,
+} from "@/app/types/user";
 import router from "@/app/router";
 
 // ------------------------------------
@@ -9,44 +16,53 @@ import router from "@/app/router";
 // ------------------------------------
 let Lang = (): string => {
   let lang;
-  if (localStorage.getItem('lang') === null) {
-    let browserLanguage = window.navigator.language ?? '';
+  if (localStorage.getItem("lang") === null) {
+    let browserLanguage = window.navigator.language ?? "";
     if (browserLanguage) {
       browserLanguage = browserLanguage.substring(0, 2);
       lang = browserLanguage;
     } else {
-      import.meta.env.VITE_DEFUALT_LANGUAGE === 'en'
-        ? document.documentElement.setAttribute('dir', 'ltr')
-        : document.documentElement.setAttribute('dir', 'rtl');
+      import.meta.env.VITE_DEFUALT_LANGUAGE === "en"
+        ? document.documentElement.setAttribute("dir", "ltr")
+        : document.documentElement.setAttribute("dir", "rtl");
       lang = import.meta.env.VITE_DEFUALT_LANGUAGE;
     }
   } else {
-    lang = localStorage.getItem('lang');
+    lang = localStorage.getItem("lang");
   }
-  if (lang == 'en') {
-    document.documentElement.setAttribute('lang', 'en');
-    document.documentElement.setAttribute('dir', 'ltr');
+  if (lang == "en") {
+    document.documentElement.setAttribute("lang", "en");
+    document.documentElement.setAttribute("dir", "ltr");
   } else {
-    document.documentElement.setAttribute('lang', 'ar');
-    document.documentElement.setAttribute('dir', 'rtl');
+    document.documentElement.setAttribute("lang", "ar");
+    document.documentElement.setAttribute("dir", "rtl");
   }
-  localStorage.setItem('lang', lang);
+  localStorage.setItem("lang", lang);
   return lang;
 };
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore("user", {
   state: () => ({
     user: null as User | null,
-    accessToken: localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken') || '',
-    refreshToken: localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken') || '',
+    accessToken:
+      localStorage.getItem("accessToken") ||
+      sessionStorage.getItem("accessToken") ||
+      "",
+    refreshToken:
+      localStorage.getItem("refreshToken") ||
+      sessionStorage.getItem("refreshToken") ||
+      "",
     rememberMe: localStorage.getItem("rememberMe") === "true",
-    isAuthenticated: !!(localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken')),
+    isAuthenticated: !!(
+      localStorage.getItem("accessToken") ||
+      sessionStorage.getItem("accessToken")
+    ),
     lang: Lang() as string,
-    entities: [] as Entity[]
+    entities: [] as Entity[],
   }),
 
   getters: {
-    hasRole: (state) => (role: string) => state.user?.roles.includes(role)
+    hasRole: (state) => (role: string) => state.user?.roles.includes(role),
   },
 
   actions: {
@@ -56,9 +72,12 @@ export const useUserStore = defineStore('user', {
     setLang(lang: string) {
       if (!lang) return;
       this.lang = lang;
-      localStorage.setItem('lang', lang);
-      document.documentElement.setAttribute('lang', lang);
-      document.documentElement.setAttribute('dir', lang === 'en' ? 'ltr' : 'rtl');
+      localStorage.setItem("lang", lang);
+      document.documentElement.setAttribute("lang", lang);
+      document.documentElement.setAttribute(
+        "dir",
+        lang === "en" ? "ltr" : "rtl"
+      );
 
       try {
         // @ts-ignore
@@ -69,14 +88,18 @@ export const useUserStore = defineStore('user', {
     },
 
     toggleLang() {
-      this.setLang(this.lang === 'en' ? 'ar' : 'en');
+      this.setLang(this.lang === "en" ? "ar" : "en");
     },
 
     // ------------------------------------
     // LOGIN
     // ------------------------------------
     async login(payload: LoginPayload) {
-      const response = await axiosWrapper.post<UserData>('/Auth/login', payload, {});
+      const response = await axiosWrapper.post<UserData>(
+        "/Auth/login",
+        payload,
+        {}
+      );
       const tokens = response.data as AuthData;
 
       this.rememberMe = payload.rememberMe;
@@ -92,7 +115,10 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     async refreshTokenAction(): Promise<boolean> {
       try {
-        const tokens = await axiosWrapper.post<AuthDataResponse>('/Auth/refresh-token', { refreshToken: this.refreshToken });
+        const tokens = await axiosWrapper.post<AuthDataResponse>(
+          "/Auth/refresh-token",
+          { refreshToken: this.refreshToken }
+        );
         this.setTokens(tokens.data as AuthData);
         return true;
       } catch {
@@ -110,11 +136,11 @@ export const useUserStore = defineStore('user', {
       this.isAuthenticated = true;
 
       if (this.rememberMe) {
-        localStorage.setItem('accessToken', tokens.accessToken);
-        localStorage.setItem('refreshToken', tokens.refreshToken);
+        localStorage.setItem("accessToken", tokens.accessToken);
+        localStorage.setItem("refreshToken", tokens.refreshToken);
       } else {
-        sessionStorage.setItem('accessToken', tokens.accessToken);
-        sessionStorage.setItem('refreshToken', tokens.refreshToken);
+        sessionStorage.setItem("accessToken", tokens.accessToken);
+        sessionStorage.setItem("refreshToken", tokens.refreshToken);
       }
     },
 
@@ -123,17 +149,17 @@ export const useUserStore = defineStore('user', {
     // ------------------------------------
     logout() {
       this.user = null;
-      this.accessToken = '';
-      this.refreshToken = '';
+      this.accessToken = "";
+      this.refreshToken = "";
       this.isAuthenticated = false;
 
       // Clear both storages
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('rememberMe');
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("rememberMe");
 
-      sessionStorage.removeItem('accessToken');
-      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("refreshToken");
 
       router.push({ name: "Login" });
     },
@@ -142,8 +168,16 @@ export const useUserStore = defineStore('user', {
     // FETCH ENTITY LOOKUPS
     // ------------------------------------
     async fetchEntityLookups() {
-      const data = await axiosWrapper.get<any>('/Lookups/EntityLookups');
+      const data = await axiosWrapper.get<any>("/Lookups/EntityLookups");
       this.entities = data.data as Entity[];
     },
-  }
+
+    closeSession() {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const token = this.accessToken;
+      const data = new FormData();
+      data.append("token", token || "");
+      navigator.sendBeacon(`${apiUrl}/close-session`, data);
+    },
+  },
 });

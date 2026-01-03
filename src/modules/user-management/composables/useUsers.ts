@@ -75,10 +75,10 @@ export function useUsers() {
     }
   };
 
-  const onFilterChange = (filter: any) => {
-  const field = filter.field;
-  const value = filter.value;
-  if (field === "userGroup") {
+  const onFilterChange = (filter: { filter: { field: string }; value: string }) => {
+    const field = filter.filter.field;
+    const value = filter.value;
+    if (field === "userGroup") {
     pagination.value.GroupFilter = value;
   } else if (field === "status") {
     pagination.value.StatusFilter = value;
