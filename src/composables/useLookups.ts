@@ -1,55 +1,95 @@
-import { LookupsService } from "@/app/services/lookups.service";
 import { ref } from "vue";
+import type { LookupsOption } from "../app/types/lookups";
+import { toastService } from "@/app/services/toastService";
+import { LookupsService } from "@/app/services/lookups.service";
 
-  const loading = ref(false);
-  const roles = ref<{ id: string; name: string }[]>([]);
-  const branches = ref<{ id: string; name: string }[]>([]);
-  const groups = ref<{ id: string; name: string }[]>([]);
-   const error = ref<string | null>(null);
-  
 export function useLookups() {
+  const groupsLookups = ref<LookupsOption[]>([]);
+  const branchesLookups = ref<LookupsOption[]>([]);
+  const entitiesLookups = ref<LookupsOption[]>([]);
+  const rolesLookups = ref<LookupsOption[]>([]);
+  const screensLookups = ref<LookupsOption[]>([]);
+  const departmentsLookups = ref<LookupsOption[]>([]);
 
-const fetchLookups = async () => {
-    loading.value = true;
+  const getGroupLookups = async () => {
     try {
-      const branchResp = await LookupsService.getBranchLookups();
-      branches.value = (branchResp || []).map((branch: any) => {
-        const rawId = branch.id ;
-        return {
-          id: String(rawId),
-          name: branch.name,
-        };
-      });
-      branches.value = branches.value;
-
-      const rolesResp = await LookupsService.getRolesLookups();
-      roles.value = (rolesResp || []).map((role: any) => {
-        const rawId = role.id ;
-        return {
-          id: String(rawId),
-          name: role.name,
-        };
-      });
-      const groupResp = await LookupsService.getGroupLookups();
-      groups.value = (groupResp || []).map((group: any) => {
-        const rawId = group.id ;
-        return {
-          id: String(rawId),
-          name: group.name ,
-        };
-      });
-    } catch (err: any) {
-      error.value = err.message || "Error fetching lookups";
-    } finally {
-      loading.value = false;
+      const res = await LookupsService.getGroupLookups();
+      groupsLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
     }
   };
-return {
-    fetchLookups,
-    loading,    
-    error,
-    roles,  
-    groups,
-    branches,
+  const getBranchLookups = async () => {
+    try {
+      const res = await LookupsService.getBranchLookups();
+      branchesLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+  const getEntityLookups = async () => {
+    try {
+      const res = await LookupsService.getEntityLookups();
+      entitiesLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+  const getRolesLookups = async () => {
+    try {
+      const res = await LookupsService.getRolesLookups();
+      rolesLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+  const getScreenLookups = async () => {
+    try {
+      const res = await LookupsService.getScreenLookups();
+      screensLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+  const getDepartmentsLookups = async () => {
+    try {
+      const res = await LookupsService.getDepartmentsLookups();
+      departmentsLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
+  return {
+    groupsLookups,
+    branchesLookups,
+    entitiesLookups,
+    rolesLookups,
+    screensLookups,
+    departmentsLookups,
+    getGroupLookups,
+    getBranchLookups,
+    getEntityLookups,
+    getRolesLookups,
+    getScreenLookups,
+    getDepartmentsLookups,
   };
 }

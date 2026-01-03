@@ -5,12 +5,14 @@ import { useField, useForm  } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
 import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useRoute, useRouter } from "vue-router";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useLookups } from "@/composables/useLookups";
 
-const { createRoleGroup  } = useGroupRoles() ;
-const { fetchLookups, roles, branches } = useLookups();
+const { createRoleGroup } = useGroupRoles() ;
+const { getRolesLookups, getBranchLookups, branchesLookups, rolesLookups } = useLookups();
+
 const route = useRoute();
+const isSubmitting = ref(false);
 
 const { handleSubmit, errors } = useForm({
   validationSchema: assignRolesSchema,
@@ -23,26 +25,36 @@ const { handleSubmit, errors } = useForm({
   },
 });
 
-onMounted(fetchLookups);
+onMounted(() => {
+  Promise.all([getRolesLookups(), getBranchLookups()]);
+});
 
 const { value: roleIds } = useField<string[]>("role");
 const { value: branchIds } = useField<string[]>("roles");
 const { value: accessScope } = useField<string>("accessScope");
 const { value: name } = useField<string>("name");
+  watch(accessScope, (val) => {
+  if (val === 'global') branchIds.value = [];
+});
 const router = useRouter();
 
 const onSubmit = handleSubmit(async (values) => {
-  alert("SUBMITTED");
-  await createRoleGroup({
+  isSubmitting.value = true;
+
+  const payload: any = {
     groupId: values.groupId,
-    roleId: values.role,           
-    branchIds: values.roles,       
-    accessScope: values.accessScope === "global" ?  "1": "2"
-  });
-console.log("test");
-console.log(values);
-  router.push({ name: "UserGroup" });
+    roleId: values.role,
+    accessScope: values.accessScope === "global" ? 1 : 2,
+  };
+
+  if (values.accessScope === "branch") {
+    payload.branchIds = values.roles;
+  }
+
+  await createRoleGroup(payload);
+  router.push({ name: "ListGroupRoles" });
 });
+
 </script>
 
 
@@ -76,8 +88,11 @@ console.log(values);
                 {{ $t("roles.roleName") }}
               </label>
 
-              <MultiSelect v-model="roleIds" :options="roles" optionLabel="name" optionValue="id"
-                class="w-full mt-1" :placeholder="$t('select roles')" />
+              <MultiSelect v-model="roleIds" :options="rolesLookups" optionLabel="label" optionValue="value"
+                class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
+              <small v-if="errors.role" class="text-danger-500">
+                {{ errors.role }}
+              </small>
             </div>
             <div class="flex flex-col gap-4 w-full">
               <label class="text-gray-700 font-bold">
@@ -110,19 +125,17 @@ console.log(values);
                 {{ errors.accessScope }}
               </small>
             </div>
-            <div>
-              <label class="text-gray-700 font-bold">
-                {{ $t("roles.branches") }}
-              </label>
-
-              <MultiSelect v-model="branchIds" :options="branches" optionLabel="name" optionValue="id"
-                class="w-full mt-1 rounded-2xl" 
+        
+             <div v-if="accessScope === 'branch'">
+              <label class="text-gray-700 font-bold">{{ $t("roles.branches") }}</label>
+              <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
+                class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
                 :placeholder="$t('branch.selectbranches')" />
-
+              <small v-if="errors.roles" class="text-danger-500">{{ errors.roles }}</small>
             </div>
              <div class="flex justify-between gap-4 mb-4 container px-20">
           <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
-          <BaseButton label="Assign" variant="primary" block type="submit" />
+          <BaseButton label="Assign" variant="primary" block :disabled="isSubmitting" :loading="isSubmitting"  />
         </div>
           </form>
         </div>
