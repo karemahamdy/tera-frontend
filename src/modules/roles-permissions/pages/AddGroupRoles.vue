@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { useField, useForm  } from "vee-validate";
+import { useField, useForm } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
 import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useRoute } from "vue-router";
 import { computed, onMounted, ref, watch } from "vue";
 import { useLookups } from "@/composables/useLookups";
 
-const { createRoleGroup } = useGroupRoles() ;
+const { createRoleGroup, getRoleToGroupById, updateRoleGroup } = useGroupRoles();
 const { getRolesLookups, getBranchLookups, getGroupLookups, groupsLookups, rolesLookups, branchesLookups } = useLookups();
 
 const route = useRoute();
@@ -17,7 +17,7 @@ const groupId = route.params.id as string;
 const roleId = route.params.roleId as string | undefined;
 const isEditMode = computed(() => !!roleId);
 
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, errors, setValues } = useForm({
   validationSchema: assignRolesSchema,
   initialValues: {
     name: "",
@@ -33,33 +33,34 @@ onMounted(async () => {
     (g: any) => g.value === route.params.id
   );
   if (currentGroup) {
-    name.value = currentGroup.label;    
+    name.value = currentGroup.label;
   }
-  // if (isEditMode.value && roleId) {
-  //   const { getRoleToGroupById } = useGroupRoles();
-  //   const roleData = await getRoleToGroupById(groupId, roleId);
-  //   if (roleData) {
-  //     const groupAccessScope = roleData.groupAccessScope === 1 ? 'global' : 'branch';
-  //     groupAccessScope.value = groupAccessScope;
-  //     roleIds.value = [roleData.roleId];
-  //     if (groupAccessScope === 'branch') {
-  //       branchIds.value = roleData.branchIds || [];
-  //     }
-  //   }
-  // }
-  });
+  if (isEditMode.value && roleId) {
+    if (isEditMode.value && roleId) {
+      const roleData = await getRoleToGroupById(groupId, roleId);
+      if (roleData) {
+        setValues({
+          name: currentGroup?.label || "",
+          role: [roleData.roleId],
+          roles: roleData.branchIds || [],
+          groupAccessScope: roleData.groupAccessScope === 1 ? "global" : "branch",
+          groupId,
+        });
+      }
+    }
+  }
+});
 
 onMounted(() => {
   Promise.all([getRolesLookups(), getBranchLookups()]);
 });
-
 
 const { value: roleIds } = useField<string[]>("role");
 const { value: branchIds } = useField<string[]>("roles");
 const { value: groupAccessScope } = useField<string>("groupAccessScope");
 const { value: name } = useField<string>("name");
 
-  watch(groupAccessScope, (val) => {
+watch(groupAccessScope, (val) => {
   if (val === 'global') branchIds.value = [];
 });
 
@@ -71,11 +72,22 @@ const onSubmit = handleSubmit(async (values) => {
     roleId: values.role,
     groupAccessScope: values.groupAccessScope === "global" ? 1 : 2,
   };
+
   if (values.groupAccessScope === "branch") {
     payload.branchIds = values.roles;
   }
-  await createRoleGroup(payload);
+
+  if (isEditMode.value && roleId) {
+    payload.roleId = roleId;
+    await updateRoleGroup(payload);
+  } else {
+
+    await createRoleGroup(payload);
+  }
+
+  isSubmitting.value = false;
 });
+
 </script>
 
 
@@ -146,21 +158,22 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ errors.groupAccessScope }}
               </small>
             </div>
-        
-             <div v-if="groupAccessScope === 'branch'">
+
+            <div v-if="groupAccessScope === 'branch'">
               <label class="text-gray-700 font-bold">{{ $t("roles.branches") }}</label>
               <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
                 :placeholder="$t('branch.selectbranches')" />
               <small v-if="errors.roles" class="text-danger-500">{{ errors.roles }}</small>
             </div>
-             <div class="flex justify-between gap-4 mb-4 container px-20">
-          <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
-          <BaseButton label="Assign" variant="primary" block :disabled="isSubmitting" :loading="isSubmitting"  />
-        </div>
+            <div class="flex justify-between gap-4 mb-4 container px-20">
+              <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
+              <BaseButton :label="isEditMode ? 'Update' : 'Assign'" variant="primary" block :disabled="isSubmitting"
+                :loading="isSubmitting" />
+            </div>
           </form>
         </div>
-      </template>    
+      </template>
     </card>
   </div>
 </template>

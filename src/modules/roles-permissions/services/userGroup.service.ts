@@ -24,7 +24,7 @@ export const GroupRolesService = {
 },
 
   async updateRolesToGroup(payload: any) {
-    return axiosWrapper.put('/Group/AssignRolesToGroup', payload);
+    return axiosWrapper.put('/Group/UpdateAssignRolesToGroup', payload);
   },
 
 };
