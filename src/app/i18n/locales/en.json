@@ -104,7 +104,9 @@
     "accountType": "Account Type",
     "accountStatus": "Account Status",
     "uploadImage": "Upload Image",
-    "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design"
+    "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design",
+    "departmentPlaceholder": "Select Department",
+    "userGroupPlaceholder": "Select User Group"
   },
   "userGroup": {
     "groupName": "Group Name",
