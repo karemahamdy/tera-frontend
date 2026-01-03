@@ -3,12 +3,13 @@ import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useForm } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
-import { useGroupRoles } from "../composables/assignRolesToGroup";
+// import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted } from "vue";
+import { useLookups } from "@/composables/useLookups";
 
-const groupRoles = useGroupRoles() as any;
-const { roleOptions, branches, assignRoles, fetchLookups } = groupRoles;
+// const {  branches, assignRoles } = useGroupRoles() ;
+const { fetchLookups, roles, branches } = useLookups();
 const route = useRoute();
 
 const { handleSubmit, errors, defineField } = useForm({
@@ -76,7 +77,7 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ $t("roles.roleName") }}
               </label>
 
-              <MultiSelect v-model="roleIds" :options="roleOptions" optionLabel="name" optionValue="id"
+              <MultiSelect v-model="roleIds" :options="roles" optionLabel="name" optionValue="id"
                 class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
             </div>
             <div class="flex flex-col gap-4 w-full">
