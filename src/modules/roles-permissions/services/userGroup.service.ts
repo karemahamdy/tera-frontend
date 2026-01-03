@@ -2,7 +2,7 @@ import axiosWrapper from "@/app/http/axiosWrapper";
 import type {
   GetRolesAssignedToGroupResponse,
   RemoveRoleFromGroup,
-  UpdateRolesToGroup,
+  GetRolesToGroup,
 } from "../types/userGroupRoles";
 
 export const GroupRolesService = {
@@ -17,14 +17,14 @@ export const GroupRolesService = {
     return axiosWrapper.delete(`/Group/RemoveRoleFromGroup`, { data: payload });
   }, 
 
-  async assignRolesToGroup(payload: any) {
+  async createRolesToGroup(payload: GetRolesToGroup) {
     return axiosWrapper.post('/Group/AssignRolesToGroup', payload);
   },
 
-  updateAssignRolesToGroup(payload: UpdateRolesToGroup) {
+  updateAssignRolesToGroup(payload: GetRolesToGroup) {
     return axiosWrapper.put(`/Group/UpdateAssignRolesToGroup`, payload);
   },
-  
+
   async updateRolesToGroup(payload: any) {
     return axiosWrapper.post('/Group/AssignRolesToGroup', payload);
   },

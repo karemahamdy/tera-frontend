@@ -29,9 +29,9 @@ export interface RemoveRoleFromGroup {
   roleId: string;
 }
 
-export interface UpdateRolesToGroup {
-  groupId: string;
-  roleId: string;
+export interface GetRolesToGroup {
+  groupId: string[];
+  roleId: string[];
   accessScope: number;
   branchIds: string[];
 }
