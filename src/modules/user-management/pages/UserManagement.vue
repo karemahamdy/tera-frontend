@@ -11,10 +11,13 @@ import { useRouter } from "vue-router";
 import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
+import { useLookups } from "@/composables/useLookups";
 
 const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange } =
   useUsers();
 
+
+const { groupsLookups, departmentsLookups, getDepartmentsLookups, getGroupLookups } = useLookups();  
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
@@ -102,52 +105,48 @@ const lastRecord = computed(() => {
   return last > pagination.value.total ? pagination.value.total : last;
 });
 
-const filtersOperation = [
-  {
-    placeholder: "usersManagement.allGroups",
-    value: null,
-    field: "userGroup",
-    options: [
-      { label: "usersManagement.allGroups", value: null },
-      { label: "Administration", value: "Administration" },
-      { label: "Finance Team", value: "Finance Team" },
-      { label: "Sales Team", value: "Sales Team" },
-      { label: "HR Team", value: "HR Team" },
-    ],
-  },
-  {
-    placeholder: "usersManagement.allStatus",
-    value: null,
-    field: "status",
-    options: [
-      { label: "usersManagement.allStatus", value: null },
-      { label: "active", value: "IsActive" },
-      { label: "inactive", value: "InActive" },
-    ],
-  },
-  {
-    placeholder: "usersManagement.allScopes",
-    value: null,
-    field: "accessScope",
-    options: [
-      { label: "usersManagement.allScopes", value: null },
-      { label: "Global", value: "Global" },
-      { label: "Branch", value: "BranchLimited" },
-    ],
-  },
-  {
-    placeholder: "usersManagement.allDepartment",
-    value: null,
-    field: "department",
-    options: [
-      { label: "usersManagement.allDepartment", value: null },
-      { label: "Administration", value: "Administration" },
-      { label: "Finance Team", value: "Finance Team" },
-      { label: "Sales Team", value: "Sales Team" },
-      { label: "HR Team", value: "HR Team" },
-    ],
-  },
-];
+const filtersOperation = computed(() => {
+  return [
+    {
+      placeholder: "usersManagement.allGroups",
+      value: null,
+      field: "userGroup",
+      options: [
+        { label: t("usersManagement.allGroups"), value: null },
+        ...groupsLookups.value
+      ],
+    },
+    {
+      placeholder: "usersManagement.allStatus",
+      value: null,
+      field: "status",
+      options: [
+        { label: t("usersManagement.allStatus"), value: null },
+        { label: t("button.active"), value: "IsActive" },
+        { label: t("button.inactive"), value: "InActive" },
+      ],
+    },
+    {
+      placeholder: "usersManagement.allScopes",
+      value: null,
+      field: "accessScope",
+      options: [
+        { label: t("usersManagement.allScopes"), value: null },
+        { label: t("users.global"), value: "Global" },
+        { label: t("users.branch"), value: "BranchLimited" },
+      ],
+    },
+    {
+      placeholder: "usersManagement.allDepartment",
+      value: null,
+      field: "department",
+      options: [
+        { label: t("usersManagement.allDepartment"), value: null },
+        ...departmentsLookups.value
+      ],
+    },
+  ];
+});
 
 const columns = computed(() => {
   const Columns = [
@@ -219,7 +218,7 @@ const addUserGroup = () => {
 };
 
 onMounted(() => {
-  getList();
+  Promise.all([getList(), getGroupLookups(), getDepartmentsLookups()]);
 });
 </script>
 

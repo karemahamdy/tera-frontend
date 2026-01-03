@@ -1,21 +1,23 @@
 import { ref } from "vue";
-import type { Lookups } from "../app/types/lookups";
+import type { Lookups, LookupsOption } from "../app/types/lookups";
 import { toastService } from "@/app/services/toastService";
 import { LookupsService } from "@/app/services/lookups.service";
 
 export function useLookups() {
-
-  const groupsLookups = ref<Lookups[]>([]);
-  const branchesLookups = ref<Lookups[]>([]);
-  const entitiesLookups = ref<Lookups[]>([]);
-  const rolesLookups = ref<Lookups[]>([]);
-  const screensLookups = ref<Lookups[]>([]);
-  const departmentsLookups = ref<Lookups[]>([]);
+  const groupsLookups = ref<LookupsOption[]>([]);
+  const branchesLookups = ref<LookupsOption[]>([]);
+  const entitiesLookups = ref<LookupsOption[]>([]);
+  const rolesLookups = ref<LookupsOption[]>([]);
+  const screensLookups = ref<LookupsOption[]>([]);
+  const departmentsLookups = ref<LookupsOption[]>([]);
 
   const getGroupLookups = async () => {
     try {
       const res = await LookupsService.getGroupLookups();
-      groupsLookups.value = res.data as Lookups[];
+      groupsLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
     } catch (error) {
       toastService.error(error as string);
     }
@@ -23,7 +25,10 @@ export function useLookups() {
   const getBranchLookups = async () => {
     try {
       const res = await LookupsService.getBranchLookups();
-      branchesLookups.value = res.data as Lookups[];
+      branchesLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
     } catch (error) {
       toastService.error(error as string);
     }
@@ -31,7 +36,10 @@ export function useLookups() {
   const getEntityLookups = async () => {
     try {
       const res = await LookupsService.getEntityLookups();
-      entitiesLookups.value = res.data as Lookups[];
+      entitiesLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
     } catch (error) {
       toastService.error(error as string);
     }
@@ -39,7 +47,10 @@ export function useLookups() {
   const getRolesLookups = async () => {
     try {
       const res = await LookupsService.getRolesLookups();
-      rolesLookups.value = res.data as Lookups[];
+      rolesLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
     } catch (error) {
       toastService.error(error as string);
     }
@@ -47,7 +58,10 @@ export function useLookups() {
   const getScreenLookups = async () => {
     try {
       const res = await LookupsService.getScreenLookups();
-      screensLookups.value = res.data as Lookups[];
+      screensLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
     } catch (error) {
       toastService.error(error as string);
     }
@@ -55,7 +69,10 @@ export function useLookups() {
   const getDepartmentsLookups = async () => {
     try {
       const res = await LookupsService.getDepartmentsLookups();
-        departmentsLookups.value = res.data as Lookups[];
+      departmentsLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
     } catch (error) {
       toastService.error(error as string);
     }
