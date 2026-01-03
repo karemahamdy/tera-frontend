@@ -13,7 +13,7 @@ import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
 import { useLookups } from "@/composables/useLookups";
 
-const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange } =
+const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus } =
   useUsers();
 
 
@@ -83,12 +83,11 @@ const customItems = computed(() => {
       action: "resetPassword",
     },
     {
-      slot: true,
+      action: "toggleActive",
       changeStatus: true,
       label: t("button.active"),
-      command: (row: any) => {
-        console.log("toggle", row);
-      },
+      type: "switch",
+      key: "isActive",
     },
   ];
 });
@@ -201,11 +200,14 @@ const handleActionMenu = (payload: any) => {
       const id = data.userId;
       router.push({ name: "UserManagementEdit", params: { id } });
     }
-  } else if (action === "resetPassword") showResetDialog(data);
+  } else if (action === "resetPassword") { 
+    showResetDialog(data);
+  } else if (action === "toggleActive") {
+    changeUserStatus(data.userId, !data.isActive);
+  }
 };
 
 const handleDeleteConfirm = async () => {
-  console.log(rowToDelete.value);
   if (!rowToDelete.value) return;
   showDeleteDialog.value = false;
 
@@ -298,16 +300,6 @@ onMounted(() => {
           </template>
           <template v-slot:["col-group"]="{ data }">
             <Tag v-if="data.group" :value="data.group.name" class="custom-tag" />
-          </template>
-          <!-- @vue-ignore -->
-          <template #menu-item="{ item, row }" class="">
-            <div
-              v-if="item.changeStatus"
-              class="flex items-center gap-2 px-3 py-2"
-            >
-              <ToggleSwitch v-model="row.status" />
-              <span>{{ item.label }}</span>
-            </div>
           </template>
         </DynamicTable>
       </template>

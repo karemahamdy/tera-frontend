@@ -272,7 +272,8 @@
     "userUpdated": "User updated successfully",
     "userDeleted": "User deleted successfully",
     "global": "Global",
-    "branch": "Branch"
+    "branch": "Branch",
+    "userStatusUpdated": "User status updated successfully"
   },
   "toast": {
     "success": "Success",
