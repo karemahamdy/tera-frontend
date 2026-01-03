@@ -20,7 +20,7 @@ export interface GroupRoleTableRow {
   roleId: string; 
   groupId: string;
   roleName: string;
-  accessScope: string;
+  groupAccessScope: string;
   branches: string;
 }
 
@@ -33,5 +33,5 @@ export interface GetRolesToGroup {
   groupId: string;
   roleId: string[];
   branchIds?: string[];
-  accessScope: number;
+  groupAccessScope: number;
 }

@@ -6,6 +6,7 @@ import type {
   GetRolesToGroup
 } from "../types/userGroupRoles";
 import { toastService } from "@/app/services/toastService";
+import { useRouter } from "vue-router";
 
 export function useGroupRoles() {
 
@@ -14,6 +15,7 @@ export function useGroupRoles() {
   const error = ref<string | null>(null);
   const validationErrors = ref<Record<string, string[]>>({});
   const branches = ref<any[]>([]);
+  const router = useRouter();
 
   const fetchRolesByGroupId = async (groupId: string) => {
     try {
@@ -56,6 +58,7 @@ export function useGroupRoles() {
     loading.value = true;
     await GroupRolesService.createRolesToGroup(payload);
     toastService.success("Role assigned to group successfully");
+      router.push({ name: "ListGroupRoles" });
   } catch (err: any) {
     const errors =
       err?.response?.data?.errors || err?.response?.data?.validationErrors;
@@ -90,7 +93,7 @@ export function useGroupRoles() {
       roleId: role.roleId,
       groupId: role.groupId,
       roleName: role.roleName,
-      accessScope: role.groupAccessScope,
+      groupAccessScope: role.groupAccessScope,
       branches: role.branchNames.join(" ") || "Access all branches",
     }))
   );

@@ -4,12 +4,12 @@ import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useField, useForm  } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
 import { useGroupRoles } from "../composables/assignRolesToGroup";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import { useLookups } from "@/composables/useLookups";
 
 const { createRoleGroup } = useGroupRoles() ;
-const { getRolesLookups, getBranchLookups, branchesLookups, rolesLookups } = useLookups();
+const { getRolesLookups, getBranchLookups, getGroupLookups, groupsLookups, rolesLookups, branchesLookups } = useLookups();
 
 const route = useRoute();
 const isSubmitting = ref(false);
@@ -20,23 +20,32 @@ const { handleSubmit, errors } = useForm({
     name: "",
     role: [] as string[],
     roles: [] as string[],
-    accessScope: "branch",
+    groupAccessScope: "branch",
     groupId: route.params.id as string
   },
 });
+onMounted(async () => {
+  await getGroupLookups();
+  const currentGroup = groupsLookups.value.find(
+    (g: any) => g.value === route.params.id
+  );
+  if (currentGroup) {
+    name.value = currentGroup.label;    
+  }
+  });
 
 onMounted(() => {
-  Promise.all([getRolesLookups(), getBranchLookups()]);
+  Promise.all([getRolesLookups(), getBranchLookups(), getGroupLookups()]);
 });
 
 const { value: roleIds } = useField<string[]>("role");
 const { value: branchIds } = useField<string[]>("roles");
-const { value: accessScope } = useField<string>("accessScope");
+const { value: groupAccessScope } = useField<string>("groupAccessScope");
 const { value: name } = useField<string>("name");
-  watch(accessScope, (val) => {
+
+  watch(groupAccessScope, (val) => {
   if (val === 'global') branchIds.value = [];
 });
-const router = useRouter();
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
@@ -44,17 +53,13 @@ const onSubmit = handleSubmit(async (values) => {
   const payload: any = {
     groupId: values.groupId,
     roleId: values.role,
-    accessScope: values.accessScope === "global" ? 1 : 2,
+    groupAccessScope: values.groupAccessScope === "global" ? 1 : 2,
   };
-
-  if (values.accessScope === "branch") {
+  if (values.groupAccessScope === "branch") {
     payload.branchIds = values.roles;
   }
-
   await createRoleGroup(payload);
-  router.push({ name: "ListGroupRoles" });
 });
-
 </script>
 
 
@@ -76,7 +81,7 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ $t("userGroup.userGroup") }}
               </label>
 
-              <InputText v-model="name" placeholder="Finance Team" class="mt-1 w-full p-3 border rounded-lg"
+              <InputText v-model="name" placeholder="Finance Team" class="mt-1 w-full p-3 border rounded-lg" disabled
                 :class="{ 'border-danger-500': errors.name }" />
 
               <small v-if="errors.name" class="text-danger-500">
@@ -96,37 +101,37 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
             <div class="flex flex-col gap-4 w-full">
               <label class="text-gray-700 font-bold">
-                {{ $t("roles.accessScope") }}
+                {{ $t("roles.groupAccessScope") }}
               </label>
 
-              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="accessScope === 'global'
+              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="groupAccessScope === 'global'
                 ? 'border-primary-400 bg-primary-25'
-                : 'border-gray-300'" @click="accessScope = 'global'">
+                : 'border-gray-300'" @click="groupAccessScope = 'global'">
                 <div class="flex items-center gap-3">
-                  <RadioButton inputId="global" name="access" value="global" v-model="accessScope" />
+                  <RadioButton inputId="global" name="access" value="global" v-model="groupAccessScope" />
                   <label class="font-medium cursor-pointer">
                     {{ $t("roles.globalAccess") }}
                   </label>
                 </div>
               </div>
 
-              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="accessScope === 'branch'
+              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="groupAccessScope === 'branch'
                 ? 'border-primary-400 bg-primary-25'
-                : 'border-gray-300'" @click="accessScope = 'branch'">
+                : 'border-gray-300'" @click="groupAccessScope = 'branch'">
                 <div class="flex items-center gap-3">
-                  <RadioButton inputId="branch" name="access" value="branch" v-model="accessScope" />
+                  <RadioButton inputId="branch" name="access" value="branch" v-model="groupAccessScope" />
                   <label class="font-medium cursor-pointer">
                     {{ $t("roles.branchSpecific") }}
                   </label>
                 </div>
               </div>
 
-              <small v-if="errors.accessScope" class="text-danger-500">
-                {{ errors.accessScope }}
+              <small v-if="errors.groupAccessScope" class="text-danger-500">
+                {{ errors.groupAccessScope }}
               </small>
             </div>
         
-             <div v-if="accessScope === 'branch'">
+             <div v-if="groupAccessScope === 'branch'">
               <label class="text-gray-700 font-bold">{{ $t("roles.branches") }}</label>
               <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
