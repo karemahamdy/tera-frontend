@@ -1,95 +1,84 @@
 <script setup lang="ts">
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { useField, useForm } from "vee-validate";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import { useForm, useField } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
 import { useGroupRoles } from "../composables/assignRolesToGroup";
-import { useRoute } from "vue-router";
-import { computed, onMounted, ref, watch } from "vue";
 import { useLookups } from "@/composables/useLookups";
 
-const { createRoleGroup, getRoleToGroupById, updateRoleGroup } = useGroupRoles();
-const { getRolesLookups, getBranchLookups, getGroupLookups, groupsLookups, rolesLookups, branchesLookups } = useLookups();
-
 const route = useRoute();
-const isSubmitting = ref(false);
 const groupId = route.params.id as string;
 const roleId = route.params.roleId as string | undefined;
+const isSubmitting = ref(false);
 const isEditMode = computed(() => !!roleId);
 
-const { handleSubmit, errors, setValues } = useForm({
+const { getRoleToGroupById, createRoleGroup, updateRoleGroup } = useGroupRoles();
+const { getGroupLookups, getRolesLookups, getBranchLookups, groupsLookups, rolesLookups, branchesLookups } = useLookups();
+
+const { handleSubmit, setValues, errors } = useForm({
   validationSchema: assignRolesSchema,
   initialValues: {
     name: "",
-    role: [] as string[],
-    roles: [] as string[],
+    role: [],
+    roles: [],
     groupAccessScope: "branch",
-    groupId: route.params.id as string
+    groupId,
   },
 });
-onMounted(async () => {
-  await getGroupLookups();
-  const currentGroup = groupsLookups.value.find(
-    (g: any) => g.value === route.params.id
-  );
-  if (currentGroup) {
-    name.value = currentGroup.label;
-  }
-  if (isEditMode.value && roleId) {
-    if (isEditMode.value && roleId) {
-      const roleData = await getRoleToGroupById(groupId, roleId);
-      if (roleData) {
-        setValues({
-          name: currentGroup?.label || "",
-          role: [roleData.roleId],
-          roles: roleData.branchIds || [],
-          groupAccessScope: roleData.groupAccessScope === 1 ? "global" : "branch",
-          groupId,
-        });
-      }
-    }
-  }
-});
 
-onMounted(() => {
-  Promise.all([getRolesLookups(), getBranchLookups()]);
-});
-
+const { value: name } = useField<string>("name");
 const { value: roleIds } = useField<string[]>("role");
 const { value: branchIds } = useField<string[]>("roles");
 const { value: groupAccessScope } = useField<string>("groupAccessScope");
-const { value: name } = useField<string>("name");
+
+onMounted(async () => {
+  await Promise.all([
+    getGroupLookups(),
+    getRolesLookups(),
+    getBranchLookups(),
+  ]);
+
+  name.value = currentGroupName.value;
+  await loadEditData();
+});
+
+const currentGroupName = computed(() =>
+  groupsLookups.value.find((group: any) => group.value === groupId)?.label || ""
+);
 
 watch(groupAccessScope, (val) => {
-  if (val === 'global') branchIds.value = [];
+  if (val === "global") branchIds.value = [];
 });
+
+const loadEditData = async () => {
+  if (!isEditMode.value || !roleId) return;
+
+  const roleData = await getRoleToGroupById(groupId, roleId);
+  if (!roleData) return;
+
+  setValues({
+    name: currentGroupName.value,
+    role: [roleData.roleId],
+    roles: roleData.branchIds || [],
+    groupAccessScope: roleData.groupAccessScope === 1 ? "global" : "branch",
+    groupId,
+  });
+};
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
-
   const payload: any = {
     groupId: values.groupId,
-    roleId: values.role,
+    roleId: isEditMode.value ? roleId : values.role,
     groupAccessScope: values.groupAccessScope === "global" ? 1 : 2,
+    ...(values.groupAccessScope === "branch" && { branchIds: values.roles }),
   };
-
-  if (values.groupAccessScope === "branch") {
-    payload.branchIds = values.roles;
-  }
-
-  if (isEditMode.value && roleId) {
-    payload.roleId = roleId;
-    await updateRoleGroup(payload);
-  } else {
-
-    await createRoleGroup(payload);
-  }
-
+  isEditMode.value
+    ? await updateRoleGroup(payload)
+    : await createRoleGroup(payload);
   isSubmitting.value = false;
 });
-
 </script>
-
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
@@ -108,10 +97,8 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">
                 {{ $t("userGroup.userGroup") }}
               </label>
-
               <InputText v-model="name" placeholder="Finance Team" class="mt-1 w-full p-3 border rounded-lg" disabled
                 :class="{ 'border-danger-500': errors.name }" />
-
               <small v-if="errors.name" class="text-danger-500">
                 {{ errors.name }}
               </small>
@@ -120,7 +107,6 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">
                 {{ $t("roles.roleName") }}
               </label>
-
               <MultiSelect v-model="roleIds" :options="rolesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
               <small v-if="errors.role" class="text-danger-500">
@@ -131,7 +117,6 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">
                 {{ $t("roles.accessScope") }}
               </label>
-
               <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="groupAccessScope === 'global'
                 ? 'border-primary-400 bg-primary-25'
                 : 'border-gray-300'" @click="groupAccessScope = 'global'">
@@ -142,7 +127,6 @@ const onSubmit = handleSubmit(async (values) => {
                   </label>
                 </div>
               </div>
-
               <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="groupAccessScope === 'branch'
                 ? 'border-primary-400 bg-primary-25'
                 : 'border-gray-300'" @click="groupAccessScope = 'branch'">
@@ -153,12 +137,10 @@ const onSubmit = handleSubmit(async (values) => {
                   </label>
                 </div>
               </div>
-
               <small v-if="errors.groupAccessScope" class="text-danger-500">
                 {{ errors.groupAccessScope }}
               </small>
             </div>
-
             <div v-if="groupAccessScope === 'branch'">
               <label class="text-gray-700 font-bold">{{ $t("roles.branches") }}</label>
               <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
