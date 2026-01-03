@@ -1,14 +1,10 @@
 <script setup>
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import PageHeader from "@/sharedComponents/PageHeader.vue";
-import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
-import { useFilters } from "@/composables/useFilters";
+import { useAudit } from "../composables/useAudit";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -16,57 +12,11 @@ const loading = ref(false);
 const showDeleteDialog = ref(false);
 const rowToDelete = ref(null);
 
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                id: 1,
-                Created: 'Oct 9, 2025 09:30 AM',
-                user: 'Mick Taylor',
-                action: 'Create',
-                module: "Finance",
-                screen: 'User Profile',
-                entity: 'EntityUnit',
-                branch: 'Cairo',
-                transactionID: 'T007',
-            },
-            {
-                id: 2,
-                Created: 'Oct 9, 2025 09:30 AM',
-                user: 'Mick Taylor',
-                action: 'Update',
-                module: "Finance",
-                screen: 'User Profile',
-                entity: 'EntityUnit',
-                branch: 'Cairo',
-                transactionID: 'T007',
-            },
-            {
-                id: 3,
-                Created: 'Oct 9, 2025 09:30 AM',
-                user: 'Mick Taylor',
-                action: 'Delete',
-                module: "Finance",
-                screen: 'User Profile',
-                entity: 'EntityUnit',
-                branch: 'Cairo',
-                transactionID: 'T007',
-            },
-            {
-                id: 4,
-                Created: 'Oct 9, 2025 09:30 AM',
-                user: 'Mick Taylor',
-                action: 'Assign',
-                module: "Finance",
-                screen: 'User Profile',
-                entity: 'EntityUnit',
-                branch: 'Cairo',
-                transactionID: 'T007',
-            },
-        ]
-    },
+const { fetchAuditLogs, filteredTableData, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useAudit();
+onMounted(() => {
+    fetchAuditLogs();
 });
+
 const filtersOperation = [
     {
         placeholder: "auditLog.allUsers",
@@ -90,10 +40,6 @@ const filtersOperation = [
         ],
     },
 ];
-
-const emit = defineEmits(['search']);
-const { onSearch, filteredData } = useSearch(props.data);
-const { filters, filteredData: filteredByFilters, onFilterChange } = useFilters(props.data, filtersOperation);
 
 const columns = computed(() => {
     const Columns = [
@@ -124,7 +70,7 @@ const columns = computed(() => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading">
+                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading">
                     <template #col-action="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <Badge v-if="data.action == 'Create'" :value="data.action" severity="success" />
