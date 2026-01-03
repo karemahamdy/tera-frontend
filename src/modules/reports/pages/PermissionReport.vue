@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import { useFilters } from "@/composables/useFilters";
 import ReportFilters from "../components/ReportFilters.vue";
 import { useI18n } from "vue-i18n";
 // import DynamicTable from "@/sharedComponents/DynamicTable.vue";
-import { AccordionPanel } from "primevue";
+
 const { t } = useI18n();
 const data = ref([
   {
@@ -143,6 +143,12 @@ const columns = computed(() => {
     { field: 'lastLogin', header: t('reports.lastLogin'), type: "date" },
   ];
   return Columns;
+});
+
+onMounted(() => {
+  // loadData();
+  console.log(filteredByFilters, columns.value);
+  
 });
 </script>
 <template>
