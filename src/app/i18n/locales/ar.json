@@ -279,6 +279,7 @@
     "userUpdated": "تم تحديث المستخدم بنجاح",
     "userDeleted": "تم حذف المستخدم بنجاح",
     "global": "عام",
-    "branch": "فرع"
+    "branch": "فرع",
+    "userStatusUpdated": "تم تحديث حالة المستخدم بنجاح"
   }
 }

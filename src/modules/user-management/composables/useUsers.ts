@@ -75,6 +75,19 @@ export function useUsers() {
     }
   };
 
+  const changeUserStatus = async (id: string, isActive: boolean) => {
+    loading.value = true;
+    try {
+      await UserService.changeStatus(id, isActive);
+      toastService.success(t("users.userStatusUpdated"));
+      await getList();
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const onFilterChange = (filter: { filter: { field: string }; value: string }) => {
     const field = filter.filter.field;
     const value = filter.value;
@@ -100,6 +113,7 @@ export function useUsers() {
     search,
     sort,
     deleteItem,
-    onFilterChange
+    onFilterChange,
+    changeUserStatus
   };
 }
