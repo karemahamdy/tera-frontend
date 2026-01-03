@@ -2,8 +2,8 @@ import { computed, ref } from "vue";
 import { GroupRolesService } from "../services/userGroup.service";
 import type {
   GroupRole,
-  RemoveRoleFromGroupRequest,
-  UpdateAssignRolesToGroupRequest,
+  RemoveRoleFromGroup,
+  UpdateRolesToGroup,
 } from "../types/userGroupRoles";
 import { toastService } from "@/app/services/toastService";
 
@@ -34,7 +34,7 @@ export function useGroupRoles() {
     }
 };
 
-  const deleteRoleFromGroup = async (payload: RemoveRoleFromGroupRequest) => {
+  const deleteRoleFromGroup = async (payload: RemoveRoleFromGroup) => {
     try {
       loading.value = true;
       await GroupRolesService.removeRoleFromGroup(payload);
@@ -53,7 +53,7 @@ export function useGroupRoles() {
 };
 
   const updateRoleInGroup = async (
-    payload: UpdateAssignRolesToGroupRequest
+    payload: UpdateRolesToGroup
   ) => {
     try {
       loading.value = true;

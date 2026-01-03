@@ -24,12 +24,12 @@ export interface GroupRoleTableRow {
   branches: string;
 }
 
-export interface RemoveRoleFromGroupRequest {
+export interface RemoveRoleFromGroup {
   groupId: string;
   roleId: string;
 }
 
-export interface UpdateAssignRolesToGroupRequest {
+export interface UpdateRolesToGroup {
   groupId: string;
   roleId: string;
   accessScope: number;
