@@ -5,7 +5,7 @@ import { useField, useForm  } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
 import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useRoute } from "vue-router";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useLookups } from "@/composables/useLookups";
 
 const { createRoleGroup } = useGroupRoles() ;
@@ -13,6 +13,9 @@ const { getRolesLookups, getBranchLookups, getGroupLookups, groupsLookups, roles
 
 const route = useRoute();
 const isSubmitting = ref(false);
+const groupId = route.params.id as string;
+const roleId = route.params.roleId as string | undefined;
+const isEditMode = computed(() => !!roleId);
 
 const { handleSubmit, errors } = useForm({
   validationSchema: assignRolesSchema,
@@ -32,11 +35,24 @@ onMounted(async () => {
   if (currentGroup) {
     name.value = currentGroup.label;    
   }
+  // if (isEditMode.value && roleId) {
+  //   const { getRoleToGroupById } = useGroupRoles();
+  //   const roleData = await getRoleToGroupById(groupId, roleId);
+  //   if (roleData) {
+  //     const groupAccessScope = roleData.groupAccessScope === 1 ? 'global' : 'branch';
+  //     groupAccessScope.value = groupAccessScope;
+  //     roleIds.value = [roleData.roleId];
+  //     if (groupAccessScope === 'branch') {
+  //       branchIds.value = roleData.branchIds || [];
+  //     }
+  //   }
+  // }
   });
 
 onMounted(() => {
-  Promise.all([getRolesLookups(), getBranchLookups(), getGroupLookups()]);
+  Promise.all([getRolesLookups(), getBranchLookups()]);
 });
+
 
 const { value: roleIds } = useField<string[]>("role");
 const { value: branchIds } = useField<string[]>("roles");
@@ -101,7 +117,7 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
             <div class="flex flex-col gap-4 w-full">
               <label class="text-gray-700 font-bold">
-                {{ $t("roles.groupAccessScope") }}
+                {{ $t("roles.accessScope") }}
               </label>
 
               <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="groupAccessScope === 'global'

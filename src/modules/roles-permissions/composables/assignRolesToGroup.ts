@@ -71,6 +71,23 @@ export function useGroupRoles() {
   }
 };
 
+  const getRoleToGroupById = async (groupId: string, roleId: string) => {
+    try {
+      loading.value = true;
+      const resp = await GroupRolesService.getRoleToGroupById(groupId, roleId);
+      roles.value = resp.data;
+      toastService.success("Role fetched from group successfully");
+    } catch (err: any) {
+      const errors =
+        err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === "object") {
+        validationErrors.value = errors;
+      }
+      toastService.error(err);
+    } finally {
+      loading.value = false;
+    }
+  };
   const updateRoleGroup = async (payload: GetRolesToGroup) => {
     try {
       loading.value = true;
@@ -107,6 +124,7 @@ export function useGroupRoles() {
     fetchRolesByGroupId,
     deleteRoleFromGroup,
     updateRoleGroup,
-   createRoleGroup
+   createRoleGroup,
+    getRoleToGroupById,
   };
 }

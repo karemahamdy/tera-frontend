@@ -17,11 +17,14 @@ export const GroupRolesService = {
   async createRolesToGroup(payload: GetRolesToGroup) {
     return axiosWrapper.post('/Group/AssignRolesToGroup', payload);
   },
-  updateAssignRolesToGroup(payload: GetRolesToGroup) {
-    return axiosWrapper.put(`/Group/UpdateAssignRolesToGroup`, payload);
-  },
+  getRoleToGroupById(groupId: string, roleId: string) {
+  return axiosWrapper.get(
+    `/Group/GetRoleAssignedToGroupById/${groupId}/${roleId}`
+  );
+},
+
   async updateRolesToGroup(payload: any) {
-    return axiosWrapper.post('/Group/AssignRolesToGroup', payload);
+    return axiosWrapper.put('/Group/AssignRolesToGroup', payload);
   },
 
 };
