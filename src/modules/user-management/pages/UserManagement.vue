@@ -165,7 +165,7 @@ const columns = computed(() => {
       header: t("usersManagement.department"),
       sortable: true,
     },
-    { field: "isGlobal", header: t("roles.accessScope"), sortable: true },
+    { field: "accessScope", header: t("roles.accessScope"), sortable: true },
     { field: "isActive", header: t("status"), sortable: true },
     {
       field: "lastLogin",
@@ -267,9 +267,9 @@ onMounted(() => {
           @order-change="sort"
           lazy
         >
-          <template v-slot:["col-isGlobal"]="{ data }">
+          <template v-slot:["col-accessScope"]="{ data }">
               <div>
-                {{ data.isGlobal ? $t('users.global') : $t('users.branch') }}
+                {{ data.accessScope === 'global' ? $t('users.global') : $t('users.branch') }}
               </div>
           </template>
           <template v-slot:["col-fullName"]="{ data }">

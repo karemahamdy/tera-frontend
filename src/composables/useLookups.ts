@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type { Lookups, LookupsOption } from "../app/types/lookups";
+import type { LookupsOption } from "../app/types/lookups";
 import { toastService } from "@/app/services/toastService";
 import { LookupsService } from "@/app/services/lookups.service";
 
