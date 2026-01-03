@@ -69,20 +69,20 @@ const props = defineProps({
 });
 const filtersOperation = [
     {
-        placeholder: t("auditLog.allUsers"),
+        placeholder: "auditLog.allUsers",
         value: null,
         field: "allUsers",
         options: [
-            { label: t("auditLog.allUsers"), value: null },
+            { label: "auditLog.allUsers", value: null },
             { label: "Mick Taylor", value: "Mick Taylor" },
         ],
     },
     {
-        placeholder: t("auditLog.allActions"),
+        placeholder: "auditLog.allActions",
         value: null,
         field: "allActions",
         options: [
-            { label: t("auditLog.allActions"), value: null },
+            { label: "auditLog.allActions", value: null },
             { label: "Create", value: "Create" },
             { label: "Update", value: "Update" },
             { label: "Delete", value: "Delete" },

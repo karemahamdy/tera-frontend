@@ -72,8 +72,8 @@ const columns = computed(() => {
 const firstRecord = computed(() => {
   return list.value.length === 0
     ? 0
-    : (pagination.value["PagenationDto.PageIndex"] - 1) *
-        pagination.value["PagenationDto.PageSize"] +
+    : (pagination.value["PageIndex"] - 1) *
+        pagination.value["PageSize"] +
         1;
 });
 
@@ -153,7 +153,7 @@ onMounted(() => {
           :showDelete="true"
           :first="firstRecord"
           :last="lastRecord"
-          :rows="pagination['PagenationDto.PageSize']"
+          :rows="pagination['PageSize']"
           :totalRecords="pagination.total"
           lazy
         >

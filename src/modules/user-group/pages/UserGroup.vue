@@ -21,6 +21,8 @@ const {
   pageIndex,
   pageSize,
   totalCount,
+  onSearch,
+  onSort,
   setPage,
 } = useGroups();
 
@@ -168,6 +170,7 @@ const addUserGroup = () => {
           :mainBtn="true"
           mainBtnText="userGroup.addUserGroup"
           :onMainBtnClick="addUserGroup"
+          @search="onSearch"
         />
       </template>
 
@@ -185,6 +188,8 @@ const addUserGroup = () => {
           :last="lastRecord"
           :rows="pageSize"
           :totalRecords="totalCount"
+           @search="onSearch"
+            @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" 
           lazy
         >
           <template #col-GroupName="{ data }">

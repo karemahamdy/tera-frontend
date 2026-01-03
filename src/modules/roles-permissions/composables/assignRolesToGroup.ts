@@ -1,148 +1,120 @@
-import { ref, watch, computed } from "vue";
-import { GroupService } from "../../user-group/services/group.service";
-import type { GroupApiItem, GroupTableItem, AddGroup } from "../../user-group/types/groups";
-import { toastService } from "../../../app/services/toastService";
+import { computed, ref } from "vue";
+import { GroupRolesService } from "../services/userGroup.service";
+import type {
+  GroupRole,
+  RemoveRoleFromGroup,
+  UpdateRolesToGroup,
+} from "../types/userGroupRoles";
+import { toastService } from "@/app/services/toastService";
 
-export function useGroups() {
+export function useGroupRoles() {
   const loading = ref(false);
-  const apiGroups = ref<GroupApiItem[]>([]);
-  const tableData = ref<GroupTableItem[]>([]);
+  const roles = ref<GroupRole[]>([]);
+  const roleOptions = ref<{ id: string; name: string }[]>([]);
+  const branchOptions = ref<{ id: string; name: string }[]>([]);
+  const error = ref<string | null>(null);
+  const validationErrors = ref<Record<string, string[]>>({});
+  const branches = ref<any[]>([]);
 
-  const pageIndex = ref(1);
-  const pageSize = ref(10);
-  const totalCount = ref(0);
-  const totalPages = ref(1)
+  const fetchRolesByGroupId = async (groupId: string) => {
+    try {
+      loading.value = true;
+      const resp = await GroupRolesService.getRolesByGroupId(groupId);
+      roles.value = resp.data;
+      toastService.success("Role fetched from group successfully");
+    }  catch (err: any) {
+      const errors =
+        err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === "object") {
+        validationErrors.value = errors;
+      }
+      toastService.error(err);
+  }finally {
+      loading.value = false;
+    }
+};
 
-  const fetchGroups = async (page = 1) => {
+  const deleteRoleFromGroup = async (payload: RemoveRoleFromGroup) => {
+    try {
+      loading.value = true;
+      await GroupRolesService.removeRoleFromGroup(payload);
+      roles.value = roles.value.filter((r) => r.roleId !== payload.roleId);
+      toastService.success("Role removed from group successfully");
+    } catch (err: any) {
+      const errors =
+        err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === "object") {
+        validationErrors.value = errors;
+      }
+      toastService.error(err);
+  }finally {
+      loading.value = false;
+    }
+};
+
+  const updateRoleInGroup = async (
+    payload: UpdateRolesToGroup
+  ) => {
+    try {
+      loading.value = true;
+      await GroupRolesService.updateAssignRolesToGroup(payload);
+      toastService.success("Role updated in group successfully");
+    } catch (err: any) {
+      const errors =
+        err?.response?.data?.errors || err?.response?.data?.validationErrors;
+      if (errors && typeof errors === "object") {
+        validationErrors.value = errors;
+      }
+      toastService.error(err);
+  }finally {
+      loading.value = false;
+    }
+};
+
+ const fetchLookups = async () => {
     loading.value = true;
     try {
-      const response: any = await GroupService.getAll(page, pageSize.value);
-      const payload = response && response.data ? response.data : response;
-      apiGroups.value = payload.items ?? [];
-      pageIndex.value = payload.pageIndex ?? page;
-      pageSize.value = payload.pageSize ?? pageSize.value;
-      totalCount.value = payload.totalCount ?? 0;
-      totalPages.value = payload.totalPages ?? 1;
-    } catch (err) {
-      console.error("Error fetching groups:", err);
-      toastService.error("Failed to fetch groups");
+      const branchResp = await GroupRolesService.getBranchLookups();
+      branchOptions.value = (branchResp || []).map((b: any) => {
+        const rawId = b.id ?? b.branchId ?? b.value ?? b.branchCode ?? b;
+        return { id: String(rawId), name: b.name ?? b.label ?? b.branchName ?? String(b) };
+      });
+      branches.value = branchOptions.value;
+
+      const rolesResp = await GroupRolesService.getRolesLookups();
+      roleOptions.value = (rolesResp || []).map((r: any) => {
+        const rawId = r.id ?? r.roleId ?? r.value ?? r.roleCode ?? r;
+        return { id: String(rawId), name: r.name ?? r.label ?? r.roleName ?? String(r) };
+      });
+    } catch (err: any) {
+      error.value = err.message || "Error fetching lookups";
     } finally {
       loading.value = false;
     }
   };
 
-  const fetchGroupById = async (id: string): Promise<GroupApiItem | null> => {
-    loading.value = true;
-    try {
-      const group = await GroupService.getById(id);
-      return group;
-    } catch (err) {
-      console.error("Error fetching group:", err);
-      toastService.error("Failed to fetch group details");
-      return null;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-   const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await GroupService.toggleActive(id, isActive);
-      const row = tableData.value.find(row => row.id === id);
-      if (row) row.isActive = isActive;
-      toastService.success(`Group is now ${isActive ? "Active" : "Inactive"}`);
-    } catch (err) {
-      console.error("Error toggling group status:", err);
-      toastService.error("Failed to update group status");
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  watch(
-    apiGroups,
-    (groups) => { 
-      tableData.value = groups.map((group) => ({
-        id: group.id,
-        GroupName: group.name,
-        Description: group.description ?? "-",
-        AssignedRoles: group.rolesAssingedToGroup.length
-          ? group.rolesAssingedToGroup.map((group) => group.name)
-          : "-",
-        userAssigned: group.userAssigned,
-        createAt: group.createAt,
-        isActive: group.isActive,
-      }));
-    },
-    { immediate: true }
+  const tableData = computed(() =>
+    roles.value.map((role) => ({
+      roleId: role.roleId,
+      groupId: role.groupId,
+      roleName: role.roleName,
+      accessScope: role.groupAccessScope,
+      branches: role.branchNames.join(" ") || "Access all branches",
+    }))
   );
 
-  const filteredTableData = computed(() =>
-    tableData.value.map((row) => ({ ...row }))
-  );
-
-  const createGroup = async (payload: AddGroup) => {
-    loading.value = true;
-    try {
-      const response = await GroupService.create(payload);
-      toastService.success("Group created successfully");
-      await fetchGroups();
-      return response;
-    } catch (err) {
-      console.error("Error creating group:", err);
-      toastService.error("Failed to create group");
-      throw err;
-    } finally {
-      loading.value = false;
-    }
+  return {
+    loading,
+    roles,
+    branches,
+    roleOptions,
+    branchOptions,
+    error,
+    tableData,
+    fetchRolesByGroupId,
+    deleteRoleFromGroup,
+    updateRoleInGroup,
+    fetchLookups,
   };
-
-  const updateGroup = async (id: string, payload: AddGroup) => {
-    loading.value = true;
-    try {
-      const response = await GroupService.update(id, payload);
-      toastService.success("Group updated successfully");
-      await fetchGroups();
-      return response;
-    } catch (err) {
-      console.error("Error updating group:", err);
-      toastService.error("Failed to update group" , );
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const deleteGroup = async (id: string) => {
-    loading.value = true;
-    try {
-      await GroupService.delete(id);
-      toastService.success("Group deleted successfully");
-      apiGroups.value = apiGroups.value.filter((group) => group.id !== id);
-    } catch (err) {
-      console.error("Error deleting group:", err);
-      toastService.error("Failed to delete group");
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-return {
-  loading,
-  fetchGroups,
-  fetchGroupById,
-  filteredTableData,
-  createGroup,
-  updateGroup,
-  deleteGroup,
-  toggleActive,
-  pageIndex,
-  pageSize,
-  totalCount,
-  totalPages,
-  setPage: (page: number) => fetchGroups(page),
 }
-}
+

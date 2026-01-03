@@ -3,30 +3,45 @@ import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
 import { useForm } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
+import { useGroupRoles } from "../composables/assignRolesToGroup";
+import { useRoute, useRouter } from "vue-router";
+import { onMounted } from "vue";
 
-const options = [
-  { label: "Admin", value: "admin" },
-  { label: "Editor", value: "editor" },
-  { label: "Viewer", value: "viewer" },
-];
+const groupRoles = useGroupRoles() as any;
+const { roleOptions, branches, assignRoles, fetchLookups } = groupRoles;
+const route = useRoute();
 
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: assignRolesSchema,
   initialValues: {
     name: "",
-    role: null,
-    roles: null,
+    role: [] as string[],
+    roles: [] as string[],
     accessScope: "branch",
+    groupId: route.params.id as string
   },
 });
 
-const [name] = defineField("name");
-const [role] = defineField("role");
-const [roles] = defineField("roles");
-const [accessScope] = defineField("accessScope");
+onMounted(fetchLookups);
 
-const onSubmit = handleSubmit((values) => {
-  console.log("Assign Roles Payload", values);
+const [roleIds] = defineField("role");
+const [branchIds] = defineField("roles");
+const [accessScope] = defineField("accessScope");
+const [name] = defineField("name");
+const router = useRouter();
+
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    await assignRoles({
+      groupId: values.groupId,
+      roleId: values.role,
+      branchIds: values.roles,
+      groupAccessScope: values.accessScope === "global" ? "0" : "1"
+    });
+    router.push({ name: "UserGroup" });
+  } catch (err) {
+    console.error(err);
+  }
 });
 </script>
 
@@ -61,8 +76,8 @@ const onSubmit = handleSubmit((values) => {
                 {{ $t("roles.roleName") }}
               </label>
 
-              <MultiSelect v-model="role" :options="options" optionLabel="label" class="w-full mt-1"
-                :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
+              <MultiSelect v-model="roleIds" :options="roleOptions" optionLabel="name" optionValue="id"
+                class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
             </div>
             <div class="flex flex-col gap-4 w-full">
               <label class="text-gray-700 font-bold">
@@ -97,12 +112,13 @@ const onSubmit = handleSubmit((values) => {
             </div>
             <div>
               <label class="text-gray-700 font-bold">
-              {{ $t("roles.branches") }}
+                {{ $t("roles.branches") }}
               </label>
 
-              <MultiSelect  v-model="roles" :options="options" optionLabel="label" class="w-full mt-1 rounded-2xl"
-                :class="{ 'p-invalid': errors.roles }" :placeholder="$t('branch.selectbranches')" />
-             
+              <MultiSelect v-model="branchIds" :options="branches" optionLabel="name" optionValue="id"
+                class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
+                :placeholder="$t('branch.selectbranches')" />
+
             </div>
           </form>
         </div>

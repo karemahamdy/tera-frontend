@@ -24,11 +24,11 @@ export function useRoles() {
   const loading = ref(false);
 
   const pagination = ref<Pagination>({
-    "PagenationDto.PageIndex": 1,
-    "PagenationDto.PageSize": 10,
-    "PagenationDto.SearchingWord": "",
-    "PagenationDto.OrderBy": "",
-    "PagenationDto.OrderDirection": "asc",
+    "PageIndex": 1,
+    "PageSize": 10,
+    "SearchingWord": "",
+    "OrderBy": "",
+    "OrderDirection": "asc",
     total: 0,
   });
 
@@ -46,13 +46,13 @@ export function useRoles() {
   };
 
   const changePage = async (page: number) => {
-    pagination.value["PagenationDto.PageIndex"] = page;
+    pagination.value["PageIndex"] = page;
     await getList();
   };
 
   const search = async (keyword: string) => {
-    pagination.value["PagenationDto.SearchingWord"] = keyword;
-    pagination.value["PagenationDto.PageIndex"] = 1;
+    pagination.value["SearchingWord"] = keyword;
+    pagination.value["PageIndex"] = 1;
     await getList();
   };
 
@@ -60,9 +60,9 @@ export function useRoles() {
     orderBy: string;
     direction: "asc" | "desc";
   }) => {
-    pagination.value["PagenationDto.OrderBy"] = orderData.orderBy;
-    pagination.value["PagenationDto.OrderDirection"] = orderData.direction;
-    pagination.value["PagenationDto.PageIndex"] = 1;
+    pagination.value["OrderBy"] = orderData.orderBy;
+    pagination.value["OrderDirection"] = orderData.direction;
+    pagination.value["PageIndex"] = 1;
     await getList();
   };
 
