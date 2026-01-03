@@ -9,7 +9,8 @@ import { onMounted } from "vue";
 import { useLookups } from "@/composables/useLookups";
 
 // const {  branches, assignRoles } = useGroupRoles() ;
-const { fetchLookups, roles, branches } = useLookups();
+const { getRolesLookups, getBranchLookups, branchesLookups, rolesLookups } = useLookups();
+
 const route = useRoute();
 
 const { handleSubmit, errors, defineField } = useForm({
@@ -23,7 +24,9 @@ const { handleSubmit, errors, defineField } = useForm({
   },
 });
 
-onMounted(fetchLookups);
+onMounted(() => {
+  Promise.all([getRolesLookups(), getBranchLookups()]);
+});
 
 const [roleIds] = defineField("role");
 const [branchIds] = defineField("roles");
@@ -77,7 +80,7 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ $t("roles.roleName") }}
               </label>
 
-              <MultiSelect v-model="roleIds" :options="roles" optionLabel="name" optionValue="id"
+              <MultiSelect v-model="roleIds" :options="rolesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
             </div>
             <div class="flex flex-col gap-4 w-full">
@@ -116,7 +119,7 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ $t("roles.branches") }}
               </label>
 
-              <MultiSelect v-model="branchIds" :options="branches" optionLabel="name" optionValue="id"
+              <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
                 :placeholder="$t('branch.selectbranches')" />
 

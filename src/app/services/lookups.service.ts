@@ -1,16 +1,23 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
+import type { Lookups } from "../types/lookups";
 
 export const LookupsService = {
-async getRolesLookups() {
-    const resp = await axiosWrapper.get<{ data: any }>('/Lookups/RolesLookups');
-    return resp.data; 
+  getGroupLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/GroupLookups");
   },
-  async getBranchLookups() {
-    const resp = await axiosWrapper.get<{ data: any }>('/Lookups/BranchLookups');
-    return resp.data; 
+  getBranchLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/BranchLookups");
   },
-   async getGroupLookups() {
-    const resp = await axiosWrapper.get<{ data: any }>('/Lookups/GroupLookups');
-    return resp.data; 
+  getEntityLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/EntityLookups");
+  },
+  getRolesLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/RolesLookups");
+  },
+  getScreenLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/ScreenLookups");
+  },
+  getDepartmentsLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/DepartmentsLookups");
   },
 };
