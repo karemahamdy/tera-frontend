@@ -47,3 +47,11 @@ export interface ListResponse {
 export interface ItemResponse {
   data: GroupApiItem;
 }
+
+export interface pageParams {
+  pageIndex: number;
+  pageSize?: number;
+  searchingWord?: string;
+  orderBy?: string;
+  orderDirection?: "asc" | "desc";
+}

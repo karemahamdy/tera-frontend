@@ -108,7 +108,6 @@ const addBranch = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                 <!-- @search="onSearch" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" -->
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy>

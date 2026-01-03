@@ -1,9 +1,9 @@
 export interface Pagination {
-  "PagenationDto.PageIndex": number;
-  "PagenationDto.PageSize": number;
-  "PagenationDto.SearchingWord"?: string;
-  "PagenationDto.OrderBy"?: string;
-  "PagenationDto.OrderDirection"?: "desc" | "asc";
+  "PageIndex": number;
+  "PageSize": number;
+  "SearchingWord"?: string;
+  "OrderBy"?: string;
+  "OrderDirection"?: "desc" | "asc";
   total: number;
 }
 

@@ -17,6 +17,12 @@ export const reportsRoutes = [
         component: () => import("./pages/UserGroupReport.vue"),
         meta: { permission: null },
       },
+      {
+        path: "/reports/permission-report",
+        name: "PermissionReport",
+        component: () => import("./pages/PermissionReport.vue"),
+        meta: { permission: null },
+      },
     ],
   },
 ];

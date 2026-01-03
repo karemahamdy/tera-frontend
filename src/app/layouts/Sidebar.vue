@@ -25,7 +25,6 @@ const navItems: NavItem[] = [
       { label: "Branch Management", route: "/branch-management" },
       { label: "Roles Management", route: "/roles-permissions" },
       { label: "Active Sessions", route: "/active-sessions" },
-      { label: "Security Settings", route: "/roles" },
       { label: "Audit Log", route: "/audit-log" },
     ],
   },
@@ -42,6 +41,7 @@ const navItems: NavItem[] = [
     children: [
       { label: "User Report", route: "/reports/user" },
       { label: "User Group Report", route: "/reports/user-group" },
+      { label: "Permission Report", route: "/reports/permission-report" },
     ],
   },
 ];

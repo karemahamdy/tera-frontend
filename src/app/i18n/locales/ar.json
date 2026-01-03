@@ -15,6 +15,7 @@
   "Adminstration": "الإدارة",
   "showing": "عرض",
   "of": "من",
+  "Name/Module/Screen": "الاسم / الوحدة / الشاشة",
   "records": "العناصر",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
@@ -46,6 +47,7 @@
     "create": "إنشاء",
     "new": "جديد",
     "active": "نشط",
+    "inactive": "غير نشط",
     "resetPassword": "تغيير الرقم السري",
     "clearFilters": "مسح الفلاتر"
   },
@@ -89,6 +91,7 @@
     "deleteRoleConfirm": "هل أنت متأكد أنك تريد حذف المستخدم ",
     "addUser": "اضافة مستخدم",
     "user": "المستخدم",
+    "userId": "معرف المستخدم",
     "department": "القسم",
     "lastLogin": "اخر دخول",
     "allGroups": "كل الاقسام ",
@@ -253,7 +256,10 @@
     "assignedRoles": "الأدوار المعينة",
     "userCount": "عدد المستخدمين",
     "created": "تم الإنشاء",
-    "allRoles": "جميع الأدوار"
+    "allRoles": "جميع الأدوار",
+    "allModule": "جميع الوحدات",
+    "permission": "الصلاحية",
+    "allScreens": "جميع الشاشات"
   },
   "licenseInfo": {
     "title": "معلومات الترخيص",

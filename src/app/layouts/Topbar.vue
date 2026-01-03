@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useUserStore } from '@/app/store/useUserStore';
+import Notification from "@/sharedComponents/Notification.vue";
 const userStore = useUserStore();
 
 // Props
@@ -40,17 +41,18 @@ function switchLanguage() {
       </div>
 
       <div class="flex items-center gap-3">
-        <Dropdown
-            v-model="selectedOption"
-            :options="options"
-            optionLabel="label"
-            :placeholder="$t('Select Branches')"
-            class="w-48"
-          />
+        <Dropdown v-model="selectedOption" :options="options" optionLabel="label" :placeholder="$t('Select Branches')"
+          class="w-48" />
 
-        <button class="p-2 text-gray-500 cursor-pointer" @click="switchLanguage">
+        <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full" @click="switchLanguage">
           <VsxIcon iconName="Translate" :size="24" type="linear" />
         </button>
+
+        <!-- <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full relative">
+          <VsxIcon iconName="Notification" :size="24" type="linear" />
+          <span v-if="hasNotification" class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#FC9D0F] rounded-full"></span>
+        </button> -->
+        <Notification/>
 
         <div class="flex items-center gap-2">
           <Avatar image="https://i.pravatar.cc/40" shape="circle" />

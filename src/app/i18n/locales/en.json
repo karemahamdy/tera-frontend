@@ -15,6 +15,7 @@
   "Adminstration": "Administration",
   "showing": "Showing",
   "of": "of",
+  "Name/Module/Screen": "Name/Module/Screen",
   "records": "Records",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
@@ -40,6 +41,7 @@
     "create": "Create",
     "new": "New",
     "active": "Active",
+    "inactive": "Inactive",
     "resetPassword": "Reset Password",
     "clearFilters": "Clear Filters"
   },
@@ -83,6 +85,7 @@
     "deleteRoleConfirm": "Are you sure you want to delete this user ?",
     "addUser": "Add User",
     "user": "User",
+    "userId": "User ID",
     "department": "Department",
     "lastLogin": "Last Login",
     "allGroups": "All Groups",
@@ -123,7 +126,8 @@
     "descriptionPlaceholder": "Describe the purpose of this group.. ",
     "createGroup": "Create Group",
     "userGroupCreated": "User Group created successfully",
-    "userGroupUpdated": "User Group updated successfully"
+    "userGroupUpdated": "User Group updated successfully",
+    "userGroupDeleted": "User Group deleted successfully"
   },
   "roles": {
     "roleName": "Role Name",
@@ -245,7 +249,10 @@
     "assignedRoles": "Assigned Roles",
     "userCount": "User Count",
     "created": "Created",
-    "allRoles": "All Roles"
+    "allRoles": "All Roles",
+    "allModule": "All Module",
+    "permission": "Permission",
+    "allScreens": "All Screens"
   },
   "licenseInfo": {
     "title": "License Information",

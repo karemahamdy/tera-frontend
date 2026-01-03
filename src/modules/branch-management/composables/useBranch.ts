@@ -17,7 +17,6 @@ const searchTerm = ref('');
 const orderBy = ref('');
 const orderDirection = ref<'asc' | 'desc'>('asc');
 
-
 const lastError = ref<string | null>(null);
 const validationErrors = ref<Record<string, string[]>>({});
 
