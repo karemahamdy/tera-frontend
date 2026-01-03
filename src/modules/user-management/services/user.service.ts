@@ -33,6 +33,9 @@ export const UserService = {
     return axiosWrapper.delete(`/Users/Delete/${id}`);
   },
 
+  changeStatus(id: string, isActive: boolean) {
+    return axiosWrapper.put(`/Users/Status/${id}`, { isActive });
+  },
 
   droplist() {
     return axiosWrapper.get<UserList[]>(`/Users`);
