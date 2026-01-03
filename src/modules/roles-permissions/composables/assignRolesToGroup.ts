@@ -50,22 +50,23 @@ export function useGroupRoles() {
       loading.value = false;
     }
   };
-  const createRoleGroup = async (payload: GetRolesToGroup) => {
-    try {
-      loading.value = true;
-      await GroupRolesService.updateAssignRolesToGroup(payload);
-      toastService.success("Role updated in group successfully");
-    } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
-      toastService.error(err);
-    } finally {
-      loading.value = false;
+  
+ const createRoleGroup = async (payload: GetRolesToGroup) => {
+  try {
+    loading.value = true;
+    await GroupRolesService.createRolesToGroup(payload);
+    toastService.success("Role assigned to group successfully");
+  } catch (err: any) {
+    const errors =
+      err?.response?.data?.errors || err?.response?.data?.validationErrors;
+    if (errors && typeof errors === "object") {
+      validationErrors.value = errors;
     }
-  };
+    toastService.error(err);
+  } finally {
+    loading.value = false;
+  }
+};
 
   const updateRoleGroup = async (payload: GetRolesToGroup) => {
     try {

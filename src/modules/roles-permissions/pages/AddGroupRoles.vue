@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { useForm } from "vee-validate";
+import { useField, useForm  } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
-// import { useGroupRoles } from "../composables/assignRolesToGroup";
+import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted } from "vue";
 import { useLookups } from "@/composables/useLookups";
 
-// const {  branches, assignRoles } = useGroupRoles() ;
+const { createRoleGroup  } = useGroupRoles() ;
 const { fetchLookups, roles, branches } = useLookups();
 const route = useRoute();
 
-const { handleSubmit, errors, defineField } = useForm({
+const { handleSubmit, errors } = useForm({
   validationSchema: assignRolesSchema,
   initialValues: {
     name: "",
@@ -25,24 +25,23 @@ const { handleSubmit, errors, defineField } = useForm({
 
 onMounted(fetchLookups);
 
-const [roleIds] = defineField("role");
-const [branchIds] = defineField("roles");
-const [accessScope] = defineField("accessScope");
-const [name] = defineField("name");
+const { value: roleIds } = useField<string[]>("role");
+const { value: branchIds } = useField<string[]>("roles");
+const { value: accessScope } = useField<string>("accessScope");
+const { value: name } = useField<string>("name");
 const router = useRouter();
 
 const onSubmit = handleSubmit(async (values) => {
-  try {
-    await assignRoles({
-      groupId: values.groupId,
-      roleId: values.role,
-      branchIds: values.roles,
-      groupAccessScope: values.accessScope === "global" ? "0" : "1"
-    });
-    router.push({ name: "UserGroup" });
-  } catch (err) {
-    console.error(err);
-  }
+  alert("SUBMITTED");
+  await createRoleGroup({
+    groupId: values.groupId,
+    roleId: values.role,           
+    branchIds: values.roles,       
+    accessScope: values.accessScope === "global" ?  "1": "2"
+  });
+console.log("test");
+console.log(values);
+  router.push({ name: "UserGroup" });
 });
 </script>
 
@@ -78,7 +77,7 @@ const onSubmit = handleSubmit(async (values) => {
               </label>
 
               <MultiSelect v-model="roleIds" :options="roles" optionLabel="name" optionValue="id"
-                class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
+                class="w-full mt-1" :placeholder="$t('select roles')" />
             </div>
             <div class="flex flex-col gap-4 w-full">
               <label class="text-gray-700 font-bold">
@@ -117,19 +116,17 @@ const onSubmit = handleSubmit(async (values) => {
               </label>
 
               <MultiSelect v-model="branchIds" :options="branches" optionLabel="name" optionValue="id"
-                class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
+                class="w-full mt-1 rounded-2xl" 
                 :placeholder="$t('branch.selectbranches')" />
 
             </div>
+             <div class="flex justify-between gap-4 mb-4 container px-20">
+          <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
+          <BaseButton label="Assign" variant="primary" block type="submit" />
+        </div>
           </form>
         </div>
-      </template>
-      <template #footer>
-        <div class="flex justify-between gap-4 mb-4 container px-20">
-          <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
-          <BaseButton label="Assign" variant="primary" block @click="onSubmit" />
-        </div>
-      </template>
+      </template>    
     </card>
   </div>
 </template>

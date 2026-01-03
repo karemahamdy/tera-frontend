@@ -30,8 +30,8 @@ export interface RemoveRoleFromGroup {
 }
 
 export interface GetRolesToGroup {
-  groupId: string[];
+  groupId: string;
   roleId: string[];
-  accessScope: number;
   branchIds: string[];
+  accessScope: string;
 }
