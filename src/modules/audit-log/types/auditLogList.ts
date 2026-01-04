@@ -1,16 +1,14 @@
-export interface Role {
-  id: string;
-  name: string;
+export interface AuditLog {
+  entityName: string;
+  userName: string | null;
+  branchNameAr: string | null;
+  branchNameEn: string | null;
+  actionType: number;
+  moduleName: string;
+  screenName: string;
+  transactionNumber: string;
+  timestamp: string;
 }
-
-export interface LogItem {
-  id: string;
-  name: string;
-  description: string;
-  logAccessScope: number;
-  rolesAssingedToLog: Role[];
-}
-
 export interface PaginatedResponse<T> {
   items: T[];
   pageIndex: number;
@@ -30,5 +28,5 @@ export interface ApiResponse<T> {
 }
 
 export type LogsListResponse = ApiResponse<
-  PaginatedResponse<LogItem>
+  PaginatedResponse<AuditLog>
 >;
