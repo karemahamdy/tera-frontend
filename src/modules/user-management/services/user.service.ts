@@ -36,7 +36,7 @@ export const UserService = {
   },
 
   changeStatus(id: string, isActive: boolean) {
-    return axiosWrapper.put(`/Users/Status/${id}`, { isActive });
+    return axiosWrapper.put(`/Users/Status/${id}?isActive=${isActive}`);
   },
 
   droplist() {
