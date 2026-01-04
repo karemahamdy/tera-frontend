@@ -57,7 +57,8 @@
     "fullNamePlaceholder": "Enter full name",
     "min_3": "Minimum 3 characters",
     "max_255": "Maximum 255 characters",
-    "passwordsMustMatch": "Passwords must match"
+    "passwordsMustMatch": "Passwords must match",
+    "invalidEmail": "Invalid email"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -101,13 +102,14 @@
     "addUserInfo": "Add a new user account with appropriate permissions.",
     "fullName": "Full Name",
     "username": "Username",
-    "internalID": "internal ID",
+    "internalID": "Internal ID",
     "accountType": "Account Type",
     "accountStatus": "Account Status",
     "uploadImage": "Upload Image",
     "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design",
     "departmentPlaceholder": "Select Department",
-    "userGroupPlaceholder": "Select User Group"
+    "userGroupPlaceholder": "Select User Group",
+    "editUsersManagement": "Edit Users Management"
   },
   "userGroup": {
     "groupName": "Group Name",

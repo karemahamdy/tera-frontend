@@ -7,53 +7,58 @@ import FileUpload from "@/sharedComponents/inputs/FileUpload.vue";
 import FormInput from "@/sharedComponents/inputs/FormInput.vue";
 import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
 import ToggleItem from "@/sharedComponents/inputs/ToggleItem.vue";
-import { userSchema } from "../validation/UserSchema";
+import { userSchema, userEditSchema } from "../validation/UserSchema";
 import { onMounted } from "vue";
 import { useLookups } from "@/composables/useLookups";
+import { useUsers } from "../composables/useUsers";
+import type { UserPayload } from "../types/User";
 
-const { groupsLookups, departmentsLookups, getDepartmentsLookups, getGroupLookups } = useLookups();
-
+const {
+  groupsLookups,
+  departmentsLookups,
+  getDepartmentsLookups,
+  getGroupLookups,
+} = useLookups();
+const { createUser, editUser, userData, getUserById } = useUsers();
 const props = defineProps<{
   mode: "edit" | "create";
 }>();
 
 const editMode = props.mode === "edit";
 const route = useRoute();
-
-const { handleSubmit, errors, defineField } = useForm({
-  validationSchema: userSchema,
-  initialValues: {
-    id: route.params.id ? String(route.params.id) : null,
-    fullName: "",
-    username: "",
-    email: "",
-    internalId: "",
-    password: "",
-    confirmPassword: "",
-    department: null,
-    group: null,
-    isAdmin: false,
-    isActive: true,
-  },
+const id = route.params.id ? String(route.params.id) : null
+const { handleSubmit, errors, defineField, setValues } = useForm({
+  validationSchema: editMode ? userEditSchema : userSchema,
 });
 
 const [fullName] = defineField("fullName");
-const [username] = defineField("username");
+const [userName] = defineField("userName");
 const [email] = defineField("email");
-const [internalId] = defineField("internalId");
+const [internalID] = defineField("internalID");
 const [password] = defineField("password");
 const [confirmPassword] = defineField("confirmPassword");
-const [department] = defineField("department");
-const [group] = defineField("group");
+const [departmentID] = defineField("departmentID");
+const [groupId] = defineField("groupId");
 const [isAdmin] = defineField("isAdmin");
 const [isActive] = defineField("isActive");
 
 onMounted(() => {
-    Promise.all([getGroupLookups(), getDepartmentsLookups()]);
+  Promise.all([getGroupLookups(), getDepartmentsLookups()]);
 });
 
 const onSubmit = handleSubmit((values) => {
-  console.log("User payload ", values);
+  if (editMode) {
+    editUser(id as string, values as UserPayload);
+  } else {
+    createUser(values as UserPayload);
+  }
+});
+
+onMounted(async () => {
+  if (editMode) {
+    await getUserById(id as string);
+    setValues(userData.value);
+  }
 });
 </script>
 
@@ -64,7 +69,7 @@ const onSubmit = handleSubmit((values) => {
       subtitle="usersManagement.usersManagement"
       :actionName="
         editMode
-          ? $t('usersManagement.editusersManagement')
+          ? $t('usersManagement.editUsersManagement')
           : $t('usersManagement.addNewUserManagement')
       "
     />
@@ -75,7 +80,7 @@ const onSubmit = handleSubmit((values) => {
           <h2 class="heading-title">
             {{
               editMode
-                ? $t("usersManagement.editusersManagement")
+                ? $t("usersManagement.editUsersManagement")
                 : $t("usersManagement.addNewUserManagement")
             }}
           </h2>
@@ -105,8 +110,8 @@ const onSubmit = handleSubmit((values) => {
             <FormInput
               class="w-1/2"
               :label="$t('usersManagement.username')"
-              v-model="username"
-              :error="errors.username"
+              v-model="userName"
+              :error="errors.userName"
               :placeholder="$t('enterUsername')"
             />
           </div>
@@ -123,13 +128,13 @@ const onSubmit = handleSubmit((values) => {
             <FormInput
               class="w-1/2"
               :label="$t('usersManagement.internalID')"
-              v-model="internalId"
-              :error="errors.internalId"
+              v-model="internalID"
+              :error="errors.internalID"
               :placeholder="$t('enterUserID')"
             />
           </div>
 
-          <div class="flex gap-8">
+          <div class="flex gap-8" v-if="!editMode">
             <FormInput
               class="w-1/2"
               type="password"
@@ -167,8 +172,9 @@ const onSubmit = handleSubmit((values) => {
               class="w-1/2"
               :label="$t('usersManagement.department')"
               :options="departmentsLookups"
-              v-model="department"
-              :error="errors.department"
+              v-model="departmentID"
+              :error="errors.departmentID"
+              optionValue="value"
               :placeholder="$t('usersManagement.departmentPlaceholder')"
             />
 
@@ -176,8 +182,9 @@ const onSubmit = handleSubmit((values) => {
               class="w-1/2"
               :label="$t('userGroup.userGroup')"
               :options="groupsLookups"
-              v-model="group"
-              :error="errors.group"
+              v-model="groupId"
+              :error="errors.groupId"
+              optionValue="value"
               :placeholder="$t('usersManagement.userGroupPlaceholder')"
             />
           </div>

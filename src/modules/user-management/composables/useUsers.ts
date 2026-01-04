@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import router from "@/app/router";
-import type { Pagination, UserListItem, UserPayload, PasswordResetForm } from "../types/User";
+import type { Pagination, UserListItem, UserPayload, PasswordResetForm, UserByID } from "../types/User";
 import { UserService } from "../services/user.service";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
@@ -9,6 +9,7 @@ export function useUsers() {
   const { t } = useI18n();
 
   const list = ref<UserListItem[]>([]);
+  const userData = ref<UserByID>({} as UserByID);
 
   const loading = ref(false);
 
@@ -92,13 +93,38 @@ export function useUsers() {
       loading.value = true;
       await UserService.create(data);
       toastService.success(t("users.userAdded"));
-      router.replace({ name: "RolesPermissions" });
+      router.replace({ name: "UserManagement" });
     } catch (error) {
       toastService.error(error as string);
     } finally {
       loading.value = false;
     }
   }
+
+  const editUser = async (id: string, data: UserPayload) => {
+    try {
+      loading.value = true;
+      await UserService.update(id, data);
+      toastService.success(t("users.userUpdated"));
+      router.replace({ name: "UserManagement" });
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  const getUserById = async (id: string) => {
+    loading.value = true;
+    try {
+      const res = await UserService.getById(id);
+      userData.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  };
 
   const onFilterChange = (filter: {
     filter: { field: string };
@@ -133,6 +159,7 @@ export function useUsers() {
 
   return {
     list,
+    userData,
     loading,
     pagination,
     getList,
@@ -143,6 +170,8 @@ export function useUsers() {
     onFilterChange,
     changeUserStatus,
     createUser,
-    resetPassword
+    resetPassword,
+    editUser,
+    getUserById
   };
 }
