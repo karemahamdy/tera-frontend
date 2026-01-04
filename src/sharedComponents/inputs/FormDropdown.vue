@@ -4,6 +4,7 @@ defineProps<{
   modelValue: any;
   options: any[];
   error?: string;
+  optionValue?: string;
  placeholder?: string
 }>();
 
@@ -17,6 +18,7 @@ defineEmits(["update:modelValue"]);
     <Dropdown
       class="w-full n"
       optionLabel="label"
+      :optionValue="optionValue"
       :options="options"
       :modelValue="modelValue"
        :placeholder="placeholder"

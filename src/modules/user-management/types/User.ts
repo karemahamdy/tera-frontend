@@ -15,30 +15,31 @@ export interface UserByID {
   userId: string;
   fullName: string;
   userName: string;
-  departmentID: string;
   email: string;
   isActive: boolean;
   isAdmin: boolean;
-  internalID: string;
-  entityId: string;
-  groupId: string;
   userProfileImageUrl: string;
+
+  internalID?: string | null;
+  departmentID?: string | null;
+  groupId?: string | null;
 }
 
 export interface UserPayload {
   id?: string;
   fullName: string;
   userName: string;
-  departmentID: string;
   email: string;
   isActive: boolean;
   isAdmin: boolean;
-  internalID: string;
-  groupId: string;
   password: string;
   confirmPassword: string;
-  isTemporaryPassword: boolean;
-  profileImage: string;
+  IsTemporaryPassword?: boolean;
+  ProfileImage?: string | null;
+
+  internalID?: string | null;
+  departmentID?: string | null;
+  groupId?: string | null;
 }
 
 export interface UserListItem {
