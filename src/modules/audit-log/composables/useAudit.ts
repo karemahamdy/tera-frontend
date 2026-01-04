@@ -20,16 +20,16 @@ export function useAudit() {
 
   const tableData = computed(() =>
     apiAuditLogs.value.map((log) => ({
-      Created: log.timestamp ? new Date(log.timestamp).toLocaleString() : "-",
+      Created: log.timestamp,
       user: log.userName ?? "-",
       action:
-        log.actionType === 1
+        log.actionType === 0
           ? "Create"
-          : log.actionType === 2
+          : log.actionType === 1
           ? "Update"
-          : log.actionType === 3
+          : log.actionType === 2
           ? "Delete"
-          : log.actionType === 4
+          : log.actionType === 3
           ? "Assign"
           : "-",
       module: log.moduleName ?? "-",

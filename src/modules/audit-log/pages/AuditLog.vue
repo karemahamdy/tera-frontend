@@ -5,6 +5,7 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAudit } from "../composables/useAudit";
+// import { useFilters } from "@/composables/useFilters";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -13,6 +14,8 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref(null);
 
 const { fetchAuditLogs, filteredTableData, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useAudit();
+// const { filters, filteredData: filteredByFilters, onFilterChange } = useFilters(filteredTableData);
+
 onMounted(() => {
     fetchAuditLogs();
 });
@@ -43,7 +46,7 @@ const filtersOperation = [
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'Created', header: t('auditLog.dateTime'), type: 'slot', sortable: true },
+        { field: 'Created', header: t('auditLog.dateTime'), type: 'dateTimeDetailed', sortable: true },
         { field: 'user', header: t('auditLog.user'), sortable: true },
         { field: 'action', header: t('auditLog.action'), sortable: true, type: 'slot' },
         { field: 'module', header: t('auditLog.module'), sortable: true },
@@ -70,7 +73,8 @@ const columns = computed(() => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading">
+                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" @page-change="setPage" @order-change="(payload) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy>
                     <template #col-action="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <Badge v-if="data.action == 'Create'" :value="data.action" severity="success" />
