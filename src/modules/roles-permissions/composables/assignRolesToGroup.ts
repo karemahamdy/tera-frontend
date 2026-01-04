@@ -60,8 +60,8 @@ export function useGroupRoles() {
   const getRoleToGroupById = async (groupId: string, roleId: string): Promise<GroupRole | null> => {
     try {
       loading.value = true;
-      const resp = await GroupRolesService.getRoleToGroupById(groupId, roleId);
-      currentRole.value = resp.data ;
+      const resp = await GroupRolesService.getRoleToGroupById(groupId, roleId) as { data: GroupRole };
+      currentRole.value = resp.data;
       return resp.data;
     } catch (err: any) {
       toastService.error(err);
