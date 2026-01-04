@@ -25,6 +25,22 @@ export interface UserByID {
   userProfileImageUrl: string;
 }
 
+export interface UserPayload {
+  id?: string;
+  fullName: string;
+  userName: string;
+  departmentID: string;
+  email: string;
+  isActive: boolean;
+  isAdmin: boolean;
+  internalID: string;
+  groupId: string;
+  password: string;
+  confirmPassword: string;
+  isTemporaryPassword: boolean;
+  profileImage: string;
+}
+
 export interface UserListItem {
   userId: string;
   fullName: string;
