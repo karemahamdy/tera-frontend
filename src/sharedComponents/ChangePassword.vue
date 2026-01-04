@@ -1,54 +1,70 @@
 <script setup>
 import { ref } from "vue";
 import BaseDialog from "./BaseDialog.vue";
+import { useForm } from "vee-validate";
+import * as yup from "yup";
+import FormInput from "@/sharedComponents/inputs/FormInput.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const visible = ref(false);
-const oldPass = ref("");
-const newPass = ref("");
-const confirmPass = ref("");
 
-const emit = defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible", "passwordChanged"]);
 
 const closeDialog = () => {
   emit("update:visible", false);
 };
 
-const confirmAction = () => {
-  console.log("save clicked");
+const userSchema = yup.object({
+  newPassword: yup.string().required(t("form.fieldRequired")).min(6),
+  confirmPassword: yup
+    .string()
+    .required(t("form.fieldRequired"))
+    .oneOf([yup.ref("newPassword")], t("form.passwordsMustMatch")),
+});
+
+const { handleSubmit, errors, defineField } = useForm({
+  validationSchema: userSchema,
+});
+
+const [newPassword] = defineField("newPassword");
+const [confirmPassword] = defineField("confirmPassword");
+
+const onSubmit = handleSubmit((values) => {
+  emit("passwordChanged", values);
   closeDialog();
-};
+});
 </script>
 
 <template>
-  <BaseDialog v-model:visible="visible"  :title="$t('auth.resetPassword')"
-  :subtitle="$t('auth.resetPasswordInfo')" @cancel="closeDialog" @confirm="confirmAction">
+  <BaseDialog
+    v-model:visible="visible"
+    @update:visible="closeDialog"
+    :title="$t('auth.resetPassword')"
+    :subtitle="$t('auth.resetPasswordInfo')"
+    @cancel="closeDialog"
+    @confirm="onSubmit"
+  >
+    <form @submit.prevent="onSubmit" class="space-y-5">
+      <div>
+        <FormInput
+          class="mt-1 w-full"
+          type="password"
+          :label="$t('auth.newpassword')"
+          v-model="newPassword"
+          :error="errors.newPassword"
+          placeholder="****"
+        />
 
-    <form class="space-y-5">
-      <!-- <div>
-        <label class="text-gray-700 font-medium">{{
-          $t("auth.password")
-        }}</label>
-        <Password v-model="password" toggleMask :inputProps="{ autocomplete: 'current-password' }"
-          :placeholder="$t('auth.passwordPlaceholder')" class="mt-1 w-full"
-          inputClass="w-full p-3 border border-gray-300 rounded-lg" />
-      </div> -->
-      <div>
-        <label class="text-gray-700 font-medium">{{
-          $t("auth.newpassword")
-        }}</label>
-        <Password v-model="password" toggleMask :inputProps="{ autocomplete: 'current-password' }"
-          :placeholder="$t('auth.passwordPlaceholder')" class="mt-1 w-full"
-          inputClass="w-full p-3 border border-gray-300 rounded-lg" />
-      </div>
-      <div>
-        <label class="text-gray-700 font-medium">{{
-          $t("auth.confirmPassword")
-        }}</label>
-        <Password v-model="password" toggleMask :inputProps="{ autocomplete: 'current-password' }"
-          :placeholder="$t('auth.newpasswordPlaceholder')" class="mt-1 w-full"
-          inputClass="w-full p-3 border border-gray-300 rounded-lg" />
+        <FormInput
+          class="mt-1 w-full"
+          type="password"
+          :label="$t('auth.confirmPassword')"
+          v-model="confirmPassword"
+          :error="errors.confirmPassword"
+          placeholder="****"
+        />
       </div>
     </form>
-
   </BaseDialog>
 </template>

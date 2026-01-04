@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import router from "@/app/router";
-import type { Pagination, UserListItem, UserPayload } from "../types/User";
+import type { Pagination, UserListItem, UserPayload, PasswordResetForm } from "../types/User";
 import { UserService } from "../services/user.service";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
@@ -119,6 +119,18 @@ export function useUsers() {
     getList();
   };
 
+  const resetPassword = async (data: PasswordResetForm) => {
+    try {
+      loading.value = true;
+      await UserService.resetPassword(data);
+      toastService.success(t("users.passwordResetSuccess"));
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     list,
     loading,
@@ -130,6 +142,7 @@ export function useUsers() {
     deleteItem,
     onFilterChange,
     changeUserStatus,
-    createUser
+    createUser,
+    resetPassword
   };
 }

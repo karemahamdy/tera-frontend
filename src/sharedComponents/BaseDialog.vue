@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from "vue";
+import { computed } from "vue";
 import BaseButton from "./BaseButton.vue";
 
 const props = defineProps({
@@ -11,13 +11,18 @@ const props = defineProps({
     default: "30rem"
   }
 });
-
 const emits = defineEmits(["update:visible", "cancel", "confirm"]);
+
+const isVisible = computed({
+    get: () => props.visible,
+    set: (value) => emits('update:visible', value)
+});
+
 </script>
 
 <template>
   <Dialog 
-    v-model:visible="props.visible" 
+    v-model:visible="isVisible"
     modal 
     :style="{ width: props.width }"
   >
