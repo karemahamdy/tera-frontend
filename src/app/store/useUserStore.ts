@@ -177,7 +177,7 @@ export const useUserStore = defineStore("user", {
       const token = this.accessToken;
       const data = new FormData();
       data.append("token", token || "");
-      navigator.sendBeacon(`${apiUrl}/close-session`, data);
+      navigator.sendBeacon(`${apiUrl}/Session/logout`, data);
     },
   },
 });

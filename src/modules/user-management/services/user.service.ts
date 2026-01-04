@@ -19,17 +19,29 @@ export const UserService = {
   create(payload: UserPayload) {
     let data = {
       ...payload,
-      isTemporaryPassword: true,
+      IsTemporaryPassword: true,
     };
-    return axiosWrapper.post<UserPayload>("/Users/create", data);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") {
+        formData.append(key, value as string | Blob);
+      }
+    });
+    return axiosWrapper.post<UserPayload>("/Users/create", formData);
   },
 
   update(id: string, payload: UserPayload) {
     let data = {
       ...payload,
-      id: id,
+      UserId: id,
     };
-    return axiosWrapper.put<UserPayload>(`/Users/${id}`, data);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") {
+        formData.append(key, value as string | Blob);
+      }
+    });
+    return axiosWrapper.put<UserPayload>(`/Users/Update`, formData);
   },
 
   delete(id: string) {
