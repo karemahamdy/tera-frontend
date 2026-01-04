@@ -35,3 +35,12 @@ export interface GetRolesToGroup {
   branchIds?: string[];
   groupAccessScope: number;
 }
+
+export interface GroupRoleDetails {
+  groupId: string;
+  roleId: string;
+  roleName: string;
+  groupAccessScope: number; 
+  branchIds: string[];     
+}
+

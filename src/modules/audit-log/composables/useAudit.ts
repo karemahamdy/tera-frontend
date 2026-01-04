@@ -1,18 +1,7 @@
 import { ref, computed } from "vue";
 import { toastService } from "../../../app/services/toastService";
 import { AuditService } from "../services/auditLogs.service";
-
-export interface AuditLog {
-  entityName: string;
-  userName: string | null;
-  branchNameAr: string | null;
-  branchNameEn: string | null;
-  actionType: number;
-  moduleName: string;
-  screenName: string;
-  transactionNumber: string;
-  timestamp: string;
-}
+import type { AuditLog } from "../types/auditLogList";
 
 export function useAudit() {
   const loading = ref(false);
@@ -31,6 +20,26 @@ export function useAudit() {
           ? "Delete"
           : log.actionType === 3
           ? "Assign"
+          : log.actionType === 4
+          ? "Login"
+          : log.actionType === 5
+          ? "LoginFailed"
+          : log.actionType === 6
+          ? "Logout"
+          : log.actionType === 7
+          ? "Activate"
+          : log.actionType === 8
+          ? "Deactivate"
+          : log.actionType === 9
+          ? "IsFirstLogin"
+          : log.actionType === 10
+          ? "ResetPassword"
+          : log.actionType === 11
+          ? "ChangePassword"
+          : log.actionType === 12
+          ? "Export"
+          : log.actionType === 13
+          ? "Archive"
           : "-",
       module: log.moduleName ?? "-",
       screen: log.screenName ?? "-",
@@ -44,7 +53,6 @@ export function useAudit() {
   const pageSize = ref(10);
   const totalCount = ref(0);
   const totalPages = ref(1);
-
   const searchTerm = ref("");
   const orderBy = ref("");
   const orderDirection = ref<"asc" | "desc">("asc");
@@ -60,12 +68,11 @@ export function useAudit() {
         orderDirection: orderDirection.value,
       });
 
-apiAuditLogs.value = response.items ?? [];
-pageIndex.value = response.pageIndex ?? page;
-pageSize.value = response.pageSize ?? pageSize.value;
-totalCount.value = response.totalCount ?? 0;
-totalPages.value = response.totalPages ?? 1;
-
+      apiAuditLogs.value = response.items ?? [];
+      pageIndex.value = response.pageIndex ?? page;
+      pageSize.value = response.pageSize ?? pageSize.value;
+      totalCount.value = response.totalCount ?? 0;
+      totalPages.value = response.totalPages ?? 1;
     } catch (err: any) {
       toastService.error(err);
     } finally {
