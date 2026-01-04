@@ -68,6 +68,12 @@ export interface UserList {
     totalPages: number;
   };
 }
+
+export interface PasswordResetForm {
+  targetUserId: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 // -----------------------------------------------------------------------
 export interface PermissionDto {
   name: string;

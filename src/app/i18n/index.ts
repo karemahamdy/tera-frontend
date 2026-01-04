@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n';
 import ar from './locales/ar.json';
 import en from './locales/en.json';
 
-export const defaultLocale = 'ar';
+export const defaultLocale = 'en';
 export const supportedLocales = {
   en: { name: 'English', dir: 'ltr' },
   ar: { name: 'العربية (Arabic)', dir: 'rtl' }
@@ -22,7 +22,7 @@ function getStartingLocale(): string {
     return savedLanguage;
   }
 
-  return 'ar';
+  return 'en';
 }
 
 export default i18n;

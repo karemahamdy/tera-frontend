@@ -56,7 +56,8 @@
     "fieldRequired": "This field is required",
     "fullNamePlaceholder": "Enter full name",
     "min_3": "Minimum 3 characters",
-    "max_255": "Maximum 255 characters"
+    "max_255": "Maximum 255 characters",
+    "passwordsMustMatch": "Passwords must match"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
