@@ -3,91 +3,81 @@ import { GroupRolesService } from "../services/userGroup.service";
 import type {
   GroupRole,
   RemoveRoleFromGroup,
-  UpdateRolesToGroup,
+  GetRolesToGroup,
 } from "../types/userGroupRoles";
 import { toastService } from "@/app/services/toastService";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export function useGroupRoles() {
+  const { t } = useI18n();
+
   const loading = ref(false);
   const roles = ref<GroupRole[]>([]);
-  const roleOptions = ref<{ id: string; name: string }[]>([]);
-  const branchOptions = ref<{ id: string; name: string }[]>([]);
+  const currentRole = ref<GroupRole | null>(null);
   const error = ref<string | null>(null);
-  const validationErrors = ref<Record<string, string[]>>({});
   const branches = ref<any[]>([]);
+  const router = useRouter();
 
   const fetchRolesByGroupId = async (groupId: string) => {
     try {
       loading.value = true;
       const resp = await GroupRolesService.getRolesByGroupId(groupId);
       roles.value = resp.data;
-      toastService.success("Role fetched from group successfully");
-    }  catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
+      toastService.success(t("roles.rolesFetched"));
+    } catch (err: any) {
       toastService.error(err);
-  }finally {
+    } finally {
       loading.value = false;
     }
-};
+  };
 
   const deleteRoleFromGroup = async (payload: RemoveRoleFromGroup) => {
     try {
       loading.value = true;
       await GroupRolesService.removeRoleFromGroup(payload);
       roles.value = roles.value.filter((r) => r.roleId !== payload.roleId);
-      toastService.success("Role removed from group successfully");
+      toastService.success(t("roles.roleRemovedFromGroup"));
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
-  }finally {
+    } finally {
       loading.value = false;
     }
-};
+  };
 
-  const updateRoleInGroup = async (
-    payload: UpdateRolesToGroup
-  ) => {
+  const createRoleGroup = async (payload: GetRolesToGroup) => {
     try {
       loading.value = true;
-      await GroupRolesService.updateAssignRolesToGroup(payload);
-      toastService.success("Role updated in group successfully");
+      await GroupRolesService.createRolesToGroup(payload);
+      toastService.success(t("roles.roleAssigned"));
+      router.push({ name: "ListGroupRoles" });
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
-  }finally {
+    } finally {
       loading.value = false;
     }
-};
-
- const fetchLookups = async () => {
-    loading.value = true;
+  };
+  const getRoleToGroupById = async (groupId: string, roleId: string): Promise<GroupRole | null> => {
     try {
-      const branchResp = await GroupRolesService.getBranchLookups();
-      branchOptions.value = (branchResp || []).map((b: any) => {
-        const rawId = b.id ?? b.branchId ?? b.value ?? b.branchCode ?? b;
-        return { id: String(rawId), name: b.name ?? b.label ?? b.branchName ?? String(b) };
-      });
-      branches.value = branchOptions.value;
-
-      const rolesResp = await GroupRolesService.getRolesLookups();
-      roleOptions.value = (rolesResp || []).map((r: any) => {
-        const rawId = r.id ?? r.roleId ?? r.value ?? r.roleCode ?? r;
-        return { id: String(rawId), name: r.name ?? r.label ?? r.roleName ?? String(r) };
-      });
+      loading.value = true;
+      const resp = await GroupRolesService.getRoleToGroupById(groupId, roleId);
+      currentRole.value = resp.data ;
+      return resp.data;
     } catch (err: any) {
-      error.value = err.message || "Error fetching lookups";
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateRoleGroup = async (payload: GetRolesToGroup) => {
+    try {
+      loading.value = true;
+      await GroupRolesService.updateRolesToGroup(payload);
+      toastService.success(t("roles.roleUpdatedInGroup"));
+    } catch (err: any) {
+      toastService.error(err);
     } finally {
       loading.value = false;
     }
@@ -98,8 +88,10 @@ export function useGroupRoles() {
       roleId: role.roleId,
       groupId: role.groupId,
       roleName: role.roleName,
-      accessScope: role.groupAccessScope,
-      branches: role.branchNames.join(" ") || "Access all branches",
+      groupAccessScope: role.groupAccessScope,
+      branches:
+        role.branchNames.map((name) => name).join(" - ") ||
+        "Access all branches",
     }))
   );
 
@@ -107,14 +99,12 @@ export function useGroupRoles() {
     loading,
     roles,
     branches,
-    roleOptions,
-    branchOptions,
     error,
     tableData,
     fetchRolesByGroupId,
     deleteRoleFromGroup,
-    updateRoleInGroup,
-    fetchLookups,
+    updateRoleGroup,
+    createRoleGroup,
+    getRoleToGroupById,
   };
 }
-

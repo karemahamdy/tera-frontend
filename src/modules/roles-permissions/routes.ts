@@ -51,7 +51,7 @@ export const rolesPermissionsRoutes = [
     },
   },
   {
-    path: "/roles-permissions/add-group-roles/:id",
+    path: "/roles-permissions/add-group-roles/:id/:roleId?",
     name: "AddGroupRoles",
     component: () =>
       import("@/modules/roles-permissions/pages/AddGroupRoles.vue"),

@@ -160,7 +160,11 @@
     "globalAccess": "Global Access  /access to all branches",
     "roleAdded": "Role added successfully",
     "roleUpdated": "Role updated successfully",
-    "roleDeleted": "Role deleted successfully"
+    "roleDeleted": "Role deleted successfully",
+    "roleAssigned": "Role assigned successfully",
+    "roleUpdatedInGroup": "Role updated in group successfully",
+    "roleRemovedFromGroup": "Role removed from group successfully",
+    "rolesFetched": "Roles fetched successfully"
   },
   "auditLog": {
     "title": "Audit Log",

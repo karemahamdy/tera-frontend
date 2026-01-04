@@ -33,7 +33,7 @@ onMounted(() => {
 
 const columns = computed(() => [
     { field: "roleName", header: t("roles.roleName"), sortable: true },
-    { field: "accessScope", header: t("roles.accessScope"), sortable: true },
+    { field: "groupAccessScope", header: t("roles.accessScope"), sortable: true },
     { field: "branches", header: t("roles.branches"), type: 'badge', Class: 'custom-badge' },
     { field: "action", header: t("action") }
 ]);
