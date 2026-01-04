@@ -15,7 +15,7 @@ const isEditMode = computed(() => !!roleId);
 const { getRoleToGroupById, createRoleGroup, updateRoleGroup } = useGroupRoles();
 const { getGroupLookups, getRolesLookups, getBranchLookups, groupsLookups, rolesLookups, branchesLookups } = useLookups();
 
-const { handleSubmit, setValues, errors } = useForm({
+const { handleSubmit, setValues, errors } = useForm<any>({
   validationSchema: assignRolesSchema,
   initialValues: {
     name: "",

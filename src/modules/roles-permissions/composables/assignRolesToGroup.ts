@@ -4,6 +4,7 @@ import type {
   GroupRole,
   RemoveRoleFromGroup,
   GetRolesToGroup,
+  GroupRoleDetails,
 } from "../types/userGroupRoles";
 import { toastService } from "@/app/services/toastService";
 import { useRouter } from "vue-router";
@@ -14,7 +15,7 @@ export function useGroupRoles() {
 
   const loading = ref(false);
   const roles = ref<GroupRole[]>([]);
-  const currentRole = ref<GroupRole | null>(null);
+  const currentRole = ref<GroupRoleDetails | null>(null);
   const error = ref<string | null>(null);
   const branches = ref<any[]>([]);
   const router = useRouter();
@@ -57,12 +58,16 @@ export function useGroupRoles() {
       loading.value = false;
     }
   };
-  const getRoleToGroupById = async (groupId: string, roleId: string): Promise<GroupRole | null> => {
+
+  const getRoleToGroupById = async (
+    groupId: string,
+    roleId: string
+  ): Promise<GroupRoleDetails | null> => {
     try {
       loading.value = true;
       const resp = await GroupRolesService.getRoleToGroupById(groupId, roleId);
-      currentRole.value = resp.data ;
-      return resp.data;
+      currentRole.value = resp;
+      return resp;
     } catch (err: any) {
       toastService.error(err);
       return null;
