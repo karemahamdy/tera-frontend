@@ -39,7 +39,6 @@ const handleAction = (action) => {
     } else if (action === 'confirm') {
         emit('confirm');
     } else {
-
         emit('action', action);
     }
 };

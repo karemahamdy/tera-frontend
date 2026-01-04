@@ -56,7 +56,8 @@
     "fieldRequired": "This field is required",
     "fullNamePlaceholder": "Enter full name",
     "min_3": "Minimum 3 characters",
-    "max_255": "Maximum 255 characters"
+    "max_255": "Maximum 255 characters",
+    "passwordsMustMatch": "Passwords must match"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -104,7 +105,9 @@
     "accountType": "Account Type",
     "accountStatus": "Account Status",
     "uploadImage": "Upload Image",
-    "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design"
+    "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design",
+    "departmentPlaceholder": "Select Department",
+    "userGroupPlaceholder": "Select User Group"
   },
   "userGroup": {
     "groupName": "Group Name",
@@ -158,7 +161,11 @@
     "globalAccess": "Global Access  /access to all branches",
     "roleAdded": "Role added successfully",
     "roleUpdated": "Role updated successfully",
-    "roleDeleted": "Role deleted successfully"
+    "roleDeleted": "Role deleted successfully",
+    "roleAssigned": "Role assigned successfully",
+    "roleUpdatedInGroup": "Role updated in group successfully",
+    "roleRemovedFromGroup": "Role removed from group successfully",
+    "rolesFetched": "Roles fetched successfully"
   },
   "auditLog": {
     "title": "Audit Log",

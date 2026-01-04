@@ -13,7 +13,7 @@ import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
 import { useLookups } from "@/composables/useLookups";
 
-const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus } =
+const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus, resetPassword } =
   useUsers();
 
 
@@ -23,6 +23,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const showDialog = ref(false);
 const rowToDelete = ref<UserListItem | null>(null);
+const selectedUserId = ref<string | null>(null);
 
 const props = defineProps({
   data: {
@@ -184,6 +185,7 @@ const confirmDelete = (row: UserListItem) => {
 };
 
 const showResetDialog = (row: any) => {
+  selectedUserId.value = row.userId;
   rowToDelete.value = row;
   showDialog.value = true;
 };
@@ -200,7 +202,7 @@ const handleActionMenu = (payload: any) => {
       const id = data.userId;
       router.push({ name: "UserManagementEdit", params: { id } });
     }
-  } else if (action === "resetPassword") { 
+  } else if (action === "resetPassword") {
     showResetDialog(data);
   } else if (action === "toggleActive") {
     changeUserStatus(data.userId, !data.isActive);
@@ -217,6 +219,13 @@ const handleDeleteConfirm = async () => {
 
 const addUserGroup = () => {
   router.push("/user-management/create");
+};
+
+const handlePasswordChanged = async (values: any) => {
+  if (!rowToDelete.value) return;
+  await resetPassword({ targetUserId: rowToDelete.value.userId, ...values });
+  showDialog.value = false;
+  rowToDelete.value = null;
 };
 
 onMounted(() => {
@@ -315,7 +324,9 @@ onMounted(() => {
       ]"
       @confirm="handleDeleteConfirm"
     />
-    <ChangePassword v-model:visible="showDialog" />
+    <template v-if="showDialog">
+      <ChangePassword v-model:visible="showDialog" @passwordChanged="handlePasswordChanged" />
+    </template>
   </div>
 </template>
 

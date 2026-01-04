@@ -62,7 +62,8 @@
     "fieldRequired": "هذا الحقل مطلوب",
     "fullNamePlaceholder": "أدخل الاسم الكامل",
     "min_3": "الحد الأدنى 3 أحرف",
-    "max_255": "الحد الأقصى 255 حرفًا"
+    "max_255": "الحد الأقصى 255 حرفًا",
+    "passwordsMustMatch": "يجب أن تتطابق كلمات المرور"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -110,7 +111,9 @@
     "accountType": "نوع الحساب",
     "accountStatus": "حالة الحساب",
     "uploadImage": "رفع صورة",
-    "uploadImageDesc": "يجب تحميل ملفات GPAG/PNG/PDF > يجب أن تكون الصورة عالية الدقة وأصلية في التصميم"
+    "uploadImageDesc": "يجب تحميل ملفات GPAG/PNG/PDF > يجب أن تكون الصورة عالية الدقة وأصلية في التصميم",
+    "departmentPlaceholder": "اختر القسم",
+    "userGroupPlaceholder": "اختر مجموعة المستخدمين"
   },
   "userGroup": {
     "groupName": "اسم المجموعة",
@@ -164,7 +167,11 @@
     "globalAccess": "الوصول إلى جميع الفروع",
     "roleAdded": "تمت إضافة الدور بنجاح",
     "roleUpdated": "تم تحديث الدور بنجاح",
-    "roleDeleted": "تم حذف الدور بنجاح"
+    "roleDeleted": "تم حذف الدور بنجاح",
+    "roleAssigned": "تم تعيين الدور بنجاح",
+    "roleUpdatedInGroup": "تم تحديث الدور في المجموعة بنجاح",
+    "roleRemovedFromGroup": "تم حذف الدور من المجموعة بنجاح",
+    "rolesFetched": "تم جلب الأدوار بنجاح"
   },
   "auditLog": {
     "title": "سجل التدقيق",

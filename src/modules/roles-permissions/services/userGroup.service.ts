@@ -2,7 +2,7 @@ import axiosWrapper from "@/app/http/axiosWrapper";
 import type {
   GetRolesAssignedToGroupResponse,
   RemoveRoleFromGroup,
-  UpdateRolesToGroup,
+  GetRolesToGroup,
 } from "../types/userGroupRoles";
 
 export const GroupRolesService = {
@@ -11,31 +11,20 @@ export const GroupRolesService = {
       `/Group/GetRolesAssignedToGroupById/${groupId}`
     );
   },
-
   removeRoleFromGroup(payload: RemoveRoleFromGroup) {
     return axiosWrapper.delete(`/Group/RemoveRoleFromGroup`, { data: payload });
-  },
-
-  updateAssignRolesToGroup(payload: UpdateRolesToGroup) {
-    return axiosWrapper.post(`/Group/UpdateAssignRolesToGroup`, payload);
-  },
-
-   async getRolesLookups() {
-    const resp = await axiosWrapper.get<{ data: any }>('/Lookups/RolesLookups');
-    return resp.data; 
-  },
-
-  async getBranchLookups() {
-    const resp = await axiosWrapper.get<{ data: any }>('/Lookups/BranchLookups');
-    return resp.data; 
-  },
-
-   async assignRolesToGroup(payload: any) {
+  }, 
+  async createRolesToGroup(payload: GetRolesToGroup) {
     return axiosWrapper.post('/Group/AssignRolesToGroup', payload);
   },
+  getRoleToGroupById(groupId: string, roleId: string) {
+  return axiosWrapper.get(
+    `/Group/GetRoleAssignedToGroupById/${groupId}/${roleId}`
+  );
+},
 
   async updateRolesToGroup(payload: any) {
-    return axiosWrapper.post('/Group/AssignRolesToGroup', payload);
+    return axiosWrapper.put('/Group/UpdateAssignRolesToGroup', payload);
   },
 
 };

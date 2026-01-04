@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import PageHeader from "@/sharedComponents/PageHeader.vue";
-import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
 import { ref, computed, onMounted } from "vue";
