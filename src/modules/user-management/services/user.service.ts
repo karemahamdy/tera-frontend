@@ -3,6 +3,8 @@ import type {
   Pagination,
   UserList,
   UserByID,
+  UserPayload,
+  PasswordResetForm
 } from "../types/User";
 
 export const UserService = {
@@ -14,25 +16,33 @@ export const UserService = {
     return axiosWrapper.get<{ data: UserByID }>(`/Users/${id}`);
   },
 
-  create(payload: UserByID) {
+  create(payload: UserPayload) {
     let data = {
-      createRoleDto: payload,
+      ...payload,
+      isTemporaryPassword: true,
     };
-    return axiosWrapper.post<UserByID>("/Users/create", data);
+    return axiosWrapper.post<UserPayload>("/Users/create", data);
   },
 
-  update(id: string, payload: UserByID) {
+  update(id: string, payload: UserPayload) {
     let data = {
-      updateRoleDto: payload,
+      ...payload,
       id: id,
     };
-    return axiosWrapper.put<UserByID>(`/Users/${id}`, data);
+    return axiosWrapper.put<UserPayload>(`/Users/${id}`, data);
   },
 
   delete(id: string) {
     return axiosWrapper.delete(`/Users/Delete/${id}`);
   },
 
+  changeStatus(id: string, isActive: boolean) {
+    return axiosWrapper.put(`/Users/Status/${id}?isActive=${isActive}`);
+  },
+
+  resetPassword(payload: PasswordResetForm) {
+    return axiosWrapper.post<PasswordResetForm>(`/Auth/admin/change-password`, payload);
+  },
 
   droplist() {
     return axiosWrapper.get<UserList[]>(`/Users`);

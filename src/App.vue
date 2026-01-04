@@ -1,17 +1,28 @@
 <script setup lang="ts">
-  import { onMounted, watch } from 'vue';
+import { onMounted, watch, onBeforeUnmount } from "vue";
 import Loading from "./sharedComponents/Loading.vue";
 import { useLoadingStore } from "@/app/store/useLoadingStore";
 const loadingStore = useLoadingStore();
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'primevue/usetoast';
-import { toastService } from './app/services/toastService';
+import { useI18n } from "vue-i18n";
+import { useToast } from "primevue/usetoast";
+import { toastService } from "./app/services/toastService";
+import { useUserStore } from "@/app/store/useUserStore";
 
 const toast = useToast();
 const { locale } = useI18n();
 
 onMounted(() => {
   toastService.init(toast);
+});
+
+onMounted(() => {
+  const userStore = useUserStore();
+  window.addEventListener("beforeunload", userStore.closeSession);
+});
+
+onBeforeUnmount(() => {
+  const userStore = useUserStore();
+  window.removeEventListener("beforeunload", userStore.closeSession);
 });
 
 // Watch for changes in the language

@@ -19,8 +19,8 @@ const { handleSubmit, setValues, errors } = useForm<any>({
   validationSchema: assignRolesSchema,
   initialValues: {
     name: "",
-    role: [],
-    roles: [],
+    role: [] as string[],
+    roles: [] as string[],
     groupAccessScope: "branch",
     groupId,
   },
@@ -53,7 +53,7 @@ watch(groupAccessScope, (val) => {
 const loadEditData = async () => {
   if (!isEditMode.value || !roleId) return;
 
-  const roleData = await getRoleToGroupById(groupId, roleId);
+  const roleData = await getRoleToGroupById(groupId, roleId) as { roleId: string; branchIds: string[]; groupAccessScope: number } | null;
   if (!roleData) return;
 
   setValues({

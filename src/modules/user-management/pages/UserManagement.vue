@@ -11,15 +11,19 @@ import { useRouter } from "vue-router";
 import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
+import { useLookups } from "@/composables/useLookups";
 
-const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange } =
+const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus, resetPassword } =
   useUsers();
 
+
+const { groupsLookups, departmentsLookups, getDepartmentsLookups, getGroupLookups } = useLookups();  
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const showDialog = ref(false);
 const rowToDelete = ref<UserListItem | null>(null);
+const selectedUserId = ref<string | null>(null);
 
 const props = defineProps({
   data: {
@@ -80,12 +84,11 @@ const customItems = computed(() => {
       action: "resetPassword",
     },
     {
-      slot: true,
+      action: "toggleActive",
       changeStatus: true,
       label: t("button.active"),
-      command: (row: any) => {
-        console.log("toggle", row);
-      },
+      type: "switch",
+      key: "isActive",
     },
   ];
 });
@@ -102,52 +105,48 @@ const lastRecord = computed(() => {
   return last > pagination.value.total ? pagination.value.total : last;
 });
 
-const filtersOperation = [
-  {
-    placeholder: "usersManagement.allGroups",
-    value: null,
-    field: "userGroup",
-    options: [
-      { label: "usersManagement.allGroups", value: null },
-      { label: "Administration", value: "Administration" },
-      { label: "Finance Team", value: "Finance Team" },
-      { label: "Sales Team", value: "Sales Team" },
-      { label: "HR Team", value: "HR Team" },
-    ],
-  },
-  {
-    placeholder: "usersManagement.allStatus",
-    value: null,
-    field: "status",
-    options: [
-      { label: "usersManagement.allStatus", value: null },
-      { label: "active", value: "IsActive" },
-      { label: "inactive", value: "InActive" },
-    ],
-  },
-  {
-    placeholder: "usersManagement.allScopes",
-    value: null,
-    field: "accessScope",
-    options: [
-      { label: "usersManagement.allScopes", value: null },
-      { label: "Global", value: "Global" },
-      { label: "Branch", value: "BranchLimited" },
-    ],
-  },
-  {
-    placeholder: "usersManagement.allDepartment",
-    value: null,
-    field: "department",
-    options: [
-      { label: "usersManagement.allDepartment", value: null },
-      { label: "Administration", value: "Administration" },
-      { label: "Finance Team", value: "Finance Team" },
-      { label: "Sales Team", value: "Sales Team" },
-      { label: "HR Team", value: "HR Team" },
-    ],
-  },
-];
+const filtersOperation = computed(() => {
+  return [
+    {
+      placeholder: "usersManagement.allGroups",
+      value: null,
+      field: "userGroup",
+      options: [
+        { label: t("usersManagement.allGroups"), value: null },
+        ...groupsLookups.value
+      ],
+    },
+    {
+      placeholder: "usersManagement.allStatus",
+      value: null,
+      field: "status",
+      options: [
+        { label: t("usersManagement.allStatus"), value: null },
+        { label: t("button.active"), value: "IsActive" },
+        { label: t("button.inactive"), value: "InActive" },
+      ],
+    },
+    {
+      placeholder: "usersManagement.allScopes",
+      value: null,
+      field: "accessScope",
+      options: [
+        { label: t("usersManagement.allScopes"), value: null },
+        { label: t("users.global"), value: "Global" },
+        { label: t("users.branch"), value: "BranchLimited" },
+      ],
+    },
+    {
+      placeholder: "usersManagement.allDepartment",
+      value: null,
+      field: "department",
+      options: [
+        { label: t("usersManagement.allDepartment"), value: null },
+        ...departmentsLookups.value
+      ],
+    },
+  ];
+});
 
 const columns = computed(() => {
   const Columns = [
@@ -166,7 +165,7 @@ const columns = computed(() => {
       header: t("usersManagement.department"),
       sortable: true,
     },
-    { field: "isGlobal", header: t("roles.accessScope"), sortable: true },
+    { field: "accessScope", header: t("roles.accessScope"), sortable: true },
     { field: "isActive", header: t("status"), sortable: true },
     {
       field: "lastLogin",
@@ -186,6 +185,7 @@ const confirmDelete = (row: UserListItem) => {
 };
 
 const showResetDialog = (row: any) => {
+  selectedUserId.value = row.userId;
   rowToDelete.value = row;
   showDialog.value = true;
 };
@@ -202,11 +202,14 @@ const handleActionMenu = (payload: any) => {
       const id = data.userId;
       router.push({ name: "UserManagementEdit", params: { id } });
     }
-  } else if (action === "resetPassword") showResetDialog(data);
+  } else if (action === "resetPassword") {
+    showResetDialog(data);
+  } else if (action === "toggleActive") {
+    changeUserStatus(data.userId, !data.isActive);
+  }
 };
 
 const handleDeleteConfirm = async () => {
-  console.log(rowToDelete.value);
   if (!rowToDelete.value) return;
   showDeleteDialog.value = false;
 
@@ -218,8 +221,15 @@ const addUserGroup = () => {
   router.push("/user-management/create");
 };
 
+const handlePasswordChanged = async (values: any) => {
+  if (!rowToDelete.value) return;
+  await resetPassword({ targetUserId: rowToDelete.value.userId, ...values });
+  showDialog.value = false;
+  rowToDelete.value = null;
+};
+
 onMounted(() => {
-  getList();
+  Promise.all([getList(), getGroupLookups(), getDepartmentsLookups()]);
 });
 </script>
 
@@ -268,9 +278,9 @@ onMounted(() => {
           @order-change="sort"
           lazy
         >
-          <template v-slot:["col-isGlobal"]="{ data }">
+          <template v-slot:["col-accessScope"]="{ data }">
               <div>
-                {{ data.isGlobal ? $t('users.global') : $t('users.branch') }}
+                {{ data.accessScope === 'global' ? $t('users.global') : $t('users.branch') }}
               </div>
           </template>
           <template v-slot:["col-fullName"]="{ data }">
@@ -300,16 +310,6 @@ onMounted(() => {
           <template v-slot:["col-group"]="{ data }">
             <Tag v-if="data.group" :value="data.group.name" class="custom-tag" />
           </template>
-          <!-- @vue-ignore -->
-          <template #menu-item="{ item, row }" class="">
-            <div
-              v-if="item.changeStatus"
-              class="flex items-center gap-2 px-3 py-2"
-            >
-              <ToggleSwitch v-model="row.status" />
-              <span>{{ item.label }}</span>
-            </div>
-          </template>
         </DynamicTable>
       </template>
     </card>
@@ -324,7 +324,9 @@ onMounted(() => {
       ]"
       @confirm="handleDeleteConfirm"
     />
-    <ChangePassword v-model:visible="showDialog" />
+    <template v-if="showDialog">
+      <ChangePassword v-model:visible="showDialog" @passwordChanged="handlePasswordChanged" />
+    </template>
   </div>
 </template>
 

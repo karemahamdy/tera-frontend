@@ -1,7 +1,6 @@
 import { ref } from "vue";
-// import router from "@/app/router";
-
-import type { Pagination, UserListItem } from "../types/User";
+import router from "@/app/router";
+import type { Pagination, UserListItem, UserPayload, PasswordResetForm } from "../types/User";
 import { UserService } from "../services/user.service";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
@@ -75,21 +74,62 @@ export function useUsers() {
     }
   };
 
-  const onFilterChange = (filter: any) => {
-  const field = filter.field;
-  const value = filter.value;
-  if (field === "userGroup") {
-    pagination.value.GroupFilter = value;
-  } else if (field === "status") {
-    pagination.value.StatusFilter = value;
-  } else if (field === "accessScope") {
-    pagination.value.ScopeFilter = value;
-  } else if (field === "department") {
-    pagination.value.DepartmantFilter = value;
+  const changeUserStatus = async (id: string, isActive: boolean) => {
+    loading.value = true;
+    try {
+      await UserService.changeStatus(id, isActive);
+      toastService.success(t("users.userStatusUpdated"));
+      await getList();
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const createUser = async (data: UserPayload) => {
+    try {
+      loading.value = true;
+      await UserService.create(data);
+      toastService.success(t("users.userAdded"));
+      router.replace({ name: "RolesPermissions" });
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
   }
-  pagination.value.PageIndex = 1;
-  getList();
-};
+
+  const onFilterChange = (filter: {
+    filter: { field: string };
+    value: string;
+  }) => {
+    const field = filter.filter.field;
+    const value = filter.value;
+    if (field === "userGroup") {
+      pagination.value.GroupFilter = value;
+    } else if (field === "status") {
+      pagination.value.StatusFilter = value;
+    } else if (field === "accessScope") {
+      pagination.value.ScopeFilter = value;
+    } else if (field === "department") {
+      pagination.value.DepartmantFilter = value;
+    }
+    pagination.value.PageIndex = 1;
+    getList();
+  };
+
+  const resetPassword = async (data: PasswordResetForm) => {
+    try {
+      loading.value = true;
+      await UserService.resetPassword(data);
+      toastService.success(t("users.passwordResetSuccess"));
+    } catch (error) {
+      toastService.error(error as string);
+    } finally {
+      loading.value = false;
+    }
+  };
 
   return {
     list,
@@ -100,6 +140,9 @@ export function useUsers() {
     search,
     sort,
     deleteItem,
-    onFilterChange
+    onFilterChange,
+    changeUserStatus,
+    createUser,
+    resetPassword
   };
 }
