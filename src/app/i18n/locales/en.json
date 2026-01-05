@@ -43,7 +43,9 @@
     "active": "Active",
     "inactive": "Inactive",
     "resetPassword": "Reset Password",
-    "clearFilters": "Clear Filters"
+    "clearFilters": "Clear Filters",
+    "template": "Template",
+    "data": "Data"
   },
   "table": {
     "description": "Description",

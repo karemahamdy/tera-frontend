@@ -176,6 +176,10 @@ const addUserGroup = () => {
           mainBtnText="userGroup.addUserGroup"
           :onMainBtnClick="addUserGroup"
           @search="onSearch"
+          templateFileUrl="/Group/DownloadImportTemplate"
+          dataFileUrl="/Group/ExportGroup"
+          templateFileName="group-template.csv"
+          dataFileName="group-data.csv"
         />
       </template>
 

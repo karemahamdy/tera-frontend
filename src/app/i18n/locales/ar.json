@@ -49,7 +49,9 @@
     "active": "نشط",
     "inactive": "غير نشط",
     "resetPassword": "تغيير الرقم السري",
-    "clearFilters": "مسح الفلاتر"
+    "clearFilters": "مسح الفلاتر",
+    "template": "قالب",
+    "data": "البيانات"
   },
   "table": {
     "description": "الوصف",
