@@ -229,7 +229,7 @@ const handlePasswordChanged = async (values: any) => {
 };
 
 onMounted(() => {
-  Promise.all([getList(), getGroupLookups(), getDepartmentsLookups()]);
+  Promise.all([getList(), getGroupLookups(false), getDepartmentsLookups(false)]);
 });
 </script>
 

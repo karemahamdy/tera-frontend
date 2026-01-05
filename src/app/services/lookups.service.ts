@@ -2,22 +2,22 @@ import axiosWrapper from "@/app/http/axiosWrapper";
 import type { Lookups } from "../types/lookups";
 
 export const LookupsService = {
-  getGroupLookups() {
-    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/GroupLookups");
+  getGroupLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/GroupLookups?isActive=${isActive}`);
   },
-  getBranchLookups() {
-    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/BranchLookups");
+  getBranchLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/BranchLookups?isActive=${isActive}`);
   },
   getEntityLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/EntityLookups");
   },
-  getRolesLookups() {
-    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/RolesLookups");
+  getRolesLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/RolesLookups?isActive=${isActive}`);
   },
   getScreenLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/ScreenLookups");
   },
-  getDepartmentsLookups() {
-    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/DepartmentsLookups");
+  getDepartmentsLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/DepartmentsLookups?isActive=${isActive}`);
   },
 };
