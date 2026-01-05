@@ -78,6 +78,7 @@ const getRoleToGroupById = async (groupId: string, roleId: string): Promise<Grou
       loading.value = true;
       await GroupRolesService.updateRolesToGroup(payload);
       toastService.success(t("roles.roleUpdatedInGroup"));
+        router.push({ name: "ListGroupRoles" });
     } catch (err: any) {
       toastService.error(err);
     } finally {
