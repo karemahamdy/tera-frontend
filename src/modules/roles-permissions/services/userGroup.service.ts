@@ -5,7 +5,6 @@ import type {
   GetRolesToGroup,
   GroupRoleDetails,
 } from "../types/userGroupRoles";
-import { date } from "yup";
 
 export const GroupRolesService = {
 
