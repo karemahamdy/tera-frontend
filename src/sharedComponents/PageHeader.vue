@@ -29,7 +29,7 @@ const onFilterChange = (filter, event) => {
 
 const debouncedSearch = debounce((value) => {
   emit("search", value);
-}, 500);
+}, 750);
 
 const onInput = (event) => {
   const value = event.target.value;
