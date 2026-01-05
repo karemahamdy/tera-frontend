@@ -5,6 +5,7 @@ import { useI18n } from "vue-i18n";
 import alertIcon from "@/assets/images/alert.png";
 import { useGroups } from "../composables/useGroups";
 import type { GroupTableItem } from "../types/groups";
+import { toastService } from "@/app/services/toastService";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -36,7 +37,11 @@ const permissionItems = [
     icon: "Star1",
     color: "#12B76A",
     command: (row: GroupTableItem) => {
-      router.push(`/roles-permissions/add-group-roles/${row.id}`);
+      if(row.isActive){
+        router.push(`/roles-permissions/add-group-roles/${row.id}`);
+      } else {
+        toastService.error("Group is not active");
+      }
     },
   },
   {
