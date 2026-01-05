@@ -11,9 +11,9 @@ export function useLookups() {
   const screensLookups = ref<LookupsOption[]>([]);
   const departmentsLookups = ref<LookupsOption[]>([]);
 
-  const getGroupLookups = async () => {
+  const getGroupLookups = async (isActive: boolean = true) => {
     try {
-      const res = await LookupsService.getGroupLookups();
+      const res = await LookupsService.getGroupLookups(isActive);
       groupsLookups.value = res.data.map((group) => ({
         label: group.name,
         value: group.id,
@@ -22,9 +22,9 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
-  const getBranchLookups = async () => {
+  const getBranchLookups = async (isActive: boolean = true) => {
     try {
-      const res = await LookupsService.getBranchLookups();
+      const res = await LookupsService.getBranchLookups(isActive);
       branchesLookups.value = res.data.map((group) => ({
         label: group.name,
         value: group.id,
@@ -44,9 +44,9 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
-  const getRolesLookups = async () => {
+  const getRolesLookups = async (isActive: boolean = true) => {
     try {
-      const res = await LookupsService.getRolesLookups();
+      const res = await LookupsService.getRolesLookups(isActive);
       rolesLookups.value = res.data.map((group) => ({
         label: group.name,
         value: group.id,
@@ -66,9 +66,9 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
-  const getDepartmentsLookups = async () => {
+  const getDepartmentsLookups = async (isActive: boolean = true) => {
     try {
-      const res = await LookupsService.getDepartmentsLookups();
+      const res = await LookupsService.getDepartmentsLookups(isActive);
       departmentsLookups.value = res.data.map((group) => ({
         label: group.name,
         value: group.id,
