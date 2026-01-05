@@ -18,7 +18,7 @@ export interface UserByID {
   email: string;
   isActive: boolean;
   isAdmin: boolean;
-  userProfileImageUrl: string;
+  userProfileImageUrl?: string | null;
 
   internalID?: string | null;
   departmentID?: string | null;

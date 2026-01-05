@@ -131,7 +131,7 @@ const filtersOperation = computed(() => {
       value: null,
       field: "accessScope",
       options: [
-        { label: t("usersManagement.allScopes"), value: 0 },
+        { label: t("usersManagement.allScopes"), value: null },
         { label: t("users.global"), value: 1 },
         { label: t("users.branch"), value: 2 },
       ],
@@ -280,7 +280,7 @@ onMounted(() => {
         >
           <template v-slot:["col-accessScope"]="{ data }">
               <div>
-                {{ data.accessScope === 'global' ? $t('users.global') : $t('users.branch') }}
+                {{ data.accessScope === 'Global' ? $t('users.global') : $t('users.branch') }}
               </div>
           </template>
           <template v-slot:["col-fullName"]="{ data }">
