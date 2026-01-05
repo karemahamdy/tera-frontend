@@ -7,7 +7,6 @@ import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useLookups } from "@/composables/useLookups";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
-import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -77,7 +76,7 @@ const loadEditData = async () => {
 
   setValues({
     name: currentGroupName.value,
-    role: roleData.roleId,
+    role: [roleData.roleId],
     roles: roleData.branchIds || [],
     groupAccessScope: roleData.groupAccessScope === 1 ? "global" : "branch",
     groupId,
@@ -136,29 +135,18 @@ const onSubmit = handleSubmit(async (values) => {
               </small> -->
             </div>
             <div>
-              <template v-if="!isEditMode">
-                <label class="text-gray-700 font-bold">
-                  {{ $t("roles.roles") }}
-                </label>
-                <MultiSelect
-                  v-model="roleIds"
-                  :options="rolesLookups"
-                  optionLabel="label"
-                  optionValue="value"
-                  class="w-full mt-1"
-                  :class="{ 'p-invalid': errors.role }"
-                  :placeholder="$t('select roles')"
-                />
-              </template>
-              <FormDropdown
-                v-else
-                class="w-full mt-1"
-                :label="$t('roles.roles')"
-                :options="rolesLookups"
+              <label class="text-gray-700 font-bold">
+                {{ $t("roles.roles") }}
+              </label>
+              <MultiSelect
+                :disabled="isEditMode"
                 v-model="roleIds"
-                :error="errors.role"
+                :options="rolesLookups"
+                optionLabel="label"
                 optionValue="value"
-                :placeholder="$t('select role')"
+                class="w-full mt-1"
+                :class="{ 'p-invalid': errors.role }"
+                :placeholder="$t('select roles')"
               />
               <small v-if="errors.role" class="text-danger-500">
                 {{ errors.role }}
