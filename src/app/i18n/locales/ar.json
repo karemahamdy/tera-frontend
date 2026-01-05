@@ -174,7 +174,8 @@
     "roleUpdatedInGroup": "تم تحديث الدور في المجموعة بنجاح",
     "roleRemovedFromGroup": "تم حذف الدور من المجموعة بنجاح",
     "rolesFetched": "تم جلب الأدوار بنجاح",
-    "assignedBranch": "الفرع المعين"
+    "assignedBranch": "الفرع المعين",
+    "roleNotActive": "يجب تنشيط الجروب"
   },
   "auditLog": {
     "title": "سجل التدقيق",
