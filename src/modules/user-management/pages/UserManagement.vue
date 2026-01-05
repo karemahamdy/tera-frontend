@@ -259,6 +259,10 @@ onMounted(() => {
           :last="lastRecord"
           :filters="filtersOperation"
           :onMainBtnClick="addUserGroup"
+          templateFileUrl="/Users/DownloadImportTemplate"
+          dataFileUrl="/Users/exportUsers"
+          templateFileName="user-template.csv"
+          dataFileName="user-data.csv"
         />
       </template>
       <!-- DynamicTable component -->

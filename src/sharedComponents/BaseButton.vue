@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -10,22 +11,29 @@ const props = defineProps({
     icon: { type: String, default: null },
     to: { type: [String, Object], default: null },
     onClick: { type: Function, default: null },
-    block: { type: Boolean, default: false }
+    block: { type: Boolean, default: false },
+    items: { type: Array, default: () => [] },
+    hasMenu: { type: Boolean, default: false },
 })
 
 const router = useRouter()
+const menu = ref();
 
-function handleClick() {
-    if (props.to) return router.push(props.to)
-    if (props.onClick) return props.onClick()
+const toggle = (event) => {
+    menu.value.toggle(event);
+};
+function handleClick(event) {
+    if (props.hasMenu) return toggle(event);
+    if (props.to) return router.push(props.to);
+    if (props.onClick) return props.onClick();
 }
+
 </script>
 
 <template>
-    <Button v-slot="slotProps" asChild>
-
+    <Button v-slot="slotProps" asChild aria-haspopup="true" aria-controls="overlay_menu">
         <button @click="handleClick" :class="[
-            'rounded-lg p-4  cursor-pointer flex items-center justify-center gap-2 h-[3rem] whitespace-nowrap',
+            'rounded-lg p-4  cursor-pointer flex items-center justify-center gap-2 h-12 whitespace-nowrap',
             block ? 'w-full' : '',
             variant === 'primary' && 'bg-primary-500 hover:bg-primary-600 text-[#FFFFFF] border-none px-8',
             variant === 'danger' && 'bg-danger-500 hover:bg-danger-600 text-[#FFFFFF] border-none px-16',
@@ -36,4 +44,5 @@ function handleClick() {
             <span>{{ t(label) }}</span>
         </button>
     </Button>
+    <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
 </template>

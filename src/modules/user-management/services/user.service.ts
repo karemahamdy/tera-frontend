@@ -4,7 +4,7 @@ import type {
   UserList,
   UserByID,
   UserPayload,
-  PasswordResetForm
+  PasswordResetForm,
 } from "../types/User";
 
 export const UserService = {
@@ -53,10 +53,14 @@ export const UserService = {
   },
 
   resetPassword(payload: PasswordResetForm) {
-    return axiosWrapper.post<PasswordResetForm>(`/Auth/admin/change-password`, payload);
+    return axiosWrapper.post<PasswordResetForm>(
+      `/Auth/admin/change-password`,
+      payload
+    );
   },
 
   droplist() {
     return axiosWrapper.get<UserList[]>(`/Users`);
   },
+
 };
