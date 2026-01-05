@@ -8,7 +8,7 @@ import FormInput from "@/sharedComponents/inputs/FormInput.vue";
 import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
 import ToggleItem from "@/sharedComponents/inputs/ToggleItem.vue";
 import { userSchema, userEditSchema } from "../validation/UserSchema";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useLookups } from "@/composables/useLookups";
 import { useUsers } from "../composables/useUsers";
 import type { UserPayload } from "../types/User";
@@ -30,6 +30,7 @@ const id = route.params.id ? String(route.params.id) : null
 const { handleSubmit, errors, defineField, setValues } = useForm({
   validationSchema: editMode ? userEditSchema : userSchema,
 });
+const file = ref<File | null>(null);
 
 const [fullName] = defineField("fullName");
 const [userName] = defineField("userName");
@@ -47,6 +48,10 @@ onMounted(() => {
 });
 
 const onSubmit = handleSubmit((values) => {
+   if (file.value) {
+    values.profileImage = file.value;
+   }
+
   if (editMode) {
     editUser(id as string, values as UserPayload);
   } else {
@@ -60,6 +65,7 @@ onMounted(async () => {
     setValues(userData.value);
   }
 });
+
 </script>
 
 <template>
@@ -96,7 +102,7 @@ onMounted(async () => {
 
       <template #content>
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
-          <FileUpload />
+          <FileUpload v-model="file" />
 
           <div class="flex gap-8">
             <FormInput
