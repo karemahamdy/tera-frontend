@@ -96,7 +96,7 @@ export function useGroups() {
       const row = tableData.value.find((row) => row.id === id);
       if (row) row.isActive = isActive;
       toastService.success(t("userGroup.userGroupUpdated"));
-      fetchGroups()
+      fetchGroups(pageIndex.value)
     } catch (err: any) {
       const errors =
         err?.response?.data?.errors || err?.response?.data?.validationErrors;
