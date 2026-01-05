@@ -105,7 +105,7 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
             <div>
               <label class="text-gray-700 font-bold">
-                {{ $t("roles.roleName") }}
+                {{ $t("roles.roles") }}
               </label>
               <MultiSelect v-model="roleIds" :options="rolesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
@@ -142,7 +142,7 @@ const onSubmit = handleSubmit(async (values) => {
               </small>
             </div>
             <div v-if="groupAccessScope === 'branch'">
-              <label class="text-gray-700 font-bold">{{ $t("roles.branches") }}</label>
+              <label class="text-gray-700 font-bold">{{ $t("roles.assignedBranch") }}</label>
               <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
                 :placeholder="$t('branch.selectbranches')" />

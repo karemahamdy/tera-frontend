@@ -167,7 +167,8 @@
     "roleAssigned": "Role assigned successfully",
     "roleUpdatedInGroup": "Role updated in group successfully",
     "roleRemovedFromGroup": "Role removed from group successfully",
-    "rolesFetched": "Roles fetched successfully"
+    "rolesFetched": "Roles fetched successfully",
+    "assignedBranch": "Assigned Branch"
   },
   "auditLog": {
     "title": "Audit Log",
