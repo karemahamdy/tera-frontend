@@ -5,6 +5,7 @@ import type {
   GetRolesToGroup,
   GroupRoleDetails,
 } from "../types/userGroupRoles";
+import { date } from "yup";
 
 export const GroupRolesService = {
 
@@ -23,7 +24,7 @@ export const GroupRolesService = {
   },
 
   getRoleToGroupById(groupId: string, roleId: string) {
-  return axiosWrapper.get<GroupRoleDetails>(
+  return axiosWrapper.get<{data: GroupRoleDetails}>(
     `/Group/GetRoleAssignedToGroupById/${groupId}/${roleId}`
   );
 },
