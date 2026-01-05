@@ -7,6 +7,7 @@ import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useLookups } from "@/composables/useLookups";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
+import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -15,8 +16,16 @@ const roleId = route.params.roleId as string | undefined;
 const isSubmitting = ref(false);
 const isEditMode = computed(() => !!roleId);
 
-const { getRoleToGroupById, createRoleGroup, updateRoleGroup } = useGroupRoles();
-const { getGroupLookups, getRolesLookups, getBranchLookups, groupsLookups, rolesLookups, branchesLookups } = useLookups();
+const { getRoleToGroupById, createRoleGroup, updateRoleGroup } =
+  useGroupRoles();
+const {
+  getGroupLookups,
+  getRolesLookups,
+  getBranchLookups,
+  groupsLookups,
+  rolesLookups,
+  branchesLookups,
+} = useLookups();
 
 const { handleSubmit, setValues, errors } = useForm<any>({
   validationSchema: assignRolesSchema,
@@ -35,24 +44,21 @@ const { value: branchIds } = useField<string[]>("roles");
 const { value: groupAccessScope } = useField<string>("groupAccessScope");
 
 onMounted(async () => {
-  await Promise.all([
-    getGroupLookups(),
-    getRolesLookups(),
-    getBranchLookups(),
-  ]);
-const group = groupsLookups.value.find((g: any) => g.value === groupId);
+  await Promise.all([getGroupLookups(), getRolesLookups(), getBranchLookups()]);
+  const group = groupsLookups.value.find((g: any) => g.value === groupId);
   if (!group) {
     toastService.error(t("roles.roleNotActive"));
   } else {
-    
-  name.value = currentGroupName.value;
+    name.value = currentGroupName.value;
   }
 
   await loadEditData();
 });
 
-const currentGroupName = computed(() =>
-  groupsLookups.value.find((group: any) => group.value === groupId)?.label || " "
+const currentGroupName = computed(
+  () =>
+    groupsLookups.value.find((group: any) => group.value === groupId)?.label ||
+    " "
 );
 
 watch(groupAccessScope, (val) => {
@@ -62,12 +68,16 @@ watch(groupAccessScope, (val) => {
 const loadEditData = async () => {
   if (!isEditMode.value || !roleId) return;
 
-  const roleData = await getRoleToGroupById(groupId, roleId) as { roleId: string; branchIds: string[]; groupAccessScope: number } | null;
+  const roleData = (await getRoleToGroupById(groupId, roleId)) as {
+    roleId: string;
+    branchIds: string[];
+    groupAccessScope: number;
+  } | null;
   if (!roleData) return;
 
   setValues({
     name: currentGroupName.value,
-    role: [roleData.roleId],
+    role: roleData.roleId,
     roles: roleData.branchIds || [],
     groupAccessScope: roleData.groupAccessScope === 1 ? "global" : "branch",
     groupId,
@@ -91,12 +101,20 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader title="accessControl" subtitle="userGroup.userGroup" actionName="roles.assignRole" />
+    <ScreenHeader
+      title="accessControl"
+      subtitle="userGroup.userGroup"
+      actionName="roles.assignRole"
+    />
     <card class="bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col mb-4 pt-4 px-20">
-          <h2 class="heading-title">{{ $t('userGroup.AssignRolesToUserGroup') }}</h2>
-          <p class="subheading-title">{{ $t('userGroup.AddRolesGroupDesc') }}</p>
+          <h2 class="heading-title">
+            {{ $t("userGroup.AssignRolesToUserGroup") }}
+          </h2>
+          <p class="subheading-title">
+            {{ $t("userGroup.AddRolesGroupDesc") }}
+          </p>
         </div>
       </template>
       <template #content>
@@ -106,18 +124,42 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">
                 {{ $t("userGroup.userGroup") }}
               </label>
-              <InputText v-model="name" placeholder="Finance Team" class="mt-1 w-full p-3 border rounded-lg" readonly 
-                :class="{ 'border-danger-500': errors.name }" />
+              <InputText
+                v-model="name"
+                placeholder="Finance Team"
+                class="mt-1 w-full p-3 border rounded-lg"
+                readonly
+                :class="{ 'border-danger-500': errors.name }"
+              />
               <!-- <small v-if="errors.name" class="text-danger-500">
                 {{ errors.name }}
               </small> -->
             </div>
             <div>
-              <label class="text-gray-700 font-bold">
-                {{ $t("roles.roles") }}
-              </label>
-              <MultiSelect v-model="roleIds" :options="rolesLookups" optionLabel="label" optionValue="value"
-                class="w-full mt-1" :class="{ 'p-invalid': errors.role }" :placeholder="$t('select roles')" />
+              <template v-if="!isEditMode">
+                <label class="text-gray-700 font-bold">
+                  {{ $t("roles.roles") }}
+                </label>
+                <MultiSelect
+                  v-model="roleIds"
+                  :options="rolesLookups"
+                  optionLabel="label"
+                  optionValue="value"
+                  class="w-full mt-1"
+                  :class="{ 'p-invalid': errors.role }"
+                  :placeholder="$t('select roles')"
+                />
+              </template>
+              <FormDropdown
+                v-else
+                class="w-full mt-1"
+                :label="$t('roles.roles')"
+                :options="rolesLookups"
+                v-model="roleIds"
+                :error="errors.role"
+                optionValue="value"
+                :placeholder="$t('select role')"
+              />
               <small v-if="errors.role" class="text-danger-500">
                 {{ errors.role }}
               </small>
@@ -126,21 +168,43 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">
                 {{ $t("roles.accessScope") }}
               </label>
-              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="groupAccessScope === 'global'
-                ? 'border-primary-400 bg-primary-25'
-                : 'border-gray-300'" @click="groupAccessScope = 'global'">
+              <div
+                class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer"
+                :class="
+                  groupAccessScope === 'global'
+                    ? 'border-primary-400 bg-primary-25'
+                    : 'border-gray-300'
+                "
+                @click="groupAccessScope = 'global'"
+              >
                 <div class="flex items-center gap-3">
-                  <RadioButton inputId="global" name="access" value="global" v-model="groupAccessScope" />
+                  <RadioButton
+                    inputId="global"
+                    name="access"
+                    value="global"
+                    v-model="groupAccessScope"
+                  />
                   <label class="font-medium cursor-pointer">
                     {{ $t("roles.globalAccess") }}
                   </label>
                 </div>
               </div>
-              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="groupAccessScope === 'branch'
-                ? 'border-primary-400 bg-primary-25'
-                : 'border-gray-300'" @click="groupAccessScope = 'branch'">
+              <div
+                class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer"
+                :class="
+                  groupAccessScope === 'branch'
+                    ? 'border-primary-400 bg-primary-25'
+                    : 'border-gray-300'
+                "
+                @click="groupAccessScope = 'branch'"
+              >
                 <div class="flex items-center gap-3">
-                  <RadioButton inputId="branch" name="access" value="branch" v-model="groupAccessScope" />
+                  <RadioButton
+                    inputId="branch"
+                    name="access"
+                    value="branch"
+                    v-model="groupAccessScope"
+                  />
                   <label class="font-medium cursor-pointer">
                     {{ $t("roles.branchSpecific") }}
                   </label>
@@ -151,16 +215,36 @@ const onSubmit = handleSubmit(async (values) => {
               </small>
             </div>
             <div v-if="groupAccessScope === 'branch'">
-              <label class="text-gray-700 font-bold">{{ $t("roles.assignedBranch") }}</label>
-              <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
-                class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.roles }"
-                :placeholder="$t('branch.selectbranches')" />
-              <small v-if="errors.roles" class="text-danger-500">{{ errors.roles }}</small>
+              <label class="text-gray-700 font-bold">{{
+                $t("roles.assignedBranch")
+              }}</label>
+              <MultiSelect
+                v-model="branchIds"
+                :options="branchesLookups"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full mt-1 rounded-2xl"
+                :class="{ 'p-invalid': errors.roles }"
+                :placeholder="$t('branch.selectbranches')"
+              />
+              <small v-if="errors.roles" class="text-danger-500">{{
+                errors.roles
+              }}</small>
             </div>
             <div class="flex justify-between gap-4 mb-4 container px-20">
-              <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserGroup' }" />
-              <BaseButton :label="isEditMode ? 'Update' : 'Assign'" variant="primary" block :disabled="isSubmitting"
-                :loading="isSubmitting" />
+              <BaseButton
+                label="cancel"
+                variant="ghost"
+                block
+                :to="{ name: 'UserGroup' }"
+              />
+              <BaseButton
+                :label="isEditMode ? 'Update' : 'Assign'"
+                variant="primary"
+                block
+                :disabled="isSubmitting"
+                :loading="isSubmitting"
+              />
             </div>
           </form>
         </div>
