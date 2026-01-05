@@ -40,7 +40,7 @@ const permissionItems = [
       if(row.isActive){
         router.push(`/roles-permissions/add-group-roles/${row.id}`);
       } else {
-        toastService.error("Group is not active");
+        toastService.error(t("roles.roleNotActive"));
       }
     },
   },

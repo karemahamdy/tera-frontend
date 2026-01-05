@@ -5,8 +5,11 @@ import { useForm, useField } from "vee-validate";
 import { assignRolesSchema } from "../validation/AssignRolesSchema";
 import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useLookups } from "@/composables/useLookups";
+import { toastService } from "@/app/services/toastService";
+import { useI18n } from "vue-i18n";
 
 const route = useRoute();
+const { t } = useI18n();
 const groupId = route.params.id as string;
 const roleId = route.params.roleId as string | undefined;
 const isSubmitting = ref(false);
@@ -26,7 +29,7 @@ const { handleSubmit, setValues, errors } = useForm<any>({
   },
 });
 
-const { value: name } = useField<string>("name");
+const { value: name } = useField<string | any>("name");
 const { value: roleIds } = useField<string[]>("role");
 const { value: branchIds } = useField<string[]>("roles");
 const { value: groupAccessScope } = useField<string>("groupAccessScope");
@@ -37,13 +40,19 @@ onMounted(async () => {
     getRolesLookups(),
     getBranchLookups(),
   ]);
-
+const group = groupsLookups.value.find((g: any) => g.value === groupId);
+  if (!group) {
+    toastService.error(t("roles.roleNotActive"));
+  } else {
+    
   name.value = currentGroupName.value;
+  }
+
   await loadEditData();
 });
 
 const currentGroupName = computed(() =>
-  groupsLookups.value.find((group: any) => group.value === groupId)?.label || ""
+  groupsLookups.value.find((group: any) => group.value === groupId)?.label || " "
 );
 
 watch(groupAccessScope, (val) => {
@@ -97,11 +106,11 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">
                 {{ $t("userGroup.userGroup") }}
               </label>
-              <InputText v-model="name" placeholder="Finance Team" class="mt-1 w-full p-3 border rounded-lg" disabled
+              <InputText v-model="name" placeholder="Finance Team" class="mt-1 w-full p-3 border rounded-lg" readonly 
                 :class="{ 'border-danger-500': errors.name }" />
-              <small v-if="errors.name" class="text-danger-500">
+              <!-- <small v-if="errors.name" class="text-danger-500">
                 {{ errors.name }}
-              </small>
+              </small> -->
             </div>
             <div>
               <label class="text-gray-700 font-bold">
