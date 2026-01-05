@@ -31,6 +31,7 @@ const { handleSubmit, errors, defineField, setValues } = useForm({
   validationSchema: editMode ? userEditSchema : userSchema,
 });
 const file = ref<File | null>(null);
+const fileUploadRef = ref<InstanceType<typeof FileUpload> | null>(null);
 
 const [fullName] = defineField("fullName");
 const [userName] = defineField("userName");
@@ -63,6 +64,9 @@ onMounted(async () => {
   if (editMode) {
     await getUserById(id as string);
     setValues(userData.value);
+    if(userData.value.userProfileImageUrl && fileUploadRef.value) {
+      fileUploadRef.value.setSelectedImage(userData.value.userProfileImageUrl);
+    }
   }
 });
 
@@ -102,7 +106,7 @@ onMounted(async () => {
 
       <template #content>
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
-          <FileUpload v-model="file" />
+          <FileUpload ref="fileUploadRef" v-model="file" />
 
           <div class="flex gap-8">
             <FormInput
