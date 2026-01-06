@@ -6,13 +6,15 @@ import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 const loading = ref(false);
 const showDeleteDialog = ref(false);
 const rowToDelete = ref(null);
+const id = route.params.id as string;
 
 const props = defineProps({
     data: {
@@ -70,7 +72,7 @@ const handleDeleteConfirm = () => {
     rowToDelete.value = null;
 };
 const goToAddRole = () => {
-  router.push("/add-user-roles/:id");
+  router.push({ name: "AddUserRoles", params: { id } });
 };
 </script>
 
