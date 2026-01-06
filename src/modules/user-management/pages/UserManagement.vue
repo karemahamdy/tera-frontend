@@ -61,8 +61,7 @@ const permissionItems = [
     icon: "Star1",
     color: "#12B76A",
     command: (row: any) => {
-      console.log("ROW", row);
-      router.push(`/roles-permissions/add-user-roles/${row.id}`);
+      router.push(`/roles-permissions/add-user-roles/${row.userId}`);
     },
   },
   {
@@ -70,7 +69,7 @@ const permissionItems = [
     icon: "Eye",
     color: "#3F5FAC",
     command: (row: any) => {
-      router.push(`/roles-permissions/list-user-roles/${row.id}`);
+      router.push(`/roles-permissions/list-user-roles/${row.userId}`);
     },
   },
 ];
