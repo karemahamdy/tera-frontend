@@ -26,7 +26,7 @@ const cards = computed(() => {
             subtitle: `${t('licenseInfo.expiresOn')} ${formatDateTimeDetailedLang(
                 licenseInfo.value.expiryDate
             )}`,
-            statusText: daysUntilExpiry.value >= 90
+            statusText: daysUntilExpiry.value <= 30
                 ? 'licenseInfo.urgent'
                 : 'licenseInfo.active',
             progressPercent: Math.min(daysUntilExpiry.value, 100)
@@ -37,7 +37,7 @@ const cards = computed(() => {
             title: 'licenseInfo.userCapacity',
             value: `${licenseInfo.value.currentNumperOfUser}/${licenseInfo.value.numperOfUserInLicense}`,
             subtitle: 'licenseInfo.approachingLimit',
-            statusText: userUsagePercent.value >= 90 ? 'licenseInfo.urgent'
+            statusText: userUsagePercent.value >= 30 ? 'licenseInfo.urgent'
                 : 'licenseInfo.active',
             progressPercent: userUsagePercent.value
         },
@@ -47,7 +47,7 @@ const cards = computed(() => {
             title: 'licenseInfo.concurrentSession',
             value: `${licenseInfo.value.currentNumperOfSessions}/${licenseInfo.value.numperOfSessionsInLicense}`,
             subtitle: 'licenseInfo.steadyHighUsage',
-            statusText: sessionUsagePercent.value >= 90 ? 'licenseInfo.urgent'
+            statusText: sessionUsagePercent.value <= 30 ? 'licenseInfo.urgent'
                 : 'licenseInfo.active',
             progressPercent: sessionUsagePercent.value
         }
