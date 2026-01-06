@@ -54,7 +54,7 @@ export function useUsers() {
     orderBy: string;
     direction: "asc" | "desc";
   }) => {
-    pagination.value.OrderBy = orderData.orderBy;
+    pagination.value.OrderBy = orderData.orderBy === "group" ? "usergroup" : orderData.orderBy;
     pagination.value.OrderDirection = orderData.direction;
     pagination.value.PageIndex = 1;
     await getList();
