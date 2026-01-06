@@ -1,8 +1,15 @@
 import { ref } from "vue";
 import router from "@/app/router";
-import type { Pagination, UserListItem, UserPayload, PasswordResetForm, UserByID } from "../types/User";
+import type {
+  Pagination,
+  UserListItem,
+  UserPayload,
+  PasswordResetForm,
+  UserByID,
+} from "../types/User";
 import { UserService } from "../services/user.service";
 import { toastService } from "@/app/services/toastService";
+import { FileService } from "@/app/services/file.service";
 import { useI18n } from "vue-i18n";
 
 export function useUsers() {
@@ -54,7 +61,8 @@ export function useUsers() {
     orderBy: string;
     direction: "asc" | "desc";
   }) => {
-    pagination.value.OrderBy = orderData.orderBy === "group" ? "usergroup" : orderData.orderBy;
+    pagination.value.OrderBy =
+      orderData.orderBy === "group" ? "usergroup" : orderData.orderBy;
     pagination.value.OrderDirection = orderData.direction;
     pagination.value.PageIndex = 1;
     await getList();
@@ -99,7 +107,7 @@ export function useUsers() {
     } finally {
       loading.value = false;
     }
-  }
+  };
 
   const editUser = async (id: string, data: UserPayload) => {
     try {
@@ -112,7 +120,7 @@ export function useUsers() {
     } finally {
       loading.value = false;
     }
-  }
+  };
 
   const getUserById = async (id: string) => {
     loading.value = true;
@@ -157,6 +165,18 @@ export function useUsers() {
     }
   };
 
+  const importUsers = async (file: File) => {
+    try {
+      await FileService.uploadFile("Users/ImportUsers", {
+        file: file,
+      });
+      toastService.success(t("users.userAdded"));
+      getList();
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     list,
     userData,
@@ -172,6 +192,7 @@ export function useUsers() {
     createUser,
     resetPassword,
     editUser,
-    getUserById
+    getUserById,
+    importUsers,
   };
 }
