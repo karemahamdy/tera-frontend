@@ -6,9 +6,12 @@ import { assignRolesSchema } from "../validation/UserAssignRolesSchema";
 import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useRolesUser } from "../composables/assignRolesToUser";
 import { useLookups } from "@/composables/useLookups";
+import { toastService } from "@/app/services/toastService";
 import { useUsers } from "@/modules/user-management/composables/useUsers";
 const { userData, getUserById } = useUsers();
 import type { AssignRole } from "../types/user";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const route = useRoute();
 const userId = route.params.id as string;
@@ -44,7 +47,11 @@ const { value: accessScope } = useField<string>("accessScope");
 
 onMounted(async () => {
   await Promise.all([getUserById(userId), getRolesLookups(), getBranchLookups()]);
-  name.value = userData.value.fullName;
+  if(userData.value.isActive){
+    name.value = userData.value.fullName;
+  } else {
+    toastService.error(t("roles.userNotActive"));
+  }
   await loadEditData();
 });
 
