@@ -17,7 +17,7 @@ export function useUsers() {
     GroupFilter: undefined,
     StatusFilter: undefined,
     ScopeFilter: undefined,
-    DepartmantFilter: undefined,
+    DepartmentFilter: undefined,
     PageIndex: 1,
     PageSize: 10,
     SearchingWord: undefined,
@@ -139,7 +139,7 @@ export function useUsers() {
     } else if (field === "accessScope") {
       pagination.value.ScopeFilter = value;
     } else if (field === "department") {
-      pagination.value.DepartmantFilter = value;
+      pagination.value.DepartmentFilter = value;
     }
     pagination.value.PageIndex = 1;
     getList();
