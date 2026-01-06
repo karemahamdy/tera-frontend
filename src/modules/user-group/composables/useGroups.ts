@@ -7,14 +7,15 @@ import type {
 } from "../../user-group/types/groups";
 import { toastService } from "../../../app/services/toastService";
 import { useI18n } from "vue-i18n";
+import { FileService } from "@/app/services/file.service";
 
 export function useGroups() {
   const { t } = useI18n();
 
   const loading = ref(false);
   const apiGroups = ref<GroupApiItem[]>([]);
-  
-   const tableData = computed<GroupTableItem[]>(() =>
+
+  const tableData = computed<GroupTableItem[]>(() =>
     apiGroups.value.map((g) => ({
       id: g.id,
       GroupName: g.name,
@@ -96,7 +97,7 @@ export function useGroups() {
       const row = tableData.value.find((row) => row.id === id);
       if (row) row.isActive = isActive;
       toastService.success(t("userGroup.userGroupUpdated"));
-      fetchGroups(pageIndex.value)
+      fetchGroups(pageIndex.value);
     } catch (err: any) {
       const errors =
         err?.response?.data?.errors || err?.response?.data?.validationErrors;
@@ -190,6 +191,22 @@ export function useGroups() {
     lastError.value = null;
   };
 
+  const importUsers = async (file: File) => {
+    try {
+      await FileService.uploadFile(
+        "Group/ImportGroup",
+        {
+          file: file,
+        },
+        "groupFile"
+      );
+      toastService.success(t("userGroup.userGroupCreated"));
+      fetchGroups(pageIndex.value);
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     loading,
     fetchGroups,
@@ -209,5 +226,6 @@ export function useGroups() {
     onSearch,
     onSort,
     setPage: (page: number) => fetchGroups(page),
+    importUsers,
   };
 }

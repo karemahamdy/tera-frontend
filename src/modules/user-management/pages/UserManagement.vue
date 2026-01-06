@@ -13,7 +13,7 @@ import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
 import { useLookups } from "@/composables/useLookups";
 
-const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus, resetPassword } =
+const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus, resetPassword, importUsers } =
   useUsers();
 
 
@@ -267,6 +267,7 @@ onMounted(() => {
           dataFileUrl="/Users/exportUsers"
           templateFileName="user-template.csv"
           dataFileName="user-data.csv"
+          @upload="importUsers"
         />
       </template>
       <!-- DynamicTable component -->
