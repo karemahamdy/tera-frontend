@@ -259,6 +259,7 @@ onMounted(() => {
           :last="lastRecord"
           :filters="filtersOperation"
           :onMainBtnClick="addUserGroup"
+          hasMenu
           templateFileUrl="/Users/DownloadImportTemplate"
           dataFileUrl="/Users/exportUsers"
           templateFileName="user-template.csv"
