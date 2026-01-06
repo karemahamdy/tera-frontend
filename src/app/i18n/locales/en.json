@@ -45,7 +45,8 @@
     "resetPassword": "Reset Password",
     "clearFilters": "Clear Filters",
     "template": "Template",
-    "data": "Data"
+    "data": "Data",
+    "terminate": "Terminate" 
   },
   "table": {
     "description": "Description",
@@ -293,5 +294,9 @@
     "error": "Error",
     "info": "Info",
     "warning": "Warning"
+  },
+  "sessions": {
+    "title": "Terminate Session?",
+    "desc": "This will immediately end the session for this user. They will be logged out and will need to sign in again."
   }
 }

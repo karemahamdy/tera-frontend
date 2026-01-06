@@ -9,6 +9,7 @@ export function useLookups() {
   const entitiesLookups = ref<LookupsOption[]>([]);
   const rolesLookups = ref<LookupsOption[]>([]);
   const screensLookups = ref<LookupsOption[]>([]);
+  const IPLookups = ref<LookupsOption[]>([]);
   const departmentsLookups = ref<LookupsOption[]>([]);
 
   const getGroupLookups = async (isActive: boolean = true) => {
@@ -66,6 +67,17 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
+    const getIPLookups = async () => {
+    try {
+      const res = await LookupsService.getIPLookups();
+      IPLookups.value = res.data.map((group) => ({
+        label: group.ipAddressName,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   const getDepartmentsLookups = async (isActive: boolean = true) => {
     try {
       const res = await LookupsService.getDepartmentsLookups(isActive);
@@ -85,6 +97,8 @@ export function useLookups() {
     rolesLookups,
     screensLookups,
     departmentsLookups,
+    IPLookups,
+    getIPLookups,
     getGroupLookups,
     getBranchLookups,
     getEntityLookups,

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
@@ -6,13 +6,12 @@ import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
-import { useSearch } from "@/composables/useSearch";
-import { useFilters } from "@/composables/useFilters";
 import { useSession } from "../composables/useSession";
 import { useLookups } from "@/composables/useLookups";
 const { t } = useI18n();
-const router = useRouter();
+
+const showDialog = ref(false);
+const selectedRow = ref<any>(null);
 
 const {
     List,
@@ -26,11 +25,13 @@ const {
 } = useSession();
 const {
   branchesLookups,
-  getBranchLookups
+  getBranchLookups,
+  getIPLookups,
+  IPLookups
 } = useLookups();
 
 onMounted(() => {
-   Promise.all[(getList(),  getBranchLookups())]
+   Promise.all[(getList(), getBranchLookups(), getIPLookups() )]
 });
 
 const filtersOperation = computed(() => {
@@ -38,10 +39,10 @@ const filtersOperation = computed(() => {
     {
         placeholder: "activeSessions.allIPAddress",
         value: null,
-        field: "ipAddress",
+        field: "allIPAddress",
         options: [
             { label: "activeSessions.allIPAddress", value: null },
-            { label: "option 1", value: "option 1" },
+            ...IPLookups.value
         ],
     },
     {
@@ -86,12 +87,20 @@ const columns = computed(() => {
         { field: 'device', header: t('activeSessions.device'), sortable: true },
         { field: 'isActive', header: t('activeSessions.status'), sortable: true },
         { field: 'loginTime', header: t('activeSessions.loginTime'), type: "dateTimeDetailed", sortable: true },
-        { field: 'logoutTime', header: t('activeSessions.lastActivity'), sortable: true },
+        { field: 'logoutTime', header: t('activeSessions.lastActivity'),  type: "dateTimeDetailed", sortable: true },
         { field: 'actionItem', header: t('activeSessions.action'), type: "slot" },
     ];
 
     return Columns;
 });
+
+const openEndSessionDialog = (row: any) => {
+  selectedRow.value = row;
+  showDialog.value = true;
+};
+const handleConfirm = () => {
+
+}
 
 </script>
 
@@ -131,7 +140,7 @@ const columns = computed(() => {
                         </div>
                     </template>
                     <template #col-actionItem="{ data }">
-                        <div class="flex items-center gap-2 text-danger-500 cursor-pointer">
+                        <div class="flex items-center gap-2 text-danger-500 cursor-pointer"  @click="openEndSessionDialog(data)">
                             <VsxIcon iconName="PlayCricle" :size="24" type="linear" />
                             {{ $t("activeSessions.end") }}
                         </div>
@@ -139,7 +148,17 @@ const columns = computed(() => {
                 </DynamicTable>
             </template>
         </card>
-
+ <StatusDialog
+      v-model:visible="showDialog"
+      :icon="alertIcon"
+      :title="$t('sessions.title')"
+      :description="$t('sessions.desc')"
+      :buttons="[
+        { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+        { label: $t('button.terminate'), variant: 'danger', action: 'confirm' },
+      ]"
+      @confirm="handleConfirm"
+    />
     </div>
 </template>
 

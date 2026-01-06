@@ -12,7 +12,6 @@ export function useSession() {
   const pagination = ref<Pagination>({
     IpAddressFilter: undefined,
     StatusFilter: undefined,
-    ScopeFilter: undefined,
     BranchFilter: undefined,
     PageIndex: 1,
     PageSize: 10,
