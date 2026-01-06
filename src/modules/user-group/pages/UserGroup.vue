@@ -25,6 +25,7 @@ const {
   onSearch,
   onSort,
   setPage,
+  importUsers
 } = useGroups();
 
 onMounted(() => {
@@ -181,6 +182,7 @@ const addUserGroup = () => {
           dataFileUrl="/Group/ExportGroup"
           templateFileName="group-template.csv"
           dataFileName="group-data.csv"
+          @upload="importUsers"
         />
       </template>
 
