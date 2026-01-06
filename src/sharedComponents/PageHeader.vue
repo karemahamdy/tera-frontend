@@ -18,8 +18,10 @@ const props = defineProps({
   showExport: { type: Boolean, default: false },
   exportText: { type: String, default: "Export" },
   showImport: { type: Boolean, default: false },
+  hasMenu: { type: Boolean, default: false },
   importText: { type: String, default: "Import" },
   onImport: { type: Function, default: null },
+  onExport: { type: Function, default: null },
   onExportTemplate: { type: Function, default: null },
   onExportData: { type: Function, default: null },
   templateFileUrl: { type: [String, null], default: null },
@@ -109,7 +111,8 @@ const items = computed(() => {
         :label="$t('export')"
         icon="Export"
         variant="outline-primary"
-        hasMenu
+        :hasMenu="hasMenu"
+        @click="!hasMenu && (onExport && onExport())"
         :items="items"
       />
       <!-- Main Button -->
