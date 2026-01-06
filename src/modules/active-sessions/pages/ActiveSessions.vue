@@ -10,27 +10,31 @@ import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
 import { useFilters } from "@/composables/useFilters";
 import { useSession } from "../composables/useSession";
-
+import { useLookups } from "@/composables/useLookups";
 const { t } = useI18n();
 const router = useRouter();
-
 
 const {
     List,
     loading,
     pagination,
+    onFilterChange,
     getList,
     changePage,
     sort,
     search
 } = useSession();
-
+const {
+  branchesLookups,
+  getBranchLookups
+} = useLookups();
 
 onMounted(() => {
-    getList()
+   Promise.all[(getList(),  getBranchLookups())]
 });
 
-const filtersOperation = [
+const filtersOperation = computed(() => {
+  return [
     {
         placeholder: "activeSessions.allIPAddress",
         value: null,
@@ -43,22 +47,24 @@ const filtersOperation = [
     {
         placeholder: "activeSessions.allBranches",
         value: null,
-        field: "allUsers",
+        field: "allBranches",
         options: [
-            { label: "activeSessions.allBranches", value: null },
-            { label: "option 1", value: "option 1" },
+           { label: t("activeSessions.allBranches"), value: null },
+  ...branchesLookups.value
         ],
     },
     {
         placeholder: "activeSessions.allStatus",
         value: null,
-        field: "allStatus",
-        options: [
-            { label: "activeSessions.allStatus", value: null },
-            { label: "option 1", value: "option 1" },
-        ],
+       field: "status",
+      options: [
+        { label: t("usersManagement.allStatus"), value: null },
+        { label: t("button.active"), value: "IsActive" },
+        { label: t("button.inactive"), value: "InActive" },
+      ],
     }
-];
+]
+});
 
 const firstRecord = computed(() => {
     return List.value.length === 0
@@ -96,8 +102,13 @@ const columns = computed(() => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="activeSessions.title" subtitle="activeSessions.subtitle" :showExport="true"
-                    :showFilter="true" @filter-change="onFilterChange" :filters="filters"
-                    searchPlaceholder="activeSessions.searchPlaceholder" @search="search" />
+                    :showFilter="true" @filter-change="onFilterChange"
+                    searchPlaceholder="activeSessions.searchPlaceholder" @search="search"
+          :rows="pagination.PageSize"
+          :totalRecords="pagination.total"
+          :first="firstRecord"
+          :last="lastRecord"
+          :filters="filtersOperation" />
             </template>
             <!-- DynamicTable component -->
             <template #content>

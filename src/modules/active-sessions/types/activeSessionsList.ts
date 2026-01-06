@@ -20,10 +20,9 @@ export interface PaginatedResponse<T> {
 }
 
 export interface Pagination {
-  GroupFilter?: string;
+  IpAddressFilter?: string;
   StatusFilter?: string;
-  ScopeFilter?: string;
-  DepartmantFilter?: string;
+  BranchFilter?: string;
   PageIndex: number;
   PageSize: number;
   SearchingWord?: string;

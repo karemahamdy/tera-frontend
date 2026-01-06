@@ -10,10 +10,10 @@ export function useSession() {
   const loading = ref(false);
 
   const pagination = ref<Pagination>({
-    GroupFilter: undefined,
+    IpAddressFilter: undefined,
     StatusFilter: undefined,
     ScopeFilter: undefined,
-    DepartmantFilter: undefined,
+    BranchFilter: undefined,
     PageIndex: 1,
     PageSize: 10,
     SearchingWord: undefined,
@@ -35,6 +35,22 @@ const getList = async () => {
     loading.value = false;
   }
 };
+  const onFilterChange = (filter: {
+    filter: { field: string };
+    value: string;
+  }) => {
+    const field = filter.filter.field;
+    const value = filter.value;
+    if (field === "allIPAddress") {
+      pagination.value.IpAddressFilter = value;
+    } else if (field === "status") {
+      pagination.value.StatusFilter = value;
+    } else if (field === "allBranches") {
+      pagination.value.BranchFilter = value;
+    }
+    pagination.value.PageIndex = 1;
+    getList();
+  };
 
   const changePage = async (page: number) => {
     pagination.value.PageIndex = page;
@@ -61,7 +77,7 @@ const getList = async () => {
     List,
     loading,
     pagination,
-    
+    onFilterChange,
     getList,
     changePage,
     search,

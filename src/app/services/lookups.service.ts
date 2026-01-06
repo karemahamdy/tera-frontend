@@ -20,4 +20,5 @@ export const LookupsService = {
   getDepartmentsLookups(isActive: boolean = true) {
     return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/DepartmentsLookups?isActive=${isActive}`);
   },
+  
 };
