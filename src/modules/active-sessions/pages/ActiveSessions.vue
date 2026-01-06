@@ -4,37 +4,32 @@ import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSearch } from "@/composables/useSearch";
 import { useFilters } from "@/composables/useFilters";
+import { useSession } from "../composables/useSession";
 
 const { t } = useI18n();
 const router = useRouter();
-const loading = ref(false);
-const showDeleteDialog = ref(false);
-const rowToDelete = ref(null);
 
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                id: 1,
-                user: 'Mick Taylor',
-                email: "john@tera.com",
-                img: "https://i.pravatar.cc/40",
-                branch: 'Cairo',
-                ipAddress: '192.168.1.100',
-                device: "Edge 120.0 / Windows 11",
-                status: "Active",
-                loginTime: '5 Hours',
-                lastActivity: '22d ago',
-            },
-        ]
-    },
+
+const {
+    List,
+    loading,
+    pagination,
+    getList,
+    changePage,
+    sort,
+    search
+} = useSession();
+
+
+onMounted(() => {
+    getList()
 });
+
 const filtersOperation = [
     {
         placeholder: "activeSessions.allIPAddress",
@@ -65,19 +60,27 @@ const filtersOperation = [
     }
 ];
 
-const emit = defineEmits(['search']);
-const { onSearch, filteredData } = useSearch(props.data);
-const { filters, filteredData: filteredByFilters, onFilterChange } = useFilters(props.data, filtersOperation);
+const firstRecord = computed(() => {
+    return List.value.length === 0
+        ? 0
+        : (pagination.value.PageIndex - 1) * pagination.value.PageSize + 1;
+});
+
+const lastRecord = computed(() => {
+    if (List.value.length === 0) return 0;
+    const last = firstRecord.value + List.value.length - 1;
+    return last > pagination.value.total ? pagination.value.total : last;
+});
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'user', header: t('activeSessions.user'), sortable: true, type: "slot" },
-        { field: 'branch', header: t('activeSessions.branch'), sortable: true, type: "badge", Class: "custom-badge", },
+        { field: 'fullName', header: t('activeSessions.user'), sortable: true, type: "slot" },
+        { field: 'branchNameEn', header: t('activeSessions.branch'), sortable: true, type: "badge", Class: "custom-badge", },
         { field: 'ipAddress', header: t('activeSessions.ipAddress'), sortable: true },
         { field: 'device', header: t('activeSessions.device'), sortable: true },
-        { field: 'status', header: t('activeSessions.status'), sortable: true },
-        { field: 'loginTime', header: t('activeSessions.loginTime'), sortable: true },
-        { field: 'lastActivity', header: t('activeSessions.lastActivity'), sortable: true },
+        { field: 'isActive', header: t('activeSessions.status'), sortable: true },
+        { field: 'loginTime', header: t('activeSessions.loginTime'), type: "dateTimeDetailed", sortable: true },
+        { field: 'logoutTime', header: t('activeSessions.lastActivity'), sortable: true },
         { field: 'actionItem', header: t('activeSessions.action'), type: "slot" },
     ];
 
@@ -94,19 +97,26 @@ const columns = computed(() => {
             <template #title>
                 <PageHeader title="activeSessions.title" subtitle="activeSessions.subtitle" :showExport="true"
                     :showFilter="true" @filter-change="onFilterChange" :filters="filters"
-                    searchPlaceholder="activeSessions.searchPlaceholder" @search="onSearch" />
+                    searchPlaceholder="activeSessions.searchPlaceholder" @search="search" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredData" :loading="loading">
-                    <template #col-user="{ data }">
-                        <div class="flex items-center gap-2">
-                            <Avatar :image="data.img" shape="circle" />
-                            <span>
-                                <span class="font-semibold">{{ data.user }}</span>
-                                <br />
-                                <small class="text-sm text-admin-muted">{{ data.email }}</small>
-                            </span>
+                <DynamicTable :columns="columns" :data="List" :loading="loading" :first="firstRecord" :last="lastRecord"
+                    :rows="pagination.PageSize" :totalRecords="pagination.total" @action-menu-click="handleActionMenu"
+                    @page-change="changePage" @order-change="sort" lazy>
+                    <template v-slot:["col-fullName"]="{ data }">
+                        <div class="flex items-center gap-2 rounded">
+                            <Badge v-if="data.isAdmin" severity="warn" class="circle-badge-sm">
+                                <VsxIcon iconName="Award" :size="20" type="linear" />
+                            </Badge>
+
+                            <Avatar :image="data.profileImageUrl"
+                                :label="!data.profileImageUrl ? data.fullName.charAt(0) : ''" shape="circle"
+                                class="w-10 h-10 bg-gray-800" />
+                            <div class="flex flex-col">
+                                <div class="text-base text-gray-700">{{ data.fullName }}</div>
+                                <div class="text-sm text-gray-500">{{ data.userName }}</div>
+                            </div>
                         </div>
                     </template>
                     <template #col-actionItem="{ data }">

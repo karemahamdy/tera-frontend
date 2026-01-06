@@ -1,14 +1,14 @@
-export interface Role {
+export interface ActiveSession {
   id: string;
-  name: string;
-}
-
-export interface LogItem {
-  id: string;
-  name: string;
-  description: string;
-  logAccessScope: number;
-  rolesAssingedToLog: Role[];
+  user: string;
+  email: string;
+  img: string | null;
+  branch: string;
+  ipAddress: string;
+  device: string;
+  status: string;
+  loginTime: string;
+  lastActivity: string;
 }
 
 export interface PaginatedResponse<T> {
@@ -17,6 +17,19 @@ export interface PaginatedResponse<T> {
   pageSize: number;
   totalCount: number;
   totalPages: number;
+}
+
+export interface Pagination {
+  GroupFilter?: string;
+  StatusFilter?: string;
+  ScopeFilter?: string;
+  DepartmantFilter?: string;
+  PageIndex: number;
+  PageSize: number;
+  SearchingWord?: string;
+  OrderBy?: string;
+  OrderDirection?: "desc" | "asc";
+  total: number;
 }
 
 export interface ApiResponse<T> {
@@ -29,6 +42,4 @@ export interface ApiResponse<T> {
   id: string | null;
 }
 
-export type LogsListResponse = ApiResponse<
-  PaginatedResponse<LogItem>
->;
+export type SessionResponse = ApiResponse<PaginatedResponse<ActiveSession>>;
