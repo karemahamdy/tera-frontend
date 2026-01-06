@@ -4,7 +4,7 @@ import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from "@/assets/images/alert.png";
-
+import { toastService } from "@/app/services/toastService";
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -61,7 +61,11 @@ const permissionItems = [
     icon: "Star1",
     color: "#12B76A",
     command: (row: any) => {
-      router.push(`/roles-permissions/add-user-roles/${row.userId}`);
+      if(row.isActive){
+        router.push(`/roles-permissions/add-user-roles/${row.userId}`);
+      } else {
+        toastService.error(t("roles.userNotActive"));
+      }
     },
   },
   {
