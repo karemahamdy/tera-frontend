@@ -117,7 +117,8 @@
     "uploadImageDesc": "يجب تحميل ملفات GPAG/PNG/PDF > يجب أن تكون الصورة عالية الدقة وأصلية في التصميم",
     "departmentPlaceholder": "اختر القسم",
     "userGroupPlaceholder": "اختر مجموعة المستخدمين",
-    "editUsersManagement": "تعديل بيانات المستخدم"
+    "editUsersManagement": "تعديل بيانات المستخدم",
+    "rolesAssignedToUser": "تم تعيين الأدوار للمستخدم بنجاح"
   },
   "userGroup": {
     "groupName": "اسم المجموعة",

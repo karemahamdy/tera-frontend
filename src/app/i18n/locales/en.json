@@ -111,7 +111,8 @@
     "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design",
     "departmentPlaceholder": "Select Department",
     "userGroupPlaceholder": "Select User Group",
-    "editUsersManagement": "Edit Users Management"
+    "editUsersManagement": "Edit Users Management",
+    "rolesAssignedToUser": "Roles assigned to user successfully"
   },
   "userGroup": {
     "groupName": "Group Name",

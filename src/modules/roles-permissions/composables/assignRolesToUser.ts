@@ -14,7 +14,7 @@ export function useRolesUser() {
     try {
       loading.value = true;
       await UserRolesService.create(data);
-      toastService.success(t("users.userAdded"));
+      toastService.success(t("usersManagement.rolesAssignedToUser"));
       router.replace({ name: "UserManagement" });
     } catch (error) {
       toastService.error(error as string);
