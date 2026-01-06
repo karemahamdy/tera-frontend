@@ -1,39 +1,58 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import StatusCard from './components/StatusCard.vue'
+import { computed } from 'vue';
+import StatusCard from './components/StatusCard.vue';
+import { useLicenseInfo } from '../composables/useLicenseInfo';
+import { useI18n } from 'vue-i18n';
+import { formatDateTimeDetailedLang } from '../../../app/utils/dates';
 
-const cards = ref([
-    {
-        variant: 'orange',
-        icon: 'Clock',
-        title: 'licenseInfo.licenseExpire',
-        value: '65',
-        valueUnit: 'licenseInfo.days',
-        subtitle: 'licenseInfo.expiresDec312025',
-        statusText: 'licenseInfo.urgent',
-        progressPercent: 65
-    },
-    {
-        variant: 'green',
-        borderClass: 'border-emerald-300',
-        icon: 'Profile2User',
-        title: 'licenseInfo.userCapacity',
-        value: '96/100',
-        subtitle: 'licenseInfo.approachingLimit',
-        statusText: 'licenseInfo.active',
-        progressPercent: 96
-    },
-    {
-        variant: 'blue',
-        borderClass: 'border-blue-300',
-        icon: 'VideoTick',
-        title: 'licenseInfo.concurrentSession',
-        value: '24/40',
-        subtitle: 'licenseInfo.steadyHighUsage',
-        statusText: 'licenseInfo.active',
-        progressPercent: 60
-    }
-])
+const { t } = useI18n();
+const {
+    licenseInfo,
+    daysUntilExpiry,
+    userUsagePercent,
+    sessionUsagePercent
+} = useLicenseInfo();
+
+const cards = computed(() => {
+    if (!licenseInfo.value) return [];
+
+    return [
+        {
+            variant: 'orange',
+            icon: 'Clock',
+            title: 'licenseInfo.licenseExpire',
+            value: daysUntilExpiry.value,
+            valueUnit: 'licenseInfo.days',
+            subtitle: `${t('licenseInfo.expiresOn')} ${formatDateTimeDetailedLang(
+                licenseInfo.value.expiryDate
+            )}`,
+            statusText: daysUntilExpiry.value >= 90
+                ? 'licenseInfo.urgent'
+                : 'licenseInfo.active',
+            progressPercent: Math.min(daysUntilExpiry.value, 100)
+        },
+        {
+            variant: 'green',
+            icon: 'Profile2User',
+            title: 'licenseInfo.userCapacity',
+            value: `${licenseInfo.value.currentNumperOfUser}/${licenseInfo.value.numperOfUserInLicense}`,
+            subtitle: 'licenseInfo.approachingLimit',
+            statusText: userUsagePercent.value >= 90 ? 'licenseInfo.urgent'
+                : 'licenseInfo.active',
+            progressPercent: userUsagePercent.value
+        },
+        {
+            variant: 'blue',
+            icon: 'VideoTick',
+            title: 'licenseInfo.concurrentSession',
+            value: `${licenseInfo.value.currentNumperOfSessions}/${licenseInfo.value.numperOfSessionsInLicense}`,
+            subtitle: 'licenseInfo.steadyHighUsage',
+            statusText: sessionUsagePercent.value >= 90 ? 'licenseInfo.urgent'
+                : 'licenseInfo.active',
+            progressPercent: sessionUsagePercent.value
+        }
+    ];
+});
 </script>
 
 <template>

@@ -280,7 +280,7 @@
     "licenseExpire": "انتهاء الترخيص",
     "userCapacity": "سعة المستخدم", 
     "approachingLimit": "الاقتراب من الحد",
-    "expiresDec312025": "ينتهي في 31 ديسمبر 2025",
+    "expiresOn": "ينتهي في ",
     "urgent": "عاجل",
     "concurrentSession": "الجلسات المتزامنة",
     "steadyHighUsage": "استخدام مرتفع مستمر",

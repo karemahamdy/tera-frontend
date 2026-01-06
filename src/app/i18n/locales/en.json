@@ -271,7 +271,7 @@
     "title": "License Information",
     "subtitle": "Manage your enterpriselicense ,user quotas and active sessions.",
     "licenseExpire": "License Expire",
-    "expiresDec312025": "Expires Dec 31, 2025",
+    "expiresOn": "Expires on",
     "urgent": "Urgent", 
     "userCapacity": "User Capacity",
     "approachingLimit": "Approaching Limit",
