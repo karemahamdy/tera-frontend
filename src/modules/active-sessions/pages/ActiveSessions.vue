@@ -115,10 +115,19 @@ const handleConfirm = async () => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="activeSessions.title" subtitle="activeSessions.subtitle" :showExport="true"
+<<<<<<< Updated upstream
                     :showFilter="true" @filter-change="onFilterChange"
                     searchPlaceholder="activeSessions.searchPlaceholder" @search="search" :rows="pagination.PageSize"
                     :totalRecords="pagination.total" :first="firstRecord" :last="lastRecord"
                     :filters="filtersOperation" />
+=======
+                    :showFilter="true" @filter-change="onFilterChange" :filters="filters"
+                    searchPlaceholder="activeSessions.searchPlaceholder" @search="onSearch"   templateFileUrl="/Group/DownloadImportTemplate"
+          dataFileUrl="/Group/ExportGroup"
+          templateFileName="group-template.csv"
+          dataFileName="group-data.csv"
+          @upload="importUsers"/>
+>>>>>>> Stashed changes
             </template>
             <!-- DynamicTable component -->
             <template #content>
