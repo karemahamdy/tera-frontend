@@ -3,11 +3,13 @@ import { toastService } from "@/app/services/toastService";
 
 import type { ActiveSession, Pagination } from "../types/activeSessionsList";
 import { SessionService } from "../services/session.service";
+import { useI18n } from "vue-i18n";
 
 export function useSession() {
 
   const List = ref<ActiveSession[]>([]);
   const loading = ref(false);
+    const { t } = useI18n();
 
   const pagination = ref<Pagination>({
     IpAddressFilter: undefined,
@@ -33,8 +35,8 @@ const getList = async () => {
     }));
     pagination.value.total = res.data.totalCount;
 
-  } catch (error: any) {
-    toastService.error(error?.message || "Error loading sessions");
+  } catch (err: any) {
+    toastService.error(err);
   } finally {
     loading.value = false;
   }
@@ -42,10 +44,10 @@ const getList = async () => {
   const terminateSession = async (sessionId: string) => {
     try {
       await SessionService.forceLogout(sessionId);
-      toastService.success("Session terminated successfully");
+      toastService.success(t('sessions.sessionUpdated'));
       await getList(); 
-    } catch (error: any) {
-      toastService.error(error?.message || "Failed to terminate session");
+    } catch (err: any) {
+      toastService.error(err);
     }
   };
 
