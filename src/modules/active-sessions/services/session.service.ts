@@ -7,11 +7,10 @@ export const SessionService = {
   return response;
 },
 
-  // async getById(id: string): Promise<GroupApiItem> {
-  //   const data = await axiosWrapper.get<ItemResponse>(
-  //     `/Group/GetGroupById/${id}`
-  //   );
-  //   return data.data;
-  // },
-
+  async forceLogout(sessionId: string) {
+    return await axiosWrapper.post("/Session/force-logout", {
+      sessionId,
+    });
+  },
+  
 };

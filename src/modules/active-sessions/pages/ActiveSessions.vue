@@ -19,52 +19,53 @@ const {
     pagination,
     onFilterChange,
     getList,
+    terminateSession,
     changePage,
     sort,
     search
 } = useSession();
 const {
-  branchesLookups,
-  getBranchLookups,
-  getIPLookups,
-  IPLookups
+    branchesLookups,
+    getBranchLookups,
+    getIPLookups,
+    IPLookups
 } = useLookups();
 
 onMounted(() => {
-   Promise.all[(getList(), getBranchLookups(), getIPLookups() )]
+    Promise.all[(getList(), getBranchLookups(), getIPLookups())]
 });
 
 const filtersOperation = computed(() => {
-  return [
-    {
-        placeholder: "activeSessions.allIPAddress",
-        value: null,
-        field: "allIPAddress",
-        options: [
-            { label: "activeSessions.allIPAddress", value: null },
-            ...IPLookups.value
-        ],
-    },
-    {
-        placeholder: "activeSessions.allBranches",
-        value: null,
-        field: "allBranches",
-        options: [
-           { label: t("activeSessions.allBranches"), value: null },
-  ...branchesLookups.value
-        ],
-    },
-    {
-        placeholder: "activeSessions.allStatus",
-        value: null,
-       field: "status",
-      options: [
-        { label: t("usersManagement.allStatus"), value: null },
-        { label: t("button.active"), value: "IsActive" },
-        { label: t("button.inactive"), value: "InActive" },
-      ],
-    }
-]
+    return [
+        {
+            placeholder: "activeSessions.allIPAddress",
+            value: null,
+            field: "allIPAddress",
+            options: [
+                { label: "activeSessions.allIPAddress", value: null },
+                ...IPLookups.value
+            ],
+        },
+        {
+            placeholder: "activeSessions.allBranches",
+            value: null,
+            field: "allBranches",
+            options: [
+                { label: t("activeSessions.allBranches"), value: null },
+                ...branchesLookups.value
+            ],
+        },
+        {
+            placeholder: "activeSessions.allStatus",
+            value: null,
+            field: "status",
+            options: [
+                { label: t("usersManagement.allStatus"), value: null },
+                { label: t("button.active"), value: "IsActive" },
+                { label: t("button.inactive"), value: "InActive" },
+            ],
+        }
+    ]
 });
 
 const firstRecord = computed(() => {
@@ -87,7 +88,7 @@ const columns = computed(() => {
         { field: 'device', header: t('activeSessions.device'), sortable: true },
         { field: 'isActive', header: t('activeSessions.status'), sortable: true },
         { field: 'loginTime', header: t('activeSessions.loginTime'), type: "dateTimeDetailed", sortable: true },
-        { field: 'logoutTime', header: t('activeSessions.lastActivity'),  type: "dateTimeDetailed", sortable: true },
+        { field: 'logoutTime', header: t('activeSessions.lastActivity'), type: "dateTimeDetailed", sortable: true },
         { field: 'actionItem', header: t('activeSessions.action'), type: "slot" },
     ];
 
@@ -95,12 +96,15 @@ const columns = computed(() => {
 });
 
 const openEndSessionDialog = (row: any) => {
-  selectedRow.value = row;
-  showDialog.value = true;
+    selectedRow.value = row;
+    showDialog.value = true;
 };
-const handleConfirm = () => {
-
-}
+const handleConfirm = async () => {
+    if (!selectedRow.value) return;
+    await terminateSession(selectedRow.value.id);
+    showDialog.value = false;
+    selectedRow.value = null;
+};
 
 </script>
 
@@ -112,12 +116,9 @@ const handleConfirm = () => {
             <template #title>
                 <PageHeader title="activeSessions.title" subtitle="activeSessions.subtitle" :showExport="true"
                     :showFilter="true" @filter-change="onFilterChange"
-                    searchPlaceholder="activeSessions.searchPlaceholder" @search="search"
-          :rows="pagination.PageSize"
-          :totalRecords="pagination.total"
-          :first="firstRecord"
-          :last="lastRecord"
-          :filters="filtersOperation" />
+                    searchPlaceholder="activeSessions.searchPlaceholder" @search="search" :rows="pagination.PageSize"
+                    :totalRecords="pagination.total" :first="firstRecord" :last="lastRecord"
+                    :filters="filtersOperation" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
@@ -140,7 +141,9 @@ const handleConfirm = () => {
                         </div>
                     </template>
                     <template #col-actionItem="{ data }">
-                        <div class="flex items-center gap-2 text-danger-500 cursor-pointer"  @click="openEndSessionDialog(data)">
+                        <div class="flex items-center gap-2" :class="data.isActive
+                            ? 'text-danger-500 cursor-pointer'
+                            : 'text-gray-400 cursor-not-allowed opacity-60'" @click="data.isActive && openEndSessionDialog(data)">
                             <VsxIcon iconName="PlayCricle" :size="24" type="linear" />
                             {{ $t("activeSessions.end") }}
                         </div>
@@ -148,17 +151,11 @@ const handleConfirm = () => {
                 </DynamicTable>
             </template>
         </card>
- <StatusDialog
-      v-model:visible="showDialog"
-      :icon="alertIcon"
-      :title="$t('sessions.title')"
-      :description="$t('sessions.desc')"
-      :buttons="[
-        { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
-        { label: $t('button.terminate'), variant: 'danger', action: 'confirm' },
-      ]"
-      @confirm="handleConfirm"
-    />
+        <StatusDialog v-model:visible="showDialog" :icon="alertIcon" :title="$t('sessions.title')"
+            :description="$t('sessions.desc')" :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('button.terminate'), variant: 'danger', action: 'confirm' },
+            ]" @confirm="handleConfirm" />
     </div>
 </template>
 

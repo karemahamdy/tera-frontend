@@ -24,8 +24,13 @@ const getList = async () => {
   loading.value = true;
   try {
     const res = await SessionService.getSessions(pagination.value);
-
-    List.value = res.data.items;
+    List.value = res.data.items.map((item: any) => ({
+      ...item,
+      isActive:
+        typeof item.status === "boolean"
+          ? item.status
+          : item.status === "Active",
+    }));
     pagination.value.total = res.data.totalCount;
 
   } catch (error: any) {
@@ -34,6 +39,16 @@ const getList = async () => {
     loading.value = false;
   }
 };
+  const terminateSession = async (sessionId: string) => {
+    try {
+      await SessionService.forceLogout(sessionId);
+      toastService.success("Session terminated successfully");
+      await getList(); 
+    } catch (error: any) {
+      toastService.error(error?.message || "Failed to terminate session");
+    }
+  };
+
   const onFilterChange = (filter: {
     filter: { field: string };
     value: string;
@@ -76,6 +91,7 @@ const getList = async () => {
     List,
     loading,
     pagination,
+    terminateSession,
     onFilterChange,
     getList,
     changePage,
