@@ -19,8 +19,18 @@ export const FileService = {
 
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         toastService.error(error as string);
       });
+  },
+  uploadFile(url: string, data: { file: string | Blob }, fileKey?: string) {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") {
+        formData.append(fileKey ?? key, value as string | Blob);
+      }
+    });
+    return axiosWrapper.post(url, formData);
   },
 };

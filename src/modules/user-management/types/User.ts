@@ -2,7 +2,7 @@ export interface Pagination {
   GroupFilter?: string;
   StatusFilter?: string;
   ScopeFilter?: string;
-  DepartmantFilter?: string;
+  DepartmentFilter?: string;
   PageIndex: number;
   PageSize: number;
   SearchingWord?: string;

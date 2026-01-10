@@ -31,7 +31,8 @@ const props = defineProps({
   filters: { type: Array, default: [] },
 });
 
-const emit = defineEmits(["search", "filter-change", "action-click"]);
+const emit = defineEmits(["search", "filter-change", "action-click", "upload"]);
+const fileInput = ref(null);
 
 const onFilterChange = (filter, event) => {
   emit("filter-change", { filter, value: event.value });
@@ -83,12 +84,39 @@ const items = computed(() => {
     },
   ];
 });
+
+
+const triggerFileInput = () => {
+  fileInput.value?.click();
+};
+
+const onFileChange = (event) => {
+  const target = event.target;
+  const file = target.files?.[0];
+
+  if (!file) return;
+
+  emit("upload", file);
+
+  // reset input so same file can be re-selected
+  target.value = "";
+};
+
+const handleExportClick = () => {
+  if (props.hasMenu) {
+  return;
+  }
+  if (props.onExport) {
+    props.onExport();
+  } else if (props.dataFileUrl) {
+    FileService.downloadFile(props.dataFileUrl, props.dataFileName);
+  }
+};
+
 </script>
 
 <template>
-  <div
-    class="heading-section flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
-  >
+  <div class="heading-section flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
     <!-- Title + Subtitle -->
     <div class="flex flex-col">
       <h2 class="heading-title">{{ $t(title) }}</h2>
@@ -98,32 +126,15 @@ const items = computed(() => {
     <!-- Action Buttons -->
     <div class="flex flex-wrap justify- md:justify-end gap-3">
       <!-- Import -->
-      <BaseButton
-        v-if="showImport"
-        :label="$t('import')"
-        icon="Import"
-        variant="outline-primary"
-        @click="onImport && onImport()"
-      />
+      <BaseButton v-if="showImport" :label="$t('import')" icon="Import" variant="outline-primary"
+        @click="triggerFileInput" />
+      <input ref="fileInput" type="file" class="hidden" :accept="accept" @change="onFileChange" />
       <!-- Export -->
-      <BaseButton
-        v-if="showExport"
-        :label="$t('export')"
-        icon="Export"
-        variant="outline-primary"
-        :hasMenu="hasMenu"
-        @click="!hasMenu && (onExport && onExport())"
-        :items="items"
-      />
+      <BaseButton v-if="showExport" :label="$t('export')" icon="Export" variant="outline-primary" :hasMenu="hasMenu"
+         @click="handleExportClick"  :items="hasMenu ? items : []" />
       <!-- Main Button -->
-      <BaseButton
-        v-if="mainBtn"
-        :label="$t(mainBtnText)"
-        icon="AddSquare"
-        variant="primary"
-        :disabled="!mainBtnValid"
-        @click="onMainBtnClick && onMainBtnClick()"
-      />
+      <BaseButton v-if="mainBtn" :label="$t(mainBtnText)" icon="AddSquare" variant="primary" :disabled="!mainBtnValid"
+        @click="onMainBtnClick && onMainBtnClick()" />
 
       <slot name="actionBtn"></slot>
     </div>
@@ -132,25 +143,13 @@ const items = computed(() => {
   <!-- Search + Filters -->
   <div class="flex gap-[10px] mt-2 flex-nowrap">
     <span class="p-input-icon-left search-input">
-      <InputText
-        v-if="showSearch"
-        v-model="searchQuery"
-        :placeholder="$t(searchPlaceholder)"
-        @input="onInput"
-      />
+      <InputText v-if="showSearch" v-model="searchQuery" :placeholder="$t(searchPlaceholder)" @input="onInput" />
     </span>
     <template v-if="showFilter">
-      <Dropdown
-        v-for="(filter, index) in filters"
-        :key="index"
-        v-model="filter.value"
-        :options="filter.options"
-        :placeholder="$t(filter.placeholder)"
-        :optionLabel="$t(filter.optionLabel || 'label')"
-        :optionValue="$t(filter.optionValue || 'value')"
-        :showClear="filter.showClear"
-        @change="(e) => onFilterChange(filter, e)"
-      />
+      <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
+        :placeholder="$t(filter.placeholder)" :optionLabel="$t(filter.optionLabel || 'label')"
+        :optionValue="$t(filter.optionValue || 'value')" :showClear="filter.showClear"
+        @change="(e) => onFilterChange(filter, e)" />
     </template>
   </div>
 </template>

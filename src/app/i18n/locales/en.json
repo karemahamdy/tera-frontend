@@ -112,7 +112,8 @@
     "uploadImageDesc": "GPAG/PNG/PDF Files should be uploded > the file must be hight in resolution and original in design",
     "departmentPlaceholder": "Select Department",
     "userGroupPlaceholder": "Select User Group",
-    "editUsersManagement": "Edit Users Management"
+    "editUsersManagement": "Edit Users Management",
+    "rolesAssignedToUser": "Roles assigned to user successfully"
   },
   "userGroup": {
     "groupName": "Group Name",
@@ -172,7 +173,8 @@
     "roleRemovedFromGroup": "Role removed from group successfully",
     "rolesFetched": "Roles fetched successfully",
     "assignedBranch": "Assigned Branch",
-    "roleNotActive" : "Group is not active"
+    "roleNotActive" : "Group is not active",
+    "userNotActive": "User is not active"
   },
   "auditLog": {
     "title": "Audit Log",

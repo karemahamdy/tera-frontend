@@ -4,7 +4,7 @@ import PageHeader from "@/sharedComponents/PageHeader.vue";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from "@/assets/images/alert.png";
-
+import { toastService } from "@/app/services/toastService";
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -13,7 +13,7 @@ import type { UserListItem } from "../types/User";
 import { useUsers } from "../composables/useUsers";
 import { useLookups } from "@/composables/useLookups";
 
-const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus, resetPassword } =
+const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus, resetPassword, importUsers } =
   useUsers();
 
 
@@ -61,8 +61,11 @@ const permissionItems = [
     icon: "Star1",
     color: "#12B76A",
     command: (row: any) => {
-      console.log("ROW", row);
-      router.push(`/roles-permissions/add-user-roles/${row.id}`);
+      if(row.isActive){
+        router.push(`/roles-permissions/add-user-roles/${row.userId}`);
+      } else {
+        toastService.error(t("roles.userNotActive"));
+      }
     },
   },
   {
@@ -70,7 +73,7 @@ const permissionItems = [
     icon: "Eye",
     color: "#3F5FAC",
     command: (row: any) => {
-      router.push(`/roles-permissions/list-user-roles/${row.id}`);
+      router.push(`/roles-permissions/list-user-roles/${row.userId}`);
     },
   },
 ];
@@ -264,6 +267,7 @@ onMounted(() => {
           dataFileUrl="/Users/exportUsers"
           templateFileName="user-template.csv"
           dataFileName="user-data.csv"
+          @upload="importUsers"
         />
       </template>
       <!-- DynamicTable component -->

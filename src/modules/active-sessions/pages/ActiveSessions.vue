@@ -115,25 +115,17 @@ const handleConfirm = async () => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="activeSessions.title" subtitle="activeSessions.subtitle" :showExport="true"
-<<<<<<< Updated upstream
                     :showFilter="true" @filter-change="onFilterChange"
                     searchPlaceholder="activeSessions.searchPlaceholder" @search="search" :rows="pagination.PageSize"
-                    :totalRecords="pagination.total" :first="firstRecord" :last="lastRecord"
-                    :filters="filtersOperation" />
-=======
-                    :showFilter="true" @filter-change="onFilterChange" :filters="filters"
-                    searchPlaceholder="activeSessions.searchPlaceholder" @search="onSearch"   templateFileUrl="/Group/DownloadImportTemplate"
-          dataFileUrl="/Group/ExportGroup"
-          templateFileName="group-template.csv"
-          dataFileName="group-data.csv"
-          @upload="importUsers"/>
->>>>>>> Stashed changes
+                    :totalRecords="pagination.total" :first="firstRecord" :last="lastRecord" :filters="filtersOperation"
+                      :hasMenu="false"  templateFileUrl="/Session/export" dataFileUrl="/Session/export"
+                    templateFileName="session-template.csv" dataFileName="session-data.csv" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="List" :loading="loading" :first="firstRecord" :last="lastRecord"
-                    :rows="pagination.PageSize" :totalRecords="pagination.total"
-                    @page-change="changePage" @order-change="sort" lazy>
+                    :rows="pagination.PageSize" :totalRecords="pagination.total" @page-change="changePage"
+                    @order-change="sort" lazy>
                     <template v-slot:["col-fullName"]="{ data }">
                         <div class="flex items-center gap-2 rounded">
                             <Badge v-if="data.isAdmin" severity="warn" class="circle-badge-sm">
@@ -152,7 +144,8 @@ const handleConfirm = async () => {
                     <template v-slot:["col-actionItem"]="{ data }">
                         <div class="flex items-center gap-2" :class="data.isActive
                             ? 'text-danger-500 cursor-pointer'
-                            : 'text-gray-400 cursor-not-allowed opacity-60'" @click="data.isActive && openEndSessionDialog(data)">
+                            : 'text-gray-400 cursor-not-allowed opacity-60'"
+                            @click="data.isActive && openEndSessionDialog(data)">
                             <VsxIcon iconName="PlayCricle" :size="24" type="linear" />
                             {{ $t("activeSessions.end") }}
                         </div>

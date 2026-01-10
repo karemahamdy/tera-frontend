@@ -1,22 +1,108 @@
 <script setup lang="ts">
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import BaseButton from "@/sharedComponents/BaseButton.vue";
-import { ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import { useForm, useField } from "vee-validate";
+import { assignRolesSchema } from "../validation/UserAssignRolesSchema";
+import { useGroupRoles } from "../composables/assignRolesToGroup";
+import { useRolesUser } from "../composables/assignRolesToUser";
+import { useLookups } from "@/composables/useLookups";
+import { toastService } from "@/app/services/toastService";
+import { useUsers } from "@/modules/user-management/composables/useUsers";
+const { userData, getUserById } = useUsers();
+import type { AssignRole } from "../types/user";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
-const accessScope = ref<string>("branch");
-const name = ref<string>("");
-const options = ref<Array<{ label: string; value: string }>>([
-  { label: "Admin", value: "admin" },
-  { label: "Editor", value: "editor" },
-  { label: "Viewer", value: "viewer" },
-]);
-const selectedOption = ref<{ label: string; value: string } | null>(null);
+const route = useRoute();
+const userId = route.params.id as string;
+const roleId = route.params.roleId as string | undefined;
+const isSubmitting = ref(false);
+const isEditMode = computed(() => !!roleId);
+
+const { getRoleToGroupById } = useGroupRoles();
+const { assignRole } = useRolesUser();
+const {
+  getRolesLookups,
+  getBranchLookups,
+  groupsLookups,
+  rolesLookups,
+  branchesLookups,
+} = useLookups();
+
+const { handleSubmit, setValues, errors } = useForm({
+  validationSchema: assignRolesSchema,
+  initialValues: {
+    name: "",
+    role: [] as string[],
+    branchIds: [] as string[],
+    accessScope: "branch",
+    userId,
+  },
+});
+
+const { value: name } = useField<string | any>("name");
+const { value: roleIds } = useField<string[]>("role");
+const { value: branchIds } = useField<string[]>("branchIds");
+const { value: accessScope } = useField<string>("accessScope");
+
+onMounted(async () => {
+  await Promise.all([getUserById(userId), getRolesLookups(), getBranchLookups()]);
+  if(userData.value.isActive){
+    name.value = userData.value.fullName;
+  } else {
+    toastService.error(t("roles.userNotActive"));
+  }
+  await loadEditData();
+});
+
+const currentGroupName = computed(
+  () =>
+    groupsLookups.value.find((group: any) => group.value === userId)?.label ||
+    " "
+);
+
+watch(accessScope, (val) => {
+  if (val === "global") branchIds.value = [];
+});
+
+const loadEditData = async () => {
+  if (!isEditMode.value || !roleId) return;
+
+  const roleData = (await getRoleToGroupById(userId, roleId)) as {
+    roleId: string;
+    branchIds: string[];
+    accessScope: number;
+  } | null;
+  if (!roleData) return;
+
+  setValues({
+    name: currentGroupName.value,
+    role: [roleData.roleId],
+    branchIds: roleData.branchIds || [],
+    accessScope: roleData.accessScope === 1 ? "global" : "branch",
+    userId,
+  });
+};
+
+const onSubmit = handleSubmit(async (values) => {
+  isSubmitting.value = true;
+  const payload: AssignRole = {
+    userId: values.userId,
+    roleId: isEditMode.value && roleId ? roleId : values.role,
+    accessScope: values.accessScope === "global" ? 1 : 2,
+    ...(values.accessScope === "branch" && { branchIds: values.branchIds }),
+  };
+  isEditMode.value
+    ? await assignRole(payload)
+    : await assignRole(payload);
+  isSubmitting.value = false;
+});
 </script>
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
     <ScreenHeader title="accessControl" subtitle="usersManagement.usersManagement" actionName="roles.assignRole" />
-    <card class="bg-[#ffffff] rounded-[10px]">
+    <card class="bg-white rounded-[10px]">
       <template #title>
         <div class="flex flex-col mb-4 pt-4 px-20">
           <h2 class="heading-title">
@@ -29,75 +115,72 @@ const selectedOption = ref<{ label: string; value: string } | null>(null);
       </template>
       <template #content>
         <div class="px-20 mb-6">
-          <form class="space-y-5">
+          <form class="space-y-5" @submit.prevent="onSubmit">
             <div>
-              <label class="text-gray-700 font-bold">{{
-                $t("usersManagement.user")
-              }}</label>
-              <InputText v-model="name" autocomplete="username" placeholder="Finance Team"
-                class="mt-1 w-full p-3 border border-gray-300 rounded-lg"
-                style="background-color: var(--color-gray-100)" />
+              <label class="text-gray-700 font-bold">
+                {{ $t("usersManagement.user") }}
+              </label>
+              <InputText v-model="name" placeholder="Ex: user name" class="mt-1 w-full p-3 border rounded-lg"
+                readonly />
             </div>
             <div>
-              <label class="text-gray-700 font-bold">{{
-                $t("roles.roleName")
-              }}</label>
-
-              <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
-                :placeholder="$t('select roles')" class="w-full mt-1" />
+              <label class="text-gray-700 font-bold">
+                {{ $t("roles.roles") }}
+              </label>
+              <MultiSelect :disabled="isEditMode" v-model="roleIds" :options="rolesLookups" optionLabel="label"
+                optionValue="value" class="w-full mt-1" :class="{ 'p-invalid': errors.role }"
+                :placeholder="$t('select roles')" />
+              <small v-if="errors.role" class="text-danger-500">
+                {{ $t(errors.role) }}
+              </small>
             </div>
-
             <div class="flex flex-col gap-4 w-full">
-              <!-- Global Access -->
-              <label class="text-gray-700 font-bold">{{
-                $t("roles.accessScope")
-              }}</label>
-              <div
-                class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer hover:border-primary-300 transition"
-                :class="accessScope === 'global'
-                    ? 'border-primary-400 bg-primary-25'
-                    : 'border-gray-300'
-                  " @click="accessScope = 'global'">
+              <label class="text-gray-700 font-bold">
+                {{ $t("roles.accessScope") }}
+              </label>
+              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="accessScope === 'global'
+                ? 'border-primary-400 bg-primary-25'
+                : 'border-gray-300'
+                " @click="accessScope = 'global'">
                 <div class="flex items-center gap-3">
                   <RadioButton inputId="global" name="access" value="global" v-model="accessScope" />
-                  <div class="flex flex-col">
-                    <label class="font-medium text-gray-800 cursor-pointer">{{ $t("roles.globalAccess") }}</label>
-
-                  </div>
+                  <label class="font-medium cursor-pointer">
+                    {{ $t("roles.globalAccess") }}
+                  </label>
                 </div>
               </div>
-
-              <!-- Branch-Specific -->
-              <div
-                class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer hover:border-primary-300 transition"
-                :class="accessScope === 'branch'
-                    ? 'border-primary-400 bg-primary-25'
-                    : 'border-gray-300'
-                  " @click="accessScope = 'branch'">
+              <div class="flex items-center justify-between border rounded-xl px-4 py-4 cursor-pointer" :class="accessScope === 'branch'
+                ? 'border-primary-400 bg-primary-25'
+                : 'border-gray-300'
+                " @click="accessScope = 'branch'">
                 <div class="flex items-center gap-3">
                   <RadioButton inputId="branch" name="access" value="branch" v-model="accessScope" />
-                  <div class="flex flex-col">
-                    <label class="font-medium text-gray-800 cursor-pointer">{{ $t("roles.branchSpecific") }}</label>
-
-                  </div>
+                  <label class="font-medium cursor-pointer">
+                    {{ $t("roles.branchSpecific") }}
+                  </label>
                 </div>
               </div>
+              <small v-if="errors.accessScope" class="text-danger-500">
+                {{ $t(errors.accessScope) }}
+              </small>
             </div>
-
-            <div>
-                <label class="text-gray-700 font-bold">
-                {{ $t("roles.branches") }}
-              </label>
-              <Dropdown v-model="selectedOption" :options="options" optionLabel="label"
-                :placeholder="$t('branch.selectbranches')" class="w-full mt-1" />
+            <div v-if="accessScope === 'branch'">
+              <label class="text-gray-700 font-bold">{{
+                $t("roles.assignedBranch")
+              }}</label>
+              <MultiSelect v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
+                class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.branchIds }"
+                :placeholder="$t('branch.selectbranches')" />
+              <small v-if="errors.branchIds" class="text-danger-500">{{
+                $t(errors.branchIds)
+              }}</small>
+            </div>
+            <div class="flex justify-between gap-4 mb-4 container px-20">
+              <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
+              <BaseButton :label="isEditMode ? 'Update' : 'Assign'" variant="primary" block :disabled="isSubmitting"
+                :loading="isSubmitting" />
             </div>
           </form>
-        </div>
-      </template>
-      <template #footer>
-        <div class="flex justify-between gap-4 mb-4 container px-20">
-          <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
-          <BaseButton label="Assign" variant="primary" block />
         </div>
       </template>
     </card>
