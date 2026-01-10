@@ -32,7 +32,7 @@ const {
 } = useLookups();
 
 onMounted(() => {
-    Promise.all[(getList(), getBranchLookups(), getIPLookups())]
+    Promise.all([(getList(), getBranchLookups(), getIPLookups())])
 });
 
 const filtersOperation = computed(() => {
@@ -123,7 +123,7 @@ const handleConfirm = async () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="List" :loading="loading" :first="firstRecord" :last="lastRecord"
-                    :rows="pagination.PageSize" :totalRecords="pagination.total" @action-menu-click="handleActionMenu"
+                    :rows="pagination.PageSize" :totalRecords="pagination.total"
                     @page-change="changePage" @order-change="sort" lazy>
                     <template v-slot:["col-fullName"]="{ data }">
                         <div class="flex items-center gap-2 rounded">
@@ -140,7 +140,7 @@ const handleConfirm = async () => {
                             </div>
                         </div>
                     </template>
-                    <template #col-actionItem="{ data }">
+                    <template v-slot:["col-actionItem"]="{ data }">
                         <div class="flex items-center gap-2" :class="data.isActive
                             ? 'text-danger-500 cursor-pointer'
                             : 'text-gray-400 cursor-not-allowed opacity-60'" @click="data.isActive && openEndSessionDialog(data)">
