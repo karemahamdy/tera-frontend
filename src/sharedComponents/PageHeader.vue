@@ -4,6 +4,9 @@ import BaseButton from "./BaseButton.vue";
 import { debounce } from "@/app/utils/debounce";
 import { useI18n } from "vue-i18n";
 import { FileService } from "@/app/services/file.service";
+import axiosWrapper from "@/app/http/axiosWrapper";
+import { toastService } from "@/app/services/toastService";
+import { mapFiltersToBody } from "@/app/utils/mapFiltersToBody";
 const { t } = useI18n();
 
 const props = defineProps({
@@ -29,6 +32,7 @@ const props = defineProps({
   templateFileName: { type: String, default: "template-file.csv" },
   dataFileName: { type: String, default: "data-file.csv" },
   filters: { type: Array, default: [] },
+  requiresBody: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(["search", "filter-change", "action-click", "upload"]);
@@ -85,34 +89,35 @@ const items = computed(() => {
   ];
 });
 
-
 const triggerFileInput = () => {
   fileInput.value?.click();
 };
-
 const onFileChange = (event) => {
   const target = event.target;
   const file = target.files?.[0];
-
   if (!file) return;
-
   emit("upload", file);
-
-  // reset input so same file can be re-selected
   target.value = "";
 };
 
-const handleExportClick = () => {
-  if (props.hasMenu) {
-  return;
-  }
-  if (props.onExport) {
-    props.onExport();
-  } else if (props.dataFileUrl) {
-    FileService.downloadFile(props.dataFileUrl, props.dataFileName);
+const handleExportClick = async () => {
+  if (props.hasMenu) return; 
+  try {
+    if (props.onExport) {
+      props.onExport();
+    } else if (props.dataFileUrl) {
+      if (props.requiresBody ) {
+        const body = mapFiltersToBody(props.filters); 
+        const response = await axiosWrapper.post(props.dataFileUrl, body, { responseType: 'blob' });
+        downloadBlob(response, props.dataFileName);
+      } else {
+        await FileService.downloadFile(props.dataFileUrl, props.dataFileName);
+      }
+    }
+  } catch (err) {
+    toastService.error(err);
   }
 };
-
 </script>
 
 <template>

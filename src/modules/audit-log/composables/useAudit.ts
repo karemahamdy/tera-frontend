@@ -11,36 +11,7 @@ export function useAudit() {
     apiAuditLogs.value.map((log) => ({
       Created: log.timestamp,
       user: log.userName ?? "-",
-      action:
-        log.actionType === 0
-          ? "Create"
-          : log.actionType === 1
-          ? "Update"
-          : log.actionType === 2
-          ? "Delete"
-          : log.actionType === 3
-          ? "Assign"
-          : log.actionType === 4
-          ? "Login"
-          : log.actionType === 5
-          ? "LoginFailed"
-          : log.actionType === 6
-          ? "Logout"
-          : log.actionType === 7
-          ? "Activate"
-          : log.actionType === 8
-          ? "Deactivate"
-          : log.actionType === 9
-          ? "IsFirstLogin"
-          : log.actionType === 10
-          ? "ResetPassword"
-          : log.actionType === 11
-          ? "ChangePassword"
-          : log.actionType === 12
-          ? "Export"
-          : log.actionType === 13
-          ? "Archive"
-          : "-",
+      action: log.actionType ?? "-",
       module: log.moduleName ?? "-",
       screen: log.screenName ?? "-",
       entity: log.entityName ?? "-",

@@ -33,4 +33,15 @@ export const FileService = {
     });
     return axiosWrapper.post(url, formData);
   },
+
+  downloadBlob (response: Blob, fileName: string) {
+  const blob = new Blob([response]);
+  const link = document.createElement("a");
+  link.href = window.URL.createObjectURL(blob);
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(link.href);
+},
 };
