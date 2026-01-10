@@ -301,6 +301,13 @@ onMounted(() => {
               >
                 <VsxIcon iconName="Award" :size="20" type="linear" />
               </Badge>
+               <Badge
+                v-else
+                severity="transparent"
+                class="circle-badge"
+              >
+                <VsxIcon iconName="Award" :size="20" type="linear" class="icon-transparent"/>
+              </Badge>
 
               <Avatar :image="data.userProfileImageUrl"
                   :label="!data.userProfileImageUrl ? data.fullName.charAt(0) : ''" shape="circle"
@@ -371,5 +378,10 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
 }
-
+.circle-badge {
+ background-color: transparent;
+}
+.icon-transparent {
+  color: transparent; 
+}
 </style>
