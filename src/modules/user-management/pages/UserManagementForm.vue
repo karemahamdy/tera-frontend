@@ -33,7 +33,7 @@ const { handleSubmit, errors, defineField, setValues } = useForm({
 });
 const file = ref<File | null>(null);
 const fileUploadRef = ref<InstanceType<typeof FileUpload> | null>(null);
-
+const isCopied = ref<boolean>(false);
 const [fullName] = defineField("fullName");
 const [userName] = defineField("userName");
 const [email] = defineField("email");
@@ -62,13 +62,17 @@ const onSubmit = handleSubmit((values) => {
 });
 
 const quickFill = () => {
+  isCopied.value = false;
+  const chars = "!@#$%^&*";
   password.value =
-    Math.random().toString(36).slice(-5) +
-    Math.random().toString(36).slice(-5).toUpperCase();
+    Math.random().toString(36).slice(-4) +
+    Math.random().toString(36).slice(-4).toUpperCase() +
+    chars[Math.floor(Math.random() * chars.length)];
   confirmPassword.value = password.value;
 };
 
 const copyPassword = () => {
+  isCopied.value = true;
   navigator.clipboard.writeText(password.value);
   toastService.success("copied");
 };
@@ -173,9 +177,10 @@ onMounted(async () => {
                 placeholder="****"
               />
               <div
-                class="p-3 border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white rounded-xl w-1/4 text-center cursor-pointer"
+                class="p-3 border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white rounded-xl w-1/4 text-center cursor-pointer flex items-center"
                 @click="quickFill"
               >
+                <VsxIcon iconName="Magicpen" />
                 {{ $t("usersManagement.quickFill") }}
               </div>
             </div>
@@ -195,10 +200,11 @@ onMounted(async () => {
                 placeholder="****"
               />
               <VsxIcon
-                iconName="Copy"
-                :size="48"
+                :iconName="isCopied ? 'CopySuccess' : 'Copy'"
+                :size="36"
                 type="linear"
-                class="text-primary-500 cursor-pointer"
+                class="cursor-pointer"
+                :class="isCopied ? 'text-success-500' : 'text-primary-500'"
                 @click="copyPassword"
               />
             </div>
