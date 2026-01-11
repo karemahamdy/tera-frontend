@@ -119,7 +119,8 @@
     "departmentPlaceholder": "اختر القسم",
     "userGroupPlaceholder": "اختر مجموعة المستخدمين",
     "editUsersManagement": "تعديل بيانات المستخدم",
-    "rolesAssignedToUser": "تم تعيين الأدوار للمستخدم بنجاح"
+    "rolesAssignedToUser": "تم تعيين الأدوار للمستخدم بنجاح",
+    "quickFill": "ملء سريع"
   },
   "userGroup": {
     "groupName": "اسم المجموعة",

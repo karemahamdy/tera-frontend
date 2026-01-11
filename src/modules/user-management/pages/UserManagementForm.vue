@@ -12,6 +12,7 @@ import { onMounted, ref } from "vue";
 import { useLookups } from "@/composables/useLookups";
 import { useUsers } from "../composables/useUsers";
 import type { UserPayload } from "../types/User";
+import { toastService } from "@/app/services/toastService";
 
 const {
   groupsLookups,
@@ -26,13 +27,13 @@ const props = defineProps<{
 
 const editMode = props.mode === "edit";
 const route = useRoute();
-const id = route.params.id ? String(route.params.id) : null
+const id = route.params.id ? String(route.params.id) : null;
 const { handleSubmit, errors, defineField, setValues } = useForm({
   validationSchema: editMode ? userEditSchema : userSchema,
 });
 const file = ref<File | null>(null);
 const fileUploadRef = ref<InstanceType<typeof FileUpload> | null>(null);
-
+const isCopied = ref<boolean>(false);
 const [fullName] = defineField("fullName");
 const [userName] = defineField("userName");
 const [email] = defineField("email");
@@ -49,9 +50,9 @@ onMounted(() => {
 });
 
 const onSubmit = handleSubmit((values) => {
-   if (file.value) {
+  if (file.value) {
     values.profileImage = file.value;
-   }
+  }
 
   if (editMode) {
     editUser(id as string, values as UserPayload);
@@ -60,16 +61,31 @@ const onSubmit = handleSubmit((values) => {
   }
 });
 
+const quickFill = () => {
+  isCopied.value = false;
+  const chars = "!@#$%^&*";
+  password.value =
+    Math.random().toString(36).slice(-4) +
+    Math.random().toString(36).slice(-4).toUpperCase() +
+    chars[Math.floor(Math.random() * chars.length)];
+  confirmPassword.value = password.value;
+};
+
+const copyPassword = () => {
+  isCopied.value = true;
+  navigator.clipboard.writeText(password.value);
+  toastService.success("copied");
+};
+
 onMounted(async () => {
   if (editMode) {
     await getUserById(id as string);
     setValues(userData.value);
-    if(userData.value.userProfileImageUrl && fileUploadRef.value) {
+    if (userData.value.userProfileImageUrl && fileUploadRef.value) {
       fileUploadRef.value.setSelectedImage(userData.value.userProfileImageUrl);
     }
   }
 });
-
 </script>
 
 <template>
@@ -145,23 +161,53 @@ onMounted(async () => {
           </div>
 
           <div class="flex gap-8" v-if="!editMode">
-            <FormInput
-              class="w-1/2"
-              type="password"
-              :label="$t('auth.password')"
-              v-model="password"
-              :error="errors.password"
-              placeholder="****"
-            />
-
-            <FormInput
-              class="w-1/2"
-              type="password"
-              :label="$t('auth.confirmPassword')"
-              v-model="confirmPassword"
-              :error="errors.confirmPassword"
-              placeholder="****"
-            />
+            <div
+              class="w-1/2 flex justify-center gap-2"
+              :class="{
+                'items-center': !!errors.password,
+                'items-end': !errors.password,
+              }"
+            >
+              <FormInput
+                class="w-3/4"
+                type="password"
+                :label="$t('auth.password')"
+                v-model="password"
+                :error="errors.password"
+                placeholder="****"
+              />
+              <div
+                class="p-3 border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white rounded-xl w-1/4 text-center cursor-pointer flex items-center"
+                @click="quickFill"
+              >
+                <VsxIcon iconName="Magicpen" />
+                {{ $t("usersManagement.quickFill") }}
+              </div>
+            </div>
+            <div
+              class="w-1/2 flex justify-center gap-2"
+              :class="{
+                'items-center': !!errors.password,
+                'items-end': !errors.password,
+              }"
+            >
+              <FormInput
+                class="w-4/5"
+                type="password"
+                :label="$t('auth.confirmPassword')"
+                v-model="confirmPassword"
+                :error="errors.confirmPassword"
+                placeholder="****"
+              />
+              <VsxIcon
+                :iconName="isCopied ? 'CopySuccess' : 'Copy'"
+                :size="36"
+                type="linear"
+                class="cursor-pointer w-1/5"
+                :class="isCopied ? 'text-success-500' : 'text-primary-500'"
+                @click="copyPassword"
+              />
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
