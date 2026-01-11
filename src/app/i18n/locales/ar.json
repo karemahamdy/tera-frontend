@@ -51,7 +51,8 @@
     "resetPassword": "تغيير الرقم السري",
     "clearFilters": "مسح الفلاتر",
     "template": "قالب",
-    "data": "البيانات"
+    "data": "البيانات",
+    "terminate": "اغلاق"
   },
   "table": {
     "description": "الوصف",
@@ -282,7 +283,7 @@
     "licenseExpire": "انتهاء الترخيص",
     "userCapacity": "سعة المستخدم", 
     "approachingLimit": "الاقتراب من الحد",
-    "expiresDec312025": "ينتهي في 31 ديسمبر 2025",
+    "expiresOn": "ينتهي في ",
     "urgent": "عاجل",
     "concurrentSession": "الجلسات المتزامنة",
     "steadyHighUsage": "استخدام مرتفع مستمر",
@@ -296,5 +297,10 @@
     "global": "عام",
     "branch": "فرع",
     "userStatusUpdated": "تم تحديث حالة المستخدم بنجاح"
+  },
+  "sessions": {
+    "title": "هل تريد انهاء الجلسة",
+    "desc": "سيؤدي هذا إلى إنهاء جلسة المستخدم فوراً. سيتم تسجيل خروجه وسيحتاج إلى تسجيل الدخول مرة أخرى.",
+    "sessionUpdated": "تم اغلاق هذة السيشن بنجاح"
   }
 }

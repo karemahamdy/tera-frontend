@@ -102,6 +102,17 @@ const onFileChange = (event) => {
   target.value = "";
 };
 
+const handleExportClick = () => {
+  if (props.hasMenu) {
+  return;
+  }
+  if (props.onExport) {
+    props.onExport();
+  } else if (props.dataFileUrl) {
+    FileService.downloadFile(props.dataFileUrl, props.dataFileName);
+  }
+};
+
 </script>
 
 <template>
@@ -120,7 +131,7 @@ const onFileChange = (event) => {
       <input ref="fileInput" type="file" class="hidden" :accept="accept" @change="onFileChange" />
       <!-- Export -->
       <BaseButton v-if="showExport" :label="$t('export')" icon="Export" variant="outline-primary" :hasMenu="hasMenu"
-        @click="!hasMenu && (onExport && onExport())" :items="items" />
+         @click="handleExportClick"  :items="hasMenu ? items : []" />
       <!-- Main Button -->
       <BaseButton v-if="mainBtn" :label="$t(mainBtnText)" icon="AddSquare" variant="primary" :disabled="!mainBtnValid"
         @click="onMainBtnClick && onMainBtnClick()" />
