@@ -113,7 +113,8 @@
     "departmentPlaceholder": "Select Department",
     "userGroupPlaceholder": "Select User Group",
     "editUsersManagement": "Edit Users Management",
-    "rolesAssignedToUser": "Roles assigned to user successfully"
+    "rolesAssignedToUser": "Roles assigned to user successfully",
+    "quickFill": "Quick Fill"
   },
   "userGroup": {
     "groupName": "Group Name",
