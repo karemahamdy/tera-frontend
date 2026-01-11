@@ -71,11 +71,29 @@ const quickFill = () => {
   confirmPassword.value = password.value;
 };
 
-const copyPassword = () => {
+const copyPassword = async () => {
   isCopied.value = true;
-  navigator.clipboard.writeText(password.value);
-  toastService.success("copied");
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(password.value);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = password.value;
+      textarea.style.position = "fixed"; // avoid scrolling
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+    }
+
+    toastService.success("Copied");
+  } catch (err) {
+    toastService.error("Copy failed");
+  }
 };
+
 
 onMounted(async () => {
   if (editMode) {
