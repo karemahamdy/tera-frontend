@@ -9,6 +9,17 @@ export interface AuditLog {
   transactionNumber: string;
   timestamp: string;
 }
+export interface Pagination {
+  // IpAddressFilter?: string;
+  // StatusFilter?: string;
+  // BranchFilter?: string;
+  PageIndex: number;
+  PageSize: number;
+  SearchingWord?: string;
+  OrderBy?: string;
+  OrderDirection?: "desc" | "asc";
+  total: number;
+}
 export interface PaginatedResponse<T> {
   items: T[];
   pageIndex: number;
