@@ -91,7 +91,6 @@ const copyPassword = async () => {
     toastService.success("Copied");
   } catch (err) {
     toastService.error("Copy failed");
-    console.error(err);
   }
 };
 
