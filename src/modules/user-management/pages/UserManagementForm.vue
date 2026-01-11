@@ -203,7 +203,7 @@ onMounted(async () => {
                 :iconName="isCopied ? 'CopySuccess' : 'Copy'"
                 :size="36"
                 type="linear"
-                class="cursor-pointer"
+                class="cursor-pointer w-1/5"
                 :class="isCopied ? 'text-success-500' : 'text-primary-500'"
                 @click="copyPassword"
               />
