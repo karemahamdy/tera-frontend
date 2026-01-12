@@ -55,7 +55,7 @@ export function useAudit() {
   const totalPages = ref(1);
   const searchTerm = ref("");
   const orderBy = ref("");
-  const orderDirection = ref<"asc" | "desc">("asc");
+  const orderDirection = ref<"asc" | "desc">("desc");
 
   const fetchAuditLogs = async (page = 1) => {
     loading.value = true;

@@ -28,7 +28,7 @@ export function useRoles() {
     "PageSize": 10,
     "SearchingWord": "",
     "OrderBy": "",
-    "OrderDirection": "asc",
+    "OrderDirection": "desc",
     total: 0,
   });
 
