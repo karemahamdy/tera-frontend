@@ -41,7 +41,7 @@ function switchLanguage() {
       </div>
 
       <div class="flex items-center gap-3">
-        <Dropdown v-model="selectedOption" :options="options" optionLabel="label" :placeholder="$t('Select Branches')"
+        <Dropdown filter v-model="selectedOption" :options="options" optionLabel="label" :placeholder="$t('Select Branches')"
           class="w-48" />
 
         <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full" @click="switchLanguage">

@@ -17,6 +17,7 @@ defineEmits(["update:modelValue"]);
 
     <Dropdown
       class="w-full n"
+      filter
       optionLabel="label"
       :optionValue="optionValue"
       :options="options"
