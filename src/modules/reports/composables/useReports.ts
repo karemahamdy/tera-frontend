@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import type { UserFilterBody, UserResponse } from "../types/reports";
-import { UserService } from "../services/user.service";
+import { GroupService, UserService } from "../services/reports.service";
 
-export function useUserReport() {
+export function useReports() {
   const data = ref<any[]>([]);
   const loading = ref(false);
   const totalRecords = ref(0);
@@ -31,14 +31,23 @@ export function useUserReport() {
     }
   };
 
-  const loadMore = async () => {
-    if (data.value.length >= totalRecords.value) return;
-    pageIndex.value += 1;
-    await fetchUsers();
-  };
-  const onLazyLoad = async (event: any) => {
-    pageIndex.value = Math.floor(event.first / pageSize) + 1;
-    await fetchUsers();
+  
+  const fetchGroups = async (reset = false) => {
+    try {
+      loading.value = true;
+      if (reset) {
+        pageIndex.value = 1;
+        data.value = [];
+      }
+      filtersBody.value.pageIndex = pageIndex.value;
+      filtersBody.value.pageSize = pageSize;
+      const response = await GroupService.getGroup(filtersBody.value)  as UserResponse;
+      const items = response.data.items || [];
+      data.value = reset ? items : [...data.value, ...items];
+      totalRecords.value = response.data.totalCount;
+    } finally {
+      loading.value = false;
+    }
   };
 
   const setFilters = (filters: any) => {
@@ -46,6 +55,11 @@ export function useUserReport() {
     fetchUsers(true);
   };
 
-  return { data, loading, fetchUsers, loadMore, totalRecords, setFilters, onLazyLoad };
+  const setFilter = (filters: any) => {
+    filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
+    fetchGroups(true);
+  };
+
+  return { data, loading, fetchUsers, fetchGroups, totalRecords, setFilters, setFilter };
 }
 

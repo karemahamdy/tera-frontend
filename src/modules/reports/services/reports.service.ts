@@ -6,3 +6,9 @@ export const UserService = {
     return await axiosWrapper.post("/Reports/user-master-data", body);
   }
 };
+
+export const GroupService = {
+  async getGroup(body: any): Promise<any>  {
+    return await axiosWrapper.post("/Reports/group-master-data", body);
+  }
+};

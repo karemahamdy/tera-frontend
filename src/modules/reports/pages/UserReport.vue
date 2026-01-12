@@ -3,12 +3,12 @@ import { computed, onMounted, ref } from "vue";
 import ReportFilters from "../components/ReportFilters.vue";
 import { useI18n } from "vue-i18n";
 import { useLookups } from "@/composables/useLookups";
-import { useUserReport } from "../composables/userRepoorts";
+import { useReports} from "../composables/useReports";
 
 const { t } = useI18n();
 let hasSearched = ref(false);
 const { groupsLookups, departmentsLookups, getDepartmentsLookups, getGroupLookups } = useLookups();
-const { data, loading, setFilters } = useUserReport();
+const { data, loading, setFilters } = useReports();
 
 const filtersOperation = computed(() => {
   return [
