@@ -1,28 +1,30 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { AssignRole } from "../types/user";
+import type { AssignRole, RolesList, UserRole } from "../types/user";
 
 export const UserRolesService = {
   create(payload: AssignRole) {
     return axiosWrapper.post<AssignRole>("/Users/AssingRoleToUser", payload);
   },
 
-  // getList(params: Pagination) {
-  //   return axiosWrapper.get<RoleListResponse>("/Role/GetAllRole", { params });
-  // },
+  getRolesByUserId(userID: string) {
+    return axiosWrapper.get<RolesList>(
+      `/Users/GetRolesAssignedToUserById/${userID}`
+    );
+  },
 
-  // getById(id: string) {
-  //   return axiosWrapper.get<{ data: RoleByID }>(`/Role/${id}`);
-  // },
+  delete(userId: string, roleId: string) {
+    return axiosWrapper.delete(`/Users/DeleteRoleFromUser/${userId}/${roleId}`);
+  },
 
-  // update(id: string, payload: RoleByID) {
-  //   let data = {
-  //     updateRoleDto: payload,
-  //     id: id,
-  //   };
-  //   return axiosWrapper.put<RoleByID>(`/Role/${id}`, data);
-  // },
+  getRoleToGroupById(userId: string, roleId: string) {
+    return axiosWrapper.get<{ data: UserRole }>(`/Users/GetRoleAssignedToUserById/${userId}/${roleId}`);
+  },
 
-  // delete(id: string) {
-  //   return axiosWrapper.delete(`/Role/${id}`);
-  // },
+  update(payload: AssignRole) {
+    let data = {
+      ...payload,
+      userAccessScope: payload.accessScope,
+    }
+    return axiosWrapper.put<AssignRole>("/Users/UpdateAssignRolesToUser", data);
+  },
 };
