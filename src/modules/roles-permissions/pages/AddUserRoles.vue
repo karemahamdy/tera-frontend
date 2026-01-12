@@ -22,7 +22,6 @@ const { assignRole, getRoleToUserById, role, updateAssignRole } = useRolesUser()
 const {
   getRolesLookups,
   getBranchLookups,
-  groupsLookups,
   rolesLookups,
   branchesLookups,
 } = useLookups();
@@ -52,12 +51,6 @@ onMounted(async () => {
   }
   await loadEditData();
 });
-
-const currentGroupName = computed(
-  () =>
-    groupsLookups.value.find((group: any) => group.value === userId)?.label ||
-    " "
-);
 
 watch(accessScope, (val) => {
   if (val === "global") branchIds.value = [];
