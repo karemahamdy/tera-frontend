@@ -48,7 +48,7 @@ export function useRolesUser() {
       loading.value = true;
       await UserRolesService.delete(userId, roleId);
       roles.value = roles.value.filter((r) => r.roleId !== roleId);
-      toastService.success(t("roles.roleRemovedFromGroup"));
+      toastService.success(t("roles.roleRemovedFromUser"));
     } catch (err: any) {
       toastService.error(err);
     } finally {
