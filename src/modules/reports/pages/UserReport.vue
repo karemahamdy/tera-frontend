@@ -108,7 +108,8 @@ const onClearFilters = () => {
   hasSearched.value = false;
 };
 const onFilterChange = ({ filter, value }: any) => {
-  filterState.value[filter.field] = value;
+  filterState.value[filter.field as keyof typeof filterState.value] = value;
+
 };
 onMounted(() => {
   Promise.all([getGroupLookups(false), getDepartmentsLookups(false)]);
@@ -137,3 +138,18 @@ onMounted(() => {
     </card>
   </div>
 </template>
+
+<style scoped>
+:deep(.p-datatable .p-datatable-tbody > tr > td) {
+    padding: 16px;
+    color: var(--color-gray-500);
+}
+
+:deep(.p-datatable .p-datatable-thead > tr > th) {
+    background: #FAF9F9;
+    font-weight: 600;
+    color: var(--color-gray-700);
+    font-size: 13px;
+    padding: 20px 16px;
+}
+</style>

@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type { UserFilterBody } from "../types/reports";
+import type { UserFilterBody, UserResponse } from "../types/reports";
 import { UserService } from "../services/user.service";
 
 export function useUserReport() {
@@ -22,7 +22,7 @@ export function useUserReport() {
       filtersBody.value.pageIndex = pageIndex.value;
       filtersBody.value.pageSize = pageSize;
 
-      const response = await UserService.getUsers(filtersBody.value);
+      const response = await UserService.getUsers(filtersBody.value)  as UserResponse;
       const items = response.data.items || [];
       data.value = reset ? items : [...data.value, ...items];
       totalRecords.value = response.data.totalCount;
@@ -36,14 +36,14 @@ export function useUserReport() {
     pageIndex.value += 1;
     await fetchUsers();
   };
-const onLazyLoad = async (event: any) => {
-  pageIndex.value = Math.floor(event.first / pageSize) + 1;
-  await fetchUsers();
-};
+  const onLazyLoad = async (event: any) => {
+    pageIndex.value = Math.floor(event.first / pageSize) + 1;
+    await fetchUsers();
+  };
 
   const setFilters = (filters: any) => {
     filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
-    fetchUsers(true);      
+    fetchUsers(true);
   };
 
   return { data, loading, fetchUsers, loadMore, totalRecords, setFilters, onLazyLoad };
