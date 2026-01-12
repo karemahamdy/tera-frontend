@@ -3,7 +3,6 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useForm, useField } from "vee-validate";
 import { assignRolesSchema } from "../validation/UserAssignRolesSchema";
-import { useGroupRoles } from "../composables/assignRolesToGroup";
 import { useRolesUser } from "../composables/assignRolesToUser";
 import { useLookups } from "@/composables/useLookups";
 import { toastService } from "@/app/services/toastService";
@@ -19,8 +18,7 @@ const roleId = route.params.roleId as string | undefined;
 const isSubmitting = ref(false);
 const isEditMode = computed(() => !!roleId);
 
-const { getRoleToGroupById } = useGroupRoles();
-const { assignRole } = useRolesUser();
+const { assignRole, getRoleToUserById, role, updateAssignRole } = useRolesUser();
 const {
   getRolesLookups,
   getBranchLookups,
@@ -67,21 +65,15 @@ watch(accessScope, (val) => {
 
 const loadEditData = async () => {
   if (!isEditMode.value || !roleId) return;
-
-  const roleData = (await getRoleToGroupById(userId, roleId)) as {
-    roleId: string;
-    branchIds: string[];
-    accessScope: number;
-  } | null;
-  if (!roleData) return;
-
-  setValues({
-    name: currentGroupName.value,
-    role: [roleData.roleId],
-    branchIds: roleData.branchIds || [],
-    accessScope: roleData.accessScope === 1 ? "global" : "branch",
-    userId,
-  });
+  await getRoleToUserById(userId, roleId);
+  if(role.value){
+    setValues({
+      role: [roleId],
+      branchIds: role.value.branchIds || [],
+      accessScope: role.value.userAccessScope === 1 ? "global" : "branch",
+      userId,
+    });
+  }
 };
 
 const onSubmit = handleSubmit(async (values) => {
@@ -93,7 +85,7 @@ const onSubmit = handleSubmit(async (values) => {
     ...(values.accessScope === "branch" && { branchIds: values.branchIds }),
   };
   isEditMode.value
-    ? await assignRole(payload)
+    ? await updateAssignRole(payload)
     : await assignRole(payload);
   isSubmitting.value = false;
 });

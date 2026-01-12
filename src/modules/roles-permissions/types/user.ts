@@ -22,7 +22,15 @@ export interface Role {
 }
 
 export interface RolesList {
-  data: Role[]
+  data: Role[];
 }
 
-
+export interface UserRole {
+  userId: string;
+  roleId: string;
+  roleName: string;
+  userAccessScope: 1 | 2;
+  branchNames: string[];
+  branchIds: string[];
+  permissions: string[];
+}
