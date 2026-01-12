@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type { UserFilterBody, UserResponse } from "../types/reports";
+import type { GroupResponse, UserFilterBody, UserResponse } from "../types/reports";
 import { GroupService, UserService } from "../services/reports.service";
 
 export function useReports() {
@@ -41,7 +41,7 @@ export function useReports() {
       }
       filtersBody.value.pageIndex = pageIndex.value;
       filtersBody.value.pageSize = pageSize;
-      const response = await GroupService.getGroup(filtersBody.value)  as UserResponse;
+      const response = await GroupService.getGroup(filtersBody.value)  as GroupResponse;
       const items = response.data.items || [];
       data.value = reset ? items : [...data.value, ...items];
       totalRecords.value = response.data.totalCount;

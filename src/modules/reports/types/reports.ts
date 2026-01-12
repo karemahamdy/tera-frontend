@@ -6,6 +6,14 @@ export interface UserFilterBody {
   pageIndex: number;
   pageSize: number;
 }
+
+export interface GroupFilterBody {
+  groupIds?: string[];
+  rolesIds?: string;
+  status?: string;
+  pageIndex: number;
+  pageSize: number;
+}
 export interface UserItem {
   internalId: string | null;
   username: string;
@@ -19,7 +27,23 @@ export interface UserItem {
   lastLogin: string | null;
 }
 
+export interface GroupItem {
+  createdDate: string | null;
+  userCount: number;
+  assignedRoles: string;
+  description: string | null;
+  groupName: string | null;
+  isActive: boolean;
+}
+
+
 export interface UserResponse {
+  data: {
+    items: UserItem[];
+    totalCount: number;
+  };
+}
+export interface GroupResponse {
   data: {
     items: UserItem[];
     totalCount: number;

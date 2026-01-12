@@ -4,6 +4,8 @@ import ReportFilters from "../components/ReportFilters.vue";
 import { useI18n } from "vue-i18n";
 import { useLookups } from "@/composables/useLookups";
 import { useReports } from "../composables/useReports";
+import { FileService } from "@/app/services/file.service";
+import { GroupService } from "../services/reports.service";
 
 const { t } = useI18n();
 let hasSearched = ref(false);
@@ -58,7 +60,7 @@ const columns = computed(() => {
   return Columns;
 });
 
-const onSearch = (filters: any[]) => {
+const getFilterBody = (filters: any[]) => {
   const body: any = {
     pageIndex: 1,
     pageSize: 20,
@@ -79,11 +81,23 @@ const onSearch = (filters: any[]) => {
         break;
     }
   });
+  return body;
+};
+const onExport = async () => {
+    try {
+        const body = getFilterBody(filtersOperation.value);
+        const response = await GroupService.getGroupExport(body);
+        FileService.downloadBlob(response, "GroupReport.xlsx");
+    } catch (e) {
+        console.error(e);
+    }
+};
 
+const onSearch = (filters: any[]) => {
+  const body = getFilterBody(filters);
   setFilter(body);
   hasSearched.value = true;
 };
-
 const onClearFilters = () => {
      filterState.value = { userGroup: null, isActive: null, roles: null };
      hasSearched.value = false;
@@ -106,8 +120,9 @@ onMounted(() => {
       <template #title>
          <PageHeader
           title="reports.userGroupReportInfo"
-          :showExport="false"
+          :showExport="true"
           :showSearch="false"
+          :onExport="onExport"
         />
 
         <ReportFilters :showExport="true" :showFilter="true" :filters="filtersOperation"  @search="onSearch" @clear="onClearFilters"  @filter-change="onFilterChange"/>

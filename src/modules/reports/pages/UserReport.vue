@@ -4,6 +4,8 @@ import ReportFilters from "../components/ReportFilters.vue";
 import { useI18n } from "vue-i18n";
 import { useLookups } from "@/composables/useLookups";
 import { useReports} from "../composables/useReports";
+import { UserService } from "../services/reports.service";
+import { FileService } from "@/app/services/file.service";
 
 const { t } = useI18n();
 let hasSearched = ref(false);
@@ -73,7 +75,7 @@ const columns = computed(() => {
   return Columns;
 });
 
-const onSearch = (filters: any[]) => {
+const getFilterBody = (filters: any[]) => {
   const body: any = {
     pageIndex: 1,
     pageSize: 20,
@@ -98,9 +100,23 @@ const onSearch = (filters: any[]) => {
         break;
     }
   });
+  return body;
+};
 
+const onSearch = (filters: any[]) => {
+  const body = getFilterBody(filters);
   setFilters(body);
   hasSearched.value = true;
+};
+
+const onExport = async () => {
+    try {
+        const body = getFilterBody(filtersOperation.value);
+        const response = await UserService.getUsersExport(body);
+        FileService.downloadBlob(response, "UserReport.xlsx");
+    } catch (e) {
+        console.error(e);
+    }
 };
 
 const onClearFilters = () => {
@@ -122,7 +138,7 @@ onMounted(() => {
     <card class="bg-white rounded-[10px] w-full overflow-x-auto">
       <!-- PageHeader component -->
       <template #title>
-        <PageHeader title="reports.userReportInfo" :showExport="true" :showSearch="false"  />
+        <PageHeader title="reports.userReportInfo" :showExport="true" :showSearch="false" :onExport="onExport" />
         <ReportFilters :showExport="true" :showFilter="true" :filters="filtersOperation"  @search="onSearch" @clear="onClearFilters"  @filter-change="onFilterChange"/>
       </template>
       <template #content>
