@@ -39,7 +39,7 @@ export function useGroups() {
 
   const searchTerm = ref("");
   const orderBy = ref("");
-  const orderDirection = ref<"asc" | "desc">("asc");
+  const orderDirection = ref<"asc" | "desc">("desc");
 
   const fetchGroups = async (page = 1) => {
     loading.value = true;
