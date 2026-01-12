@@ -1,88 +1,136 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import PageHeader from "@/sharedComponents/PageHeader.vue";
-import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import { useFilters } from "@/composables/useFilters";
+import { computed, onMounted, ref } from "vue";
 import ReportFilters from "../components/ReportFilters.vue";
 import { useI18n } from "vue-i18n";
-import DynamicTable from "@/sharedComponents/DynamicTable.vue";
-const { t } = useI18n();
-const data = ref([
-  {
-    id: 1,
-    internalID: "johndoe",
-    userName: "johndoe",
-    fullName: "John Doe",
-    email: "johndoe@example.com",
-    department: "johndoe",
-    userGroup: "johndoe",
-    isAdmin: "yes",
-    status: "Actuive",
-    accessScope: "yes",
-    lastLogin: "2023-01-01",
-  },
-]);
-const loading = ref(false);
-const filtersOperation = [
-  {
-    placeholder: "reports.allDepartments",
-    value: null,
-    field: "allDepartments",
-    options: [
-      { label: "All Departments", value: null },
-      { label: "Department 1", value: "Department 1" },
-    ],
-  },
-  {
-    placeholder: "reports.allGroups",
-    value: null,
-    field: "allGroups",
-    options: [
-      { label: "All Groups", value: null },
-      { label: "Group 1", value: "Group 1" },
-    ],
-  },
-  {
-    placeholder: "reports.status",
-    value: null,
-    field: "status",
-    options: [
-      { label: "All Status", value: null },
-      { label: "Status 1", value: "status 1" },
-    ],
-  },
-  {
-    placeholder: "reports.scope",
-    value: null,
-    field: "scope",
-    options: [
-      { label: "All Scope", value: null },
-      { label: "Scope 1", value: "scope 1" },
-    ],
-  },
-];
+import { useLookups } from "@/composables/useLookups";
+import { useReports} from "../composables/useReports";
+import { UserService } from "../services/reports.service";
+import { FileService } from "@/app/services/file.service";
 
-const {
-  filters,
-  filteredData: filteredByFilters,
-  onFilterChange,
-} = useFilters(data.value, filtersOperation);
+const { t } = useI18n();
+let hasSearched = ref(false);
+const { groupsLookups, departmentsLookups, getDepartmentsLookups, getGroupLookups } = useLookups();
+const { data, loading, setFilters } = useReports();
+
+const filtersOperation = computed(() => {
+  return [
+    {
+      placeholder: "usersManagement.allGroups",
+      value:  filterState.value.userGroup,
+      field: "userGroup",
+      options: [ 
+        ...groupsLookups.value
+      ],
+    },
+    {
+      placeholder: "usersManagement.allStatus",
+      value:  filterState.value.isActive,
+      field: "isActive",
+      options: [
+        { label: t("button.active"), value: true },
+        { label: t("button.inactive"), value: false },
+      ],
+    },
+    {
+      placeholder: "usersManagement.allScopes",
+      value:  filterState.value.isGlobal,
+      field: "isGlobal",
+      options: [
+      
+        { label: t("users.global"), value: true },
+        { label: t("users.branch"), value: false },
+      ],
+    },
+    {
+      placeholder: "usersManagement.allDepartment",
+      value:  filterState.value.department,
+      field: "department",
+      options: [
+       
+        ...departmentsLookups.value
+      ],
+    },
+  ];
+});
+const filterState = ref({
+  userGroup: null,
+  isActive: null,
+  isGlobal: null,
+  department: null,
+});
 
 const columns = computed(() => {
-    const Columns = [
-        { field: 'internalID', header: t('reports.internalID') },
-        { field: 'userName', header: t('reports.userName') },
-        { field: 'fullName', header: t('reports.fullName') },
-        { field: 'email', header: t('reports.email') },
-        { field: 'department', header: t('reports.department') },
-        { field: 'userGroup', header: t('reports.userGroup') },
-        { field: 'isAdmin', header: t('reports.isAdmin') },
-        { field: 'status', header: t('reports.status') },
-        { field: 'accessScope', header: t('reports.accessScope') },
-        { field: 'lastLogin', header: t('reports.lastLogin'), type: "date" },
-    ];
-    return Columns;
+  const Columns = [
+    { field: 'internalID', header: t('reports.internalID') },
+    { field: 'username', header: t('reports.userName') },
+    { field: 'fullName', header: t('reports.fullName') },
+    { field: 'email', header: t('reports.email') },
+    { field: 'departmentName', header: t('reports.department') },
+    { field: 'userGroupName', header: t('reports.userGroup') },
+    { field: 'isAdmin', header: t('reports.isAdmin') },
+    { field: 'isActive', header: t('reports.status') },
+    { field: 'isGlobal', header: t('reports.accessScope') },
+    { field: 'lastLogin', header: t('reports.lastLogin'), type: "date" },
+  ];
+  return Columns;
 });
+
+const getFilterBody = (filters: any[]) => {
+  const body: any = {
+    pageIndex: 1,
+    pageSize: 20,
+    isActive: null,
+    isGlobal: null,
+    groupIds: null,
+    departmentIds: null,
+  };
+  filters.forEach((f) => {
+    switch (f.field) {
+      case "userGroup":
+        body.groupIds = f.value ?? null;
+        break;
+      case "department":
+        body.departmentIds = f.value ?? null;
+        break;
+      case "isActive":
+        body.isActive = f.value ?? false;
+        break;
+      case "isGlobal":
+        body.isGlobal = f.value ?? false;
+        break;
+    }
+  });
+  return body;
+};
+
+const onSearch = (filters: any[]) => {
+  const body = getFilterBody(filters);
+  setFilters(body);
+  hasSearched.value = true;
+};
+
+const onExport = async () => {
+    try {
+        const body = getFilterBody(filtersOperation.value);
+        const response = await UserService.getUsersExport(body);
+        FileService.downloadBlob(response, "UserReport.xlsx");
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+const onClearFilters = () => {
+     filterState.value = { userGroup: null, isActive: null, isGlobal: null, department: null };
+  hasSearched.value = false;
+};
+const onFilterChange = ({ filter, value }: any) => {
+  filterState.value[filter.field as keyof typeof filterState.value] = value;
+
+};
+onMounted(() => {
+  Promise.all([getGroupLookups(false), getDepartmentsLookups(false)]);
+});
+
 </script>
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
@@ -90,23 +138,34 @@ const columns = computed(() => {
     <card class="bg-white rounded-[10px] w-full overflow-x-auto">
       <!-- PageHeader component -->
       <template #title>
-        <PageHeader
-          title="reports.userReportInfo"
-          :showExport="false"
-          :showSearch="false"
-        />
-
-        <ReportFilters
-          :showExport="true"
-          :showFilter="true"
-          @filter-change="onFilterChange"
-          :filters="filters"
-        />
+        <PageHeader title="reports.userReportInfo" :showExport="true" :showSearch="false" :onExport="onExport" />
+        <ReportFilters :showExport="true" :showFilter="true" :filters="filtersOperation"  @search="onSearch" @clear="onClearFilters"  @filter-change="onFilterChange"/>
       </template>
-      <!-- DynamicTable component -->
       <template #content>
-        <DynamicTable :columns="columns" :data="filteredByFilters" :loading="loading" :paginator="false" />
+        <DynamicTable v-if="hasSearched" :columns="columns" :data="data" :loading="loading" :paginator="false">
+          <template #col-isGlobal="{ data }">
+            {{ data.isGlobal ? t("users.global") : t("users.branch") }}
+          </template>
+          <template #col-isAdmin="{ data }">
+            {{ data.isAdmin ? t("Admin") : t("User") }}
+          </template>
+        </DynamicTable>
       </template>
     </card>
   </div>
 </template>
+
+<style scoped>
+:deep(.p-datatable .p-datatable-tbody > tr > td) {
+    padding: 16px;
+    color: var(--color-gray-500);
+}
+
+:deep(.p-datatable .p-datatable-thead > tr > th) {
+    background: #FAF9F9;
+    font-weight: 600;
+    color: var(--color-gray-700);
+    font-size: 13px;
+    padding: 20px 16px;
+}
+</style>
