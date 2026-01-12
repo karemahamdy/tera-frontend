@@ -15,7 +15,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const orderDirection = ref<'asc' | 'desc'>('asc');
+const orderDirection = ref<'asc' | 'desc'>('desc');
 
 const lastError = ref<string | null>(null);
 const validationErrors = ref<Record<string, string[]>>({});
