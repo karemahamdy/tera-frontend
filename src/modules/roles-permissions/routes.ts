@@ -12,26 +12,29 @@ export const rolesPermissionsRoutes = [
   {
     path: "/roles-permissions/create",
     name: "RolesPermissionsCreate",
-    component: () => import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
+    component: () =>
+      import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
     meta: { permission: null },
     props: { mode: "create" },
   },
   {
     path: "/roles-permissions/edit/:id",
     name: "RolesPermissionsEdit",
-    component: () => import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
+    component: () =>
+      import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
     props: { mode: "edit" },
     meta: { permission: null },
   },
   {
     path: "/roles-permissions/:id",
     name: "RolesPermissionsView",
-    component: () => import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
+    component: () =>
+      import("@/modules/roles-permissions/pages/RolesPermissionsForm.vue"),
     props: { mode: "view" },
     meta: { permission: null },
   },
   {
-    path: "/roles-permissions/add-user-roles/:id",
+    path: "/roles-permissions/add-user-roles/:id/:roleId?",
     name: "AddUserRoles",
     component: () =>
       import("@/modules/roles-permissions/pages/AddUserRoles.vue"),

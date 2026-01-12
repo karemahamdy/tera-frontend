@@ -12,3 +12,17 @@ export interface AssignRole {
   roleId: string[] | string;
   branchIds?: string[];
 }
+
+export interface Role {
+  userId: string;
+  roleId: string;
+  roleName: string;
+  userAccessScope: string;
+  branchNames: string[];
+}
+
+export interface RolesList {
+  data: Role[]
+}
+
+

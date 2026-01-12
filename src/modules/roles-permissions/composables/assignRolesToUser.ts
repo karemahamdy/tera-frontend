@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import router from "@/app/router";
-import type { AssignRole } from "../types/user";
+import type { AssignRole, Role } from "../types/user";
 import { UserRolesService } from "../services/user.service";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
@@ -9,6 +9,7 @@ export function useRolesUser() {
   const { t } = useI18n();
 
   const loading = ref(false);
+  const roles = ref<Role[]>([]);
 
   const assignRole = async (data: AssignRole) => {
     try {
@@ -21,12 +22,41 @@ export function useRolesUser() {
     } finally {
       loading.value = false;
     }
-  }
+  };
 
+  const fetchRolesByUserId = async (userId: string) => {
+    try {
+      loading.value = true;
+      const resp = await UserRolesService.getRolesByUserId(userId);
+      roles.value = resp.data.map((role) => ({
+        ...role,
+        branches:
+          role.branchNames.map((name) => name).join(" - ") ||
+          "Access all branches",
+      }));
+      toastService.success(t("roles.rolesFetched"));
+    } catch (err: any) {
+      toastService.error(err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const deleteRole = async (userId: string, roleId: string)  => {
+    try {
+      loading.value = true;
+      await UserRolesService.delete(userId, roleId);
+      roles.value = roles.value.filter((r) => r.roleId !== roleId);
+      toastService.success(t("roles.roleRemovedFromGroup"));
+    } catch (err: any) {
+      toastService.error(err);
+    } finally {
+      loading.value = false;
+    }
+  };
 
   // const list = ref<UserListItem[]>([]);
   // const userData = ref<UserByID>({} as UserByID);
-
 
   // const pagination = ref<Pagination>({
   //   PageIndex: 1,
@@ -54,7 +84,6 @@ export function useRolesUser() {
   //   await getList();
   // };
 
-
   // const sort = async (orderData: {
   //   orderBy: string;
   //   direction: "asc" | "desc";
@@ -77,7 +106,6 @@ export function useRolesUser() {
   //     loading.value = false;
   //   }
   // };
-
 
   // const editRole = async (id: string, data: UserPayload) => {
   //   try {
@@ -104,10 +132,12 @@ export function useRolesUser() {
   //   }
   // };
 
-
   return {
     loading,
+    roles,
     assignRole,
+    fetchRolesByUserId,
+    deleteRole
     // list,
     // userData,
     // pagination,

@@ -1,9 +1,19 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { AssignRole } from "../types/user";
+import type { AssignRole, RolesList } from "../types/user";
 
 export const UserRolesService = {
   create(payload: AssignRole) {
     return axiosWrapper.post<AssignRole>("/Users/AssingRoleToUser", payload);
+  },
+
+  getRolesByUserId(userID: string) {
+    return axiosWrapper.get<RolesList>(
+      `/Users/GetRolesAssignedToUserById/${userID}`
+    );
+  },
+
+  delete(userId: string, roleId: string) {
+    return axiosWrapper.delete(`/Users/DeleteRoleFromUser/${userId}/${roleId}`);
   },
 
   // getList(params: Pagination) {
