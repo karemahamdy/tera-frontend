@@ -178,6 +178,7 @@
     "roleAssigned": "تم تعيين الدور بنجاح",
     "roleUpdatedInGroup": "تم تحديث الدور في المجموعة بنجاح",
     "roleRemovedFromGroup": "تم حذف الدور من المجموعة بنجاح",
+    "roleRemovedFromUser": "تم حذف الدور من المستخدم بنجاح",
     "rolesFetched": "تم جلب الأدوار بنجاح",
     "assignedBranch": "الفرع المعين",
     "roleNotActive": "يجب تنشيط الجروب",

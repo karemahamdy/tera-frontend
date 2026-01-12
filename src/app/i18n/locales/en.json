@@ -172,6 +172,7 @@
     "roleAssigned": "Role assigned successfully",
     "roleUpdatedInGroup": "Role updated in group successfully",
     "roleRemovedFromGroup": "Role removed from group successfully",
+    "roleRemovedFromUser": "Role removed from user successfully",
     "rolesFetched": "Roles fetched successfully",
     "assignedBranch": "Assigned Branch",
     "roleNotActive" : "Group is not active",
