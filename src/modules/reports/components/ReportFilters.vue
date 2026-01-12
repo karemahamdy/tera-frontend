@@ -10,16 +10,20 @@ const props = defineProps({
   filters: { type: Array, default: [] },
 });
 
-const emit = defineEmits(["filter-change"]);
+const emit = defineEmits(["filter-change", "search", "clear"]);
 
+const onSearch = () => {
+  emit("search", props.filters);
+};
 const onFilterChange = (filter, event) => {
   emit("filter-change", { filter, value: event.value });
 };
 const clearFilters = () => {
   props.filters.forEach((filter) => {
     filter.value = null;
-    emit("filter-change", { filter, value: null });
+  
   });
+ emit("clear");
 };
 </script>
 
@@ -27,7 +31,7 @@ const clearFilters = () => {
   <div class="flex flex-wrap justify-between items-center">
     <!-- Filters -->
     <div class="flex gap-[10px] mt-2 flex-nowrap">
-      <Dropdown
+      <MultiSelect
         v-for="(filter, index) in filters"
         :key="index"
         v-model="filter.value"
@@ -38,6 +42,7 @@ const clearFilters = () => {
         :showClear="filter.showClear"
         @change="(e) => onFilterChange(filter, e)"
       />
+      
     </div>
     <div class="flex flex-wrap justify- md:justify-end gap-3">
       <template v-if="showExport">
@@ -47,10 +52,9 @@ const clearFilters = () => {
           @click="clearFilters()"
         />
         <BaseButton
-          :label="$t('export')"
-          icon="Export"
+          :label="$t('button.search')"
           variant="primary"
-          @click="onExport && onExport()"
+          @click="onSearch"
         />
       </template>
       <slot name="actionBtn"></slot>
