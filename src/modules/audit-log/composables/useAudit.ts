@@ -61,6 +61,22 @@ export function useAudit() {
     orderDirection.value = direction;
     fetchAuditLogs(pageIndex.value);
   };
+//  const onFilterChange = (filter: {
+//     filter: { field: string };
+//     value: string;
+//   }) => {
+//     const field = filter.filter.field;
+//     const value = filter.value;
+//     if (field === "allIPAddress") {
+//       pagination.value.IpAddressFilter = value;
+//     } else if (field === "status") {
+//       pagination.value.StatusFilter = value;
+//     } else if (field === "allBranches") {
+//       pagination.value.BranchFilter = value;
+//     }
+//     pagination.value.PageIndex = 1;
+//     getList();
+//   };
 
   const filteredTableData = computed(() => tableData.value);
 
@@ -70,6 +86,7 @@ export function useAudit() {
     pageIndex,
     pageSize,
     totalCount,
+    // onFilterChange,
     totalPages,
     onSearch,
     onSort,

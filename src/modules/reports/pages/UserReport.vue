@@ -61,7 +61,7 @@ const filterState = ref({
 
 const columns = computed(() => {
   const Columns = [
-    { field: 'internalID', header: t('reports.internalID') },
+    { field: 'internalId', header: t('reports.internalID') },
     { field: 'username', header: t('reports.userName') },
     { field: 'fullName', header: t('reports.fullName') },
     { field: 'email', header: t('reports.email') },
