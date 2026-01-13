@@ -3,6 +3,7 @@ import { ref } from "vue";
 import Sidebar from "./Sidebar.vue";
 import Topbar from "./Topbar.vue";
 import Footer from "./Footer.vue";
+import IdleTimer from "@/sharedComponents/IdleTimer.vue";
 
 const sidebarCollapsed = ref<boolean>(
   localStorage.getItem("sidebar-collapsed") === "true"
@@ -14,6 +15,7 @@ function toggleSidebar() {
 </script>
 <template>
   <div class="layout flex">
+    <IdleTimer />
     <Sidebar :collapsed="sidebarCollapsed" @toggle="toggleSidebar" />
     <div class="w-full">
       <Topbar @toggle="toggleSidebar" :collapsed="sidebarCollapsed" />
