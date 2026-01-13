@@ -148,6 +148,7 @@ export const useUserStore = defineStore("user", {
     // LOGOUT
     // ------------------------------------
     logout() {
+      this.closeSession();
       this.user = null;
       this.accessToken = "";
       this.refreshToken = "";
@@ -175,9 +176,13 @@ export const useUserStore = defineStore("user", {
     closeSession() {
       const apiUrl = import.meta.env.VITE_API_URL;
       const token = this.accessToken;
-      const data = new FormData();
-      data.append("token", token || "");
-      navigator.sendBeacon(`${apiUrl}/Session/logout`, data);
+      const body = {
+        token,
+      };
+      const blob = new Blob([JSON.stringify(body)], {
+        type: "application/json",
+      });
+      navigator.sendBeacon(`${apiUrl}/Session/logout`, blob);
     },
   },
 });
