@@ -281,7 +281,7 @@
     "urgent": "Urgent", 
     "userCapacity": "User Capacity",
     "approachingLimit": "Approaching Limit",
-    "concurrentSession": "Concurrent Session",
+    "currentSession": "Current Session",
     "steadyHighUsage": "Steady High Usage",
     "active": "Active",
     "days": "Days"
