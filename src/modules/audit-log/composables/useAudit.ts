@@ -2,6 +2,7 @@ import { ref, computed } from "vue";
 import { toastService } from "../../../app/services/toastService";
 import { AuditService } from "../services/auditLogs.service";
 import type { AuditLog } from "../types/auditLogList";
+import type { Pagination } from "../types/auditLogList";
 
 export function useAudit() {
   const loading = ref(false);
@@ -26,18 +27,18 @@ export function useAudit() {
   const totalPages = ref(1);
   const searchTerm = ref("");
   const orderBy = ref("");
-  const orderDirection = ref<"asc" | "desc">("asc");
+  const orderDirection = ref<"asc" | "desc">("desc");
 
   const fetchAuditLogs = async (page = 1) => {
     loading.value = true;
     try {
       const response: any = await AuditService.getAll({
-        pageIndex: page,
-        pageSize: pageSize.value,
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-      });
+        PageIndex: page,
+        PageSize: pageSize.value,
+        SearchingWord: searchTerm.value,
+        OrderBy: orderBy.value,
+        OrderDirection: orderDirection.value,
+      } as Pagination);
 
       apiAuditLogs.value = response.items ?? [];
       pageIndex.value = response.pageIndex ?? page;
