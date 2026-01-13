@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useUserStore } from '@/app/store/useUserStore';
 import Notification from "@/sharedComponents/Notification.vue";
+import type { Branch } from "../types/user";
+
 const userStore = useUserStore();
 
 // Props
@@ -17,16 +19,32 @@ const emit = defineEmits<{
 // State
 const q = ref("");
 
-const options = [
-  { label: "Option 1", value: 1 },
-  { label: "Option 2", value: 2 },
-  { label: "Option 3", value: 3 },
-];
-const selectedOption = ref<number | null>(null);
+// Computed properties for User Profile & Branches
+const branches = computed(() => {
+  return userStore.userProfile?.branches?.available || [];
+});
+
+const selectedBranch = computed({
+  get: () => userStore.userProfile?.branches?.current,
+  set: (value: Branch | undefined) => {
+    if (value && userStore.userProfile?.branches) {
+        userStore.switchBranch(value.id);
+    }
+  }
+});
+
+const userProfile = computed(() => userStore.userProfile?.profile);
+
 // Change language via store so it persists and updates document attributes
 function switchLanguage() {
   userStore.toggleLang();
 }
+
+onMounted(async () => {
+    if (!userStore.userProfile) {
+        await userStore.fetchUserProfile();
+    }
+});
 </script>
 <template>
   <header class="h-16 flex items-center px-4 bg-white/80 backdrop-blur shadow">
@@ -41,8 +59,16 @@ function switchLanguage() {
       </div>
 
       <div class="flex items-center gap-3">
-        <Dropdown filter v-model="selectedOption" :options="options" optionLabel="label" :placeholder="$t('Select Branches')"
-          class="w-48" />
+        <!-- Branch Switcher -->
+        <Dropdown 
+            v-if="branches.length > 0"
+            filter 
+            v-model="selectedBranch" 
+            :options="branches" 
+            :optionLabel="$i18n.locale === 'ar' ? 'nameAr' : 'nameEn'" 
+            :placeholder="$t('Select Branches')"
+            class="w-48" 
+        />
 
         <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full" @click="switchLanguage">
           <VsxIcon iconName="Translate" :size="24" type="linear" />
@@ -55,11 +81,12 @@ function switchLanguage() {
         <Notification/>
 
         <div class="flex items-center gap-2">
-          <Avatar image="https://i.pravatar.cc/40" shape="circle" />
+          <Avatar :image="userProfile?.profileImageUrl || 'https://i.pravatar.cc/40'" shape="circle" />
           <span v-if="!collapsed" class="hidden sm:inline text-gray-500">
-            <span class="font-semibold">Admin</span>
+            <span class="font-semibold">{{ userProfile?.fullName || 'Admin' }}</span>
             <br />
-            <small class="text-sm text-admin-muted">121.242</small>
+            <!-- Using internalID or similar as a subtitle/ID if desired -->
+            <small class="text-sm text-admin-muted">{{ userProfile?.internalID?.substring(0, 8) || 'Unknown' }}</small>
           </span>
         </div>
       </div>
