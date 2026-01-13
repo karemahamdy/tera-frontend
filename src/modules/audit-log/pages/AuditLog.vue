@@ -42,8 +42,11 @@ const lastRecord = computed(() => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="auditLog.title" subtitle="auditLog.subtitle" :showExport="true" :showFilter="true"
-                    searchPlaceholder="auditLog.searchPlaceholder" @search="onSearch"   :hasMenu="false"  templateFileUrl="/audit-logs/export" dataFileUrl="/audit-logs/export"
-                    templateFileName="auditLog-template.csv" dataFileName="auditLog-data.csv" />
+                 searchPlaceholder="auditLog.searchPlaceholder" @search="onSearch"  :hasMenu="false"  templateFileUrl="/audit-logs/export" dataFileUrl="/audit-logs/export"
+                  templateFileName="auditLog-template.csv" dataFileName="auditLog-data.csv" />
+                  <div>
+                  
+                    </div>
             </template>
             <!-- DynamicTable component -->
             <template #content>

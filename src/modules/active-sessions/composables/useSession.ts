@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import { toastService } from "@/app/services/toastService";
-
 import type { ActiveSession, Pagination } from "../types/activeSessionsList";
 import { SessionService } from "../services/session.service";
 import { useI18n } from "vue-i18n";
