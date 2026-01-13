@@ -44,7 +44,7 @@ const cards = computed(() => {
         {
             variant: 'blue',
             icon: 'VideoTick',
-            title: 'licenseInfo.concurrentSession',
+            title: 'licenseInfo.currentSession',
             value: `${licenseInfo.value.currentNumperOfSessions}/${licenseInfo.value.numperOfSessionsInLicense}`,
             subtitle: 'licenseInfo.steadyHighUsage',
             statusText: sessionUsagePercent.value >= 30 ? 'licenseInfo.urgent'
