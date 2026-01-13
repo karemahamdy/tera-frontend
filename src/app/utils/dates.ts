@@ -9,6 +9,7 @@ export function formatDateTimeLang(
   withTime = false
 ): string {
   try {
+    if(date === "0001-01-01T00:00:00") return "-";
     const currentLanguage = i18n.global.locale.value ?? "en";
 
     const d = typeof date === "string" ? new Date(date) : date;
@@ -33,6 +34,8 @@ export function formatDateTimeDetailedLang(
   withTime = true
 ): string {
   try {
+    if(date === "0001-01-01T00:00:00") return "-";
+
     const currentLanguage = i18n.global.locale.value ?? "en";
 
     const d = typeof date === "string" ? new Date(date) : date;
@@ -56,6 +59,8 @@ export function formatDateTimeDetailedLang(
 
 export function formatDistanceLang(date: Date | string): string {
   try {
+    if(date === "0001-01-01T00:00:00") return "-";
+
     const currentLanguage = i18n.global.locale.value ?? "en";
     const d = typeof date === "string" ? new Date(date) : date;
     if (!isValid(d)) return "";
