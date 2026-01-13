@@ -1,82 +1,116 @@
-import { ref } from "vue";
-import { toastService } from "../../../app/services/toastService";
+
+import { ref, computed, watch } from "vue";
+import { toastService } from "@/app/services/toastService";
 import { AuditService } from "../services/auditLogs.service";
-import type { AuditLog } from "../types/auditLogList";
-import type { Pagination } from "../types/auditLogList";
+import type { AuditLog, AuditFiltersPayload, Pagination } from "../types/auditLogList";
 
 export function useAudit() {
   const loading = ref(false);
   const List = ref<AuditLog[]>([]);
+  const filters = ref<AuditFiltersPayload>({});
+  const fromDate = ref<string | undefined>();
+  const toDate = ref<string | undefined>();
 
-  const pageIndex = ref(1);
-  const pageSize = ref(10);
-  const totalCount = ref(0);
+  const pagination = ref<Pagination>({
+    PageIndex: 1,
+    PageSize: 10,
+    SearchingWord: undefined,
+    OrderBy: undefined,
+    OrderDirection: "desc",
+    total: 0,
+  });
+
   const totalPages = ref(1);
-  const searchTerm = ref("");
-  const orderBy = ref("");
-  const orderDirection = ref<"asc" | "desc">("desc");
 
-  const fetchAuditLogs = async (page = 1) => {
+  const fetchAuditLogs = async () => {
     loading.value = true;
     try {
-      const response: any = await AuditService.getAll({
-        PageIndex: page,
-        PageSize: pageSize.value,
-        SearchingWord: searchTerm.value,
-        OrderBy: orderBy.value,
-        OrderDirection: orderDirection.value,
-      } as Pagination);
+      const hasFilters = Object.values(filters.value).some(
+        v => Array.isArray(v) && v.length
+      );
+
+      const params = {
+        ...pagination.value,
+        FromDate: fromDate.value,
+        ToDate: toDate.value,
+      };
+
+      const response = hasFilters
+        ? await AuditService.filterLogs(filters.value, params)
+        : await AuditService.getAll(params);
 
       List.value = response.items ?? [];
-      pageIndex.value = response.pageIndex ?? page;
-      pageSize.value = response.pageSize ?? pageSize.value;
-      totalCount.value = response.totalCount ?? 0;
+      pagination.value.PageIndex = response.pageIndex ?? 1;
+      pagination.value.PageSize = response.pageSize ?? 10;
+      pagination.value.total = response.totalCount ?? 0;
       totalPages.value = response.totalPages ?? 1;
     } catch (err: any) {
-      toastService.error(err);
+      toastService.error(err?.message || "Error fetching audit logs");
     } finally {
       loading.value = false;
     }
   };
 
+  const onFilterChange = (payload: { filter: { field: string }; value: any }) => {
+    const { field } = payload.filter;
+    const value = payload.value;
+
+    switch (field) {
+      case "auditLog.user":
+        filters.value.userIds = value ? value : [] ;
+      break;
+      case "allBranches":
+        filters.value.branchIds = value ? value : [] ;
+      break;
+      case "auditLog.module":
+        filters.value.moduleNames = value ? value : [];
+      break;
+      case "screen":
+        filters.value.screenNames = value ? value : [] ;
+      break;
+      
+    }
+
+    pagination.value.PageIndex = 1;
+    fetchAuditLogs();
+  };
+
+  watch([fromDate, toDate], () => {
+    pagination.value.PageIndex = 1;
+    fetchAuditLogs();
+  });
+
   const onSearch = (term: string) => {
-    searchTerm.value = term;
-    fetchAuditLogs(1);
+    pagination.value.SearchingWord = term;
+    pagination.value.PageIndex = 1;
+    fetchAuditLogs();
   };
 
   const onSort = (orderByField: string, direction: "asc" | "desc") => {
-    orderBy.value = orderByField;
-    orderDirection.value = direction;
-    fetchAuditLogs(pageIndex.value);
-  };
- const onFilterChange = (filter: {
-    filter: { field: string };
-    value: string;
-  }) => {
-    const field = filter.filter.field;
-    // const value = filter.value;
-    if (field === "allIPAddress") {
-      // pagination.value.IpAddressFilter = value;
-    } else if (field === "status") {
-      // pagination.value.StatusFilter = value;
-    } else if (field === "allBranches") {
-      // pagination.value.BranchFilter = value;
-    }
-    // pagination.value.PageIndex = 1;
+    pagination.value.OrderBy = orderByField;
+    pagination.value.OrderDirection = direction;
     fetchAuditLogs();
-    };
-  
+  };
+
+  const setPage = (page: number) => {
+    pagination.value.PageIndex = page;
+    fetchAuditLogs();
+  };
+
   return {
     loading,
     List,
-    pageIndex,
-    pageSize,
-    totalCount,
-    onFilterChange,
+    pageIndex: computed(() => pagination.value.PageIndex),
+    pageSize: computed(() => pagination.value.PageSize),
+    totalCount: computed(() => pagination.value.total),
     totalPages,
+    onFilterChange,
     onSearch,
     onSort,
-    setPage: (page: number) => fetchAuditLogs(page),
+    setPage,
     fetchAuditLogs,
+    filters,
+    fromDate,
+    toDate,
   };
 }
