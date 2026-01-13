@@ -304,5 +304,10 @@
     "title": "Terminate Session?",
     "desc": "This will immediately end the session for this user. They will be logged out and will need to sign in again.",
     "sessionUpdated": "Session terminated successfully"
+  },
+  "alert": {
+    "sessionExpire": "Your session will expire in",
+    "logout": "Logout now",
+    "stay": "Stay Logged in"
   }
 }

@@ -78,7 +78,7 @@ const canClose = computed(() => props.closable && !props.loading);
             </div>
 
             <!-- Buttons -->
-            <div v-else-if="buttons && buttons.length > 0" class="flex gap-2 justify-end w-full">
+            <div v-else-if="buttons && buttons.length > 0" class="flex gap-2 justify-center w-full">
                 <BaseButton v-for="(btn, index) in buttons" :key="index" :label="btn.label" :variant="btn.variant" block
                     :disabled="loading || btn.disabled" @click="handleAction(btn.action)" />
             </div>
