@@ -77,11 +77,11 @@ onMounted(() => {
         <div class="flex gap-4 mt-2">
           <div class="w-[50%]"> 
             <label class="block text-gray-600 text-lg ">{{ t("fromDate") }}</label>
-            <DatePicker v-model="fromDate" @change="onDateChange(fromDate, toDate)" showIcon fluid iconDisplay="input" />
+           <DatePicker v-model="fromDate" showIcon fluid iconDisplay="input" />
           </div>
           <div class="w-[50%]">
-             <label class="block text-gray-600 text-lg ">{{ t("toDate") }}</label>
-             <DatePicker v-model="toDate" @change="onDateChange(fromDate, toDate)" showIcon fluid iconDisplay="input" />
+            <label class="block text-gray-600 text-lg ">{{ t("toDate") }}</label>
+            <DatePicker v-model="toDate" showIcon fluid iconDisplay="input" />
           </div>
         </div>
       </template>

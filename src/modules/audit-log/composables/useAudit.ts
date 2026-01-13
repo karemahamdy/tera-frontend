@@ -1,15 +1,20 @@
-
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, type Ref } from "vue";
 import { toastService } from "@/app/services/toastService";
 import { AuditService } from "../services/auditLogs.service";
 import type { AuditLog, AuditFiltersPayload, Pagination } from "../types/auditLogList";
+
+interface FilterChangePayload {
+  filter: { field: string };
+  value: any;
+}
 
 export function useAudit() {
   const loading = ref(false);
   const List = ref<AuditLog[]>([]);
   const filters = ref<AuditFiltersPayload>({});
-  const fromDate = ref<string | undefined>();
-  const toDate = ref<string | undefined>();
+
+  const fromDate: Ref<Date | null> = ref(null);
+  const toDate: Ref<Date | null> = ref(null);
 
   const pagination = ref<Pagination>({
     PageIndex: 1,
@@ -20,19 +25,19 @@ export function useAudit() {
     total: 0,
   });
 
-  const totalPages = ref(1);
+  const totalPages = ref<number>(1);
 
   const fetchAuditLogs = async () => {
     loading.value = true;
     try {
       const hasFilters = Object.values(filters.value).some(
-        v => Array.isArray(v) && v.length
+        v => Array.isArray(v) && v.length > 0
       );
 
       const params = {
         ...pagination.value,
-        FromDate: fromDate.value,
-        ToDate: toDate.value,
+        FromDate: fromDate.value?.toISOString(),
+        ToDate: toDate.value?.toISOString(),
       };
 
       const response = hasFilters
@@ -51,34 +56,35 @@ export function useAudit() {
     }
   };
 
-  const onFilterChange = (payload: { filter: { field: string }; value: any }) => {
+  const onFilterChange = (payload: FilterChangePayload) => {
     const { field } = payload.filter;
-    const value = payload.value;
+    const value = payload.value ?? [];
 
     switch (field) {
       case "auditLog.user":
-        filters.value.userIds = value ? value : [] ;
-      break;
+        filters.value.userIds = value;
+        break;
       case "allBranches":
-        filters.value.branchIds = value ? value : [] ;
-      break;
+        filters.value.branchIds = value;
+        break;
       case "auditLog.module":
-        filters.value.moduleNames = value ? value : [];
-      break;
+        filters.value.moduleNames = value;
+        break;
       case "screen":
-        filters.value.screenNames = value ? value : [] ;
-      break;
-      
+        filters.value.screenNames = value;
+        break;
     }
 
     pagination.value.PageIndex = 1;
     fetchAuditLogs();
   };
 
-  watch([fromDate, toDate], () => {
+  const onDateChange = () => {
     pagination.value.PageIndex = 1;
     fetchAuditLogs();
-  });
+  };
+
+  watch([fromDate, toDate], onDateChange);
 
   const onSearch = (term: string) => {
     pagination.value.SearchingWord = term;
@@ -109,6 +115,7 @@ export function useAudit() {
     onSort,
     setPage,
     fetchAuditLogs,
+    onDateChange,
     filters,
     fromDate,
     toDate,
