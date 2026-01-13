@@ -129,6 +129,9 @@ const onFilterChange = ({ filter, value }: any) => {
 };
 onMounted(() => {
   Promise.all([getGroupLookups(false), getDepartmentsLookups(false)]);
+  const body = getFilterBody([]);
+  setFilters(body);
+  hasSearched.value = true;
 });
 
 </script>
