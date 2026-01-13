@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { toastService } from "../../../app/services/toastService";
 import { AuditService } from "../services/auditLogs.service";
 import type { AuditLog } from "../types/auditLogList";
@@ -6,20 +6,7 @@ import type { Pagination } from "../types/auditLogList";
 
 export function useAudit() {
   const loading = ref(false);
-  const apiAuditLogs = ref<AuditLog[]>([]);
-
-  const tableData = computed(() =>
-    apiAuditLogs.value.map((log) => ({
-      Created: log.timestamp,
-      user: log.userName ?? "-",
-      action: log.actionType ?? "-",
-      module: log.moduleName ?? "-",
-      screen: log.screenName ?? "-",
-      entity: log.entityName ?? "-",
-      branch: log.branchNameAr ?? log.branchNameEn ?? "-",
-      transactionID: log.transactionNumber ?? "-",
-    }))
-  );
+  const List = ref<AuditLog[]>([]);
 
   const pageIndex = ref(1);
   const pageSize = ref(10);
@@ -40,7 +27,7 @@ export function useAudit() {
         OrderDirection: orderDirection.value,
       } as Pagination);
 
-      apiAuditLogs.value = response.items ?? [];
+      List.value = response.items ?? [];
       pageIndex.value = response.pageIndex ?? page;
       pageSize.value = response.pageSize ?? pageSize.value;
       totalCount.value = response.totalCount ?? 0;
@@ -62,32 +49,30 @@ export function useAudit() {
     orderDirection.value = direction;
     fetchAuditLogs(pageIndex.value);
   };
-//  const onFilterChange = (filter: {
-//     filter: { field: string };
-//     value: string;
-//   }) => {
-//     const field = filter.filter.field;
-//     const value = filter.value;
-//     if (field === "allIPAddress") {
-//       pagination.value.IpAddressFilter = value;
-//     } else if (field === "status") {
-//       pagination.value.StatusFilter = value;
-//     } else if (field === "allBranches") {
-//       pagination.value.BranchFilter = value;
-//     }
-//     pagination.value.PageIndex = 1;
-//     getList();
-//   };
-
-  const filteredTableData = computed(() => tableData.value);
-
+ const onFilterChange = (filter: {
+    filter: { field: string };
+    value: string;
+  }) => {
+    const field = filter.filter.field;
+    // const value = filter.value;
+    if (field === "allIPAddress") {
+      // pagination.value.IpAddressFilter = value;
+    } else if (field === "status") {
+      // pagination.value.StatusFilter = value;
+    } else if (field === "allBranches") {
+      // pagination.value.BranchFilter = value;
+    }
+    // pagination.value.PageIndex = 1;
+    fetchAuditLogs();
+    };
+  
   return {
     loading,
-    filteredTableData,
+    List,
     pageIndex,
     pageSize,
     totalCount,
-    // onFilterChange,
+    onFilterChange,
     totalPages,
     onSearch,
     onSort,

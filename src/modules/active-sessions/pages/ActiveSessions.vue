@@ -42,7 +42,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "allIPAddress",
             options: [
-                { label: "activeSessions.allIPAddress", value: null },
+              
                 ...IPLookups.value
             ],
         },
@@ -51,7 +51,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "allBranches",
             options: [
-                { label: t("activeSessions.allBranches"), value: null },
+              
                 ...branchesLookups.value
             ],
         },
@@ -60,7 +60,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-                { label: t("usersManagement.allStatus"), value: null },
+              
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
