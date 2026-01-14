@@ -76,3 +76,10 @@ export interface UserGlobalProfile {
   };
   modules: any[];
 }
+
+
+export interface SwitchBranch { 
+  data: {
+    newToken: string
+  }
+}
