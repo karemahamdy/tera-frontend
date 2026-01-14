@@ -3,7 +3,14 @@ import type { GroupFilterBody, GroupResponse, UserFilterBody, UserResponse } fro
 
 export const UserService = {
   async getUsers(body: UserFilterBody): Promise<UserResponse> {
-    return await axiosWrapper.post("/Reports/user-master-data", body);
+    let url = `?pageIndex=${body.pageIndex}&pageSize=${body.pageSize}`
+    if("status" in body) {
+      url+= `&isActive=${body.status}`
+    }
+    if("accessScope" in body) {
+      url+= `&isGlobal=${body.accessScope}`
+    }
+    return await axiosWrapper.post(`/Reports/user-master-data${url}`, body);
   },
   async getUsersExport(body: UserFilterBody): Promise<any> {
     return await axiosWrapper.post("/Reports/user-master-data/export", body, { responseType: 'blob' });
