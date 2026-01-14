@@ -8,6 +8,7 @@ import type {
   Entity,
   AuthData,
   AuthDataResponse,
+  UserGlobalProfile,
 } from "@/app/types/user";
 import router from "@/app/router";
 
@@ -59,6 +60,7 @@ export const useUserStore = defineStore("user", {
     ),
     lang: Lang() as string,
     entities: [] as Entity[],
+    userProfile: null as UserGlobalProfile | null,
   }),
 
   getters: {
@@ -106,8 +108,7 @@ export const useUserStore = defineStore("user", {
       localStorage.setItem("rememberMe", String(payload.rememberMe));
 
       this.setTokens(tokens);
-      // optionally fetch user here
-      // await this.fetchUser();
+      await this.fetchUserProfile();
     },
 
     // ------------------------------------
@@ -150,6 +151,7 @@ export const useUserStore = defineStore("user", {
     logout() {
       this.closeSession();
       this.user = null;
+      this.userProfile = null; // Clear profile
       this.accessToken = "";
       this.refreshToken = "";
       this.isAuthenticated = false;
@@ -166,11 +168,43 @@ export const useUserStore = defineStore("user", {
     },
 
     // ------------------------------------
+    // SWITCH BRANCH
+    // ------------------------------------
+    async switchBranch(branchId: string) {
+      try {
+        await axiosWrapper.post(`/user-profile/switch-branch?BranchId=${branchId}`);
+        // Update local state
+        if (this.userProfile && this.userProfile.branches) {
+          const newBranch = this.userProfile.branches.available.find(b => b.id === branchId);
+          if (newBranch) {
+            this.userProfile.branches.current = newBranch;
+          }
+        }
+        window.location.reload();
+      } catch (error) {
+        console.error("Failed to switch branch:", error);
+      }
+    },
+
+    // ------------------------------------
     // FETCH ENTITY LOOKUPS
     // ------------------------------------
     async fetchEntityLookups() {
       const data = await axiosWrapper.get<any>("/Lookups/EntityLookups");
       this.entities = data.data as Entity[];
+    },
+
+    // ------------------------------------
+    // FETCH USER PROFILE
+    // ------------------------------------
+    async fetchUserProfile() {
+      try {
+        const response = await axiosWrapper.get<any>("/user-profile");
+        this.userProfile = response.data;
+        return this.userProfile;
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+      }
     },
 
     closeSession() {

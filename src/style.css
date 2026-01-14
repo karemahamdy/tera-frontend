@@ -128,7 +128,7 @@ body {
   color:black !important;
 }
 .p-multiselect  {
-    padding: 0.25rem !important;
+    padding: 0.1rem !important;
   background-color: var(--color-gray-50) !important;
   border-radius: 0.75rem !important;
   color:black !important;
