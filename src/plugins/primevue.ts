@@ -31,7 +31,7 @@ import { FileUpload } from 'primevue';
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 import MultiSelect from "primevue/multiselect";
-
+import DatePicker from 'primevue/datepicker';
 
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
@@ -75,5 +75,5 @@ export function setupPrimeVue(app: App) {
   app.component('FileUpload', FileUpload)
   app.component("Toast", Toast);
   app.component("MultiSelect", MultiSelect);
-
+  app.component("DatePicker", DatePicker);
 }

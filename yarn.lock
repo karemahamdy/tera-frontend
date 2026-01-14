@@ -1145,6 +1145,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"DatePicker@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "DatePicker@npm:2.0.0"
+  checksum: 10c0/8633758592d2a8d83fd36986ca359843f857512df16e5ce9f2c5d56edc377659e188348929ae90fdf67854d16657d0da921fc43e0da6ae9572db0473cd95f6d2
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:^4.0.0":
   version: 4.0.0
   resolution: "abbrev@npm:4.0.0"
@@ -2116,11 +2123,12 @@ __metadata:
     "@types/node": "npm:^24.10.1"
     "@vitejs/plugin-vue": "npm:^6.0.1"
     "@vue/tsconfig": "npm:^0.8.1"
+    DatePicker: "npm:^2.0.0"
     axios: "npm:^1.13.2"
     date-fns: "npm:^4.1.0"
     pinia: "npm:^3.0.4"
     primeicons: "npm:^7.0.0"
-    primevue: "npm:^4.4.1"
+    primevue: "npm:^4.5.4"
     sass-embedded: "npm:^1.93.3"
     tailwindcss: "npm:^4.1.17"
     typescript: "npm:~5.9.3"
@@ -2276,7 +2284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"primevue@npm:^4.4.1":
+"primevue@npm:^4.5.4":
   version: 4.5.4
   resolution: "primevue@npm:4.5.4"
   dependencies:

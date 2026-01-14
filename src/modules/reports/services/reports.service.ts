@@ -18,3 +18,12 @@ export const GroupService = {
     return await axiosWrapper.post("/Reports/group-master-data/export", body, { responseType: 'blob' });
   }
 };
+
+export const PermissionService = {
+  async getPermission(body: any): Promise<any> {
+    return await axiosWrapper.post("/Reports/user-permission-matrix", body);
+  },
+  async getPermissionExport(body: any): Promise<any> {
+    return await axiosWrapper.post("/Reports/user-permission-matrix/export", body, { responseType: 'blob' });
+  }
+};

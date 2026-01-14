@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import type { GroupResponse, UserFilterBody, UserResponse } from "../types/reports";
-import { GroupService, UserService } from "../services/reports.service";
+import { GroupService, PermissionService, UserService } from "../services/reports.service";
 
 export function useReports() {
   const data = ref<any[]>([]);
@@ -50,6 +50,24 @@ export function useReports() {
     }
   };
 
+    const fetchPermission = async (reset = false) => {
+    try {
+      loading.value = true;
+      if (reset) {
+        pageIndex.value = 1;
+        data.value = [];
+      }
+      filtersBody.value.pageIndex = pageIndex.value;
+      filtersBody.value.pageSize = pageSize;
+      const response = await PermissionService.getPermission(filtersBody.value)  as GroupResponse;
+      const items = response.data.items || [];
+      data.value = reset ? items : [...data.value, ...items];
+      totalRecords.value = response.data.totalCount;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const setFilters = (filters: any) => {
     filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
     fetchUsers(true);
@@ -60,6 +78,11 @@ export function useReports() {
     fetchGroups(true);
   };
 
-  return { data, loading, fetchUsers, fetchGroups, totalRecords, setFilters, setFilter };
+    const setPermission = (filters: any) => {
+    filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
+    fetchPermission(true);
+  };
+
+  return { data, loading, fetchUsers, fetchGroups, fetchPermission, setPermission, totalRecords, setFilters, setFilter };
 }
 

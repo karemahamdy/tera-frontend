@@ -15,6 +15,7 @@ const props = defineProps({
   showSearch: { type: Boolean, default: true },
   searchPlaceholder: { type: String, default: "table.search" },
   showFilter: { type: Boolean, default: false },
+  showMultiFilter: { type: Boolean, default: false },
   mainBtn: { type: Boolean, default: false },
   mainBtnText: { type: String, default: "" },
   onMainBtnClick: { type: Function, default: null },
@@ -152,6 +153,12 @@ const handleExportClick = async () => {
     </span>
     <template v-if="showFilter">
       <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
+        :placeholder="$t(filter.placeholder)" :optionLabel="$t(filter.optionLabel || 'label')"
+        :optionValue="$t(filter.optionValue || 'value')" :showClear="filter.showClear"
+        @change="(e) => onFilterChange(filter, e)" filter />
+    </template>
+    <template v-if="showMultiFilter">
+      <MultiSelect v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
         :placeholder="$t(filter.placeholder)" :optionLabel="$t(filter.optionLabel || 'label')"
         :optionValue="$t(filter.optionValue || 'value')" :showClear="filter.showClear"
         @change="(e) => onFilterChange(filter, e)" filter />
