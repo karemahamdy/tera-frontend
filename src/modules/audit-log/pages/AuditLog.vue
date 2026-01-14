@@ -17,7 +17,6 @@ const {
   onSort,
   setPage,
   loading,
-  onDateChange,
   fromDate,
   toDate,
 } = useAudit();
