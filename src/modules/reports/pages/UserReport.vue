@@ -15,13 +15,13 @@ const {
   getDepartmentsLookups,
   getGroupLookups,
 } = useLookups();
-const { 
-  data, 
-  loading, 
-  setFilters, 
+const {
+  data,
+  loading,
+  setFilters,
   totalRecords,
   pageIndex,
-  pageSize, 
+  pageSize,
   setUsersPage
 } = useReports();
 
@@ -161,42 +161,22 @@ onMounted(() => {
     <card class="bg-white rounded-[10px] w-full overflow-x-auto">
       <!-- PageHeader component -->
       <template #title>
-        <PageHeader
-          title="reports.userReportInfo"
-          :showExport="true"
-          :showSearch="false"
-          :onExport="onExport"
-        />
-        <ReportFilters
-          :showExport="true"
-          :showFilter="true"
-          :filters="filtersOperation"
-          @search="onSearch"
-          @clear="onClearFilters"
-          @filter-change="onFilterChange"
-        />
+        <PageHeader title="reports.userReportInfo" :showExport="true" :showSearch="false" :onExport="onExport" />
+        <ReportFilters :showExport="true" :showFilter="true" :filters="filtersOperation" @search="onSearch"
+          @clear="onClearFilters" @filter-change="onFilterChange" />
       </template>
       <template #content>
-        <DynamicTable
-          v-if="hasSearched"
-          :columns="columns"
-          :data="data"
-          :loading="loading"
-
-          :first="firstRecord"
-          :last="lastRecord"
-          :rows="pageSize"
-          :totalRecords="totalRecords"
-          @page-change="setUsersPage"
-          lazy
-        >
-          <template #col-isGlobal="{ data }">
-            {{ data.isGlobal ? t("users.global") : t("users.branch") }}
-          </template>
-          <template #col-isAdmin="{ data }">
-            {{ data.isAdmin ? t("Admin") : t("User") }}
-          </template>
-        </DynamicTable>
+        <div>
+          <DynamicTable v-if="hasSearched" :columns="columns" :data="data" :loading="loading" :paginator="false" :scrollPaginator="true"
+            :first="firstRecord" :last="lastRecord" :rows="pageSize" :totalRecords="totalRecords" @page-change="setUsersPage" lazy>
+            <template #col-isGlobal="{ data }">
+              {{ data.isGlobal ? t("users.global") : t("users.branch") }}
+            </template>
+            <template #col-isAdmin="{ data }">
+              {{ data.isAdmin ? t("Admin") : t("User") }}
+            </template>
+          </DynamicTable>
+        </div>
       </template>
     </card>
   </div>

@@ -1,11 +1,7 @@
 <script setup>
-import { ref, computed } from "vue";
-import ActionMenu from "./ActionMenu.vue";
-import {
-  formatDateTimeLang,
-  formatDateTimeDetailedLang,
-  formatDistanceLang,
-} from "@/app/utils/dates";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import ActionMenu from './ActionMenu.vue';
+import { formatDateTimeLang, formatDateTimeDetailedLang, formatDistanceLang } from '@/app/utils/dates';
 
 const props = defineProps({
   columns: { type: Array, default: () => [] },
@@ -23,23 +19,21 @@ const props = defineProps({
   last: { type: Number, default: 1 },
   totalRecords: { type: Number, default: 1 },
   lazy: { type: Boolean, default: false },
-
-  mode: {
-    type: String,
-    default: "pagination", // pagination | scroll | none
-  },
+  scrollPaginator: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(["action-menu-click", "page-change", "order-change"]);
 const menu = ref(null);
 const permissionMenu = ref(null);
 const permissionRow = ref(null);
+const tableEnd = ref(null);
+let observer;
 
 const permissionItems = computed(() => {
-  return props.permissionItems.map((item) => ({
+  return props.permissionItems.map(item => ({
     ...item,
-    command: () => item.command(permissionRow.value),
-  }));
+    command: () => item.command(permissionRow.value)
+  }))
 });
 
 const togglePermissionMenu = (event, row) => {
@@ -57,11 +51,11 @@ const filteredData = computed(() => props.data || []);
 
 const getStatusBadge = (status) => {
   return status === "Active" ? "status-active" : "status-inactive";
-};
+}
 
 const getStatusText = (status) => {
   return status === "Active" ? "status-text-active" : "status-text-inactive";
-};
+}
 
 const onPage = (event) => {
   let pageNo = event.page + 1;
@@ -71,232 +65,147 @@ const onPage = (event) => {
 const onSort = (event) => {
   let orderData = {
     orderBy: event.sortField,
-    direction: event.sortOrder === 1 ? "asc" : "desc",
-  };
+    direction: event.sortOrder === 1 ? "asc" : "desc"
+  }
   emit("order-change", orderData);
 };
 
-const isPagination = computed(() => props.mode === "pagination");
-const isScroll = computed(() => props.mode === "scroll");
-const isNone = computed(() => props.mode === "none");
+const onReachEnd = () => {
+  const currentPage = Math.ceil(props.first / props.rows);       // current page number
+  const totalPages = Math.ceil(props.totalRecords / props.rows); // total number of pages
 
-const onVirtualScroll = (event) => {
-  const page = Math.floor(event.first / 10);
-  alert(page);
-  console.log(event.first);
-  if (page > 0) {
-    emit("page-change", page);
+  if (currentPage < totalPages) {
+    let pageNo = currentPage + 1;
+    emit("page-change", pageNo);
   }
-};
-const virtualScrollerOptions = computed(() =>
-  isScroll.value
-    ? {
-        lazy: true,
-        onLazyLoad: onVirtualScroll,
-        itemSize: 10,
-        delay: 200,
-        showLoader: true,
-        loading: props.loading,
-        numToleratedItems: 10,
+
+}
+
+onMounted(() => {
+  if (props.scrollPaginator) {
+    observer = new IntersectionObserver(([entry]) => {
+      if (entry?.isIntersecting) {
+        onReachEnd();
       }
-    : undefined
-);
+    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+    if (tableEnd.value) observer.observe(tableEnd.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (observer) observer.disconnect();
+});
 </script>
 
 <template>
-  <DataTable
-    :value="filteredData"
-    :paginator="isPagination"
-    :rows="rows"
-    :rowsPerPageOptions="rowsPerPageOptions"
-    :loading="loading"
-    :lazy="isScroll ? true : lazy"
-    :totalRecords="totalRecords"
-    @page="isPagination ? onPage : undefined"
-    @sort="onSort"
-    paginatorTemplate="paginatorstart FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink paginatorend"
-    currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records"
-    class="border-2 border-[#E7E6E8] rounded-md"
-    responsiveLayout="scroll"
-    :scrollable="isScroll"
-    :scrollHeight="isScroll ? '400px' : undefined"
-    :virtualScrollerOptions="virtualScrollerOptions"
-  >
-    <template #paginatorstart>
-      <div class="text-gray-600 font-medium">
-        {{ $t("showing") }} <strong>{{ first }}–{{ last }}</strong>
-        {{ $t("of") }} <strong>{{ totalRecords }}</strong> {{ $t("records") }}
-      </div>
-    </template>
-    <Column
-      v-for="col in columns"
-      :key="col.field"
-      :field="col.field"
-      :header="col.header"
-      :sortable="col.sortable"
-      :style="col.style"
-    >
-      <template #body="slotProps">
-        <slot :name="'col-' + col.field" v-bind="slotProps">
-          <!-- Avatar -->
-          <div v-if="col.type === 'avatar'" class="user-cell">
-            <Avatar
-              :image="slotProps.data.avatar"
-              :label="
-                !slotProps.data.avatar ? slotProps.data.name.charAt(0) : ''
-              "
-              shape="circle"
-              class="w-[40px] h-[40px] bg-gray-800"
-            />
-            <div class="flex flex-col">
-              <div class="text-base text-gray-700">
-                {{ slotProps.data.name }}
-              </div>
-              <div class="text-sm text-gray-500">
-                {{ slotProps.data.email }}
+  <div>
+    <DataTable :value="filteredData" :paginator="paginator" :rows="rows" :rowsPerPageOptions="[5, 10, 20, 50]"
+      :loading="loading" :lazy="lazy" :totalRecords="totalRecords" @page="onPage" @sort="onSort"
+      paginatorTemplate="paginatorstart FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink paginatorend"
+      currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records"
+      class="border-2 border-[#E7E6E8] rounded-md" responsiveLayout="scroll">
+      <template #paginatorstart>
+        <div class="text-gray-600 font-medium">
+          {{ $t('showing') }} <strong>{{ first }}–{{ last }}</strong> {{ $t('of') }} <strong>{{ totalRecords }}</strong>
+          {{ $t('records') }}
+        </div>
+      </template>
+      <!-- <template #paginatorend>
+        </template> -->
+
+      <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :sortable="col.sortable"
+        :style="col.style">
+
+        <template #body="slotProps">
+          <slot :name="'col-' + col.field" v-bind="slotProps">
+            <!-- Avatar -->
+            <div v-if="col.type === 'avatar'" class="user-cell">
+              <Avatar :image="slotProps.data.avatar"
+                :label="!slotProps.data.avatar ? slotProps.data.name.charAt(0) : ''" shape="circle"
+                class="w-[40px] h-[40px] bg-gray-800" />
+              <div class="flex flex-col">
+                <div class="text-base text-gray-700">{{ slotProps.data.name }}</div>
+                <div class="text-sm text-gray-500">{{ slotProps.data.email }}</div>
               </div>
             </div>
-          </div>
-          <!-- Tag -->
-          <Tag
-            v-else-if="col.type === 'tag'"
-            :value="slotProps.data[col.field]"
-            :class="col.Class"
-          />
-          <!-- badge -->
-          <Badge
-            v-else-if="col.type === 'badge'"
-            :value="slotProps.data[col.field]"
-            :class="col.Class"
-          />
-          <!-- Status Column -->
-          <div
-            v-else-if="col.field === 'status'"
-            class="flex align-items-center gap-2"
-          >
-            <Badge
-              :class="getStatusBadge(slotProps.data.status)"
-              style="
-                border: 1px solid white;
-                align-items: center;
-                margin-top: 8px;
-              "
-            ></Badge>
-            <span :class="getStatusText(slotProps.data.status)">
-              {{ slotProps.data.status }}
-            </span>
-          </div>
+            <!-- Tag -->
+            <Tag v-else-if="col.type === 'tag'" :value="slotProps.data[col.field]" :class="col.Class" />
+            <!-- badge -->
+            <Badge v-else-if="col.type === 'badge'" :value="slotProps.data[col.field]" :class="col.Class" />
+            <!-- Status Column -->
+            <div v-else-if="col.field === 'status'" class="flex  align-items-center gap-2">
+              <Badge :class="getStatusBadge(slotProps.data.status)"
+                style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
+              <span :class="getStatusText(slotProps.data.status)">
+                {{ slotProps.data.status }}
+              </span>
+            </div>
 
-          <div
-            v-else-if="col.field === 'isActive'"
-            class="flex align-items-center gap-2"
-          >
-            <Badge
-              :class="
-                getStatusBadge(slotProps.data.isActive ? 'Active' : 'Inactive')
-              "
-              style="
-                border: 1px solid white;
-                align-items: center;
-                margin-top: 8px;
-              "
-            ></Badge>
-            <span
-              :class="
-                getStatusText(slotProps.data.isActive ? 'Active' : 'Inactive')
-              "
-            >
-              {{
-                slotProps.data.isActive
-                  ? $t("branch.active")
-                  : $t("branch.inactive")
-              }}
-            </span>
-          </div>
+            <div v-else-if="col.field === 'isActive'" class="flex  align-items-center gap-2">
+              <Badge :class="getStatusBadge(slotProps.data.isActive ? 'Active' : 'Inactive')"
+                style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
+              <span :class="getStatusText(slotProps.data.isActive ? 'Active' : 'Inactive')">
+                {{ slotProps.data.isActive ? $t('branch.active') : $t('branch.inactive') }}
+              </span>
+            </div>
 
-          <div v-else-if="col.type == 'date'" class="whitespace-nowrap">
-            {{ formatDateTimeLang(slotProps.data[col.field], false) }}
-          </div>
-          <div v-else-if="col.type == 'dateTime'">
-            {{ formatDateTimeLang(slotProps.data[col.field]) }}
-          </div>
-          <div v-else-if="col.type == 'dateDetailed'">
-            {{ formatDateTimeDetailedLang(slotProps.data[col.field], false) }}
-          </div>
-          <div v-else-if="col.type == 'dateTimeDetailed'">
-            {{ formatDateTimeDetailedLang(slotProps.data[col.field]) }}
-          </div>
-          <div v-else-if="col.type == 'relativeTime'">
-            {{ formatDistanceLang(slotProps.data[col.field]) }}
-          </div>
+            <div v-else-if="col.type == 'date'" class="whitespace-nowrap">
+              {{ formatDateTimeLang(slotProps.data[col.field], false) }}
+            </div>
+            <div v-else-if="col.type == 'dateTime'">
+              {{ formatDateTimeLang(slotProps.data[col.field]) }}
+            </div>
+            <div v-else-if="col.type == 'dateDetailed'">
+              {{ formatDateTimeDetailedLang(slotProps.data[col.field], false) }}
+            </div>
+            <div v-else-if="col.type == 'dateTimeDetailed'">
+              {{ formatDateTimeDetailedLang(slotProps.data[col.field]) }}
+            </div>
+            <div v-else-if="col.type == 'relativeTime'">
+              {{ formatDistanceLang(slotProps.data[col.field]) }}
+            </div>
 
-          <!-- Permission Icon -->
-          <Button
-            v-else-if="col.field === 'permission'"
-            text
-            rounded
-            class="permission-btn"
-            @click="togglePermissionMenu($event, slotProps.data)"
-          >
-            <template #icon>
-              <VsxIcon
-                iconName="ShieldSecurity"
-                :size="24"
-                color="#3F5FAC"
-                type="linear"
-              />
-            </template>
-          </Button>
-          <!-- Action Column -->
-          <Button
-            v-else-if="col.field === 'action'"
-            icon="pi pi-ellipsis-v"
-            text
-            rounded
-            @click="toggleMenu($event, slotProps.data)"
-            class="action-btn"
-          />
+            <!-- Permission Icon -->
+            <Button v-else-if="col.field === 'permission'" text rounded class="permission-btn"
+              @click="togglePermissionMenu($event, slotProps.data)">
+              <template #icon>
+                <VsxIcon iconName="ShieldSecurity" :size="24" color="#3F5FAC" type="linear" />
+              </template>
+            </Button>
+            <!-- Action Column -->
+            <Button v-else-if="col.field === 'action'" icon="pi pi-ellipsis-v" text rounded
+              @click="toggleMenu($event, slotProps.data)" class="action-btn" />
 
-          <!-- Default Text -->
-          <span v-else>{{ slotProps.data[col.field] }}</span>
-        </slot>
+            <!-- Default Text -->
+            <span v-else>{{ slotProps.data[col.field] }}</span>
+          </slot>
+        </template>
+      </Column>
+    </DataTable>
+    <!-- Action Menu -->
+    <Menu ref="permissionMenu" :model="permissionItems" popup> <template #item="{ item }">
+        <a class="p-menuitem-link flex items-center gap-2 py-2 px-3">
+          <VsxIcon :iconName="item.icon" :size="20" :color="item.color" type="linear" />
+          <span>{{ $t(item.label) }}</span>
+        </a>
+      </template></Menu>
+
+    <ActionMenu ref="menu" :showView="true" :showEdit="true" :showDelete="true" :customItems="customItems"
+      @view="row => emit('action-menu-click', { action: 'view', row })"
+      @edit="row => emit('action-menu-click', { action: 'edit', row })"
+      @delete="row => emit('action-menu-click', { action: 'delete', row })"
+      @resetPassword="row => emit('action-menu-click', { action: 'resetPassword', row })"
+      @custom="payload => emit('action-menu-click', payload)">
+      <template #item="{ item, row }">
+        <slot name="menu-item" :item="item" :row="row" />
       </template>
-    </Column>
-  </DataTable>
-  <!-- Action Menu -->
-  <Menu ref="permissionMenu" :model="permissionItems" popup>
-    <template #item="{ item }">
-      <a class="p-menuitem-link flex items-center gap-2 py-2 px-3">
-        <VsxIcon
-          :iconName="item.icon"
-          :size="20"
-          :color="item.color"
-          type="linear"
-        />
-        <span>{{ $t(item.label) }}</span>
-      </a>
-    </template></Menu
-  >
+    </ActionMenu>
+    <div ref="tableEnd"></div>
+  </div>
 
-  <ActionMenu
-    ref="menu"
-    :showView="true"
-    :showEdit="true"
-    :showDelete="true"
-    :customItems="customItems"
-    @view="(row) => emit('action-menu-click', { action: 'view', row })"
-    @edit="(row) => emit('action-menu-click', { action: 'edit', row })"
-    @delete="(row) => emit('action-menu-click', { action: 'delete', row })"
-    @resetPassword="
-      (row) => emit('action-menu-click', { action: 'resetPassword', row })
-    "
-    @custom="(payload) => emit('action-menu-click', payload)"
-  >
-    <template #item="{ item, row }">
-      <slot name="menu-item" :item="item" :row="row" />
-    </template>
-  </ActionMenu>
 </template>
+
 
 <style scoped>
 .user-cell {
@@ -350,7 +259,7 @@ const virtualScrollerOptions = computed(() =>
 }
 
 :deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #faf9f9;
+  background: #FAF9F9;
   font-weight: 600;
   color: var(--color-gray-700);
   font-size: 13px;
@@ -396,6 +305,7 @@ const virtualScrollerOptions = computed(() =>
   margin: 0 2px;
   min-width: 36px;
   text-align: center;
+
 }
 
 ::v-deep .p-paginator .p-paginator-page:hover {
