@@ -9,10 +9,8 @@ export interface AuditLog {
   transactionNumber: string;
   timestamp: string;
 }
+
 export interface Pagination {
-  // IpAddressFilter?: string;
-  // StatusFilter?: string;
-  // BranchFilter?: string;
   PageIndex: number;
   PageSize: number;
   SearchingWord?: string;
@@ -20,6 +18,7 @@ export interface Pagination {
   OrderDirection?: "desc" | "asc";
   total: number;
 }
+
 export interface PaginatedResponse<T> {
   items: T[];
   pageIndex: number;
@@ -27,7 +26,6 @@ export interface PaginatedResponse<T> {
   totalCount: number;
   totalPages: number;
 }
-
 export interface ApiResponse<T> {
   data: T;
   succeeded: boolean;
@@ -38,6 +36,12 @@ export interface ApiResponse<T> {
   id: string | null;
 }
 
-export type LogsListResponse = ApiResponse<
-  PaginatedResponse<AuditLog>
->;
+export interface AuditFiltersPayload {
+  userIds?: string[];
+  branchIds?: string[];
+  actionTypes?: number[];
+  moduleNames?: string[];
+  screenNames?: string[];
+}
+
+export type LogsListResponse = ApiResponse<PaginatedResponse<AuditLog>>;

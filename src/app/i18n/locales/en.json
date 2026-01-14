@@ -197,7 +197,7 @@
     "title": "Active Sessions",
     "subtitle": "Monitor and manage user sessions",
     "allIPAddress": "All IP Address",
-    "allBranches": "All Branches",
+    "allBranches": "Branches",
     "allStatus": "All Status",
     "user": "User",
     "branch": "Branch",
@@ -250,6 +250,7 @@
     "userGroupReport": "User Group Report",
     "userReportInfo": "User Master Data Report",
     "userGroupReportInfo": "User Group Master Data Report",
+    "permissionReportInfo": "User/group permission Master Data Report",
     "allDepartments": "All Departments",
     "allGroups": "All Groups",
     "status": "Status",
@@ -271,7 +272,8 @@
     "allRoles": "All Roles",
     "allModule": "All Module",
     "permission": "Permission",
-    "allScreens": "All Screens"
+    "allScreens": "All Screens",
+    "nameModuleScreen": "Module / Screen"
   },
   "licenseInfo": {
     "title": "License Information",

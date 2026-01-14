@@ -43,3 +43,36 @@ export interface Entity {
   id: string;
   name: string;
 }
+
+export interface Branch {
+  id: string;
+  nameEn: string;
+  nameAr: string;
+  code: string;
+}
+
+export interface UserProfileData {
+  id: string;
+  fullName: string;
+  email: string;
+  userName: string;
+  internalID: string;
+  profileImageUrl: string | null;
+  isActive: boolean;
+  isFirstLogin: boolean;
+  isAdmin: boolean;
+  groupId: string | null;
+  departmentId: string | null;
+  lastLogin: string;
+  createdAt: string;
+}
+
+export interface UserGlobalProfile {
+  profile: UserProfileData;
+  branches: {
+    current: Branch;
+    available: Branch[];
+    canSwitch: boolean;
+  };
+  modules: any[];
+}
