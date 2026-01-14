@@ -9,6 +9,7 @@ import type {
   AuthData,
   AuthDataResponse,
   UserGlobalProfile,
+  SwitchBranch
 } from "@/app/types/user";
 import router from "@/app/router";
 
@@ -145,6 +146,15 @@ export const useUserStore = defineStore("user", {
       }
     },
 
+    setAccessToken(token: string) {
+      this.accessToken = token;
+      if (this.rememberMe) {
+        localStorage.setItem("accessToken", token);
+      } else {
+        sessionStorage.setItem("accessToken", token);
+      }
+    },
+
     // ------------------------------------
     // LOGOUT
     // ------------------------------------
@@ -172,7 +182,7 @@ export const useUserStore = defineStore("user", {
     // ------------------------------------
     async switchBranch(branchId: string) {
       try {
-        await axiosWrapper.post(`/user-profile/switch-branch?BranchId=${branchId}`);
+        const response = await axiosWrapper.post<SwitchBranch>(`/user-profile/switch-branch?BranchId=${branchId}`);
         // Update local state
         if (this.userProfile && this.userProfile.branches) {
           const newBranch = this.userProfile.branches.available.find(b => b.id === branchId);
@@ -180,7 +190,7 @@ export const useUserStore = defineStore("user", {
             this.userProfile.branches.current = newBranch;
           }
         }
-        window.location.reload();
+        this.setAccessToken(response.data.newToken);
       } catch (error) {
         console.error("Failed to switch branch:", error);
       }
