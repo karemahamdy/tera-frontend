@@ -1,9 +1,10 @@
 import type { ToastServiceMethods } from "primevue/toastservice";
 import i18n from "../i18n";
+import { useUserStore } from '@/app/store/useUserStore';
 
 class ToastService {
   private toastInstance: ToastServiceMethods | null = null;
-
+  
   init(toast: ToastServiceMethods) {
     this.toastInstance = toast;
   }
@@ -18,12 +19,20 @@ class ToastService {
   }
 
   error(detail: string, summary?: string) {
-    this.toastInstance?.add({
-      severity: "error",
-      summary: summary || i18n.global.t("toast.error"),
-      detail,
-      life: 3000,
-    });
+    const userStore = useUserStore();
+    
+    let sessionDenied = detail === "This session has been denied. Please log in again.";
+    let sessionErrorMsgFlag = userStore.getSessionErrorMsgFlag
+    alert(sessionErrorMsgFlag)
+    if(sessionErrorMsgFlag || !sessionDenied){
+      this.toastInstance?.add({
+        severity: "error",
+        summary: summary || i18n.global.t("toast.error"),
+        detail,
+        life: 3000,
+      });
+    }
+    if(sessionDenied) userStore.resetSessionErrorMsgFlag();
   }
 
   info(detail: string, summary?: string) {

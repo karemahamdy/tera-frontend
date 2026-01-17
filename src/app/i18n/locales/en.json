@@ -22,7 +22,8 @@
   },
   "changePassword": {
     "title": "Change Password",
-    "subtitle": "Update your password to keep your account secure."
+    "subtitle": "Update your password to keep your account secure.",
+    "passwordChangedSuccessfully": "Password changed successfully"
   },
   "button": {
     "addNew": "Add New",

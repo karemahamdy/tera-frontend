@@ -77,9 +77,13 @@ export interface UserGlobalProfile {
   modules: any[];
 }
 
-
-export interface SwitchBranch { 
+export interface SwitchBranch {
   data: {
-    newToken: string
-  }
+    newToken: string;
+  };
+}
+
+export interface ResetPassword {
+  newPassword: string;
+  confirmPassword: string;
 }
