@@ -5,7 +5,7 @@ import timerIcon from '@/assets/images/timer.png';
 import { useUserStore } from '@/app/store/useUserStore';
 const userStore = useUserStore();
 
-const IDLE_TIME = 18 * 60 * 1000;
+const IDLE_TIME = 0.5 * 60 * 1000;
 let idleTimer: number | null = null;
 
 const showDeleteDialog = ref<boolean>(false);
