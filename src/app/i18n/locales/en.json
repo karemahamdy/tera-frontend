@@ -12,6 +12,8 @@
   "enterUsername" : "Enter Username",
   "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
+  "inventory": "Inventory",
+  "masterData": "Master Data",
   "Adminstration": "Administration",
   "showing": "Showing",
   "of": "of",
@@ -311,5 +313,18 @@
     "sessionExpire": "Your session will expire in",
     "logout": "Logout now",
     "stay": "Stay Logged in"
+  },
+  "warehouses": {
+    "title":"Warehouses",
+    "subtitle": "Manage warehouse locations, types, and configurations",
+    "addWarehouse": "New Warehouse",
+    "code":"Code",
+    "name": "Name",
+    "zones": "Zones",
+    "transferLedger": "Transfer Ledger",
+    "type": "Type",
+    "address": "Address",
+    "searchPlaceholder": "Search by code or name.....",
+    "deleteWarehousesConfirm": "Are you sure you want to delete this Warehouse ?"
   }
 }
