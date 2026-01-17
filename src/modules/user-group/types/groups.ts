@@ -6,6 +6,7 @@ export interface Role {
 export interface GroupApiItem {
   id: string;
   name: string;
+  code: string;
   description: string | null;
   createAt?: string;
   userAssigned: number;
@@ -37,6 +38,7 @@ export interface GroupTableItem {
 
 export interface AddGroup {
   name: string;
+  code: string;
   description: string | null;
 }
 
