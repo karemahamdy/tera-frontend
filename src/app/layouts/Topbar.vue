@@ -73,17 +73,13 @@ onMounted(async () => {
         <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full" @click="switchLanguage">
           <VsxIcon iconName="Translate" :size="24" type="linear" />
         </button>
-
-        <!-- <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full relative">
-          <VsxIcon iconName="Notification" :size="24" type="linear" />
-          <span v-if="hasNotification" class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#FC9D0F] rounded-full"></span>
-        </button> -->
+        
         <Notification/>
 
         <div class="flex items-center gap-2">
-          <Avatar :image="userProfile?.profileImageUrl || 'https://i.pravatar.cc/40'" shape="circle" />
+          <Avatar :image="userProfile?.profileImageUrl || undefined"     :label="!userProfile?.profileImageUrl ? userProfile?.fullName.charAt(0) : ''" shape="circle"/>
           <span v-if="!collapsed" class="hidden sm:inline text-gray-500">
-            <span class="font-semibold">{{ userProfile?.fullName || 'Admin' }}</span>
+            <span class="font-semibold">{{ userProfile?.fullName || '' }}</span>
             <br />
             <!-- Using internalID or similar as a subtitle/ID if desired -->
             <small class="text-sm text-admin-muted">{{ userProfile?.internalID?.substring(0, 8) || 'Unknown' }}</small>
