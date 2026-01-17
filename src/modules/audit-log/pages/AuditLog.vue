@@ -36,7 +36,7 @@ const {
 const filtersOperation = computed(() => [
   { placeholder: "auditLog.user", value: null, field: "auditLog.user", options: [...usersLookups.value] },
   { placeholder: "auditLog.module", value: null, field: "auditLog.module", options: [...modulesLookups.value] },
-  { placeholder: "screen", value: null, field: "screen", options: [...screensLookups.value] },
+  { placeholder: "auditLog.screen", value: null, field: "screen", options: [...screensLookups.value] },
   { placeholder: "activeSessions.allBranches", value: null, field: "allBranches", options: [...branchesLookups.value] },
 ]);
 

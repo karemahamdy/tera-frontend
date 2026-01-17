@@ -112,10 +112,10 @@ const getFilterBody = (filters: any[]) => {
         body.departmentIds = f.value ?? null;
         break;
       case "isActive":
-        body.isActive = f.value ?? false;
+        body.isActive = f.value;
         break;
       case "isGlobal":
-        body.isGlobal = f.value ?? false;
+        body.isGlobal = f.value;
         break;
     }
   });
