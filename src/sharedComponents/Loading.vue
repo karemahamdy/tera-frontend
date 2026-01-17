@@ -7,7 +7,7 @@ defineProps<{
 <template>
   <Teleport to="body">
     <div
-      class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-white/60 backdrop-blur"
+      class="absolute inset-0 z-1300 flex flex-col items-center justify-center gap-3 bg-white/60 backdrop-blur"
     >
       <ProgressSpinner
         strokeWidth="4"

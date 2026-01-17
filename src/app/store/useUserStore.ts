@@ -11,6 +11,7 @@ import type {
   UserGlobalProfile,
   SwitchBranch,
   ResetPassword,
+  ChangePassword,
 } from "@/app/types/user";
 import router from "@/app/router";
 
@@ -236,6 +237,10 @@ export const useUserStore = defineStore("user", {
 
     async resetUserPassword(values: ResetPassword) {
       await axiosWrapper.post<ResetPassword>("/Auth/reset-password", values);
+    },
+
+    async changeUserPassword(values: ChangePassword) {
+      await axiosWrapper.post<ChangePassword>("/Auth/change-password", values);
     },
 
     closeSession() {
