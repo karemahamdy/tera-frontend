@@ -19,6 +19,7 @@ export function useGroups() {
     apiGroups.value.map((g) => ({
       id: g.id,
       GroupName: g.name,
+      code: g.code,
       Description: g.description ?? "-",
       AssignedRoles: g.rolesAssingedToGroup.length
         ? g.rolesAssingedToGroup.map((r) => r.name)

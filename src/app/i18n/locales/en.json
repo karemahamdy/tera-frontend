@@ -122,6 +122,7 @@
   "userGroup": {
     "groupName": "Group Name",
     "description": "Description",
+    "code": "Code",
     "assignedRoles": "Assigned Roles",
     "userCount": "User Count",
     "addUserGroup": "Add User Group",

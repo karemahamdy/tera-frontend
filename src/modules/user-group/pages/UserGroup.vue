@@ -76,6 +76,12 @@ const columns = computed(() => {
       sortable: true,
     },
     {
+       field: "code",
+       header: t("userGroup.code"),
+       type: "slot",
+       sortable: true,
+     }, 
+    {
       field: "Description",
       header: t("userGroup.description"),
       sortable: true,

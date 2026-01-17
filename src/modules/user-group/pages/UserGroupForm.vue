@@ -22,11 +22,13 @@ const { handleSubmit, errors, defineField, setValues } = useForm({
   validationSchema: groupFormSchema,
   initialValues: {
     groupName: "",
+    code: "",
     description: "",
   },
 });
 
 const [groupName] = defineField("groupName");
+const [code] = defineField("code");
 const [description] = defineField("description");
 
 onMounted(async () => {
@@ -35,6 +37,7 @@ onMounted(async () => {
     if (groupData) {
       setValues({
         groupName: groupData.name,
+        code: groupData.code,
         description: groupData.description || "",
       });
     }
@@ -46,6 +49,7 @@ const onSubmit = handleSubmit(async (values) => {
 
   const payload: AddGroup = {
     name: values.groupName,
+    code: values.code,
     description: values.description,
   };
 
@@ -86,7 +90,10 @@ const onSubmit = handleSubmit(async (values) => {
             <FormInput :label="$t('userGroup.groupName')" v-model="groupName" :error="errors.groupName"
               :placeholder="$t('form.fullNamePlaceholder')" :invalid="!!errors.groupName" />
           </div>
-
+          <div>
+            <FormInput :label="$t('userGroup.code')" v-model="code" :error="errors.code"
+              :placeholder="$t('ex:123')" :invalid="!!errors.code" />
+          </div>
           <div>
             <label class="text-gray-700 font-medium mb-2 block">
               {{ $t("userGroup.description") }}

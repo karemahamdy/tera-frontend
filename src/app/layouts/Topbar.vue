@@ -139,10 +139,7 @@ const handlePasswordChanged = async (values: ChangePassword) => {
           aria-haspopup="true"
           aria-controls="user_menu"
         >
-          <Avatar
-            :image="userProfile?.profileImageUrl || 'https://i.pravatar.cc/40'"
-            shape="circle"
-          />
+          <Avatar :image="userProfile?.profileImageUrl || undefined"     :label="!userProfile?.profileImageUrl ? userProfile?.fullName.charAt(0) : ''" shape="circle"/>
 
           <span v-if="!collapsed" class="hidden sm:inline text-gray-500">
             <span class="font-semibold">
