@@ -24,8 +24,8 @@ const filtersOperation = computed(() => {
     },
     {
       placeholder: "usersManagement.allStatus",
-      value:  filterState.value.isActive,
-      field: "isActive",
+      value:  filterState.value.status,
+      field: "status",
       selectionMode: "single",
       options: [
         { label: t("button.active"), value: true },
@@ -45,7 +45,7 @@ const filtersOperation = computed(() => {
 });
 const filterState = ref({
   userGroup: null,
-  isActive: null,
+  status: null,
   roles: null
 });
 
@@ -65,7 +65,7 @@ const getFilterBody = (filters: any[]) => {
   const body: any = {
     pageIndex: 1,
     pageSize: 20,
-    isActive: null,
+    status: null,
     groupIds: null,
     roleIds: null,
   };
@@ -74,8 +74,8 @@ const getFilterBody = (filters: any[]) => {
       case "userGroup":
         body.groupIds = f.value ?? null;
         break;
-      case "isActive":
-        body.isActive = f.value ?? false;
+    case "status":
+        body.status = f.value 
         break;
       case "roles":
         body.roleIds = f.value ?? null;
@@ -100,7 +100,7 @@ const onSearch = (filters: any[]) => {
   hasSearched.value = true;
 };
 const onClearFilters = () => {
-     filterState.value = { userGroup: null, isActive: null, roles: null };
+     filterState.value = { userGroup: null, status: null, roles: null };
      hasSearched.value = false;
 };
 const onFilterChange = ({ filter, value }: any) => {
@@ -139,6 +139,7 @@ onMounted(() => {
           <template #col-isAdmin="{ data }">
             {{ data.isAdmin ? t("Admin") : t("User") }}
           </template>
+          
         </DynamicTable>
       </template>
     </card>

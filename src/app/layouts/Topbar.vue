@@ -62,16 +62,16 @@ const menuItems = computed(() => {
   return [
     {
       label: t("profile"),
-      icon: "pi pi-user",
+      icon: "ProfileCircle",
       command: () => {
         console.log("Go to profile");
       },
     },
     {
       label: t("changePassword.title"),
-      icon: "pi pi-cog",
+      icon: "PasswordCheck",
       command: () => {
-        showDialog.value = true
+        showDialog.value = true;
       },
     },
     {
@@ -79,7 +79,8 @@ const menuItems = computed(() => {
     },
     {
       label: t("logout"),
-      icon: "pi pi-sign-out",
+      icon: "LogoutCurve",
+      isDanger: true,
       command: () => {
         userStore.logout();
       },
@@ -94,7 +95,7 @@ const handlePasswordChanged = async (values: ChangePassword) => {
   } catch (error) {
     toastService.error(error as string);
   }
-}
+};
 </script>
 <template>
   <header class="h-16 flex items-center px-4 bg-white/80 backdrop-blur shadow">
@@ -139,7 +140,15 @@ const handlePasswordChanged = async (values: ChangePassword) => {
           aria-haspopup="true"
           aria-controls="user_menu"
         >
-          <Avatar :image="userProfile?.profileImageUrl || undefined"     :label="!userProfile?.profileImageUrl ? userProfile?.fullName.charAt(0) : ''" shape="circle"/>
+          <Avatar
+            :image="userProfile?.profileImageUrl || undefined"
+            :label="
+              !userProfile?.profileImageUrl
+                ? userProfile?.fullName.charAt(0)
+                : ''
+            "
+            shape="circle"
+          />
 
           <span v-if="!collapsed" class="hidden sm:inline text-gray-500">
             <span class="font-semibold">
@@ -151,11 +160,25 @@ const handlePasswordChanged = async (values: ChangePassword) => {
             </small>
           </span>
         </div>
-        <Menu ref="menu" id="user_menu" :model="menuItems" popup />
+        <Menu ref="menu" id="user_menu" :model="menuItems" popup>
+          <template #item="{ item }">
+            <div>
+              <a class="p-2 flex gap-3 items-center cursor-pointer" @click="item.command?.({ originalEvent: $event, item })"
+              :class="{'text-danger-500': item.isDanger }"
+              >
+                <VsxIcon :iconName="item.icon" :size="24" type="linear" />
+                {{ item.label }}
+              </a>
+            </div>
+          </template>
+        </Menu>
       </div>
     </div>
   </header>
   <template v-if="showDialog">
-      <ChangeUserPassword v-model:visible="showDialog" @passwordChanged="handlePasswordChanged" />
-    </template>
+    <ChangeUserPassword
+      v-model:visible="showDialog"
+      @passwordChanged="handlePasswordChanged"
+    />
+  </template>
 </template>
