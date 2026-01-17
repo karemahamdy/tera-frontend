@@ -31,7 +31,8 @@ const clearFilters = () => {
   <div class="flex flex-wrap justify-between items-center">
     <!-- Filters -->
     <div class="flex gap-[10px] mt-2 flex-nowrap">
-      <MultiSelect
+      <component
+        :is="filter.selectionMode === 'single' ? 'Dropdown' : 'MultiSelect'"
         v-for="(filter, index) in filters"
         :key="index"
         v-model="filter.value"
@@ -41,6 +42,7 @@ const clearFilters = () => {
         :optionValue="filter.optionValue || 'value'"
         :showClear="filter.showClear"
         @change="(e) => onFilterChange(filter, e)"
+        class="w-full md:w-56"
       />
       
     </div>

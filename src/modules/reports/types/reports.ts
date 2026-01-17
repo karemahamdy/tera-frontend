@@ -3,6 +3,8 @@ export interface UserFilterBody {
   department?: string;
   status?: string;
   accessScope?: number;
+  isActive?: boolean; // New
+  isGlobal?: boolean; // New
   pageIndex: number;
   pageSize: number;
 }
