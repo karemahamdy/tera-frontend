@@ -49,7 +49,8 @@ const navItems: NavItem[] = [
     icon: "SecurityUser",
     children: [
       { label: "Warehouses", route: "/warehouses" },
-     
+      { label: "itemGroups", route: "/item-groups" },
+    
     ],
   },
 ];

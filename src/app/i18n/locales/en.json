@@ -55,7 +55,8 @@
     "created": "Created",
     "action": "Action",
     "userAssigned": "User Assigned",
-    "search": "Search ...."
+    "search": "Search ....",
+    "item": "Item"
   },
   "form": {
     "fieldRequired": "This field is required",
