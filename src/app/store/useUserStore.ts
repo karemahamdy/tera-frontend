@@ -9,7 +9,8 @@ import type {
   AuthData,
   AuthDataResponse,
   UserGlobalProfile,
-  SwitchBranch
+  SwitchBranch,
+  ResetPassword,
 } from "@/app/types/user";
 import router from "@/app/router";
 
@@ -62,6 +63,9 @@ export const useUserStore = defineStore("user", {
     lang: Lang() as string,
     entities: [] as Entity[],
     userProfile: null as UserGlobalProfile | null,
+    requiresPasswordReset:
+      localStorage.getItem("requiresPasswordReset") === "true",
+    getSessionErrorMsgFlag: true,
   }),
 
   getters: {
@@ -104,10 +108,14 @@ export const useUserStore = defineStore("user", {
         {}
       );
       const tokens = response.data as AuthData;
-
+      this.requiresPasswordReset = response.data.requiresPasswordReset;
+      localStorage.setItem(
+        "rememberMe",
+        String(response.data.requiresPasswordReset)
+      );
       this.rememberMe = payload.rememberMe;
       localStorage.setItem("rememberMe", String(payload.rememberMe));
-
+      this.getSessionErrorMsgFlag = true;
       this.setTokens(tokens);
       await this.fetchUserProfile();
     },
@@ -165,11 +173,13 @@ export const useUserStore = defineStore("user", {
       this.accessToken = "";
       this.refreshToken = "";
       this.isAuthenticated = false;
+      this.requiresPasswordReset = true;
 
       // Clear both storages
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("rememberMe");
+      localStorage.removeItem("requiresPasswordReset");
 
       sessionStorage.removeItem("accessToken");
       sessionStorage.removeItem("refreshToken");
@@ -177,15 +187,22 @@ export const useUserStore = defineStore("user", {
       router.push({ name: "Login" });
     },
 
+    resetSessionErrorMsgFlag(value = false) {
+      this.getSessionErrorMsgFlag = value;
+    },
     // ------------------------------------
     // SWITCH BRANCH
     // ------------------------------------
     async switchBranch(branchId: string) {
       try {
-        const response = await axiosWrapper.post<SwitchBranch>(`/user-profile/switch-branch?BranchId=${branchId}`);
+        const response = await axiosWrapper.post<SwitchBranch>(
+          `/user-profile/switch-branch?BranchId=${branchId}`
+        );
         // Update local state
         if (this.userProfile && this.userProfile.branches) {
-          const newBranch = this.userProfile.branches.available.find(b => b.id === branchId);
+          const newBranch = this.userProfile.branches.available.find(
+            (b) => b.id === branchId
+          );
           if (newBranch) {
             this.userProfile.branches.current = newBranch;
           }
@@ -215,6 +232,10 @@ export const useUserStore = defineStore("user", {
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
       }
+    },
+
+    async resetUserPassword(values: ResetPassword) {
+      await axiosWrapper.post<ResetPassword>("/Auth/reset-password", values);
     },
 
     closeSession() {

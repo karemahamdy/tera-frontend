@@ -15,9 +15,26 @@ onMounted(() => {
   toastService.init(toast);
 });
 
+let isReload = false;
+
 onMounted(() => {
   const userStore = useUserStore();
-  window.addEventListener("beforeunload", userStore.closeSession);
+
+  const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+
+  if (nav?.type === "reload") {
+    isReload = true;
+  }
+
+  // Detect visibility change
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      // If not a reload, user is closing the tab/browser
+      if (!isReload) {
+        userStore.closeSession();
+      }
+    }
+  });
 });
 
 onBeforeUnmount(() => {
