@@ -42,7 +42,7 @@ const clearFilters = () => {
         :optionValue="filter.optionValue || 'value'"
         :showClear="filter.showClear"
         @change="(e) => onFilterChange(filter, e)"
-        class="w-full md:w-56"
+        
       />
       
     </div>
