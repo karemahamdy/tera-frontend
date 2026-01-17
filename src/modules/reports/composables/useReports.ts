@@ -54,7 +54,11 @@ export function useReports() {
       const response = (await GroupService.getGroup(
         filtersBody.value
       )) as GroupResponse;
-      const items = response.data.items || [];
+      // const items = response.data.items || [];
+         const items = (response.data.items || []).map((item: any) => ({
+      ...item,
+      isActive: item.status, 
+    }));
       data.value = reset ? items : [...data.value, ...items];
       totalRecords.value = response.data.totalCount;
     } finally {

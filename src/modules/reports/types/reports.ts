@@ -13,6 +13,8 @@ export interface GroupFilterBody {
   groupIds?: string[];
   rolesIds?: string;
   status?: string;
+  isActive?: boolean; // New
+  isGlobal?: boolean; // New
   pageIndex: number;
   pageSize: number;
 }

@@ -10,6 +10,7 @@ export const UserService = {
       isActive: isActive !== undefined ? isActive : status,
       isGlobal: isGlobal !== undefined ? isGlobal : accessScope,
     };
+    Object.keys(params).forEach(key => (params[key] === undefined || params[key] === null) && delete params[key]);
     return await axiosWrapper.post("/Reports/user-master-data", payload, { params });
   },
   async getUsersExport(body: UserFilterBody): Promise<any> {
@@ -20,16 +21,36 @@ export const UserService = {
       isActive: isActive !== undefined ? isActive : status,
       isGlobal: isGlobal !== undefined ? isGlobal : accessScope,
     };
+    Object.keys(params).forEach(key => (params[key] === undefined || params[key] === null) && delete params[key]);
     return await axiosWrapper.post("/Reports/user-master-data/export", payload, { params, responseType: 'blob' });
   }
 };
 
 export const GroupService = {
   async getGroup(body: GroupFilterBody): Promise<GroupResponse> {
-    return await axiosWrapper.post("/Reports/group-master-data", body);
+    const { isActive, isGlobal, pageIndex, pageSize, status, ...payload } = body;
+    const params: any = {
+      pageIndex,
+      pageSize,
+      status: status !== undefined ? status : status,
+      isGlobal: isGlobal || undefined, // Only include if truthy, or handled by null cleanup
+    };
+    if (isGlobal !== undefined) params.isGlobal = isGlobal;
+
+    Object.keys(params).forEach(key => (params[key] === undefined || params[key] === null) && delete params[key]);
+    return await axiosWrapper.post("/Reports/group-master-data", payload, { params });
   },
   async getGroupExport(body: GroupFilterBody): Promise<any> {
-    return await axiosWrapper.post("/Reports/group-master-data/export", body, { responseType: 'blob' });
+    const { isActive, isGlobal, pageIndex, pageSize, status, ...payload } = body;
+    const params: any = {
+      pageIndex,
+      pageSize,
+      status: status !== undefined ? status : status,
+    };
+    if (isGlobal !== undefined) params.isGlobal = isGlobal;
+
+    Object.keys(params).forEach(key => (params[key] === undefined || params[key] === null) && delete params[key]);
+    return await axiosWrapper.post("/Reports/group-master-data/export", payload, { params, responseType: 'blob' });
   }
 };
 

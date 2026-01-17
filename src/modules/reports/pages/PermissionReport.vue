@@ -39,7 +39,7 @@ const filtersOperation = computed(() => {
       value: filterState.value.moduleCodes,
       field: "moduleCodes", options: [...modulesLookups.value]
     },
-    { placeholder: "screen", value: filterState.value.screenCodes, field: "screenCodes", options: [...screensLookups.value] },
+    { placeholder: "auditLog.screen", value: filterState.value.screenCodes, field: "screenCodes", options: [...screensLookups.value] },
     {
       placeholder: "reports.permission",
       value: filterState.value.permissionTypes,
