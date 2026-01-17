@@ -27,7 +27,6 @@ const [newPassword] = defineField("newPassword");
 const [confirmPassword] = defineField("confirmPassword");
 
 const onSubmit = handleSubmit( async (values) => {
-  console.log(values);
   try {
     await userStore.resetUserPassword(values as ResetPassword);
     toastService.success(t("changePassword.passwordChangedSuccessfully"));
