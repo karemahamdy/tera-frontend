@@ -3,17 +3,24 @@ import type { GroupFilterBody, GroupResponse, UserFilterBody, UserResponse } fro
 
 export const UserService = {
   async getUsers(body: UserFilterBody): Promise<UserResponse> {
-    let url = `?pageIndex=${body.pageIndex}&pageSize=${body.pageSize}`
-    if("status" in body) {
-      url+= `&isActive=${body.status}`
-    }
-    if("accessScope" in body) {
-      url+= `&isGlobal=${body.accessScope}`
-    }
-    return await axiosWrapper.post(`/Reports/user-master-data${url}`, body);
+    const { isActive, isGlobal, pageIndex, pageSize, status, accessScope, ...payload } = body;
+    const params: any = {
+      pageIndex,
+      pageSize,
+      isActive: isActive !== undefined ? isActive : status,
+      isGlobal: isGlobal !== undefined ? isGlobal : accessScope,
+    };
+    return await axiosWrapper.post("/Reports/user-master-data", payload, { params });
   },
   async getUsersExport(body: UserFilterBody): Promise<any> {
-    return await axiosWrapper.post("/Reports/user-master-data/export", body, { responseType: 'blob' });
+    const { isActive, isGlobal, pageIndex, pageSize, status, accessScope, ...payload } = body;
+    const params: any = {
+      pageIndex,
+      pageSize,
+      isActive: isActive !== undefined ? isActive : status,
+      isGlobal: isGlobal !== undefined ? isGlobal : accessScope,
+    };
+    return await axiosWrapper.post("/Reports/user-master-data/export", payload, { params, responseType: 'blob' });
   }
 };
 

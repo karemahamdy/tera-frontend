@@ -26,6 +26,7 @@ const filtersOperation = computed(() => {
       placeholder: "usersManagement.allStatus",
       value:  filterState.value.isActive,
       field: "isActive",
+      selectionMode: "single",
       options: [
         { label: t("button.active"), value: true },
         { label: t("button.inactive"), value: false },

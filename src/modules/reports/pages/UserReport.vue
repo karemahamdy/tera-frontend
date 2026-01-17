@@ -37,6 +37,7 @@ const filtersOperation = computed(() => {
       placeholder: "usersManagement.allStatus",
       value: filterState.value.isActive,
       field: "isActive",
+      selectionMode: "single",
       options: [
         { label: t("button.active"), value: true },
         { label: t("button.inactive"), value: false },
@@ -46,6 +47,7 @@ const filtersOperation = computed(() => {
       placeholder: "usersManagement.allScopes",
       value: filterState.value.isGlobal,
       field: "isGlobal",
+      selectionMode: "single",
       options: [
         { label: t("users.global"), value: true },
         { label: t("users.branch"), value: false },
