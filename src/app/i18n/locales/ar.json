@@ -125,6 +125,7 @@
   "userGroup": {
     "groupName": "اسم المجموعة",
     "description": "الوصف",
+    "code":"الرمز",
     "assignedRoles": "الأدوار المعينة",
     "userCount": "عدد المستخدمين",
     "created": "تم الإنشاء",
