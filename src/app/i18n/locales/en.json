@@ -17,6 +17,7 @@
   "of": "of",
   "Name/Module/Screen": "Name/Module/Screen",
   "records": "Records",
+  "profile": "Profile",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
@@ -82,6 +83,7 @@
     "resetPassword": "Reset Password",  
     "newpasswordPlaceholder": "Re-enter new password",
     "newpassword": "New Password",
+    "oldPassword": "Old Password",
     "resetPasswordInfo": "Enter the new password for the account."
   },
   "usersManagement": {
