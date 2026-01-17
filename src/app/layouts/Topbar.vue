@@ -164,7 +164,7 @@ const handlePasswordChanged = async (values: ChangePassword) => {
           <template #item="{ item }">
             <div>
               <a class="p-2 flex gap-3 items-center cursor-pointer" @click="item.command?.({ originalEvent: $event, item })"
-              :class="{'text-danger-500': item.icon == item.isDanger }"
+              :class="{'text-danger-500': item.isDanger }"
               >
                 <VsxIcon :iconName="item.icon" :size="24" type="linear" />
                 {{ item.label }}
