@@ -70,21 +70,16 @@ const filtersOperation = computed(() => {
             field: "type",
             options: [
                 { label: t("button.active"), value: "IsActive" },
-            
-                { label: t("button.active"), value: "IsActive" },
-               
+                { label: t("button.active"), value: "IsActive" },   
             ],
         },
         {
             placeholder: "warehouses.zones",
             value: null,
             field: "zones",
-            options: [
-              
+            options: [        
           { label: t("button.active"), value: "IsActive" },
-            { label: t("button.active"), value: "IsActive" },
-
-               
+            { label: t("button.active"), value: "IsActive" }, 
             ],
         },
         {
@@ -92,7 +87,6 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-              
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
