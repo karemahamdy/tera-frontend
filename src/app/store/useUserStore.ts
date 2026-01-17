@@ -111,7 +111,7 @@ export const useUserStore = defineStore("user", {
       const tokens = response.data as AuthData;
       this.requiresPasswordReset = response.data.requiresPasswordReset;
       localStorage.setItem(
-        "rememberMe",
+        "requiresPasswordReset",
         String(response.data.requiresPasswordReset)
       );
       this.rememberMe = payload.rememberMe;
@@ -174,7 +174,6 @@ export const useUserStore = defineStore("user", {
       this.accessToken = "";
       this.refreshToken = "";
       this.isAuthenticated = false;
-      this.requiresPasswordReset = true;
 
       // Clear both storages
       localStorage.removeItem("accessToken");
