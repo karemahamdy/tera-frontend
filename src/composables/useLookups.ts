@@ -73,8 +73,8 @@ export function useLookups() {
     try {
       const res = await LookupsService.getModuleLookups();
       modulesLookups.value = res.data.map((group) => ({
-        label: group.moduleName,
-        value: group.moduleName,
+        label: group.nameEn,
+        value: group.code,
       }));
     } catch (error) {
       toastService.error(error as string);

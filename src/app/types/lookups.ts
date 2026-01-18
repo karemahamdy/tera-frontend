@@ -3,7 +3,9 @@ export interface Lookups {
   id: string;
 }
 export interface ModulesLookups {
-moduleName: string;
+code: string;
+nameEn: string;
+nameAr: string;
 }
 export interface IPLookups {
   ipAddressName: string;

@@ -75,11 +75,11 @@ onMounted(() => {
           templateFileName="auditLog-template.csv" dataFileName="auditLog-data.csv" />
         <div class="flex gap-4 mt-2">
           <div class="w-[50%]"> 
-            <label class="block text-gray-600 text-lg ">{{ t("fromDate") }}</label>
+            <label class="block text-gray-600 text-lg ">{{ t("form.fromDate") }}</label>
            <DatePicker v-model="fromDate" showIcon fluid iconDisplay="input" />
           </div>
           <div class="w-[50%]">
-            <label class="block text-gray-600 text-lg ">{{ t("toDate") }}</label>
+            <label class="block text-gray-600 text-lg ">{{ t("form.toDate") }}</label>
             <DatePicker v-model="toDate" showIcon fluid iconDisplay="input" />
           </div>
         </div>
