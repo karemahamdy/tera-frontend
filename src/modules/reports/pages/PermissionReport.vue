@@ -148,7 +148,7 @@ onMounted(() => {
 
       <template #content>
         <!-- LEVEL 1: USERS -->
-        <DataTable :value="data" :loading="loading" dataKey="userName" v-model:expandedRows="expandedUserRows" tableStyle="min-width: 60rem">
+        <DataTable :value="data" :loading="loading" dataKey="userName" v-model:expandedRows="expandedUserRows"  >
           <Column field="userName" :header="$t('usersManagement.userId')" style="width: 12%">
             <template #body="slotProps">
               <span class="text-gray-900 font-medium">{{ slotProps.data.userName }}</span>
