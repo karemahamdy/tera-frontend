@@ -44,6 +44,15 @@ const navItems: NavItem[] = [
       { label: "Permission Report", route: "/reports/permission-report" },
     ],
   },
+   {
+    label: "Inventory",
+    icon: "SecurityUser",
+    children: [
+      { label: "Warehouses", route: "/warehouses" },
+      { label: "itemGroups", route: "/item-groups" },
+    
+    ],
+  },
 ];
 
 // track which parent items are open
