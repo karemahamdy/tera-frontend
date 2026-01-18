@@ -1,3 +1,5 @@
+import type { ModulesItem } from "./navigation";
+
 export interface LoginPayload {
   userName: string;
   password: string;
@@ -74,7 +76,7 @@ export interface UserGlobalProfile {
     available: Branch[];
     canSwitch: boolean;
   };
-  modules: any[];
+  modules: ModulesItem[];
 }
 
 export interface SwitchBranch {

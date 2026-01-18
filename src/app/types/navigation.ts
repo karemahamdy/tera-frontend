@@ -5,3 +5,10 @@ export interface NavItem {
   children?: NavItem[]
   badge?: string | number
 }
+
+export interface ModulesItem {
+  code: string;
+  name: string;
+  screens: ModulesItem[];
+  sections: ModulesItem[];
+}

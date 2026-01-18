@@ -1,20 +1,23 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import type { NavItem } from "src/app/types/navigation";
+import type { NavItem } from "@/app/types/navigation";
+import SidebarItem from "./SidebarItem.vue";
 import logoImg from "@/assets/Header.svg";
-import { useUserStore } from '@/app/store/useUserStore';
+import { useUserStore } from "@/app/store/useUserStore";
 
-// Props
+// import type { ModulesItem } from "@/app/types/navigation";
+// import { computed } from "vue";
+
+// const modulesItems = computed<ModulesItem[] | undefined>(()=>{
+//   return userStore.userProfile?.modules;
+// })
+
 defineProps<{
   collapsed: boolean;
 }>();
 
-const router = useRouter();
 const userStore = useUserStore();
-
 const logo = logoImg;
-// Navigation items
+
 const navItems: NavItem[] = [
   {
     label: "Acces Control",
@@ -26,22 +29,27 @@ const navItems: NavItem[] = [
       { label: "Roles Management", route: "/roles-permissions" },
       { label: "Active Sessions", route: "/active-sessions" },
       { label: "Audit Log", route: "/audit-log" },
+      {
+        label: "Reports",
+        children: [
+          { label: "User Report", route: "/reports/user" },
+          { label: "User Group Report", route: "/reports/user-group" },
+          { label: "Permission Report", route: "/reports/permission-report" },
+        ],
+      },
     ],
   },
   {
     label: "Adminstration",
     icon: "KeySquare",
-    children: [
-      { label: "License Info", route: "/license-info" },
-    ],
+    children: [{ label: "License Info", route: "/license-info" }],
   },
   {
-    label: "Reports",
-    icon: "ClipboardText",
+    label: "Inventory",
+    icon: "SecurityUser",
     children: [
-      { label: "User Report", route: "/reports/user" },
-      { label: "User Group Report", route: "/reports/user-group" },
-      { label: "Permission Report", route: "/reports/permission-report" },
+      { label: "Warehouses", route: "/warehouses" },
+      { label: "itemGroups", route: "/item-groups" },
     ],
   },
    {
@@ -55,145 +63,93 @@ const navItems: NavItem[] = [
   },
 ];
 
-// track which parent items are open
-const open = ref<Record<string, boolean>>({});
-
-function toggle(item: NavItem) {
-  if (!item.children) return;
-  open.value[item.label] = !open.value[item.label];
-}
-
-function isOpen(item: NavItem) {
-  return !!open.value[item.label];
-}
-
-// function isActive(item: NavItem) {
-//   if (!item.route) return false;
-//   return route.path === item.route;
-// }
-
 function logout() {
-  userStore.logout()
-  // router.push("/auth/login");
+  userStore.logout();
 }
 </script>
 
 <template>
   <aside
     :class="[
-      'sidebar-bg text-white transition-all duration-200 shadow',
+      'sidebar-bg text-white transition-all duration-200 shadow h-screen',
       collapsed ? 'w-16' : 'w-72',
     ]"
   >
+    <!-- HEADER -->
     <div class="h-16 flex items-center px-5 border-b border-gray-200">
       <div class="flex items-center gap-5 w-full">
         <img :src="logo" alt="Logo" width="48" height="48" />
         <div v-if="!collapsed" class="text-lg text-primary-500">TERA ERP</div>
       </div>
     </div>
-    <div class="scroll-container overflow-y-auto overflow-x-hidden">
-      <!-- user panel -->
-      <div class="px-3 py-4 flex items-center gap-3">
-        <div v-if="!collapsed" class="text-gray-500">Quick Access</div>
-      </div>
 
-      <!-- nav -->
+    <!-- CONTENT -->
+    <div class="scroll-container overflow-y-auto overflow-x-hidden">
+      <div class="px-3 py-4 text-gray-500" v-if="!collapsed">Quick Access</div>
+
+      <!-- NAV -->
       <nav class="p-2 text-gray-500">
-        <ul>
-          <li class="mb-1">
+        <ul class="space-y-1">
+          <!-- Dashboard -->
+          <li>
             <router-link
-              class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5 cursor-pointer"
               to="/home"
-              :activeClass="$i18n.locale === 'ar' ? 'active active-link-ar' : 'active active-link'"
+              class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5"
+              :activeClass="
+                $i18n.locale === 'ar'
+                  ? 'active active-link-ar'
+                  : 'active active-link'
+              "
             >
               <VsxIcon iconName="Element4" :size="24" type="linear" />
-              {{ $t("Dashboard") }}
+              <span v-if="!collapsed">{{ $t("Dashboard") }}</span>
             </router-link>
           </li>
-          <li v-for="item in navItems" :key="item.label" class="mb-1">
-            <!-- Parent item -->
-            <div
-              class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5 cursor-pointer"
-              :class="{
-                active: isOpen(item),
-                'active-link': isOpen(item) && $i18n.locale !== 'ar',
-                'active-link-ar': isOpen(item) && $i18n.locale === 'ar',
-              }"
-              @click="item.children ? toggle(item) : router.push(item.route!)"
-            >
-              <VsxIcon :iconName="item.icon" :size="24" type="linear" />
 
-              <span v-if="!collapsed" class="flex-1">
-                {{ item.label }}
-              </span>
-
-              <!-- Collapse arrow -->
-              <i
-                v-if="item.children && !collapsed"
-                class="pi pi-chevron-down transition-transform"
-                :class="{ 'rotate-180': isOpen(item) }"
-              ></i>
-            </div>
-
-            <!-- Children -->
-            <transition name="slide">
-              <ul
-                v-if="item.children && isOpen(item) && !collapsed"
-                class="space-y-1 text-sm relative border-[#767B76] mt-2 text-gray-400"
-                :class="
-                  $i18n.locale === 'ar'
-                    ? 'pr-10 parent-ul-ar'
-                    : 'pl-10 parent-ul'
-                "
-              >
-                <li
-                  v-for="c in item.children"
-                  :key="c.label"
-                  class="mt-2 relative py-1"
-                  :class="
-                    $i18n.locale === 'ar' ? 'child-item-ar' : 'child-item'
-                  "
-                >
-                  <router-link
-                    :to="c.route!"
-                    class="block px-2 py-1 rounded-lg"
-                    activeClass="bg-primary-25"
-                  >
-                    {{ c.label }}
-                  </router-link>
-                </li>
-              </ul>
-            </transition>
-          </li>
+          <!-- Dynamic Items -->
+          <SidebarItem
+            v-for="item in navItems"
+            :key="item.label"
+            :item="item"
+            :collapsed="collapsed"
+            :activeClass="
+              $i18n.locale === 'ar'
+                ? 'active active-link-ar'
+                : 'active active-link'
+            "
+          />
         </ul>
       </nav>
 
-      <div class="p-3 mt-10">
+      <!-- FOOTER -->
+      <div class="p-3 mt-10 space-y-1">
         <button
-          class="w-full text-left p-2 rounded hover:bg-white/5 text-gray-500 flex items-center gap-3"
+          class="w-full p-2 rounded hover:bg-white/5 text-gray-500 flex items-center gap-3"
         >
           <VsxIcon iconName="Setting2" :size="24" type="linear" />
-          <span v-if="!collapsed"> Settings</span>
+          <span v-if="!collapsed">Settings</span>
         </button>
+
         <button
-          class="w-full text-left p-2 rounded hover:bg-white/5 text-success-500 flex items-center gap-3"
+          class="w-full p-2 rounded hover:bg-white/5 text-success-500 flex items-center gap-3"
         >
           <VsxIcon iconName="Headphone" :size="24" type="linear" />
-          <span v-if="!collapsed"> Help</span>
+          <span v-if="!collapsed">Help</span>
         </button>
+
         <button
-          class="w-full text-left p-2 rounded hover:bg-white/5 text-danger-500 flex items-center gap-3"
+          class="w-full p-2 rounded hover:bg-white/5 text-danger-500 flex items-center gap-3"
           @click="logout"
         >
           <VsxIcon iconName="LogoutCurve" :size="24" type="linear" />
-          <span v-if="!collapsed"> Logout</span>
+          <span v-if="!collapsed">Logout</span>
         </button>
       </div>
     </div>
   </aside>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 aside {
   height: 100vh;
 }
@@ -214,20 +170,10 @@ aside {
 .parent-ul::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 1.5rem;
+  top: 2.5rem;
+  left: 0.5rem;
   width: 1px;
-  height: calc(100% - 1.5rem);
-  background-color: var(--color-gray-400);
-}
-
-.parent-ul-ar::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 1.5rem;
-  width: 1px;
-  height: calc(100% - 1.5rem);
+  height: calc(100% - 4.5rem);
   background-color: var(--color-gray-400);
 }
 
@@ -241,6 +187,16 @@ aside {
   border-left: 1px solid var(--color-gray-400);
   border-bottom: 1px solid var(--color-gray-400);
   border-radius: 0 0 0 8px;
+}
+
+.parent-ul-ar::before {
+  content: "";
+  position: absolute;
+  top: 2.5rem;
+  right: 0.5rem;
+  width: 1px;
+  height: calc(100% - 4.5rem);
+  background-color: var(--color-gray-400);
 }
 
 .child-item-ar::before {
@@ -265,6 +221,15 @@ aside {
   color: var(--color-primary-500);
   font-weight: bold;
   position: relative;
+}
+
+.active-li {
+  background-color: var(--color-primary-50);
+  color: var(--color-gray-500);
+  font-weight: bold;
+  position: relative;
+  font-size: small;
+  border-radius: 12px;
 }
 
 .active-link::before {

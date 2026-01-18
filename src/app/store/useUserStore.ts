@@ -226,7 +226,7 @@ export const useUserStore = defineStore("user", {
     // ------------------------------------
     async fetchUserProfile() {
       try {
-        const response = await axiosWrapper.get<any>("/user-profile");
+        const response = await axiosWrapper.get<{ data: UserGlobalProfile }>("/user-profile");
         this.userProfile = response.data;
         return this.userProfile;
       } catch (error) {
