@@ -12,6 +12,8 @@
   "enterUsername" : "أدخل اسم المستخدم",
   "enterUserID": "أدخل معرف المستخدم",
   "accessControl": "التحكم في الوصول",
+  "inventory":"المخازن",
+  "masterData": "البيانات الرئيسية",
   "Adminstration": "الإدارة",
   "showing": "عرض",
   "of": "من",
@@ -61,7 +63,8 @@
     "created": "تاريخ الإنشاء",
     "action": "الإجراء",
     "userAssigned": "المستخدم المعين",
-    "search": "بـــــحث ...."
+    "search": "بـــــحث ....",
+    "item": "فئة"
   },
   "form": {
     "fieldRequired": "هذا الحقل مطلوب",
@@ -315,5 +318,25 @@
     "sessionExpire": "ستنتهي جلستك خلال",
     "logout": "تسجيل الخروج الآن",
     "stay": "البقاء مسجلاً الدخول"
-  }
+  },
+  "warehouses": {
+    "title": "مستودع",
+    "subtitle": "إدارة مواقع المستودعات وأنواعها وتكويناتها",
+    "addWarehouse": "اضافة مستودع",
+    "code":"الرمز",
+    "name": "الاسم",
+    "zones": "نطاق",
+    "transferLedger": "حساب التحويل",
+    "type": "النوع",
+    "address": "العنوان",
+    "searchPlaceholder": "البحث عن الاسم او الرمز...",
+    "deleteWarehousesConfirm": "هل أنت متأكد أنك تريد حذف المستودع "
+  },
+ "itemGroup": {
+  "title": "مجموعة العناصر",
+  "subtitle": "قم بتنظيم العناصر في مجموعات هرمية",
+  "additemGroup": "اضافة مجموعة اصناف",
+   "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ "
+
+ }
 }
