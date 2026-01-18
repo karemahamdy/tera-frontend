@@ -232,7 +232,7 @@ onMounted(() => {
                          <Column style="width: 12%"></Column>
                          <Column style="width: 28%">
                            <template #body="screenSlot">
-                             <div class="flex items-center gap-2 pl-6">
+                             <div class="flex items-center gap-2 pl-4">
                                <span class="text-gray-700">{{ screenSlot.data.screenName }}</span>
                              </div>
                            </template>
@@ -241,28 +241,28 @@ onMounted(() => {
                          <Column style="width: 15%"></Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center">
+                             <div class="flex justify-center pl-8">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.view ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>
                          </Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center">
+                             <div class="flex justify-center pl-8">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.create ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>
                          </Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center">
+                             <div class="flex justify-center pl-8">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.edit ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>
                          </Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center">
+                             <div class="flex justify-center pl-8">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.delete ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>
