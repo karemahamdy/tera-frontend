@@ -327,5 +327,11 @@
     "address": "Address",
     "searchPlaceholder": "Search by code or name.....",
     "deleteWarehousesConfirm": "Are you sure you want to delete this Warehouse ?"
-  }
+  },
+   "itemGroup": {
+  "title": "Item Group",
+  "subtitle": "Organize items into hierarchical groups",
+  "additemGroup": "Add New",
+  "deleteItemConfirm": "Are you sure you want to delete this Item ?"
+ }
 }

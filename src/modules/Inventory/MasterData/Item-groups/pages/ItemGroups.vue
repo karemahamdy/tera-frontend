@@ -20,13 +20,7 @@ const isDeleting = ref(false);
 // });
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
-    {
-        action: "toggleActive",
-        changeStatus: true,
-        label: t("button.active"),
-        type: "switch",
-        key: "isActive",
-    },
+   
      {
       slot: true,
       label: t("button.view"),
@@ -45,19 +39,16 @@ const props = defineProps({
         code: "WH-001",
         name: "John Moore",
         transferLedger: "5",
-        zones: "Administration",
-        address: "Finance",
-        type: "Global",
-        status: "in Active",
+        description: "Administration",
+        item: "Finance",
+       
       },
       {
-        code: "WH-001",
+       code: "WH-001",
         name: "John Moore",
         transferLedger: "5",
-        zones: "Administration",
-        address: "Finance",
-        type: "Professional",
-        status: "Active",
+        description: "Administration",
+        item: "Finance",
       },
     ],
   },
@@ -69,7 +60,6 @@ const columns = computed(() => {
         { field: 'name', header: t('warehouses.name'), type: 'slot', sortable: true },
         { field: 'description', header: t('table.description'), type: 'slot', sortable: true },
         { field: 'item', header: t('table.item'), type: 'slot', sortable: true },
-        { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -106,8 +96,9 @@ const handleActionMenu = async (payload: any) => {
     //     await toggleActive(data.id, !data.isActive);
     // }
 };
+}
 // 
-// const handleDeleteConfirm = async () => {
+const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
     // await deleteBranch(rowToDelete.value.id).finally(() => {
@@ -129,12 +120,12 @@ const addBranch = () => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory" subtitle="masterData" actionName="warehouses.title" />
+        <ScreenHeader title="inventory" subtitle="masterData" actionName="itemGroup.title" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="warehouses.title" subtitle="warehouses.subtitle" :showExport="true"
-                    :showImport="true" :mainBtn="true" mainBtnText="warehouses.addWarehouse"
+                <PageHeader title="itemGroup.title" subtitle="itemGroup.subtitle" :showExport="true"
+                    :showImport="true" :mainBtn="true" mainBtnText="itemGroup.additemGroup"
                     searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
             </template>
             <!-- DynamicTable component -->
@@ -145,11 +136,11 @@ const addBranch = () => {
             </template>
         </card>
 
-        <!-- <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('warehouses.deleteWarehousesConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('itemGroup.deleteItemConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
-            ]" @confirm="handleDeleteConfirm" /> -->
+            ]" @confirm="handleDeleteConfirm" />
 
     </div>
 </template>

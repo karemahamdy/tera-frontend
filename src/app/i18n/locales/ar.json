@@ -327,5 +327,12 @@
     "address": "العنوان",
     "searchPlaceholder": "البحث عن الاسم او الرمز...",
     "deleteWarehousesConfirm": "هل أنت متأكد أنك تريد حذف المستودع "
-  }
+  },
+ "itemGroup": {
+  "title": "مجموعة العناصر",
+  "subtitle": "قم بتنظيم العناصر في مجموعات هرمية",
+  "additemGroup": "اضافة مجموعة اصناف",
+   "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ "
+
+ }
 }
