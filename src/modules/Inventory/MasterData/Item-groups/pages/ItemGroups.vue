@@ -66,14 +66,14 @@ const columns = computed(() => {
     return Columns;
 });
 
-const firstRecord = computed(() => {
+// const firstRecord = computed(() => {
     // return ((pageIndex.value - 1) * pageSize.value) + 1;
-});
+// });
 
-const lastRecord = computed(() => {
+// const lastRecord = computed(() => {
     // const last = pageIndex.value * pageSize.value;
     // return Math.min(last, totalCount.value || last);
-});
+// });
 
 const confirmDelete = (row: any) => {
     rowToDelete.value = row;
