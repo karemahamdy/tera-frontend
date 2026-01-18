@@ -35,6 +35,7 @@ const clearFilters = () => {
         :is="filter.selectionMode === 'single' ? 'Dropdown' : 'MultiSelect'"
         v-for="(filter, index) in filters"
         :key="index"
+        :maxSelectedLabels="3"
         v-model="filter.value"
         :options="filter.options"
         :placeholder="$t(filter.placeholder)"
