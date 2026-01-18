@@ -10,7 +10,15 @@ import { GroupService } from "../services/reports.service";
 const { t } = useI18n();
 let hasSearched = ref(false);
 const {rolesLookups, groupsLookups, getGroupLookups, getRolesLookups } = useLookups();
-const { data, loading, setFilter } = useReports();
+const { 
+  data, 
+  loading, 
+  setFilter, 
+ totalRecords,
+  pageIndex,
+  pageSize,
+  setGroupPage
+ } = useReports();
 
 const filtersOperation = computed(() => {
   return [
@@ -61,10 +69,20 @@ const columns = computed(() => {
   return Columns;
 });
 
+const firstRecord = computed(() => {
+  return data.value.length === 0 ? 0 : (pageIndex.value - 1) * pageSize + 1;
+});
+
+const lastRecord = computed(() => {
+  if (data.value.length === 0) return 0;
+  const last = firstRecord.value + data.value.length - 1;
+  return last > totalRecords.value ? totalRecords.value : last;
+});
+
 const getFilterBody = (filters: any[]) => {
   const body: any = {
     pageIndex: 1,
-    pageSize: 20,
+    pageSize: pageSize,
     status: null,
     groupIds: null,
     roleIds: null,
@@ -132,7 +150,8 @@ onMounted(() => {
         <ReportFilters :showExport="true" :showFilter="true" :filters="filtersOperation"  @search="onSearch" @clear="onClearFilters"  @filter-change="onFilterChange"/>
       </template>
       <template #content>
-        <DynamicTable v-if="hasSearched" :columns="columns" :data="data" :loading="loading" :paginator="false">
+        <DynamicTable v-if="hasSearched" :columns="columns" :data="data" :loading="loading" :paginator="false" :scrollPaginator="true"
+            :first="firstRecord" :last="lastRecord" :rows="pageSize" :totalRecords="totalRecords" @page-change="setGroupPage" lazy>
           <template #col-isGlobal="{ data }">
             {{ data.isGlobal ? t("users.global") : t("users.branch") }}
           </template>

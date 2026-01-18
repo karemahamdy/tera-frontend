@@ -2,10 +2,9 @@ export interface Lookups {
   name: string;
   id: string;
 }
-export interface ModulesLookups {
+export interface CodeLookups {
 code: string;
-nameEn: string;
-nameAr: string;
+name: string;
 }
 export interface IPLookups {
   ipAddressName: string;

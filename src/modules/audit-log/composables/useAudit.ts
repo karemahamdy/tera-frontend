@@ -2,6 +2,7 @@ import { ref, computed, watch, type Ref } from "vue";
 import { toastService } from "@/app/services/toastService";
 import { AuditService } from "../services/auditLogs.service";
 import type { AuditLog, AuditFiltersPayload, Pagination } from "../types/auditLogList";
+import { formatDate } from "@/app/utils/dates";
 
 interface FilterChangePayload {
   filter: { field: string };
@@ -36,8 +37,8 @@ export function useAudit() {
 
       const params = {
         ...pagination.value,
-        FromDate: fromDate.value?.toISOString(),
-        ToDate: toDate.value?.toISOString(),
+        FromDate: formatDate(fromDate.value),
+        ToDate: formatDate(toDate.value),
       };
 
       const response = hasFilters

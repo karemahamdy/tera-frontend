@@ -55,10 +55,10 @@ export function useReports() {
         filtersBody.value
       )) as GroupResponse;
       // const items = response.data.items || [];
-         const items = (response.data.items || []).map((item: any) => ({
-      ...item,
-      isActive: item.status, 
-    }));
+      const items = (response.data.items || []).map((item: any) => ({
+        ...item,
+        isActive: item.status,
+      }));
       data.value = reset ? items : [...data.value, ...items];
       totalRecords.value = response.data.totalCount;
     } finally {
@@ -66,24 +66,23 @@ export function useReports() {
     }
   };
 
-  const fetchPermission = async (reset = false) => {
+  const fetchPermission = async (body: any) => {
     try {
       loading.value = true;
-      if (reset) {
-        pageIndex.value = 1;
-        data.value = [];
-      }
-      filtersBody.value.pageIndex = pageIndex.value;
-      filtersBody.value.pageSize = pageSize;
       const response = (await PermissionService.getPermission(
-        filtersBody.value
-      )) as GroupResponse;
+        body
+      )) as any;
       const items = response.data.items || [];
-      data.value = reset ? items : [...data.value, ...items];
+      data.value = items;
       totalRecords.value = response.data.totalCount;
     } finally {
       loading.value = false;
     }
+  };
+
+  const clearPermissionData = () => {
+    data.value = [];
+    totalRecords.value = 0;
   };
 
   const setFilters = (filters: any) => {
@@ -98,15 +97,19 @@ export function useReports() {
     fetchUsers(false);
   };
 
+  const setGroupPage = (page: number) => {
+    if (page === pageIndex.value) return;
+
+    pageIndex.value = page;
+    fetchGroups(false);
+  };
+
   const setFilter = (filters: any) => {
     filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
     fetchGroups(true);
   };
 
-  const setPermission = (filters: any) => {
-    filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
-    fetchPermission(true);
-  };
+
 
   return {
     data,
@@ -117,9 +120,10 @@ export function useReports() {
     fetchUsers,
     fetchGroups,
     fetchPermission,
-    setPermission,
+    clearPermissionData,
     setFilters,
     setFilter,
     setUsersPage,
+    setGroupPage
   };
 }
