@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import { debounce } from "@/app/utils/debounce";
-import BaseButton from "@/sharedComponents/BaseButton.vue";
 
 const props = defineProps({
   showExport: { type: Boolean, default: false },
