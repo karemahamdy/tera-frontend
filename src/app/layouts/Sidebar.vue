@@ -44,6 +44,14 @@ const navItems: NavItem[] = [
     icon: "KeySquare",
     children: [{ label: "License Info", route: "/license-info" }],
   },
+  {
+    label: "Inventory",
+    icon: "SecurityUser",
+    children: [
+      { label: "Warehouses", route: "/warehouses" },
+      { label: "itemGroups", route: "/item-groups" },
+    ],
+  },
 ];
 
 function logout() {
