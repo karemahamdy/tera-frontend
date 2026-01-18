@@ -139,6 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ $t("roles.roles") }}
               </label>
               <MultiSelect
+              :maxSelectedLabels="3"
                 filter
                 :disabled="isEditMode"
                 v-model="roleIds"
@@ -208,6 +209,7 @@ const onSubmit = handleSubmit(async (values) => {
                 $t("roles.assignedBranch")
               }}</label>
               <MultiSelect
+              :maxSelectedLabels="3"
                 filter
                 v-model="branchIds"
                 :options="branchesLookups"

@@ -9,7 +9,7 @@ export function useLookups() {
   const entitiesLookups = ref<LookupsOption[]>([]);
   const rolesLookups = ref<LookupsOption[]>([]);
   const screensLookups = ref<LookupsOption[]>([]);
-  const modulesLookups = ref<LookupsOption[]>([]);
+  const CodeLookups = ref<LookupsOption[]>([]);
   const usersLookups = ref<LookupsOption[]>([]);
   const IPLookups = ref<LookupsOption[]>([]);
   const departmentsLookups = ref<LookupsOption[]>([]);
@@ -63,7 +63,7 @@ export function useLookups() {
       const res = await LookupsService.getScreenLookups();
       screensLookups.value = res.data.map((group) => ({
         label: group.name,
-        value: group.id,
+        value: group.code,
       }));
     } catch (error) {
       toastService.error(error as string);
@@ -72,8 +72,8 @@ export function useLookups() {
     const getModuleLookups = async () => {
     try {
       const res = await LookupsService.getModuleLookups();
-      modulesLookups.value = res.data.map((group) => ({
-        label: group.nameEn,
+      CodeLookups.value = res.data.map((group) => ({
+        label: group.name,
         value: group.code,
       }));
     } catch (error) {
@@ -120,7 +120,7 @@ export function useLookups() {
     entitiesLookups,
     rolesLookups,
     screensLookups,
-    modulesLookups,
+    CodeLookups,
     departmentsLookups,
     usersLookups,
     IPLookups,

@@ -158,7 +158,7 @@ const handleExportClick = async () => {
         @change="(e) => onFilterChange(filter, e)" filter />
     </template>
     <template v-if="showMultiFilter">
-      <MultiSelect v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
+      <MultiSelect v-for="(filter, index) in filters" :maxSelectedLabels="3" :key="index" v-model="filter.value" :options="filter.options"
         :placeholder="$t(filter.placeholder)" :optionLabel="$t(filter.optionLabel || 'label')"
         :optionValue="$t(filter.optionValue || 'value')" :showClear="filter.showClear"
         @change="(e) => onFilterChange(filter, e)" filter />

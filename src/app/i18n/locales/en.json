@@ -247,6 +247,7 @@
   },
   "reports": {
     "title": "Reports",
+    "report": "Report",
     "subtitle": "Generate and view system reports",
     "generateReport": "Generate Report",
     "reportType": "Report Type",
