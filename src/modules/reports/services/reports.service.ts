@@ -33,7 +33,7 @@ export const GroupService = {
       pageIndex,
       pageSize,
       status: status !== undefined ? status : status,
-      isGlobal: isGlobal || undefined, // Only include if truthy, or handled by null cleanup
+      isGlobal: isGlobal || undefined,
     };
     if (isGlobal !== undefined) params.isGlobal = isGlobal;
 

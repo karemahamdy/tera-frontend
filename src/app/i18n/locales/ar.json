@@ -253,6 +253,7 @@
   },
   "reports": {
     "title": "التقارير",
+    "report": "التقرير",
     "subtitle": "عرض وتحليل بيانات النظام",
     "generateReport": "إنشاء تقرير",
     "reportType": "نوع التقرير",

@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { IPLookups, Lookups, ModulesLookups } from "../types/lookups";
+import type { IPLookups, Lookups, CodeLookups } from "../types/lookups";
 
 export const LookupsService = {
   getGroupLookups(isActive: boolean = true) {
@@ -15,10 +15,10 @@ export const LookupsService = {
     return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/RolesLookups?isActive=${isActive}`);
   },
   getScreenLookups() {
-    return axiosWrapper.get<{ data: Lookups[] }>("/Lookups/ScreenLookups");
+    return axiosWrapper.get<{ data: CodeLookups[] }>("/Lookups/ScreenLookups");
   },
     getModuleLookups() {
-    return axiosWrapper.get<{ data: ModulesLookups[] }>("/Lookups/ModulesLookups");
+    return axiosWrapper.get<{ data: CodeLookups[] }>("/Lookups/ModulesLookups");
   },
    getIPLookups() {
     return axiosWrapper.get<{ data: IPLookups[] }>("/Lookups/IpAddress-Lookup");
