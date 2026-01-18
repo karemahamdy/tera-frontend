@@ -61,7 +61,9 @@
     "min_3": "Minimum 3 characters",
     "max_255": "Maximum 255 characters",
     "passwordsMustMatch": "Passwords must match",
-    "invalidEmail": "Invalid email"
+    "invalidEmail": "Invalid email",
+    "toDate": "to Date",
+  "fromDate": "from Date"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
