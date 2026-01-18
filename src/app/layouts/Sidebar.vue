@@ -4,12 +4,31 @@ import SidebarItem from "./SidebarItem.vue";
 import logoImg from "@/assets/Header.svg";
 import { useUserStore } from "@/app/store/useUserStore";
 
-// import type { ModulesItem } from "@/app/types/navigation";
-// import { computed } from "vue";
+import type { ModulesItem, QuickAccessItem } from "@/app/types/navigation";
+import { computed } from "vue";
 
-// const modulesItems = computed<ModulesItem[] | undefined>(()=>{
-//   return userStore.userProfile?.modules;
-// })
+function normalizeModules(items: ModulesItem[]): QuickAccessItem[] {
+  return items.map((item) => {
+    const children = [
+      ...(item.screens ?? []),
+      ...(item.sections ?? []),
+    ];
+
+    return {
+      code: item.code,
+      name: item.name,
+      children: normalizeModules(children),
+    };
+  });
+}
+
+
+const modulesItems = computed<QuickAccessItem[] | undefined>(()=>{
+  if(userStore.userProfile?.modules){
+    return normalizeModules(userStore.userProfile?.modules)
+  }
+  return;
+})
 
 defineProps<{
   collapsed: boolean;
