@@ -120,7 +120,7 @@ const handleDeleteConfirm = async () => {
 
 const addItemGroup = () => {
     router.push({
-        path: '/inventory/item-groups/create',
+        path: '/item-groups/create',
         query: { level: currentLevel.value },
     });
 };

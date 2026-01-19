@@ -347,7 +347,13 @@
     "group2": "مجموعة 2",
     "group3": "مجموعة 3",
     "group4": "مجموعة 4",
-    "categories": "تصنيف"
+    "categories": "تصنيف",
+    "namePlaceholder": "أدخل اسم المجموعة",
+    "codePlaceholder": "ادخل كود المجموعة",
+    "itemGroupNameAr": "الاسم بالعربية",
+    "description":"الوصف",
+    "addNewGroup": "إضافة مجموعة جديدة",
+    "itemGroupInfo": "أنشئ مجموعة جديدة لتنظيم أغراضك"
  },
  "LDC": {
   "LDC" : "دفتر محاسبة",
