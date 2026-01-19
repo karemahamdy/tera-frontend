@@ -1,5 +1,5 @@
 import { toastService } from "@/app/services/toastService";
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 
 import { useI18n } from "vue-i18n";
 import { warehousesService } from "../services/warehouse.service";
@@ -130,23 +130,6 @@ export function usewarehouse() {
     }
   };
 
- watch(
-  apiwarehouses,
-  (branches) => {
-    tableData.value = branches.map((b) => ({
-      id: b.id,
-      nameAr: b.nameAr,
-      nameEn: b.nameEn,
-      code: b.code,
-      addressAr: b.addressAr,
-      addressEn: b.addressEn,
-     isActive: b.isActive ,
-     status: b.isActive ? "Active" : "in Active",
-      createAt: b.createAt,
-    }));
-  },
-  { immediate: true }
-);
 
 const onSearch = (term: string) => {
   searchTerm.value = term;

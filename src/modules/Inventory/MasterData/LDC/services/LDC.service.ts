@@ -1,23 +1,12 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
 import type { Addwarehouses, warehousesResponse } from "../types/LDC";
+import type { pagination } from "../../Item-groups/types/itemGroup";
 
 export const warehousesService = {
- async getAll(params: {
-  pageIndex: number;
-  pageSize?: number;
-  searchingWord?: string;
-  orderBy?: string;
-  orderDirection?: 'asc' | 'desc';
-}) {
-  const query = new URLSearchParams();
-  query.append('PageIndex', params.pageIndex.toString());
-  if (params.pageSize) query.append('PageSize', params.pageSize.toString());
-  if (params.searchingWord) query.append('SearchingWord', params.searchingWord);
-  if (params.orderBy) query.append('OrderBy', params.orderBy);
-  if (params.orderDirection) query.append('OrderDirection', params.orderDirection);
-
+ async getAll(params: pagination) {
+ 
   const resp = await axiosWrapper.get<warehousesResponse>(
-    `/warehouses/GetAllwarehousess?${query.toString()}`
+    `/warehouses/GetAllwarehousess?${params}`
   );
   return resp.data;
 },
