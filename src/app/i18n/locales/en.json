@@ -354,7 +354,9 @@
     "itemGroupNameEn": "Name",
     "description":"Description",
     "addNewGroup": "Add New Group",
-    "itemGroupInfo": "Create a new group to organize your items"
+    "itemGroupInfo": "Create a new group to organize your items",
+    "editItemsGroup": "Edit Group info",
+    "editGroupInfo": "Review and update group information"
  },
   "LDC": {
   "LDC" : "LDC",

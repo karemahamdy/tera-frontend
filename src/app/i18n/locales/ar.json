@@ -353,7 +353,9 @@
     "itemGroupNameAr": "الاسم بالعربية",
     "description":"الوصف",
     "addNewGroup": "إضافة مجموعة جديدة",
-    "itemGroupInfo": "أنشئ مجموعة جديدة لتنظيم أغراضك"
+    "itemGroupInfo": "أنشئ مجموعة جديدة لتنظيم أغراضك",
+    "editItemsGroup": "تعديل المجموعة",
+    "editGroupInfo": "مراجعة وتحديث معلومات المجموعة"
  },
  "LDC": {
   "LDC" : "دفتر محاسبة",

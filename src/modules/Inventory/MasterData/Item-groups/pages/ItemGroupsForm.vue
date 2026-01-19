@@ -3,13 +3,13 @@ import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { ItemGroupSchema } from "../validation/ItemGroupSchema";
 
+
 const props = defineProps<{
   mode: "edit" | "create";
 }>();
 
 const editMode = props.mode === "edit";
 const isSubmitting = ref(false);
-
 
 const { errors, defineField, } = useForm({
   validationSchema: ItemGroupSchema,
@@ -30,16 +30,16 @@ const [description] = defineField("description");
 
 <template>
   <div>
-    <ScreenHeader title="inventory" subtitle="masterData" actionName="add new" />
+    <ScreenHeader title="inventory" subtitle="masterData" actionName="itemGroup.title" />
 
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">
           <h2 class="heading-title">
-            {{ editMode ? $t("itemGroup.editUserGroup") : $t("itemGroup.addNewGroup") }}
+            {{ editMode ? $t("itemGroup.editItemsGroup") : $t("itemGroup.addNewGroup") }}
           </h2>
           <p class="subheading-title">
-            {{ $t("itemGroup.itemGroupInfo") }}
+          {{ editMode ? $t("itemGroup.editGroupInfo") : $t("itemGroup.itemGroupInfo") }}
           </p>
         </div>
       </template>
@@ -77,7 +77,7 @@ const [description] = defineField("description");
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'ItemGroups' }"
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'itemGroups' }"
               :disabled="isSubmitting" />
 
             <BaseButton type="submit" :label="editMode ? 'button.save' : 'userGroup.createGroup'" variant="primary"
