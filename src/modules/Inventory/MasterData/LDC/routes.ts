@@ -9,4 +9,14 @@ export const LDCRoutes = [
       permission: null
     },
   },
+  {
+    path: "/LDC/create",
+    component: () => import("@/modules/Inventory/MasterData/LDC/pages/LDCForm.vue"),
+    name: "LDCForm",
+    meta: {
+      hide: true,
+      localizedTitle: "Home",
+      permission: null
+    },
+  },
 ];

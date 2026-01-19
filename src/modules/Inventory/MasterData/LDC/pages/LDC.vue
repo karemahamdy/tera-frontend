@@ -6,18 +6,13 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { usewarehouse } from "../composables/useLDC";
 
-
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-
 const { loading, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = usewarehouse();
 
-// onMounted(() => {
-//     ();
-// });
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
     {
@@ -130,11 +125,11 @@ const handleDeleteConfirm = async () => {
 };
 
 const handleEdit = (row: any) => {
-    router.push(`/warehouses/edit/${row.id}`);
+    router.push(`/LDC/edit/${row.id}`);
 };
 
 const addBranch = () => {
-    router.push('/warehouses/create');
+    router.push('/LDC/create');
 };
 
 </script>
@@ -147,7 +142,7 @@ const addBranch = () => {
             <template #title>
                 <PageHeader title="LDC.title" subtitle="LDC.subtitle" :showExport="true"
                     :showImport="true" :mainBtn="true" mainBtnText="LDC.addNew"   :showFilter="true"
-          :filters="filtersOperation"
+               :filters="filtersOperation"
                     searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
             </template>
             <!-- DynamicTable component -->

@@ -357,15 +357,18 @@
     "itemGroupInfo": "Create a new group to organize your items",
     "editItemsGroup": "Edit Group info",
     "editGroupInfo": "Review and update group information"
- },
+  },
   "LDC": {
-  "LDC" : "LDC",
-  "title": "Ledger Detail Cards (LDC)",
-  "subtitle": "Detailed transaction records and balances",
-  "addNew": "New LDC",
+    "LDC" : "LDC",
+    "title": "Ledger Detail Cards (LDC)",
+    "subtitle": "Detailed transaction records and balances",
+    "addNew": "New LDC",
     "searchPlaceholder": "Search by code or name.....",
-    "deleteLDCConfirm": "Are you sure you want to delete this LDC ?"
-
+    "deleteLDCConfirm": "Are you sure you want to delete this LDC ?",
+    "addLDCInfo": "Add Ledger Detail Cards (LDC)",
+    "editLDCInfo": "Edit Ledger Detail Cards (LDC)",
+    "addLDCInfoDesc": "Define detailed transaction records and account mappings",
+    "editLDCInfoDesc": "Define detailed transaction records and account mappings"
  }
 }
 

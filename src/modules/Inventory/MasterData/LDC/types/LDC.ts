@@ -1,4 +1,4 @@
-// types/branches.ts
+
 export interface warehouses {
   id: string;
   code: string;
