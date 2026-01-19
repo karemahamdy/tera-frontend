@@ -266,28 +266,28 @@ const onReachEnd = () => {
                          <Column style="width: 15%"></Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center pl-8">
+                             <div class="flex justify-center pl-12">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.view ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>
                          </Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center pl-8">
+                             <div class="flex justify-center pl-12">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.create ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>
                          </Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center pl-8">
+                             <div class="flex justify-center pl-12">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.edit ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>
                          </Column>
                          <Column class="text-center" style="width: 7.5%">
                            <template #body="screenSlot">
-                             <div class="flex justify-center pl-8">
+                             <div class="flex justify-center pl-12">
                               <span class="text-sm text-gray-600">{{ screenSlot.data.delete ? 'Yes' : 'No' }}</span>
                              </div>
                            </template>

@@ -283,7 +283,7 @@
     "allModule": "All Module",
     "permission": "Permission",
     "allScreens": "All Screens",
-    "nameModuleScreen": "Module / Screen"
+    "nameModuleScreen": "Name / Module / Screen"
   },
   "licenseInfo": {
     "title": "License Information",
@@ -339,7 +339,24 @@
   "title": "Item Group",
   "subtitle": "Organize items into hierarchical groups",
   "additemGroup": "Add New",
-  "deleteItemConfirm": "Are you sure you want to delete this Item ?"
+    "searchPlaceholder": "Search by code or name.....",
+  "deleteItemConfirm": "Are you sure you want to delete this Item ?",
+    "code":"Code",
+    "name": "Name",
+    "group1": "Group 1",
+    "group2": "Group 2",
+    "group3": "Group 3",
+    "group4": "Group 4",
+    "categories": "Categories"
+ },
+  "LDC": {
+  "LDC" : "LDC",
+  "title": "Ledger Detail Cards (LDC)",
+  "subtitle": "Detailed transaction records and balances",
+  "addNew": "New LDC",
+    "searchPlaceholder": "Search by code or name.....",
+    "deleteLDCConfirm": "Are you sure you want to delete this LDC ?"
+
  }
 }
 
