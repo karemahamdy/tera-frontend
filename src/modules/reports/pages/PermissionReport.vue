@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onBeforeUnmount, ref } from "vue";
 import ReportFilters from "../components/ReportFilters.vue";
 import { useI18n } from "vue-i18n";
 import { useLookups } from "@/composables/useLookups";
@@ -14,7 +14,10 @@ const expandedModuleRows = ref([]);
 
 const { screensLookups, CodeLookups, rolesLookups, groupsLookups, getGroupLookups, getRolesLookups, getScreenLookups,
   getModuleLookups } = useLookups();
-const { data, loading, fetchPermission, clearPermissionData } = useReports();
+const { data, loading, clearPermissionData, setPermissionFilter, setPermissionPage, pageSize, totalRecords } = useReports();
+
+const tableEnd = ref(null);
+let observer: IntersectionObserver | null = null;
 
 const filtersOperation = computed(() => {
   return [
@@ -106,7 +109,7 @@ const onExport = async () => {
 
 const onSearch = (filters: any[]) => {
   const body = getFilterBody(filters);
-  fetchPermission(body);
+  setPermissionFilter(body);
   hasSearched.value = true;
 };
 
@@ -129,9 +132,31 @@ onMounted(() => {
   Promise.all([getGroupLookups(false), getRolesLookups(false), getScreenLookups(),
   getModuleLookups()]);
   const body = getFilterBody([]);
-  fetchPermission(body);
+  setPermissionFilter(body);
   hasSearched.value = true;
+
+  observer = new IntersectionObserver(([entry]) => {
+    if (entry && entry.isIntersecting) {
+      onReachEnd();
+    }
+  }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+  if (tableEnd.value) observer.observe(tableEnd.value as Element);
 });
+
+onBeforeUnmount(() => {
+  if (observer) observer.disconnect();
+});
+
+const onReachEnd = () => {
+    const currentPage = Math.ceil(data.value.length / pageSize);       // current page number
+  const totalPages = Math.ceil(totalRecords.value / pageSize); // total number of pages
+
+  if (currentPage < totalPages) {
+    let pageNo = currentPage + 1;
+    setPermissionPage(pageNo);
+  }
+};
 
 </script>
 
@@ -276,6 +301,7 @@ onMounted(() => {
         </DataTable>
       </template>
     </card>
+    <div ref="tableEnd" class="h-4"></div>
   </div>
 </template>
 
