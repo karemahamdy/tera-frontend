@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { NavItem } from "@/app/types/navigation";
 import SidebarItem from "./SidebarItem.vue";
 import logoImg from "@/assets/Header.svg";
 import { useUserStore } from "@/app/store/useUserStore";
@@ -13,7 +12,6 @@ function normalizeModules(items: ModulesItem[]): QuickAccessItem[] {
       ...(item.screens ?? []),
       ...(item.sections ?? []),
     ];
-
     return {
       code: item.code,
       name: item.name,
@@ -25,7 +23,8 @@ function normalizeModules(items: ModulesItem[]): QuickAccessItem[] {
 
 const modulesItems = computed<QuickAccessItem[] | undefined>(()=>{
   if(userStore.userProfile?.modules){
-    return normalizeModules(userStore.userProfile?.modules)
+    let data = normalizeModules(userStore.userProfile?.modules);
+    return data
   }
   return;
 })
@@ -36,42 +35,6 @@ defineProps<{
 
 const userStore = useUserStore();
 const logo = logoImg;
-
-const navItems: NavItem[] = [
-  {
-    label: "Acces Control",
-    icon: "SecurityUser",
-    children: [
-      { label: "Users Management", route: "/user-management" },
-      { label: "User Groups", route: "/user-group" },
-      { label: "Branch Management", route: "/branch-management" },
-      { label: "Roles Management", route: "/roles-permissions" },
-      { label: "Active Sessions", route: "/active-sessions" },
-      { label: "Audit Log", route: "/audit-log" },
-      {
-        label: "Reports",
-        children: [
-          { label: "User Report", route: "/reports/user" },
-          { label: "User Group Report", route: "/reports/user-group" },
-          { label: "Permission Report", route: "/reports/permission-report" },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Adminstration",
-    icon: "KeySquare",
-    children: [{ label: "License Info", route: "/license-info" }],
-  },
-  {
-    label: "Inventory",
-    icon: "SecurityUser",
-    children: [
-      { label: "Warehouses", route: "/warehouses" },
-      { label: "itemGroups", route: "/item-groups" },
-    ],
-  },
-];
 
 function logout() {
   userStore.logout();
@@ -118,8 +81,8 @@ function logout() {
 
           <!-- Dynamic Items -->
           <SidebarItem
-            v-for="item in navItems"
-            :key="item.label"
+            v-for="item in modulesItems"
+            :key="item.code"
             :item="item"
             :collapsed="collapsed"
             :activeClass="
