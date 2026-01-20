@@ -22,7 +22,6 @@ const accountFields = [
   { key: "exportSalesReturn", label: "LDC.exportSalesReturn" },
   { key: "physicalCount", label: "LDC.physicalCount" },
   { key: "cogs", label: "LDC.cogs" },
-  // { key: "inventoryAdjustment", label: "LDC.inventoryAdjustment" }
 ];
 
 const { errors, defineField } = useForm({
@@ -42,10 +41,9 @@ const [LDCNameEn] = defineField("LDCNameEn");
 const [inventoryAdjustment] = defineField("inventoryAdjustment");
 
 const fields = Object.fromEntries(
-  accountFields.map(f => [f.key, defineField(f.key)[0]])
-);
+  accountFields.map((f: any) => [f.key, defineField(f.key)[0]])
+) as Record<string, any>;
 
-// example options
 const accountsOptions = ref([
   { label: "Account 1", value: 1 },
   { label: "Account 2", value: 2 }
@@ -85,7 +83,7 @@ const accountsOptions = ref([
           <div class="grid grid-cols-2 gap-4">
             <FormDropdown v-for="field in accountFields" :key="field.key" :label="$t(field.label)"
               v-model="fields[field.key]" :options="accountsOptions" :placeholder="$t('LDC.accountPlaceholder')"
-              :error="errors[field.key]" />
+               />
           </div>
 
           <FormDropdown :label="$t('LDC.inventoryAdjustment')"
