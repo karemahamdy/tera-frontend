@@ -4,6 +4,8 @@ import { AuditService } from "../services/auditLogs.service";
 import type { AuditLog, AuditFiltersPayload, Pagination } from "../types/auditLogList";
 import { formatDate } from "@/app/utils/dates";
 
+import { FileService } from "@/app/services/file.service";
+
 interface FilterChangePayload {
   filter: { field: string };
   value: any;
@@ -104,6 +106,29 @@ export function useAudit() {
     fetchAuditLogs();
   };
 
+  const exportAuditLogs = async () => {
+    try {
+      const params: any = {
+        FromDate: formatDate(fromDate.value),
+        ToDate: formatDate(toDate.value),
+        ...filters.value,
+        ...pagination.value,
+      };
+
+      // Remove undefined/null/empty values to keep url clean
+      Object.keys(params).forEach((key) => {
+        if (params[key] === undefined || params[key] === null || params[key] === "") {
+          delete params[key];
+        }
+      });
+
+      const response = await AuditService.exportLogs(params);
+      FileService.downloadBlob(response, "audit-logs.csv");
+    } catch (err: any) {
+      toastService.error(err?.message || "Error exporting audit logs");
+    }
+  };
+
   return {
     loading,
     List,
@@ -120,5 +145,6 @@ export function useAudit() {
     filters,
     fromDate,
     toDate,
+    exportAuditLogs,
   };
 }

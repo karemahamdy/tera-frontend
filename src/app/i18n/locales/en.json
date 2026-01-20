@@ -358,7 +358,7 @@
     "editItemsGroup": "Edit Group info",
     "editGroupInfo": "Review and update group information"
   },
-  "LDC": {
+"LDC": {
     "LDC" : "LDC",
     "title": "Ledger Detail Cards (LDC)",
     "subtitle": "Detailed transaction records and balances",
@@ -368,7 +368,25 @@
     "addLDCInfo": "Add Ledger Detail Cards (LDC)",
     "editLDCInfo": "Edit Ledger Detail Cards (LDC)",
     "addLDCInfoDesc": "Define detailed transaction records and account mappings",
-    "editLDCInfoDesc": "Define detailed transaction records and account mappings"
- }
+    "editLDCInfoDesc": "Define detailed transaction records and account mappings",
+  "code": "Ledger Code",
+  "codePlaceholder": "Enter ledger code",
+  "nameAr": "Name (Arabic)",
+  "nameEn": "Name (English)",
+  "nameArPlaceholder": "Enter name in Arabic",
+  "nameEnPlaceholder": "Enter name in English",
+  "accountPlaceholder": "Select account",
+  "localPurchaseAccount": "Local Purchase Account",
+  "localSalesAccount": "Local Sales Account",
+  "localPurchaseReturn": "Local Purchase Return",
+  "localSalesReturn": "Local Sales Return",
+  "importPurchaseAccount": "Import Purchase Account",
+  "importPurchaseReturn": "Import Purchase Return",
+  "exportSalesAccount": "Export Sales Account",
+  "exportSalesReturn": "Export Sales Return",
+  "physicalCount": "Physical Count",
+  "cogs": "Cost of Goods Sold (COGS)",
+  "inventoryAdjustment": "Inventory Adjustment"
+}
 }
 

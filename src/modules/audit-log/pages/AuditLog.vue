@@ -19,6 +19,7 @@ const {
   loading,
   fromDate,
   toDate,
+  exportAuditLogs,
 } = useAudit();
 
 const {
@@ -72,8 +73,7 @@ onMounted(() => {
       <template #title>
         <PageHeader title="auditLog.title" subtitle="auditLog.subtitle" :showExport="true" :showMultiFilter="true"
           @filter-change="onFilterChange" :filters="filtersOperation" searchPlaceholder="auditLog.searchPlaceholder"
-          @search="onSearch" :hasMenu="false" templateFileUrl="/audit-logs/export" dataFileUrl="/audit-logs/export"
-          templateFileName="auditLog-template.csv" dataFileName="auditLog-data.csv" />
+          @search="onSearch" :hasMenu="false" :onExport="exportAuditLogs" />
         <div class="flex gap-4 mt-2">
           <div class="w-[50%]"> 
             <label class="block text-gray-600 text-lg ">{{ t("form.fromDate") }}</label>
