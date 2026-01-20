@@ -2,8 +2,8 @@ import { toastService } from "@/app/services/toastService";
 import { ref, computed } from "vue";
 
 import { useI18n } from "vue-i18n";
-import { warehousesService } from "../services/warehouse.service";
-import type { Addwarehouses, warehouses } from "../types/warehouse";
+import { warehousesService } from "../services/LDC.service";
+import type { Addwarehouses, warehouses } from "../types/LDC";
 
 const loading = ref(false);
 const apiwarehouses = ref<warehouses[]>([]);
@@ -129,6 +129,7 @@ export function usewarehouse() {
       loading.value = false;
     }
   };
+
 
 
 const onSearch = (term: string) => {
