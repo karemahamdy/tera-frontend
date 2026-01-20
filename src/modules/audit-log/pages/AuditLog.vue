@@ -63,8 +63,6 @@ onMounted(() => {
   getUsersLookups();
 });
 
-
-
 </script>
 
 <template>

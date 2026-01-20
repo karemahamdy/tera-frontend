@@ -19,6 +19,7 @@ export function useReports() {
   const pageSize = 10;
 
   const filtersBody = ref<UserFilterBody>({ pageIndex: 1, pageSize });
+  const permissionFiltersBody = ref<any>({ pageIndex: 1, pageSize });
 
   const fetchUsers = async (reset = false) => {
     try {
@@ -66,14 +67,21 @@ export function useReports() {
     }
   };
 
-  const fetchPermission = async (body: any) => {
+  const fetchPermission = async (reset = false) => {
     try {
       loading.value = true;
+      if (reset) {
+        pageIndex.value = 1;
+        data.value = [];
+      }
+      permissionFiltersBody.value.pageIndex = pageIndex.value;
+      permissionFiltersBody.value.pageSize = pageSize;
+
       const response = (await PermissionService.getPermission(
-        body
+        permissionFiltersBody.value
       )) as any;
       const items = response.data.items || [];
-      data.value = items;
+      data.value = reset ? items : [...data.value, ...items];
       totalRecords.value = response.data.totalCount;
     } finally {
       loading.value = false;
@@ -109,6 +117,18 @@ export function useReports() {
     fetchGroups(true);
   };
 
+  const setPermissionFilter = (filters: any) => {
+    permissionFiltersBody.value = { ...permissionFiltersBody.value, ...filters, pageIndex: 1 };
+    fetchPermission(true);
+  };
+
+  const setPermissionPage = (page: number) => {
+    if (page === pageIndex.value) return;
+
+    pageIndex.value = page;
+    fetchPermission(false);
+  };
+
 
 
   return {
@@ -124,6 +144,8 @@ export function useReports() {
     setFilters,
     setFilter,
     setUsersPage,
-    setGroupPage
+    setGroupPage,
+    setPermissionFilter,
+    setPermissionPage
   };
 }

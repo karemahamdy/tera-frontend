@@ -145,7 +145,8 @@ const onClearFilters = () => {
     isGlobal: null,
     department: null,
   };
-  hasSearched.value = false;
+  
+  // hasSearched.value = false;
 };
 const onFilterChange = ({ filter, value }: any) => {
   filterState.value[filter.field as keyof typeof filterState.value] = value;
