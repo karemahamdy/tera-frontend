@@ -172,7 +172,7 @@
     "updateRoleInfo": "تحديث الدور بصلاحيات مخصصة.",
     "descriptionPlaceholder": "وصف الغرض من هذا الدور..",
     "createRole": "إنشاء دور",
-    "moduleScreen": "الوحدة / الشاشة",
+    "moduleScreen": " الاسم / الوحدة / الشاشة",
     "systemAdministrator": "مسؤول النظام",
     "viewInfo": "هذه هي الأذونات التي قمت بتحديدها. راجعها على اليسار.",
     "searchViewPlaceholder": "ابحث عن وحدة أو شاشة...",
@@ -289,7 +289,7 @@
     "allModule": "جميع الوحدات",
     "permission": "الصلاحية",
     "allScreens": "جميع الشاشات",
-    "nameModuleScreen": "شاشة او الوحدة"
+    "nameModuleScreen": " الاسم او شاشة او الوحدة"
   },
   "licenseInfo": {
     "title": "معلومات الترخيص",
@@ -338,8 +338,35 @@
  "itemGroup": {
   "title": "مجموعة العناصر",
   "subtitle": "قم بتنظيم العناصر في مجموعات هرمية",
-  "additemGroup": "اضافة مجموعة اصناف",
-   "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ "
-
+  "additemGroup": "اضافة  ",
+    "searchPlaceholder": "البحث عن الاسم او الرمز...",
+  "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ ",
+  "code":"الرمز",
+  "name": "الاسم",
+   "group1": "مجموعة 1",
+    "group2": "مجموعة 2",
+    "group3": "مجموعة 3",
+    "group4": "مجموعة 4",
+    "categories": "تصنيف",
+    "namePlaceholder": "أدخل اسم المجموعة",
+    "codePlaceholder": "ادخل كود المجموعة",
+    "itemGroupNameAr": "الاسم بالعربية",
+    "description":"الوصف",
+    "addNewGroup": "إضافة مجموعة جديدة",
+    "itemGroupInfo": "أنشئ مجموعة جديدة لتنظيم أغراضك",
+    "editItemsGroup": "تعديل المجموعة",
+    "editGroupInfo": "مراجعة وتحديث معلومات المجموعة"
+ },
+ "LDC": {
+  "LDC" : "دفتر محاسبة",
+  "title": "دفتر محاسبة",
+  "subtitle": "سجلات المعاملات والأرصدة التفصيلية",
+  "addNew": "اضاقة دفتر محاسبة",
+ "searchPlaceholder": "البحث عن الاسم او الرمز...",
+   "deleteLDCConfirm": "هل أنت متأكد أنك تريد حذف المستودع ",
+   "addLDCInfo": "اضافة دفتر حسابات ",
+   "editLDCInfo": "",
+   "addLDCInfoDesc": "حدد سجلات المعاملات التفصيلية وتعيينات الحسابات",
+   "editLDCInfoDesc":  "تعديل سجلات المعاملات التفصيلية وتعيينات الحسابات"
  }
 }
