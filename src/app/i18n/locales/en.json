@@ -346,7 +346,8 @@
     "warehouseType": "Warehouse Type",
     "manager": "Manager",
     "LDC": "Default Ledger Detail Card",
-    "descriptionPlaceholder": "Primary warehouse used for receiving, storing, and distributing inventory items."
+    "basicInfo": "Basic Information",
+    "zonseInfo": "Zones & Locations"
   },
    "itemGroup": {
   "title": "Item Group",

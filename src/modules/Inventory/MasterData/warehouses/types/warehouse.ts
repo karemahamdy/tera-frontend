@@ -35,3 +35,21 @@ export interface Addwarehouses {
   addressAr?: string;
   isActive?: boolean;
 }
+
+export interface Location {
+  code: string;
+  row: string;
+  column: string;
+  rack: string;
+}
+
+export interface Zone {
+  id: string;
+  code: string;
+  name: string;
+  rows: number;
+  columns: number;
+  racks: number;
+  locations: Location[];
+  isExpanded?: boolean; // For UI toggle
+}

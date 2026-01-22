@@ -28,3 +28,11 @@ defineEmits(["update:modelValue"]);
     </small>
   </div>
 </template>
+<style scoped>
+::v-deep(.p-inputtext) {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-gray-300);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+</style>
