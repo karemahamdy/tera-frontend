@@ -74,21 +74,21 @@ async function makeRequest<T>(
 
     const status = error.response.status;
     const userStore = useUserStore();
-    const data = error.response.data;
+    const err_data = error.response.data;
     let message = "Failed to Fetch data";
 
-    if (data) {
-      if (Array.isArray(data.errors) && data.errors.length > 0) {
-        message = data.errors.map((e: any) => e.message).join(" , ");
+    if (err_data) {
+      if (Array.isArray(err_data.errors) && err_data.errors.length > 0) {
+        message = err_data.errors.map((e: any) => e.message).join(" , ");
         console.log(message);
         
       } else if (
-        data.validationErrors &&
-        typeof data.validationErrors === "object"
+        err_data.validationErrors &&
+        typeof err_data.validationErrors === "object"
       ) {
-        message = Object.values(data.validationErrors).flat().join(" , ");
-      } else if (data.message && data.message !== "ValidationError") {
-        message = data.message;
+        message = Object.values(err_data.validationErrors).flat().join(" , ");
+      } else if (err_data.message && err_data.message !== "ValidationError") {
+        message = err_data.message;
       }
     }
     if (!message && error.message) {
