@@ -14,6 +14,7 @@ import { LicenseRoutes } from "@/modules/license-info/routes";
 import { LDCRoutes } from "@/modules/Inventory/MasterData/LDC/routes";
 import { InventoryRoutes } from "@/modules/Inventory/MasterData/warehouses/routes";
 import { ItemGroupsRoutes } from "@/modules/Inventory/MasterData/Item-groups/route";
+import { itemManagementRoutes } from "@/modules/Inventory/MasterData/items/routes";
 const defaultTitle = "Tera ERP";
 
 const routes = [
@@ -37,6 +38,7 @@ const routes = [
       ...ItemGroupsRoutes,
       ...InventoryRoutes,
       ...LDCRoutes,
+      ...itemManagementRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
