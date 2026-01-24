@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { ref } from "vue";
 import Sidebar from "./Sidebar.vue";
 import Topbar from "./Topbar.vue";
 import Footer from "./Footer.vue";
@@ -16,17 +16,17 @@ function toggleSidebar() {
   localStorage.setItem("sidebar-collapsed", String(sidebarCollapsed.value));
 }
 
-const handlePageHide = () => {
-  userStore.closeSession();
-};
+// const handlePageHide = () => {
+//   userStore.closeSession();
+// };
 
-onMounted(() => {
-  window.addEventListener('pagehide', handlePageHide)
-})
+// onMounted(() => {
+//   window.addEventListener('pagehide', handlePageHide)
+// })
 
-onBeforeUnmount(() => {
-  window.removeEventListener('pagehide', handlePageHide)
-})
+// onBeforeUnmount(() => {
+//   window.removeEventListener('pagehide', handlePageHide)
+// })
 
 
 </script>
