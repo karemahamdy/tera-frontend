@@ -366,7 +366,9 @@
   "column": "العمود",
   "rack": "الرف",
   "totalLocations": "إجمالي المواقع",
-  "deleteZoneConfirm": "هل أنت متأكد أنك تريد حذف هذا النطاق؟"
+  "deleteZoneConfirm": "هل أنت متأكد أنك تريد حذف هذا النطاق؟",
+  "add": "إضافة مستودع",
+  "zoneAddedSuccessfully": "تمت إضافة النطاق بنجاح"
 },
  "itemGroup": {
   "title": "مجموعة العناصر",
@@ -390,6 +392,21 @@
     "editItemsGroup": "تعديل المجموعة",
     "editGroupInfo": "مراجعة وتحديث معلومات المجموعة"
  },
+ "itemList": {
+    "title": "قائمة الأصناف",
+    "subtitle": "إدارة تفاصيل الأصناف والمخزون",
+    "itemList": "قائمة الأصناف",
+    "addWarehouse": "إضافة صنف",
+    "searchPlaceholder": "البحث عن الاسم او الرمز...",
+    "itemName": "اسم الصنف",
+    "itemCode": "رمز الصنف",
+    "itemGroup": "مجموعة الصنف",
+    "UOM": "وحدة القياس",
+    "warehouse": "المستودع",
+    "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذا الصنف؟",
+    "addItem": "إضافة صنف",
+    "editItem": "تعديل الصنف"
+  },
 "LDC": {
     "LDC" : "دفتر محاسبة",
   "title": "دفتر محاسبة",

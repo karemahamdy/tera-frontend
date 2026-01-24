@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useForm } from "vee-validate";
-import { ItemGroupSchema } from "../../Item-groups/validation/ItemGroupSchema";
+import { ItemGroupSchema } from "../../item-groups/validation/ItemGroupSchema";
 import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
 
 const props = defineProps<{
