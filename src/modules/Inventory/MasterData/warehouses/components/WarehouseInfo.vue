@@ -30,7 +30,7 @@ const accountsOptions = ref([
 </script>
 
 <template>
-    <form class="space-y-6 px-16">
+    <form class="space-y-6">
         <div class="flex gap-4">
             <FormInput class="w-1/2" :label="$t('warehouses.code')" v-model="code" :error="errors.code"
                 :invalid="!!errors.code" placeholder="WH-MAIN-001" />

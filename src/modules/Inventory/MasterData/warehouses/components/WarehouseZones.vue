@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import { useForm } from "vee-validate";
 import type { Zone, Location } from "../types/warehouse";
 
 const props = defineProps<{
@@ -10,21 +11,29 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: Zone[]): void;
 }>();
 
-const newZone = ref({
-  code: "",
-  name: "",
-  rows: "",
-  columns: "",
-  racks: ""
+const { errors, defineField } = useForm({
+  initialValues: {
+    code: "",
+    name: "",
+    rows: "",
+    columns: "",
+    racks: ""
+  }
 });
+
+const [code] = defineField("code");
+const [name] = defineField("name");
+const [rows] = defineField("rows");
+const [columns] = defineField("columns");
+const [racks] = defineField("racks");
 
 const isFormValid = computed(() => {
   return (
-    newZone.value.code &&
-    newZone.value.name &&
-    Number(newZone.value.rows) > 0 &&
-    Number(newZone.value.columns) > 0 &&
-    Number(newZone.value.racks) > 0
+    code.value &&
+    name.value &&
+    Number(rows.value) > 0 &&
+    Number(columns.value) > 0 &&
+    Number(racks.value) > 0
   );
 });
 const generateLocations = (
@@ -60,19 +69,19 @@ const generateLocations = (
 const addZone = () => {
   if (!isFormValid.value) return;
 
-  const rows = Number(newZone.value.rows);
-  const cols = Number(newZone.value.columns);
-  const racks = Number(newZone.value.racks);
+  const rows_num = Number(rows.value);
+  const cols_num = Number(columns.value);
+  const racks_num = Number(racks.value);
 
-  const locations = generateLocations(newZone.value.code, rows, cols, racks);
+  const locations = generateLocations(code.value, rows_num, cols_num, racks_num);
 
   const zone: Zone = {
     id: self.crypto.randomUUID(),
-    code: newZone.value.code,
-    name: newZone.value.name,
-    rows,
-    columns: cols,
-    racks,
+    code: code.value,
+    name: name.value,
+    rows: rows_num,
+    columns: cols_num,
+    racks: racks_num,
     locations,
     isExpanded: true
   };
@@ -80,13 +89,11 @@ const addZone = () => {
   const updatedZones = [...(props.modelValue || []), zone];
   emit("update:modelValue", updatedZones);
 
-  newZone.value = {
-    code: "",
-    name: "",
-    rows: "",
-    columns: "",
-    racks: ""
-  };
+  code.value = "";
+  name.value = "";
+  rows.value = "";
+  columns.value = "";
+  racks.value = "";
 };
 
 const deleteZone = (id: string) => {
@@ -101,15 +108,15 @@ const toggleExpand = (zone: Zone) => {
 
 <template>
   <div class="space-y-8">
-    <!-- Zones Management Form -->
-    <div class="px-16">
+
+    <div class="">
       <div class="flex items-center justify-between  pb-8">
         <div>
-          <h3 class="text-lg font-medium text-gray-900">Zones Management</h3>
-          <p class="text-sm text-gray-500">Configure warehouse zones with storage locations</p>
+          <h3 class="text-lg font-medium text-gray-900">{{ $t('warehouses.zonesManagement') }}</h3>
+          <p class="text-sm text-gray-500">{{ $t('warehouses.configureZones') }}</p>
         </div>
         <BaseButton 
-          label="Add New" 
+          :label="$t('button.addNew')" 
           icon="pi pi-plus" 
           size="small" 
           @click="addZone"
@@ -117,54 +124,77 @@ const toggleExpand = (zone: Zone) => {
         />
       </div>
 
-      <div class="grid grid-cols-1 gap-4">
-        <!-- Zone Code and Name -->
-        <div class="space-y-1">
-          <label class="text-sm font-medium text-gray-700">Zone Code <span class="text-red-500">*</span></label>
-          <InputText v-model="newZone.code" placeholder="Enter Zone Code" class="w-full" />
-        </div>
-        
-        <div class="space-y-1">
-          <label class="text-sm font-medium text-gray-700">Zone Name <span class="text-red-500">*</span></label>
-          <InputText v-model="newZone.name" placeholder="Enter Zone Name" class="w-full" />
+      <form class="space-y-6">
+        <div class="grid grid-cols-1 gap-4">
+          <FormInput 
+            :label="$t('warehouses.zoneCode')" 
+            v-model="code" 
+            :error="errors.code"
+            :invalid="!!errors.code" 
+            :placeholder="$t('warehouses.zoneCode')" 
+          />
+          
+          <FormInput 
+            :label="$t('warehouses.zoneName')" 
+            v-model="name" 
+            :error="errors.name"
+            :invalid="!!errors.name" 
+            :placeholder="$t('warehouses.zoneName')" 
+          />
         </div>
 
-        <!-- Rows, Columns, Racks -->
         <div class="grid grid-cols-3 gap-4">
-          <div class="space-y-1">
-            <label class="text-sm font-medium text-gray-700">Rows</label>
-            <InputText v-model="newZone.rows" type="number" placeholder="Enter Rows" class="w-full" />
-            <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500">
-              <i class="pi pi-info-circle"></i> Rows Numbers in Zone
+          <div>
+            <FormInput 
+              :label="$t('warehouses.rows')" 
+              v-model="rows" 
+              type="number"
+              :error="errors.rows"
+              :invalid="!!errors.rows" 
+              :placeholder="$t('warehouses.rows')" 
+            />
+            <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500 mt-1">
+              <i class="pi pi-info-circle"></i> {{ $t('warehouses.rowsInfo') }}
             </span>
           </div>
 
-          <div class="space-y-1">
-            <label class="text-sm font-medium text-gray-700">Columns</label>
-            <InputText v-model="newZone.columns" type="number" placeholder="Enter Columns" class="w-full" />
-             <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500">
-              <i class="pi pi-info-circle"></i> Number of Columns in 1 Row
+          <div>
+            <FormInput 
+              :label="$t('warehouses.columns')" 
+              v-model="columns" 
+              type="number"
+              :error="errors.columns"
+              :invalid="!!errors.columns" 
+              :placeholder="$t('warehouses.columns')" 
+            />
+            <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500 mt-1">
+              <i class="pi pi-info-circle"></i> {{ $t('warehouses.columnsInfo') }}
             </span>
           </div>
 
-          <div class="space-y-1">
-            <label class="text-sm font-medium text-gray-700">Racks</label>
-            <InputText v-model="newZone.racks" type="number" placeholder="Enter Racks" class="w-full" />
-            <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500">
-              <i class="pi pi-info-circle"></i> Number of Racks in 1 Column
+          <div>
+            <FormInput 
+              :label="$t('warehouses.racks')" 
+              v-model="racks" 
+              type="number"
+              :error="errors.racks"
+              :invalid="!!errors.racks" 
+              :placeholder="$t('warehouses.racks')" 
+            />
+            <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500 mt-1">
+              <i class="pi pi-info-circle"></i> {{ $t('warehouses.racksInfo') }}
             </span>
           </div>
         </div>
-      </div>
+      </form>
     </div>
 
-    <!-- Zones Overview -->
     <div v-if="props.modelValue && props.modelValue.length > 0" class="px-16">
-      <h3 class="font-bold mb-2 text-lg text-gray-900 mb-4">Zones Overview</h3>
+      <h3 class="font-bold mb-2 text-lg text-gray-900 mb-4">{{ $t('warehouses.zonesOverview') }}</h3>
       
       <div class="space-y-4">
         <div v-for="zone in props.modelValue" :key="zone.id" class="border rounded-lg bg-[#EEF2FF] border-primary-300 overflow-hidden">
-          <!-- Zone Header -->
+  
            <div class="border rounded-xl bg-gray-100 border-gray-100 overflow-hidden m-2">
           <div class="p-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -175,7 +205,7 @@ const toggleExpand = (zone: Zone) => {
               <button class="text-primary-600 hover:text-primary-800" title="Edit">
               <VsxIcon iconName="Edit" :size="20" color="#F79009" type="linear" />
               </button>
-             <button @click="deleteZone(zone.id)" class="text-red-600 hover:text-red-800" title="Delete">
+             <button @click="deleteZone(zone.id)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
              <VsxIcon iconName="Trash" :size="20" color="#F04438" type="linear" />
               </button>
              <button @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
@@ -185,37 +215,36 @@ const toggleExpand = (zone: Zone) => {
            </div>
           </div>
 
-          <!-- Zone Stats -->
+     
           <div class="px- pb-4 flex justify-center text-center gap-24 max-w-2xl">
              <div>
-                <div class="text-xs text-gray-500">Rows</div>
+                <div class="text-xs text-gray-500">{{ $t('warehouses.rows') }}</div>
                 <div class="font-medium">{{ zone.rows }}</div>
              </div>
               <div>
-                <div class="text-xs text-gray-500">Columns</div>
+                <div class="text-xs text-gray-500">{{ $t('warehouses.columns') }}</div>
                  <div class="font-medium">{{ zone.columns }}</div>
              </div>
               <div>
-                <div class="text-xs text-gray-500">Racks</div>
+                <div class="text-xs text-gray-500">{{ $t('warehouses.racks') }}</div>
                  <div class="font-medium">{{ zone.racks }}</div>
              </div>
               <div>
-                <div class="text-xs text-gray-500">Total Locations</div>
+                <div class="text-xs text-gray-500">{{ $t('warehouses.totalLocations') }}</div>
                  <div class="font-medium text-primary-600">{{ zone.locations.length }}</div>
              </div>
             </div>
-            
-          <!-- Generated Storage Locations Table -->
+      
           <div v-if="zone.isExpanded" class="px-4 pb-4">
-            <div class="font-bold mb-2 text-lg text-gray-700">Generated Storage Locations</div>
+            <div class="font-bold mb-2 text-lg text-gray-700">{{ $t('warehouses.generatedLocations') }}</div>
             <div class="bg-gray-50 rounded  overflow-hidden">
                <table class="w-full text-sm text-left">
                   <thead class="bg-gray-300 text-gray-700 bg-opacity-50">
                      <tr>
-                        <th class="p-4 font-medium">Location Code</th>
-                        <th class="p-4 font-medium">Row</th>
-                        <th class="p-4 font-medium">Column</th>
-                        <th class="p-4 font-medium">Rack</th>
+                        <th class="p-4 font-medium">{{ $t('warehouses.locationCode') }}</th>
+                        <th class="p-4 font-medium">{{ $t('warehouses.row') }}</th>
+                        <th class="p-4 font-medium">{{ $t('warehouses.column') }}</th>
+                        <th class="p-4 font-medium">{{ $t('warehouses.rack') }}</th>
                      </tr>
                   </thead>
                   <tbody class="">
