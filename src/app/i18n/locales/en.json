@@ -366,7 +366,9 @@
     "column": "Column",
     "rack": "Rack",
     "totalLocations": "Total Locations",
-    "deleteZoneConfirm": "Are you sure you want to delete this zone?"
+    "deleteZoneConfirm": "Are you sure you want to delete this zone?",
+    "add": "New warehouse"
+
   },
    "itemGroup": {
   "title": "Item Group",

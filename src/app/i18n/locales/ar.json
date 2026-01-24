@@ -366,7 +366,9 @@
   "column": "العمود",
   "rack": "الرف",
   "totalLocations": "إجمالي المواقع",
-  "deleteZoneConfirm": "هل أنت متأكد أنك تريد حذف هذا النطاق؟"
+  "deleteZoneConfirm": "هل أنت متأكد أنك تريد حذف هذا النطاق؟",
+  "add": "إضافة مستودع",
+  "zoneAddedSuccessfully": "تمت إضافة النطاق بنجاح"
 },
  "itemGroup": {
   "title": "مجموعة العناصر",
