@@ -63,9 +63,13 @@ const editMode = props.mode === "edit";
   color: #3F5FAC;
   background: transparent;
   transition: all 0.2s ease;
+  
 }
 :deep(.p-tab.p-highlight) {
   background: #ffffff;
   color: #3F5FAC !important;
+}
+:deep(.p-tablist-active-bar) {
+    background: #3F5FAC;
 }
 </style>
