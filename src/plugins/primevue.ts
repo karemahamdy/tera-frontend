@@ -33,6 +33,11 @@ import Toast from "primevue/toast";
 import MultiSelect from "primevue/multiselect";
 import DatePicker from 'primevue/datepicker';
 import TabMenu from 'primevue/tabmenu'
+import Tabs from 'primevue/tabs';
+import TabPanel from 'primevue/tabpanel';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
 
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
@@ -78,5 +83,9 @@ export function setupPrimeVue(app: App) {
   app.component("MultiSelect", MultiSelect);
   app.component("DatePicker", DatePicker);
   app.component("TabMenu", TabMenu);
-
+app.component('Tabs', Tabs);
+app.component('TabList', TabList);
+app.component('Tab', Tab);
+app.component('TabPanels', TabPanels);
+app.component('TabPanel', TabPanel);
 }
