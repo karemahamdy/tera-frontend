@@ -347,7 +347,8 @@
     "manager": "Manager",
     "LDC": "Default Ledger Detail Card",
     "basicInfo": "Basic Information",
-    "zonseInfo": "Zones & Locations"
+    "zonseInfo": "Zones & Locations",
+    "descriptionPlaceholder": "Enter Physical Details of the warehouse"
   },
    "itemGroup": {
   "title": "Item Group",

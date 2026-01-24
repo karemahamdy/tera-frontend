@@ -27,27 +27,35 @@ const isFormValid = computed(() => {
     Number(newZone.value.racks) > 0
   );
 });
+const generateLocations = (
+  zoneCode: string,
+  rows: number,
+  cols: number,
+  racks: number
+): Location[] => {
+  const total = rows * cols * racks;
+  const locations: Location[] = new Array(total);
 
-const generateLocations = (zoneCode: string, rows: number, cols: number, racks: number): Location[] => {
-  const locs: Location[] = [];
-  for (let r = 1; r <= rows; r++) {
-    for (let c = 1; c <= cols; c++) {
-      for (let k = 1; k <= racks; k++) {
-        const rowStr = `R${r}`;
-        const colStr = `C${String(c).padStart(2, '0')}`;
-        const rackStr = `K${String(k).padStart(2, '0')}`;
-        const code = `${zoneCode}-${rowStr}-${colStr}-${rackStr}`;
-        locs.push({
-          code,
-          row: rowStr,
-          column: colStr,
-          rack: rackStr
-        });
-      }
-    }
+  for (let i = 0; i < total; i++) {
+    const r = Math.floor(i / (cols * racks)) + 1;            
+    const c = Math.floor((i % (cols * racks)) / racks) + 1; 
+    const k = (i % racks) + 1;                              
+
+    const rowStr = `R${r}`;
+    const colStr = `C${String(c).padStart(2, "0")}`;
+    const rackStr = `K${String(k).padStart(2, "0")}`;
+
+    locations[i] = {
+      code: `${zoneCode}-${rowStr}-${colStr}-${rackStr}`,
+      row: rowStr,
+      column: colStr,
+      rack: rackStr
+    };
   }
-  return locs;
+
+  return locations;
 };
+
 
 const addZone = () => {
   if (!isFormValid.value) return;
