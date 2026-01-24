@@ -43,7 +43,7 @@ const isActive = computed(() => {
     <!-- ITEM -->
     <div
       class="flex items-center gap-3 px-3 py-2 rounded cursor-pointer transition"
-      :class="[(isActive || open) && !parentActiveClass && activeClass, item.children && parentActiveClass]"
+      :class="[(isActive || open) && !parentActiveClass && activeClass, item.children && parentActiveClass, (isActive || open) && !item.children && activeClass]"
       @click="item.children ? toggle() : navigate()"
     >
       <VsxIcon
