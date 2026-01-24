@@ -4,15 +4,15 @@ export interface warehouses {
   code: string;
   nameAr: string;
   nameEn: string;
- addressEn?: string;
- addressAr?: string;
+  addressEn?: string;
+  addressAr?: string;
   isActive: boolean;
   createAt: string;
 }
 
 export interface warehousesResponse {
   data: {
-    
+
     items: warehouses[];
     PageIndex: number;
     pageSize: number;
@@ -32,6 +32,24 @@ export interface Addwarehouses {
   nameAr: string;
   nameEn: string;
   addressEn?: string;
- addressAr?: string;
+  addressAr?: string;
   isActive?: boolean;
+}
+
+export interface Location {
+  code: string;
+  row: string;
+  column: string;
+  rack: string;
+}
+
+export interface Zone {
+  id: string;
+  code: string;
+  name: string;
+  rows: number;
+  columns: number;
+  racks: number;
+  locations: Location[];
+  isExpanded?: boolean; // For UI toggle
 }
