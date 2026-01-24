@@ -5,7 +5,7 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { usewarehouse } from "../../LDC/composables/useLDC";
-import ItemsInfo from "../components/itemsInfo.vue";
+import ItemsInfo from "../components/ItemsInfo.vue";
 
 const { t } = useI18n();
 const router = useRouter();
