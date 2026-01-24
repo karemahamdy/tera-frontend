@@ -59,7 +59,7 @@ const [zones] = defineField("zones");
 
       <!-- CONTENT -->
       <template #content>
-        <Tabs v-model:value="activeTab">
+        <Tabs v-model:value="activeTab" class="px-20">
           <!-- TAB HEADERS -->
           <TabList>
             <Tab value="basic">
@@ -74,7 +74,7 @@ const [zones] = defineField("zones");
           <TabPanels>
             <!-- TAB 1 : BASIC INFO -->
             <TabPanel value="basic">
-              <form class="space-y-6 px-20">
+              <form class="space-y-6 px-16">
                 <div class="flex gap-4">
                   <FormInput class="w-1/2" :label="$t('warehouses.code')" v-model="code" :error="errors.code"
                     :invalid="!!errors.code" placeholder="WH-MAIN-001" />

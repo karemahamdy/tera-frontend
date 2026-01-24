@@ -72,7 +72,6 @@ const addZone = () => {
   const updatedZones = [...(props.modelValue || []), zone];
   emit("update:modelValue", updatedZones);
 
-  // Reset form
   newZone.value = {
     code: "",
     name: "",
@@ -95,8 +94,8 @@ const toggleExpand = (zone: Zone) => {
 <template>
   <div class="space-y-8">
     <!-- Zones Management Form -->
-    <div class="space-y-4">
-      <div class="flex items-center justify-between">
+    <div class="px-16">
+      <div class="flex items-center justify-between  pb-8">
         <div>
           <h3 class="text-lg font-medium text-gray-900">Zones Management</h3>
           <p class="text-sm text-gray-500">Configure warehouse zones with storage locations</p>
@@ -127,7 +126,7 @@ const toggleExpand = (zone: Zone) => {
           <div class="space-y-1">
             <label class="text-sm font-medium text-gray-700">Rows</label>
             <InputText v-model="newZone.rows" type="number" placeholder="Enter Rows" class="w-full" />
-            <span class="text-xs text-blue-500 flex items-center gap-1">
+            <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500">
               <i class="pi pi-info-circle"></i> Rows Numbers in Zone
             </span>
           </div>
@@ -135,7 +134,7 @@ const toggleExpand = (zone: Zone) => {
           <div class="space-y-1">
             <label class="text-sm font-medium text-gray-700">Columns</label>
             <InputText v-model="newZone.columns" type="number" placeholder="Enter Columns" class="w-full" />
-             <span class="text-xs text-blue-500 flex items-center gap-1">
+             <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500">
               <i class="pi pi-info-circle"></i> Number of Columns in 1 Row
             </span>
           </div>
@@ -143,7 +142,7 @@ const toggleExpand = (zone: Zone) => {
           <div class="space-y-1">
             <label class="text-sm font-medium text-gray-700">Racks</label>
             <InputText v-model="newZone.racks" type="number" placeholder="Enter Racks" class="w-full" />
-            <span class="text-xs text-blue-500 flex items-center gap-1">
+            <span class="text-xs text-blue-500 flex items-center gap-1 text-primary-500">
               <i class="pi pi-info-circle"></i> Number of Racks in 1 Column
             </span>
           </div>
@@ -152,32 +151,34 @@ const toggleExpand = (zone: Zone) => {
     </div>
 
     <!-- Zones Overview -->
-    <div v-if="props.modelValue && props.modelValue.length > 0">
-      <h3 class="text-lg font-medium text-gray-900 mb-4">Zones Overview</h3>
+    <div v-if="props.modelValue && props.modelValue.length > 0" class="px-16">
+      <h3 class="font-bold mb-2 text-lg text-gray-900 mb-4">Zones Overview</h3>
       
       <div class="space-y-4">
-        <div v-for="zone in props.modelValue" :key="zone.id" class="border rounded-lg bg-blue-50/50 border-blue-100 overflow-hidden">
+        <div v-for="zone in props.modelValue" :key="zone.id" class="border rounded-lg bg-[#EEF2FF] border-primary-300 overflow-hidden">
           <!-- Zone Header -->
+           <div class="border rounded-xl bg-gray-100 border-gray-100 overflow-hidden m-2">
           <div class="p-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <span class="font-medium text-gray-900">{{ zone.name }}</span>
-              <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">{{ zone.code }}</span>
+              <span class="font-bold mb-2 text-lg text-gray-900">{{ zone.name }}</span>
+              <Tag severity="success" class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">{{ zone.code }}</Tag>
             </div>
             <div class="flex items-center gap-2">
-              <button class="text-blue-600 hover:text-blue-800" title="Edit">
-                 <i class="pi pi-pencil"></i>
+              <button class="text-primary-600 hover:text-primary-800" title="Edit">
+              <VsxIcon iconName="Edit" :size="20" color="#F79009" type="linear" />
               </button>
-              <button @click="deleteZone(zone.id)" class="text-red-600 hover:text-red-800" title="Delete">
-                 <i class="pi pi-trash"></i>
+             <button @click="deleteZone(zone.id)" class="text-red-600 hover:text-red-800" title="Delete">
+             <VsxIcon iconName="Trash" :size="20" color="#F04438" type="linear" />
               </button>
-              <button @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
-                 <i :class="zone.isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+             <button @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
+                  <VsxIcon v-if="zone.isExpanded" iconName="ArrowSquareUp" :size="20" color="#3F5FAC" type="linear" />
+                  <VsxIcon v-else="zone.isExpanded" iconName="ArrowSquareDown" :size="20" color="#3F5FAC" type="linear" />
               </button>
-            </div>
+           </div>
           </div>
 
           <!-- Zone Stats -->
-          <div class="px-4 pb-4 flex justify-between text-center max-w-2xl">
+          <div class="px- pb-4 flex justify-center text-center gap-24 max-w-2xl">
              <div>
                 <div class="text-xs text-gray-500">Rows</div>
                 <div class="font-medium">{{ zone.rows }}</div>
@@ -192,33 +193,34 @@ const toggleExpand = (zone: Zone) => {
              </div>
               <div>
                 <div class="text-xs text-gray-500">Total Locations</div>
-                 <div class="font-medium text-blue-600">{{ zone.locations.length }}</div>
+                 <div class="font-medium text-primary-600">{{ zone.locations.length }}</div>
              </div>
-          </div>
-
+            </div>
+            
           <!-- Generated Storage Locations Table -->
           <div v-if="zone.isExpanded" class="px-4 pb-4">
-            <div class="font-medium mb-2 text-sm text-gray-700">Generated Storage Locations</div>
-            <div class="bg-gray-50 rounded border overflow-hidden">
+            <div class="font-bold mb-2 text-lg text-gray-700">Generated Storage Locations</div>
+            <div class="bg-gray-50 rounded  overflow-hidden">
                <table class="w-full text-sm text-left">
-                  <thead class="bg-gray-200 text-gray-700 bg-opacity-50">
+                  <thead class="bg-gray-300 text-gray-700 bg-opacity-50">
                      <tr>
-                        <th class="p-2 font-medium">Location Code</th>
-                        <th class="p-2 font-medium">Row</th>
-                        <th class="p-2 font-medium">Column</th>
-                        <th class="p-2 font-medium">Rack</th>
+                        <th class="p-4 font-medium">Location Code</th>
+                        <th class="p-4 font-medium">Row</th>
+                        <th class="p-4 font-medium">Column</th>
+                        <th class="p-4 font-medium">Rack</th>
                      </tr>
                   </thead>
-                  <tbody class="divide-y divide-gray-100">
+                  <tbody class="">
                      <tr v-for="loc in zone.locations" :key="loc.code" class="hover:bg-blue-50/50">
-                        <td class="p-2 text-blue-600 font-medium">{{ loc.code }}</td>
-                        <td class="p-2">{{ loc.row }}</td>
-                        <td class="p-2">{{ loc.column }}</td>
-                        <td class="p-2">{{ loc.rack }}</td>
+                        <td class="p-4 text-primary-600 font-medium">{{ loc.code }}</td>
+                        <td class="p-4">{{ loc.row }}</td>
+                        <td class="p-4">{{ loc.column }}</td>
+                        <td class="p-4">{{ loc.rack }}</td>
                      </tr>
                   </tbody>
                </table>
             </div>
+          </div>
           </div>
         </div>
       </div>
