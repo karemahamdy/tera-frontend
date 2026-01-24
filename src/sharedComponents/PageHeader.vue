@@ -145,7 +145,7 @@ const handleExportClick = async () => {
       <slot name="actionBtn"></slot>
     </div>
   </div>
-
+  <slot name="middle" />
   <!-- Search + Filters -->
   <div class="flex gap-[10px] mt-2 flex-nowrap">
     <span class="p-input-icon-left search-input">

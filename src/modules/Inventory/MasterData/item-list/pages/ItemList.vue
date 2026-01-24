@@ -5,6 +5,7 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { usewarehouse } from "../../LDC/composables/useLDC";
+import ItemsInfo from "../components/itemsInfo.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -170,7 +171,11 @@ const addBranch = () => {
             <template #title>
                 <PageHeader title="itemList.title" subtitle="itemList.subtitle" :showExport="true" :showImport="true"
                     :mainBtn="true" mainBtnText="itemList.addItem" :showFilter="true" :filters="filtersOperation"
-                    searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
+                    searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" >
+                  <template #middle>
+<ItemsInfo/>
+                   </template>
+                    </PageHeader>
             </template>
             <!-- DynamicTable component -->
             <template #content>
