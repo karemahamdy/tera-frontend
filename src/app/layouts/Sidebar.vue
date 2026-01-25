@@ -43,6 +43,7 @@ const navItems: NavItem[] = [
     children: [
       { label: "Warehouses", route: "/warehouses" },
       { label: "itemGroups", route: "/item-groups" },
+      { label: "ItemList", route: "/item-list" },
       { label: "LDC", route: "/LDC" },
     ],
   }

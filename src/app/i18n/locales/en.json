@@ -366,7 +366,8 @@
     "column": "Column",
     "rack": "Rack",
     "totalLocations": "Total Locations",
-    "deleteZoneConfirm": "Are you sure you want to delete this zone?"
+    "deleteZoneConfirm": "Are you sure you want to delete this zone?",
+    "add": "New warehouse"
   },
    "itemGroup": {
   "title": "Item Group",
@@ -391,6 +392,32 @@
     "editItemsGroup": "Edit Group info",
     "editGroupInfo": "Review and update group information"
   },
+  "itemList": {
+    "title": "Items",
+    "subtitle": "Browse and manage all inventory items",
+    "addItem": "Add New Item",
+    "searchPlaceholder": "Search by code or name.....",
+    "deleteItemConfirm": "Are you sure you want to delete this Item ?",
+    "itemGroup": "Item Group",
+    "warehouse": "Warehouse",
+    "quantity": "Quantity",
+    "unitPrice": "Unit Price",
+    "totalValue": "Total Value",
+    "itemStatus": "Item Status",
+    "addNewItem": "Add New Item",
+    "itemInfo": "Create and manage inventory items",
+    "editItemInfo": "Update item details and information",
+    "itemCode": "Item Code",
+    "UOM": "UOM",
+     "itemList": "Item List",
+    "itemName": "Item Name",
+    "itemDescription": "Item Description",
+    "itemGroupPlaceholder": "Select Item Group",
+    "warehousePlaceholder": "Select Warehouse",
+    "quantityPlaceholder": "Enter Quantity",
+    "unitPricePlaceholder": "Enter Unit Price"
+  },
+  
 "LDC": {
     "LDC" : "LDC",
     "title": "Ledger Detail Cards (LDC)",
