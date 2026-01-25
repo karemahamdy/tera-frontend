@@ -8,7 +8,7 @@ export interface ItemGroup {
     createAt: string;
 }
 
-export interface pagination {
+export interface Pagination {
      pageIndex: number;
         pageSize?: number;
         searchingWord?: string;

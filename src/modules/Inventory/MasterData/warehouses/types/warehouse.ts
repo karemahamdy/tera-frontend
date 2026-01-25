@@ -53,3 +53,12 @@ export interface Zone {
   locations: Location[];
   isExpanded?: boolean; // For UI toggle
 }
+
+export interface Pagination {
+     pageIndex: number;
+        pageSize?: number;
+        searchingWord?: string;
+        level?: number;
+        orderBy?: string;
+        orderDirection?: 'asc' | 'desc';
+}

@@ -35,3 +35,12 @@ export interface Addwarehouses {
  addressAr?: string;
   isActive?: boolean;
 }
+
+export interface Pagination {
+     pageIndex: number;
+        pageSize?: number;
+        searchingWord?: string;
+        level?: number;
+        orderBy?: string;
+        orderDirection?: 'asc' | 'desc';
+}
