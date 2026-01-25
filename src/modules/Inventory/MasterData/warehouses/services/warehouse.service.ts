@@ -1,9 +1,9 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
 import type { Addwarehouses, warehousesResponse } from "../types/warehouse";
-import type { pagination } from "../../item-groups/types/itemGroup";
+import type { Pagination } from "../types/warehouse";
 
 export const warehousesService = {
- async getAll(params: pagination) {
+ async getAll(params: Pagination) {
   const resp = await axiosWrapper.get<warehousesResponse>(
     `/warehouses/GetAllwarehousess?${params}`
   );

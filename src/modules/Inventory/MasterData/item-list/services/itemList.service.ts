@@ -1,9 +1,9 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { AdditemList, itemListResponse } from "../types/itemList";
-import type { pagination } from "../../item-groups/types/itemGroup";
+import type { AdditemList, itemListResponse, Pagination } from "../types/itemList";
+
 
 export const itemListService = {
- async getAll(params: pagination) {
+ async getAll(params: Pagination) {
   const resp = await axiosWrapper.get<itemListResponse>(
     `/itemList/GetAllitemLists?${params}`
   );
