@@ -1,5 +1,5 @@
 // types/branches.ts
-export interface warehouses {
+export interface itemList {
   id: string;
   code: string;
   nameAr: string;
@@ -10,10 +10,10 @@ export interface warehouses {
   createAt: string;
 }
 
-export interface warehousesResponse {
+export interface itemListResponse {
   data: {
 
-    items: warehouses[];
+    items: itemList[];
     PageIndex: number;
     pageSize: number;
     totalCount: number;
@@ -27,7 +27,7 @@ export interface warehousesResponse {
   id: string | null;
 }
 
-export interface Addwarehouses {
+export interface AdditemList {
   code: string;
   nameAr: string;
   nameEn: string;

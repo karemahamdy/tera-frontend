@@ -5,6 +5,7 @@ const props = defineProps({
   title: { type: String, required: true },
   subtitle: { type: String, default: "" },
   actionName: { type: String, default: "" },
+  crudType: { type: String, default: "" },
 });
 </script>
 
@@ -17,6 +18,8 @@ const props = defineProps({
       <span class="screen-header-name">{{ $t(subtitle) }}</span>
        <VsxIcon iconName="ArrowRight2" :size="20" type="linear" style="color: var(--color-gray-400)" v-if="actionName"/>
       <span class="dialog-subheading-title">{{ $t(actionName) }}</span>
+        <VsxIcon iconName="ArrowRight2" :size="20" type="linear" style="color: var(--color-gray-400)" v-if="crudType"/>
+      <span class="dialog-subheading-title">{{ $t(crudType) }}</span>
     </div>
   </div>
 </template>

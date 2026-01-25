@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useForm } from "vee-validate";
-import { ItemGroupSchema } from "../../Item-groups/validation/ItemGroupSchema";
 import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
+import { LDCSchema } from "../validation/LDCSchema";
 
 const props = defineProps<{
   mode: "edit" | "create";
@@ -25,7 +25,7 @@ const accountFields = [
 ];
 
 const { errors, defineField } = useForm({
-  validationSchema: ItemGroupSchema,
+  validationSchema: LDCSchema,
   initialValues: {
     code: "",
     LDCNameAr: "",

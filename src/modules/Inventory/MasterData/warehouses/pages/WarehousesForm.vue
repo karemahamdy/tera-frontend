@@ -14,7 +14,7 @@ const editMode = props.mode === "edit";
 
 <template>
   <div>
-    <ScreenHeader title="inventory" subtitle="masterData" actionName="warehouses.title" />
+    <ScreenHeader title="inventory" subtitle="masterData" actionName="warehouses.title" crudType="warehouses.add" />
     <Card class="p-6 bg-white rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">
