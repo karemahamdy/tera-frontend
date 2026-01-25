@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { ItemGroupSchema } from "../validation/ItemGroupSchema";
 
-
 const props = defineProps<{
   mode: "edit" | "create";
 }>();
