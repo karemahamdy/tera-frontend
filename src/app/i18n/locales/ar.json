@@ -405,7 +405,29 @@
     "warehouse": "المستودع",
     "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذا الصنف؟",
     "addItem": "إضافة صنف",
-    "editItem": "تعديل الصنف"
+    "editItem": "تعديل الصنف",
+    "overview": "نظرة عامة",
+   "stock": "المخزون",
+    "transactions": "المعاملات",
+    "pricing": "التسعير",
+    "inactive": "غير نشط",
+    "itemTransactions": "معاملات الصنف",
+    "date": "الوقت",
+    "transactionType": "نوع المعاملة",
+    "transactionNumber": "رقم المعاملة",
+    "quantity": "الكمية",
+    "balance": "الرصيد",
+    "unitCost": "سعر الوحدة",
+    "totalCost": "التكلفة الإجمالية",
+    "lastTransaction": "آخر معاملة",
+    "zone/Location": "المنطقة / الموقع",
+    "bySerialNumbers" : "حسب الأرقام التسلسلية",
+    "stockByWarehouse": "المخزون حسب المستودع",
+    "onHand": "المتوفر",
+    "available": "المتاح",
+    "onHold": "قيد الانتظار",
+    "serialNumber": "الرقم التسلسلي"
+
   },
 "LDC": {
     "LDC" : "دفتر محاسبة",
@@ -435,7 +457,8 @@
   "exportSalesReturn": "مردودات مبيعات التصدير",
   "physicalCount": "فروقات الجرد",
   "cogs": "تكلفة البضاعة المباعة",
-  "inventoryAdjustment": "تسوية المخزون"
+  "inventoryAdjustment": "تسوية المخزون",
+    "select": "اختر"
 }
 
 }

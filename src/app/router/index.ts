@@ -16,7 +16,6 @@ import { InventoryRoutes } from "@/modules/Inventory/MasterData/warehouses/route
 import { ItemGroupsRoutes } from "@/modules/Inventory/MasterData/Item-groups/routes";
 import { ItemListRoutes } from "@/modules/Inventory/MasterData/item-list/routes";
 const defaultTitle = "Tera ERP";
-
 const routes = [
   ...authRoutes,
   {

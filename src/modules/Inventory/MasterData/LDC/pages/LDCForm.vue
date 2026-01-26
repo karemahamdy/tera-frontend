@@ -72,22 +72,21 @@ const accountsOptions = ref([
          <FormInput :label="$t('LDC.code')" v-model="code" :placeholder="$t('LDC.codePlaceholder')"
             :error="errors.code" :invalid="!!errors.code" />
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4">        
+            <FormInput :label="$t('LDC.nameEn')" v-model="LDCNameEn" :placeholder="$t('LDC.nameEnPlaceholder')"
+            :error="errors.LDCNameEn" :invalid="!!errors.LDCNameEn" :disabled="editMode" />
             <FormInput :label="$t('LDC.nameAr')" v-model="LDCNameAr" :placeholder="$t('LDC.nameArPlaceholder')"
               :error="errors.LDCNameAr" :invalid="!!errors.LDCNameAr" :disabled="editMode" />
-
-            <FormInput :label="$t('LDC.nameEn')" v-model="LDCNameEn" :placeholder="$t('LDC.nameEnPlaceholder')"
-              :error="errors.LDCNameEn" :invalid="!!errors.LDCNameEn" :disabled="editMode" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <FormDropdown v-for="field in accountFields" :key="field.key" :label="$t(field.label)"
-              v-model="fields[field.key]" :options="accountsOptions" :placeholder="$t('LDC.accountPlaceholder')"
+              v-model="fields[field.key]" :options="accountsOptions" :placeholder="$t('LDC.select') + ' ' + $t(field.label)"
                />
           </div>
 
           <FormDropdown :label="$t('LDC.inventoryAdjustment')"
-            v-model="inventoryAdjustment" :options="accountsOptions" :placeholder="$t('LDC.accountPlaceholder')"
+            v-model="inventoryAdjustment" :options="accountsOptions" :placeholder="$t('LDC.select') + ' ' + $t('LDC.inventoryAdjustment')"
             :error="errors.inventoryAdjustment" />
 
           <div class="flex justify-between gap-4 mb-4 w-full">
