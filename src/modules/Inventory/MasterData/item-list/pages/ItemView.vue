@@ -5,6 +5,7 @@ import Stock from '../components/Stock.vue';
 import ItemTransactions from '../components/ItemTransactions.vue';
 import Pricing from '../components/Pricing.vue';
 import Cards from '../components/Cards.vue';
+import Overview from '../components/Overview.vue';
 
 const activeTab = ref("overview");
 
@@ -52,6 +53,11 @@ const activeTab = ref("overview");
         </TabList>
 
           <TabPanels>
+             <TabPanel value="overview">
+           <Overview/>
+            </TabPanel>
+
+
             <TabPanel value="transactions">
            <ItemTransactions/>
             </TabPanel>

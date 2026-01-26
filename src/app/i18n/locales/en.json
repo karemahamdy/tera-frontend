@@ -9,7 +9,7 @@
   "action": "action",
   "status": "Status",
   "enterFullName": "Enter full name",
-  "enterUsername" : "Enter Username",
+  "enterUsername": "Enter Username",
   "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
   "inventory": "Inventory",
@@ -50,7 +50,7 @@
     "clearFilters": "Clear Filters",
     "template": "Template",
     "data": "Data",
-    "terminate": "Terminate" 
+    "terminate": "Terminate"
   },
   "table": {
     "description": "Description",
@@ -68,7 +68,7 @@
     "passwordsMustMatch": "Passwords must match",
     "invalidEmail": "Invalid email",
     "toDate": "to Date",
-  "fromDate": "from Date"
+    "fromDate": "from Date"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -85,7 +85,7 @@
     "loginFrameTagline": "Manage your business with clarity, speed, and control.",
     "loginFrameNote": "Your gateway to smarter, faster, and organized business operations.",
     "forgotPassword": "Forgot Password?",
-    "resetPassword": "Reset Password",  
+    "resetPassword": "Reset Password",
     "newpasswordPlaceholder": "Re-enter new password",
     "newpassword": "New Password",
     "oldPassword": "Old Password",
@@ -184,7 +184,7 @@
     "roleRemovedFromUser": "Role removed from user successfully",
     "rolesFetched": "Roles fetched successfully",
     "assignedBranch": "Assigned Branch",
-    "roleNotActive" : "Group is not active",
+    "roleNotActive": "Group is not active",
     "userNotActive": "User is not active"
   },
   "auditLog": {
@@ -237,7 +237,7 @@
     "descriptionPlaceholder": "Describe the Address of this branch.. ",
     "createBranch": "Create Branch",
     "branchCode": "Branch Code",
-    "branchStatus": "Branch Status", 
+    "branchStatus": "Branch Status",
     "selectbranches": "Select Branches",
     "active": "Active",
     "inactive": "Inactive",
@@ -290,7 +290,7 @@
     "subtitle": "Manage your enterpriselicense ,user quotas and active sessions.",
     "licenseExpire": "License Expire",
     "expiresOn": "Expires on",
-    "urgent": "Urgent", 
+    "urgent": "Urgent",
     "userCapacity": "User Capacity",
     "approachingLimit": "Approaching Limit",
     "currentSession": "Current Session",
@@ -323,7 +323,7 @@
     "stay": "Stay Logged in"
   },
   "warehouses": {
-    "title":"Warehouses",
+    "title": "Warehouses",
     "subtitle": "Manage warehouse locations, types, and configurations",
     "addWarehouse": "New Warehouse",
     "addWarehouseInfo": "Create Warehouse",
@@ -332,7 +332,7 @@
     "editWarehouseInfoDesc": "Define detailed transaction records and account mappings",
     "viewWarehouseInfo": "Main Central Warehouse",
     "viewWarehouseInfoDesc": "Primary warehouse used for receiving, storing and distributing inventory items",
-    "code":"Code",
+    "code": "Code",
     "name": "Name",
     "zones": "Zones",
     "transferLedger": "Transfer Ledger",
@@ -369,13 +369,13 @@
     "deleteZoneConfirm": "Are you sure you want to delete this zone?",
     "add": "New warehouse"
   },
-   "itemGroup": {
-  "title": "Item Group",
-  "subtitle": "Organize items into hierarchical groups",
-  "additemGroup": "Add New",
+  "itemGroup": {
+    "title": "Item Group",
+    "subtitle": "Organize items into hierarchical groups",
+    "additemGroup": "Add New",
     "searchPlaceholder": "Search by code or name.....",
-  "deleteItemConfirm": "Are you sure you want to delete this Item ?",
-    "code":"Code",
+    "deleteItemConfirm": "Are you sure you want to delete this Item ?",
+    "code": "Code",
     "name": "Name",
     "group1": "Group 1",
     "group2": "Group 2",
@@ -386,7 +386,7 @@
     "codePlaceholder": "Enter Group Code",
     "itemGroupNameAr": "Name (AR)",
     "itemGroupNameEn": "Name",
-    "description":"Description",
+    "description": "Description",
     "addNewGroup": "Add New Group",
     "itemGroupInfo": "Create a new group to organize your items",
     "editItemsGroup": "Edit Group info",
@@ -408,7 +408,7 @@
     "editItemInfo": "Update item details and information",
     "itemCode": "Item Code",
     "UOM": "UOM",
-     "itemList": "Item List",
+    "itemList": "Item List",
     "itemName": "Item Name",
     "itemDescription": "Item Description",
     "itemGroupPlaceholder": "Select Item Group",
@@ -437,11 +437,28 @@
     "onHold": "On Hold",
     "serialNumber": "Serial Number",
     "zone": "Zone",
-    "lastTransaction": "Last Transaction"
+    "lastTransaction": "Last Transaction",
+    "cards": {
+      "totalOnHand": "Total On Hand",
+      "allWarehouses": "All Warehouses",
+      "availableItems": "Available Items",
+      "readyToIssue": "Ready to issue",
+      "holdItems": "Hold Items",
+      "holdingItems": "Holding Items",
+      "avgCost": "Avg Cost",
+      "movingAverage": "Moving average"
+    },
+    "pricingTab": {
+      "lastPurchasePricing": "Last Purchase Pricing",
+      "salesPricing": "Sales Pricing",
+      "purchaseAverage": "Purchase Average",
+      "salesAverage": "Sales Average",
+      "perBox": "Per Box",
+      "perPcs": "Per PCS"
+    }
   },
-  
-"LDC": {
-    "LDC" : "LDC",
+  "LDC": {
+    "LDC": "LDC",
     "title": "Ledger Detail Cards (LDC)",
     "subtitle": "Detailed transaction records and balances",
     "addNew": "New LDC",
@@ -451,25 +468,24 @@
     "editLDCInfo": "Edit Ledger Detail Cards (LDC)",
     "addLDCInfoDesc": "Define detailed transaction records and account mappings",
     "editLDCInfoDesc": "Define detailed transaction records and account mappings",
-  "code": "LDC Code",
-  "codePlaceholder": "Enter ledger code",
-  "nameAr": "LDC Name (AR)",
-  "nameEn": "LDC Name ",
-  "nameArPlaceholder": "Enter name in Arabic",
-  "nameEnPlaceholder": "Enter name in English",
-  "accountPlaceholder": "Select account",
-  "localPurchaseAccount": "Local Purchase Account",
-  "localSalesAccount": "Local Sales Account",
-  "localPurchaseReturn": "Local Purchase Return",
-  "localSalesReturn": "Local Sales Return",
-  "importPurchaseAccount": "Import Purchase Account",
-  "importPurchaseReturn": "Import Purchase Return",
-  "exportSalesAccount": "Export Sales Account",
-  "exportSalesReturn": "Export Sales Return",
-  "physicalCount": "Physical Count",
-  "cogs": "Cost of Goods Sold (COGS)",
-  "inventoryAdjustment": "Inventory Adjustment",
+    "code": "LDC Code",
+    "codePlaceholder": "Enter ledger code",
+    "nameAr": "LDC Name (AR)",
+    "nameEn": "LDC Name ",
+    "nameArPlaceholder": "Enter name in Arabic",
+    "nameEnPlaceholder": "Enter name in English",
+    "accountPlaceholder": "Select account",
+    "localPurchaseAccount": "Local Purchase Account",
+    "localSalesAccount": "Local Sales Account",
+    "localPurchaseReturn": "Local Purchase Return",
+    "localSalesReturn": "Local Sales Return",
+    "importPurchaseAccount": "Import Purchase Account",
+    "importPurchaseReturn": "Import Purchase Return",
+    "exportSalesAccount": "Export Sales Account",
+    "exportSalesReturn": "Export Sales Return",
+    "physicalCount": "Physical Count",
+    "cogs": "Cost of Goods Sold (COGS)",
+    "inventoryAdjustment": "Inventory Adjustment",
     "select": "Select"
+  }
 }
-}
-
