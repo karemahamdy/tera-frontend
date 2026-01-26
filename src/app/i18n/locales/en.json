@@ -457,7 +457,22 @@
     "tracking": "Tracking",
     "pricing": "Pricing",
     "ledger": "Ledger",
-    "attachment": "Attachment"
+    "attachment": "Attachment",
+    "basicInformation": "Basic Information",
+    "warehouseClassification": "Warehouse & Classification",
+    "createItem": "Create Item",
+    "previous": "Previous",
+    "next": "Next",
+    "pricingInformation": "Pricing Information",
+    "attachmentsGallery" : "Attachments & Gallery",
+    "dragAndDrop": "Drag and drop files here, or click to browse",
+    "supportedFormats": "Supported formats: JPG, PNG, PDF, DOC (Max 10MB)",
+    "uploadedFiles": "Uploaded Files",
+    "noFilesUploaded": "No files uploaded yet.",
+    "ledgerDetailCard": "Ledger Detail Card",
+    "selectLedgerDetailCard": "Select Ledger Detail Card",
+    "selectDefaultCostCenter": "Select Default Cost Center",
+    "costCenter": "Cost Center"
   }
 }
 

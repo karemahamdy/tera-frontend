@@ -446,7 +446,22 @@
     "tracking": "التتبع",
     "pricing": "التسعير",
     "ledger": "دفتر الحسابات",
-    "attachment": "المرفقات"
+    "attachment": "المرفقات",
+    "basicInformation": "المعلومات الأساسية",
+    "warehouseClassification": "المستودع والتصنيف",
+    "createItem": "إنشاء عنصر",
+    "previous": "السابق",
+    "next": "التالي",
+    "pricingInformation": "معلومات التسعير",
+    "attachmentsGallery": "المرفقات والمعرض",
+    "dragAndDrop": "اسحب الملفات إلى هنا أو انقر للتصفح",
+    "supportedFormats": "التنسيقات المدعومة: JPG, PNG, PDF, DOC (الحد الأقصى 10 ميجابايت)",
+    "uploadedFiles": "الملفات المرفوعة",
+    "noFilesUploaded": "لم يتم رفع أي ملفات بعد",
+    "ledgerDetailCard": "بطاقة تفصيلية للدفتر",
+    "selectLedgerDetailCard": "اختر بطاقة تفصيلية للدفتر",
+    "selectDefaultCostCenter": "اختر مركز التكلفة الافتراضي",
+    "costCenter": "مركز التكلفة"
   }
 
 }

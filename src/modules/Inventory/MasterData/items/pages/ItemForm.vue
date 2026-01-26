@@ -9,6 +9,7 @@ import Tracking from "../components/Tracking.vue";
 import Pricing from "../components/Pricing.vue";
 import Ledger from "../components/Ledger.vue";
 import Attachment from "../components/Attachment.vue";
+import FormButtons from "../components/FormButtons.vue";
 const { t } = useI18n();
 
 const tabs = computed(() => [
@@ -25,6 +26,18 @@ const activeIndex = ref<number>(0);
 const onTabChange = (data: { index: number }) => {
   activeIndex.value = data.index;
 };
+
+const nextTab = () => {
+  if (activeIndex.value < tabs.value.length - 1) {
+    activeIndex.value += 1;
+  }
+};
+const previousTab = () => {
+  if (activeIndex.value > 0) {
+    activeIndex.value -= 1;
+  }
+};
+
 </script>
 
 <template>
@@ -46,6 +59,7 @@ const onTabChange = (data: { index: number }) => {
       <Pricing v-if="activeIndex === 3" />
       <Ledger v-if="activeIndex === 4" />
       <Attachment v-if="activeIndex === 5" />
+      <FormButtons :activeIndex="activeIndex" @next="nextTab" @previous="previousTab" />
     </div>
   </div>
 </template>
