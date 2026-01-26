@@ -39,10 +39,6 @@ const props = defineProps({
   color: #F79009;
   border: 1px solid #FEDF89;
 }
-.orange .status {
-  background: #FFE59E;
-  color: #F79009;
-}
 
 .card.green {
   background: #ECFDF3;
@@ -57,7 +53,7 @@ const props = defineProps({
 
 .card.pink {
   background: #FDF2F8;
-  color: #f190b7;
+  color: #350c1c;
   border: 1px solid #FBCFE8;
 }
 

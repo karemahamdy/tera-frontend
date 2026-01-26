@@ -55,10 +55,10 @@ export interface Zone {
 }
 
 export interface Pagination {
-     pageIndex: number;
-        pageSize?: number;
-        searchingWord?: string;
-        level?: number;
-        orderBy?: string;
-        orderDirection?: 'asc' | 'desc';
+  pageIndex: number;
+  pageSize?: number;
+  searchingWord?: string;
+  level?: number;
+  orderBy?: string;
+  orderDirection?: 'asc' | 'desc';
 }

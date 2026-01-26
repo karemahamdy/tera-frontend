@@ -29,8 +29,9 @@ const customItems = [
         label: t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
-        command: (row: any) => {
-            router.push({ name: "WarehouseView", params: { row } });
+        command: () => {
+            router.push({ name: "ItemView" });
+            
         },
     },
 ];
@@ -39,6 +40,7 @@ const props = defineProps({
         type: Array,
         default: () => [
             {
+                id: 1,
                 itemName: "Item A",
                 itemCode: "ITM-001",
                 itemGroup: "Electronics",
@@ -47,6 +49,7 @@ const props = defineProps({
                 status: "Active",
             },
             {
+                id: 2,
                 itemName: "Item A",
                 itemCode: "ITM-001",
                 itemGroup: "Electronics",
