@@ -1,3 +1,0 @@
-<template>
-    item-list
-</template>

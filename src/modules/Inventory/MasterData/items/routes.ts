@@ -1,15 +1,5 @@
 export const itemManagementRoutes = [
   {
-    path: "/item-management",
-    component: () =>
-      import("@/modules/Inventory/MasterData/items/pages/ItemList.vue"),
-    name: "ItemManagement",
-    meta: {
-      hide: true,
-      localizedTitle: " ItemManagement",
-    },
-  },
-  {
     path: "/item-management/create",
     name: "ItemManagementCreate",
     component: () =>
