@@ -2,8 +2,8 @@
 import BaseButton from '@/sharedComponents/BaseButton.vue';
 // import StatusCard from '@/sharedComponents/StatusCard.vue';
 import { ref } from 'vue';
-import ItemTransactions from '../components/itemTransactions.vue';
-import Stock from '../components/stock.vue';
+import Stock from '../components/Stock.vue';
+import ItemTransactions from '../components/ItemTransactions.vue';
 
 
 const activeTab = ref("stock");
