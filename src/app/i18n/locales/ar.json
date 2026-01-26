@@ -406,7 +406,7 @@
     "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذا الصنف؟",
     "addItem": "إضافة صنف",
     "editItem": "تعديل الصنف",
-    "overview": "نظرة عامة",
+      "overview": "نظرة عامة",
    "stock": "المخزون",
     "transactions": "المعاملات",
     "pricing": "التسعير",

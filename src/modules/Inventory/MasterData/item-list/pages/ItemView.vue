@@ -6,7 +6,7 @@ import ItemTransactions from '../components/ItemTransactions.vue';
 import Pricing from '../components/Pricing.vue';
 import Cards from '../components/Cards.vue';
 
-const activeTab = ref("stock");
+const activeTab = ref("overview");
 
 </script>
 
@@ -63,7 +63,7 @@ const activeTab = ref("stock");
              <TabPanel value="pricing">
               <Pricing/>
             </TabPanel>
-            
+
           </TabPanels>
         </Tabs>
         </template>

@@ -61,7 +61,6 @@ const getRowBackground = (index: number) => {
             <span class="text-gray-400 text-sm">{{ item.conversion }}</span>
           </div>
 
-          
           <div class="text-right">
             <div class="text-2xl font-bold" :class="getPriceColor(item.type)">
               {{ item.currency }}{{ item.price }}

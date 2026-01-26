@@ -1,12 +1,11 @@
 <script setup lang="ts">
-
 </script>
 <template>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <!-- Total On Hand -->
         <div class="p-4 rounded-[16px] bg-[#F7F9FF] relative overflow-hidden group">
             <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-[10px] bg-[#12B76A] flex items-center justify-center">
+                <div class="w-10 h-10 rounded-[10px] bg-[#17E0AC] flex items-center justify-center">
                     <VsxIcon iconName="Box" :size="20" color="#FFFFFF" type="linear" />
                 </div>
                 <span class="text-[#475467] font-bold text-lg">Total On Hand</span>
@@ -67,7 +66,7 @@
         <!-- Hold Items -->
         <div class="p-4 rounded-[16px] bg-[#F7F9FF]  relative overflow-hidden group">
             <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-[10px] bg-[#F79009] flex items-center justify-center">
+                <div class="w-10 h-10 rounded-[10px] bg-[#FE8F66] flex items-center justify-center">
                     <VsxIcon iconName="I3DCubeScan" :size="20" color="#FFFFFF" type="linear" />
                 </div>
                 <span class="text-[#475467] font-bold text-lg">Hold Items</span>
@@ -97,7 +96,7 @@
         <!-- Avg Cost -->
         <div class="p-4 rounded-[16px] bg-[#F7F9FF]  relative overflow-hidden group">
             <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-[10px] bg-[#EE46BC] flex items-center justify-center">
+                <div class="w-10 h-10 rounded-[10px] bg-[#F23985] flex items-center justify-center">
                     <VsxIcon iconName="DollarSquare" :size="20" color="#FFFFFF" type="linear" />
                 </div>
                 <span class="text-[#475467] font-bold text-lg">Avg Cost</span>
