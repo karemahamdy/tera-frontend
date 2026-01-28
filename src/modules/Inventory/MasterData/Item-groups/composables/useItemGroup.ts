@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { itemGroupsService } from "../services/itemGroup.service";
 import type { AddItemGroup, ItemGroup } from "../types/itemGroup";
+import { FileService } from "@/app/services/file.service";
 
 const loading = ref(false);
 const apiItemGroups = ref<ItemGroup[]>([]);
@@ -16,7 +17,7 @@ const totalPages = ref(1);
 const searchTerm = ref('');
 const orderBy = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
-const currentLevel = ref(1);
+const currentLevel = ref<string>('Category');
 
 const lastError = ref<string | null>(null);
 const validationErrors = ref<Record<string, string[]>>({});
@@ -24,17 +25,22 @@ const validationErrors = ref<Record<string, string[]>>({});
 export function useItemGroup() {
     const { t } = useI18n();
 
-    const fetchItemGroups = async (page = 1, level?: number) => {
+    const fetchItemGroups = async (page = 1, level?: string) => {
         loading.value = true;
         lastError.value = null;
-        if (level) currentLevel.value = level;
+        let levelToUse = level || currentLevel.value;
+        if (typeof levelToUse === 'number') {
+            const levelMap: Record<number, string> = { 1: 'Category', 2: 'Group1', 3: 'Group2', 4: 'Group3', 5: 'Group4' };
+            levelToUse = levelMap[levelToUse] || 'Category';
+        }
+        currentLevel.value = levelToUse;
 
         try {
             const response: any = await itemGroupsService.getAll({
                 pageIndex: page,
                 pageSize: pageSize.value,
-                searchingWord: searchTerm.value,
-                level: currentLevel.value,
+                search: searchTerm.value,
+                level: levelToUse,
                 orderBy: orderBy.value,
                 orderDirection: orderDirection.value
             });
@@ -45,7 +51,6 @@ export function useItemGroup() {
             totalCount.value = payload.totalCount ?? 0;
             totalPages.value = payload.totalPages ?? 1;
         } catch (err: any) {
-            lastError.value = err?.message ?? "Failed to fetch item groups";
             toastService.error(err);
         } finally {
             loading.value = false;
@@ -56,7 +61,7 @@ export function useItemGroup() {
         loading.value = true;
         validationErrors.value = {};
         try {
-            const response = await itemGroupsService.create(payload);
+            const response = await itemGroupsService.create(payload, currentLevel.value.toString());
             toastService.success(t("itemGroup.createdSuccessfully"));
             await fetchItemGroups(pageIndex.value);
             return response;
@@ -76,7 +81,7 @@ export function useItemGroup() {
         loading.value = true;
         validationErrors.value = {};
         try {
-            const response = await itemGroupsService.update(id, payload);
+            const response = await itemGroupsService.update(id, payload, currentLevel.value.toString());
             toastService.success(t("itemGroup.updatedSuccessfully"));
             await fetchItemGroups(pageIndex.value);
             return response;
@@ -95,7 +100,7 @@ export function useItemGroup() {
     const deleteItemGroup = async (id: string) => {
         loading.value = true;
         try {
-            await itemGroupsService.delete(id);
+            await itemGroupsService.delete(id, currentLevel.value.toString());
             toastService.success(t("itemGroup.deletedSuccessfully"));
             await fetchItemGroups(pageIndex.value);
         } catch (err: any) {
@@ -106,19 +111,22 @@ export function useItemGroup() {
         }
     };
 
-    const toggleActive = async (id: string, isActive: boolean) => {
-        loading.value = true;
-        try {
-            await itemGroupsService.toggleActive(id, isActive);
-            toastService.success(isActive ? t("itemGroup.activated") : t("itemGroup.deactivated"));
-            await fetchItemGroups(pageIndex.value);
-        } catch (err: any) {
-            toastService.error(err);
-            throw err;
-        } finally {
-            loading.value = false;
-        }
+    const importItemGroup = async (file: File) => {
+      try {
+        await FileService.uploadFile(
+          `/ItemClassifications/import/${currentLevel.value}`,
+          {
+            file: file,
+          },
+          "itemGroupFile"
+        );
+        toastService.success(t("itemGroup.itemGroupImportedSuccessfully"));
+        fetchItemGroups(pageIndex.value);
+      } catch (error) {
+        toastService.error(error as string);
+      }
     };
+  
 
     const onSearch = (term: string) => {
         searchTerm.value = term;
@@ -144,7 +152,7 @@ export function useItemGroup() {
         createItemGroup,
         updateItemGroup,
         deleteItemGroup,
-        toggleActive,
+        importItemGroup,
         pageIndex,
         pageSize,
         totalCount,

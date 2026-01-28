@@ -391,7 +391,13 @@
     "addNewGroup": "Add New Group",
     "itemGroupInfo": "Create a new group to organize your items",
     "editItemsGroup": "Edit Group info",
-    "editGroupInfo": "Review and update group information"
+    "editGroupInfo": "Review and update group information",
+    "addGroupInfo": "Define a new group to classify items",
+    "descriptionPlaceholder": "Describe the purpose of this group..", 
+    "deletedSuccessfully": "Item Group deleted successfully",
+    "itemGroupCreated": "Item Group created successfully",
+    "itemGroupUpdated": "Item Group updated successfully",
+    "itemGroupImportedSuccessfully": "Item Group imported successfully"
   },
   "itemList": {
     "title": "Items",
