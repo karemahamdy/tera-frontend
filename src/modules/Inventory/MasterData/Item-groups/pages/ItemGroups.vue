@@ -82,6 +82,7 @@ const customItems = [
 const columns = computed(() => [
     { field: 'code', header: t('itemGroup.code'), sortable: true },
     { field: 'name', header: t('itemGroup.name'), sortable: true },
+    { field: 'itemsCount', header: t('itemGroup.itemsCount'), sortable: true },
     { field: 'isActive', header: t('status'), type: 'slot' },
     { field: 'action', header: t('action') },
 ]);
