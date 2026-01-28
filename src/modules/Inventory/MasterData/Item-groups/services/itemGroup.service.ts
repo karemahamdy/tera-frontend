@@ -3,15 +3,11 @@ import type { AddItemGroup, ItemGroupResponse, Pagination } from "../types/itemG
 
 export const itemGroupsService = {
     async getAll(params: Pagination & { level: string }) {
-        const queryParams = new URLSearchParams();
-        if (params.pageIndex) queryParams.append('pageIndex', params.pageIndex.toString());
-        if (params.pageSize) queryParams.append('pageSize', params.pageSize.toString());
-        if (params.search) queryParams.append('search', params.search);
-        if (params.orderBy) queryParams.append('orderBy', params.orderBy);
-        if (params.orderDirection) queryParams.append('orderDirection', params.orderDirection);
-        
         const resp = await axiosWrapper.get<ItemGroupResponse>(
-            `/ItemClassifications/${params.level}/list?${queryParams.toString()}`
+            `/ItemClassifications/${params.level}/list?`,
+            {
+            params
+        }
         );
         return resp.data;
     },
