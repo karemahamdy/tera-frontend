@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import BaseButton from '@/sharedComponents/BaseButton.vue';
-// import StatusCard from '@/sharedComponents/StatusCard.vue';
 import { ref } from 'vue';
 import Stock from '../components/Stock.vue';
 import ItemTransactions from '../components/ItemTransactions.vue';
+import Pricing from '../components/Pricing.vue';
+import Cards from '../components/Cards.vue';
+import Overview from '../components/Overview.vue';
 
-
-const activeTab = ref("stock");
+const activeTab = ref("overview");
 
 </script>
 
@@ -19,7 +20,7 @@ const activeTab = ref("stock");
                 <div>
                     <div class="flex items-center gap-3 mb-1">
                         <h1 class="text-2xl font-bold text-[#101828]">ITM-001</h1>
-                        <span class="px-2.5 py-0.5 rounded-full text-sm font-medium bg-[#ecfdf3] text-[#027a48]">
+                        <span class="px-2.5 py-0.5 rounded-full text-md font-medium bg-[#ecfdf3] text-[#027a48]">
                              Active
                         </span>
                     </div>
@@ -28,17 +29,17 @@ const activeTab = ref("stock");
             <BaseButton label=" Edit Item" variant="primary" icon="pi pi-plus" />
             </div>
             </template>
+
               <template #subtitle>
-             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-         
-              
-            </div>
+           <Cards/>
             </template>
+
          <template #content>
         <Tabs v-model:value="activeTab" >
+
           <TabList>
             <Tab value="overview">
-              {{ $t("itemList.overview") }}
+              {{ $t("itemList.overview.overview") }}
             </Tab>
             <Tab value="transactions">
               {{ $t("itemList.transactions") }}
@@ -52,12 +53,23 @@ const activeTab = ref("stock");
         </TabList>
 
           <TabPanels>
+             <TabPanel value="overview">
+           <Overview/>
+            </TabPanel>
+
+
             <TabPanel value="transactions">
            <ItemTransactions/>
             </TabPanel>
+
             <TabPanel value="stock">
               <Stock/>
             </TabPanel>
+
+             <TabPanel value="pricing">
+              <Pricing/>
+            </TabPanel>
+
           </TabPanels>
         </Tabs>
         </template>

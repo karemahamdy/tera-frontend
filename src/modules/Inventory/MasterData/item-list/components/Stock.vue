@@ -71,7 +71,7 @@ const secondColumns = computed(() => {
         {{ $t("itemList.bySerialNumbers") }}
     </span>
     <DynamicTable :columns="secondColumns" :data="data" :paginator="false">
-         <!-- <template #active="{ row }"> -->
+         <!-- <template #cell-active="{ data }"> -->
             <template v-slot:["active"]="{ data }">
   <Tag
   :value="data.active"
