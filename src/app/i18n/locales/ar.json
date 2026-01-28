@@ -395,8 +395,8 @@
     "addGroupInfo": "تعريف مجموعة جديدة لتصنيف العناصر",
     "descriptionPlaceholder": "وصف الغرض من هذه المجموعة..",
     "deletedSuccessfully": "تم حذف مجموعة العناصر بنجاح",
-    "itemGroupCreated": "تم إنشاء مجموعة العناصر بنجاح",
-    "itemGroupUpdated": "تم تحديث مجموعة العناصر بنجاح",
+    "createdSuccessfully": "تم إنشاء مجموعة العناصر بنجاح",
+    "updatedSuccessfully": "تم تحديث مجموعة العناصر بنجاح",
     "itemGroupImportedSuccessfully": "تم استيراد مجموعة العناصر بنجاح"
 
  },

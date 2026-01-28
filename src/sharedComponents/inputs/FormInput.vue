@@ -5,6 +5,7 @@ defineProps<{
   type?: string;
   invalid?: boolean;
   error?: string;
+  disabled?: boolean;
    placeholder?: string;
 }>();
 
@@ -20,6 +21,7 @@ defineEmits(["update:modelValue"]);
       :modelValue="modelValue"
        :invalid="!!invalid"
        :placeholder="placeholder"
+       :disabled="disabled"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 

@@ -1,11 +1,11 @@
 import * as yup from "yup";
 
 export const ItemGroupSchema = yup.object({
-  itemGroupNameEn: yup
+  nameEn: yup
     .string()
     .required("form.fieldRequired")
     .min(3, "form.min_3"),
-     itemGroupNameAr: yup
+     nameAr: yup
     .string()
     .required("form.fieldRequired")
     .min(3, "form.min_3"),

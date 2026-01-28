@@ -395,8 +395,8 @@
     "addGroupInfo": "Define a new group to classify items",
     "descriptionPlaceholder": "Describe the purpose of this group..", 
     "deletedSuccessfully": "Item Group deleted successfully",
-    "itemGroupCreated": "Item Group created successfully",
-    "itemGroupUpdated": "Item Group updated successfully",
+    "createdSuccessfully": "Item Group created successfully",
+    "updatedSuccessfully": "Item Group updated successfully",
     "itemGroupImportedSuccessfully": "Item Group imported successfully"
   },
   "itemList": {

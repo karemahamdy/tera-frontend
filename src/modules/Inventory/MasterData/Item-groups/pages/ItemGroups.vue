@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter, useRoute } from "vue-router";
 import { useItemGroup } from "../composables/useItemGroup";
@@ -24,8 +24,8 @@ const {
     onSort,
     setPage,
     pageIndex,
-  pageSize,
-  totalCount,
+    pageSize,
+    totalCount,
 } = useItemGroup();
 
 const customItems = [
@@ -34,11 +34,14 @@ const customItems = [
         label: t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
-        command: (row: any) => {
-            router.push({ name: "ItemGroupView", params: { id: row.id } });
-        },
+        action: 'view',
     },
 ];
+
+onMounted(() => {
+    const levelNum = Number(route.query.level || 1);
+    fetchItemGroups(levelNum);
+});
 
 const tabs = computed(() => [
     { label: t('itemGroup.categories'), level: "Category" },
@@ -78,24 +81,13 @@ const onTabChange = (e: any) => {
     router.replace({ query: { level: levelMap[level] } });
 };
 
-watch(
-    () => route.query.level,
-    (newLevel) => {
-        const levelNum = Number(newLevel || 1);
-        const levelMap: Record<number, string> = { 1: 'Category', 2: 'Group1', 3: 'Group2', 4: 'Group3', 5: 'Group4' };
-        const levelStr = levelMap[levelNum] || 'Category';
-        fetchItemGroups(1, levelStr);
-    },
-    { immediate: true }
-);
-
 const firstRecord = computed(() => {
-  return (pageIndex.value - 1) * pageSize.value + 1;
+    return (pageIndex.value - 1) * pageSize.value + 1;
 });
 
 const lastRecord = computed(() => {
-  const last = pageIndex.value * pageSize.value;
-  return Math.min(last, totalCount.value || last);
+    const last = pageIndex.value * pageSize.value;
+    return Math.min(last, totalCount.value || last);
 });
 
 
@@ -106,12 +98,19 @@ const confirmDelete = (row: any) => {
 
 const handleActionMenu = (payload: any) => {
     const action = payload.action || payload;
-    const row = payload.row || payload;
-
+    const row = payload.row || payload.data  || payload; 
     if (action === 'delete') confirmDelete(row);
     if (action === 'edit') {
         router.push({
-            path: `/inventory/item-groups/edit/${row.id}`,
+            name: "ItemGroupsEdit",
+            params: { id: row.id },
+            query: { level: route.query.level || 1 },
+        });
+    }
+    if (action === 'view') {
+        router.push({
+            name: "ItemGroupView",
+            params: { id: row.id },
             query: { level: route.query.level || 1 },
         });
     }
@@ -133,7 +132,7 @@ const handleDeleteConfirm = async () => {
 
 const addItemGroup = () => {
     router.push({
-        path: '/inventory/item-groups/create',
+        name: "ItemGroupsCreate",
         query: { level: route.query.level || 1 },
     });
 };
@@ -148,9 +147,10 @@ const addItemGroup = () => {
                 <PageHeader :title="headerTitle" subtitle="itemGroup.subtitle" :showExport="true" :showImport="true"
                     :mainBtn="true" mainBtnText="itemGroup.additemGroup" @search="onSearch"
                     searchPlaceholder="itemGroup.searchPlaceholder" :onMainBtnClick="addItemGroup" hasMenu
-                      :templateFileUrl="`/ItemClassifications/import-template/${currentLevelString}`"
-    :dataFileUrl="`/ItemClassifications/export/${currentLevelString}`"  templateFileName="item-group-template.csv"
-                    dataFileName="item-group-data.csv" @upload="importItemGroup" />
+                    :templateFileUrl="`/ItemClassifications/import-template/${currentLevelString}`"
+                    :dataFileUrl="`/ItemClassifications/export/${currentLevelString}`"
+                    templateFileName="item-group-template.csv" dataFileName="item-group-data.csv"
+                    @upload="importItemGroup" />
             </template>
             <template #content>
                 <DynamicTable :key="currentLevelString" :columns="columns" :data="apiItemGroups"

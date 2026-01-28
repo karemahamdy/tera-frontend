@@ -35,6 +35,5 @@ export interface AddItemGroup {
     code: string;
     nameAr: string;
     nameEn: string;
-    level: number;
    description?: string;
 }
