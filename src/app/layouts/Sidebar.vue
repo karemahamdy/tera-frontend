@@ -40,11 +40,17 @@ const navItems: NavItem[] = [
   {
     label: "Inventory",
     icon: "SecurityUser",
+
     children: [
-      { label: "Warehouses", route: "/warehouses" },
-      { label: "Item Groups", route: "/item-groups" },
-      { label: "Item List", route: "/item-list" },
-      { label: "LDC", route: "/LDC" },
+      {
+        label: "Master Data",
+        children: [
+          { label: "Warehouses", route: "/warehouses" },
+          { label: "Item Groups", route: "/item-groups" },
+          { label: "Item List", route: "/item-list" },
+          { label: "LDC", route: "/LDC" },
+        ],
+      },
     ],
   }
 ];
@@ -77,8 +83,8 @@ function logout() {
           <!-- Dashboard -->
           <li>
             <router-link to="/home" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5" :activeClass="$i18n.locale === 'ar'
-                ? 'active active-link-ar'
-                : 'active active-link'
+              ? 'active active-link-ar'
+              : 'active active-link'
               ">
               <VsxIcon iconName="Element4" :size="24" type="linear" />
               <span v-if="!collapsed">{{ $t("Dashboard") }}</span>
@@ -87,8 +93,8 @@ function logout() {
 
           <!-- Dynamic Items -->
           <SidebarItem v-for="item in navItems" :key="item.label" :item="item" :collapsed="collapsed" :activeClass="$i18n.locale === 'ar'
-              ? 'active active-link-ar'
-              : 'active active-link'
+            ? 'active active-link-ar'
+            : 'active active-link'
             " />
         </ul>
       </nav>
