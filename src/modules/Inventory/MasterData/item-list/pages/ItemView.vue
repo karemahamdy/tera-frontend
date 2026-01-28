@@ -39,7 +39,7 @@ const activeTab = ref("overview");
 
           <TabList>
             <Tab value="overview">
-              {{ $t("itemList.overview") }}
+              {{ $t("itemList.overview.overview") }}
             </Tab>
             <Tab value="transactions">
               {{ $t("itemList.transactions") }}

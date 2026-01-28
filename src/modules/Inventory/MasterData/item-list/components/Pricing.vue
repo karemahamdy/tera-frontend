@@ -1,33 +1,35 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 
 const pricingData = {
   lastPurchase: {
-    title: 'Last Purchase Pricing',
+    title: 'itemList.pricingTab.lastPurchasePricing',
     prices: [
-      { unit: 'BOX', conversion: '(1 BOX = 12 PCS)', price: 540, currency: '$', type: 'purchase' },
-      { unit: 'PCS', conversion: '(1 PCS)', price: 450, currency: '$', type: 'purchase' }
+      { unit: 'BOX', conversion: 'boxConversion', price: 540, currency: '$', type: 'purchase' },
+      { unit: 'PCS', conversion: 'pcsConversion', price: 450, currency: '$', type: 'purchase' }
     ]
   },
   salesPricing: {
-    title: 'Sales Pricing',
+    title: 'itemList.pricingTab.salesPricing',
     prices: [
-      { unit: 'BOX', conversion: '(1 BOX = 12 PCS)', price: 620, currency: '$', type: 'sales' },
-      { unit: 'PCS', conversion: '(1 PCS)', price: 520, currency: '$', type: 'sales' }
+      { unit: 'BOX', conversion: 'boxConversion', price: 620, currency: '$', type: 'sales' },
+      { unit: 'PCS', conversion: 'pcsConversion', price: 520, currency: '$', type: 'sales' }
     ]
   },
   purchaseAverage: {
-    title: 'Purchase Average',
+    title: 'itemList.pricingTab.purchaseAverage',
     prices: [
-      { unit: 'BOX', conversion: '(1 BOX = 12 PCS)', price: 520, currency: '$', type: 'purchase' },
-      { unit: 'PCS', conversion: '(1 PCS)', price: 45, currency: '$', type: 'purchase' }
+      { unit: 'BOX', conversion: 'boxConversion', price: 520, currency: '$', type: 'purchase' },
+      { unit: 'PCS', conversion: 'pcsConversion', price: 45, currency: '$', type: 'purchase' }
     ]
   },
   salesAverage: {
-    title: 'Sales Average',
+    title: 'itemList.pricingTab.salesAverage',
     prices: [
-      { unit: 'BOX', conversion: '(1 BOX = 12 PCS)', price: 620, currency: '$', type: 'sales' },
-      { unit: 'PCS', conversion: '(1 PCS)', price: 52, currency: '$', type: 'sales' }
+      { unit: 'BOX', conversion: 'boxConversion', price: 620, currency: '$', type: 'sales' },
+      { unit: 'PCS', conversion: 'pcsConversion', price: 52, currency: '$', type: 'sales' }
     ]
   }
 };
@@ -46,7 +48,7 @@ const getRowBackground = (index: number) => {
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
   
     <div v-for="(section, key) in pricingData" :key="key" class="border border-gray-200 rounded-[12px] p-6 bg-white shadow-sm">
-      <h3 class="text-gray-700 font-bold text-lg mb-4">{{ section.title }}</h3>
+      <h3 class="text-gray-700 font-bold text-lg mb-4">{{ $t(section.title) }}</h3>
       
       <div class="space-y-3">
         <div 
@@ -57,8 +59,8 @@ const getRowBackground = (index: number) => {
         >
         
           <div class="flex items-center gap-2">
-            <span class="font-bold text-gray-900">{{ item.unit }}</span>
-            <span class="text-gray-400 text-sm">{{ item.conversion }}</span>
+            <span class="font-bold text-gray-900">{{ $t('itemList.pricingTab.' + (item.unit === 'BOX' ? 'box' : 'pcs')) }}</span>
+            <span class="text-gray-400 text-sm">{{ $t('itemList.pricingTab.' + item.conversion) }}</span>
           </div>
 
           <div class="text-right">
@@ -66,7 +68,7 @@ const getRowBackground = (index: number) => {
               {{ item.currency }}{{ item.price }}
             </div>
             <div class="text-xs text-gray-500 font-medium">
-               Per {{ item.unit === 'BOX' ? 'Box' : 'PCS' }}
+               {{ $t('itemList.pricingTab.' + (item.unit === 'BOX' ? 'perBox' : 'perPcs')) }}
             </div>
           </div>
         </div>

@@ -59,57 +59,47 @@ const itemData = {
 <template>
     <!-- Item Information Section -->
     <section class="mb-4 border border-gray-200 p-4 rounded-[12px]">
-        <h3 class="text-lg font-bold text-[#101828] mb-6">Item Information</h3>
+        <h3 class="text-lg font-bold text-[#101828] mb-6">{{ $t('itemList.overview.itemInformation') }}</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-24">
             <!-- Left Column -->
             <div class="space-y-5">
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Item
-                        Code:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemCode }}</span>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemCode') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemCode }}</span>
                 </div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Item Name
-                        1:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemName1 }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Item Name
-                        2:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemName2 }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Hs Code:</span><span
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemName1') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemName1 }}</span></div>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemName2') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemName2 }}</span></div>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.hsCode') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ itemData.hsCode }}</span></div>
                 <div class="flex justify-between items-center"><span
-                        class="text-[#667085] text-sm">Description:</span><span
+                        class="text-[#667085] text-sm">{{ $t('itemList.overview.description') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ itemData.description }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Production
-                        Code:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.productionCode
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.productionCode') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.productionCode
                         }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Production
-                        Name:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.productionName
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.productionName') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.productionName
                         }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Access
-                        Scope:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.accessScope }}</span>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.accessScope') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.accessScope }}</span>
                 </div>
             </div>
 
             <!-- Right Column -->
             <div class="space-y-5">
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Branch:</span><span
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.branch') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ itemData.branch }}</span></div>
                 <div class="flex justify-between items-center"><span
-                        class="text-[#667085] text-sm">Warehouse:</span><span
+                        class="text-[#667085] text-sm">{{ $t('itemList.overview.warehouse') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ itemData.warehouse }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Item
-                        Group:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemGroup }}</span>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemGroup') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemGroup }}</span>
                 </div>
                 <div class="flex justify-between items-center"><span
-                        class="text-[#667085] text-sm">Category:</span><span
+                        class="text-[#667085] text-sm">{{ $t('itemList.overview.category') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ itemData.category }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Item
-                        Type:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemType }}</span>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemType') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.itemType }}</span>
                 </div>
                 <div class="flex justify-between items-center"><span
-                        class="text-[#667085] text-sm">Manufacturer:</span><span
+                        class="text-[#667085] text-sm">{{ $t('itemList.overview.manufacturer') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ itemData.manufacturer }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Part
-                        Number:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.partNumber }}</span>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.partNumber') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.partNumber }}</span>
                 </div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">Barcode /
-                        SKU:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.barcodeSku }}</span>
+                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.barcodeSku') }}:</span><span class="text-[#101828] text-sm font-medium">{{ itemData.barcodeSku }}</span>
                 </div>
             </div>
         </div>
@@ -119,22 +109,22 @@ const itemData = {
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <!-- Tracking & Parameters -->
         <section class="mb-4 border border-gray-200 p-4 rounded-[12px]">
-            <h3 class="text-lg font-bold text-[#101828] mb-6">Tracking & Parameters</h3>
+            <h3 class="text-lg font-bold text-[#101828] mb-6">{{ $t('itemList.overview.trackingParameters') }}</h3>
             <div class="space-y-5">
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Serial Tracking:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.serialTracking') }}:</span>
                     <span class="text-[#027A48] text-sm font-medium">{{ itemData.serialTracking }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Reorder Point:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.reorderPoint') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.reorderPoint }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Reorder Quantity:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.reorderQuantity') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.reorderQuantity }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Lead Time:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.leadTime') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.leadTime }}</span>
                 </div>
             </div>
@@ -143,22 +133,22 @@ const itemData = {
         <!-- Groups -->
         <section class="mb-4 border border-gray-200 p-4 rounded-[12px]">
 
-            <h3 class="text-lg font-bold text-[#101828] mb-6">Groups</h3>
+            <h3 class="text-lg font-bold text-[#101828] mb-6">{{ $t('itemList.overview.groups') }}</h3>
             <div class="space-y-5">
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Item Group1 :</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemGroup1') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.itemGroup1 }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Item Group2 :</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemGroup2') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.itemGroup2 }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Item Group3 :</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemGroup3') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.itemGroup3 }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Item Group4 :</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemGroup4') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.itemGroup4 }}</span>
                 </div>
             </div>
@@ -167,7 +157,7 @@ const itemData = {
         <!-- Units of Measure -->
         <section class="mb-4 border border-gray-200 p-4 rounded-[12px]">
 
-            <h3 class="text-lg font-bold text-[#101828] mb-6">Units of Measure</h3>
+            <h3 class="text-lg font-bold text-[#101828] mb-6">{{ $t('itemList.overview.unitsOfMeasure') }}</h3>
             <div class="space-y-3">
                 <div class="bg-[#F0F3FA] p-4 rounded-lg flex justify-between items-center border border-gray-100">
                     <span class="font-bold text-[#101828]">{{ itemData.baseUom }}</span>
@@ -183,22 +173,22 @@ const itemData = {
         <!-- Cost Information -->
         <section class="mb-4 border border-gray-200 p-4 rounded-[12px]">
 
-            <h3 class="text-lg font-bold text-[#101828] mb-6">Cost Information</h3>
+            <h3 class="text-lg font-bold text-[#101828] mb-6">{{ $t('itemList.overview.costInformation') }}</h3>
             <div class="space-y-5">
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Moving Average:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.movingAverage') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.movingAverage }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Last Cost:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.lastCost') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.lastCost }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Standard Cost:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.standardCost') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.standardCost }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-[#667085] text-sm">Total Value:</span>
+                    <span class="text-[#667085] text-sm">{{ $t('itemList.overview.totalValue') }}:</span>
                     <span class="text-[#101828] text-sm font-medium">{{ itemData.totalValue }}</span>
                 </div>
             </div>
@@ -208,7 +198,7 @@ const itemData = {
     <!-- Item Attachment -->
     <section class="mb-4 border border-gray-200 p-4 rounded-[12px]">
 
-        <h3 class="text-lg font-bold text-[#101828] mb-6">Item Attachment</h3>
+        <h3 class="text-lg font-bold text-[#101828] mb-6">{{ $t('itemList.overview.itemAttachment') }}</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div v-for="(att, index) in itemData.attachments" :key="index"
                 class="border border-gray-200 rounded-lg p-3 flex gap-4 bg-white hover:bg-gray-50 transition cursor-pointer">
