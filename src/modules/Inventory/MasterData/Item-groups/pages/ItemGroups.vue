@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter, useRoute } from "vue-router";
 import { useItemGroup } from "../composables/useItemGroup";
