@@ -22,29 +22,29 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
 export function useLDC() {
   const { t } = useI18n();
 
- const fetchLDC = async (page = 1) => {
-  loading.value = true;
-  try {
-    const response: any = await LDCService.getAll({
-      pageIndex: page,
-      pageSize: pageSize.value,
-      searchingWord: searchTerm.value,
-      orderBy: orderBy.value,
-      orderDirection: orderDirection.value,
-      StatusFilter: StatusFilter.value
-    });
-    const payload = response && response.data ? response.data : response;
-    apiLDC.value = payload.items ?? [];
-    pageIndex.value = payload.pageIndex ?? page;
-    pageSize.value = payload.pageSize ?? pageSize.value;
-    totalCount.value = payload.totalCount ?? 0;
-    totalPages.value = payload.totalPages ?? 1;  
-  } catch (err: any) {
-    toastService.error(err);
-  } finally {
-    loading.value = false;
-  }
-};
+  const fetchLDC = async (page = 1) => {
+    loading.value = true;
+    try {
+      const response: any = await LDCService.getAll({
+        pageIndex: page,
+        pageSize: pageSize.value,
+        searchingWord: searchTerm.value,
+        orderBy: orderBy.value,
+        orderDirection: orderDirection.value,
+        StatusFilter: StatusFilter.value
+      });
+      const payload = response && response.data ? response.data : response;
+      apiLDC.value = payload.items ?? [];
+      pageIndex.value = payload.pageIndex ?? page;
+      pageSize.value = payload.pageSize ?? pageSize.value;
+      totalCount.value = payload.totalCount ?? 0;
+      totalPages.value = payload.totalPages ?? 1;
+    } catch (err: any) {
+      toastService.error(err);
+    } finally {
+      loading.value = false;
+    }
+  };
 
   const fetchLDCById = async (id: string) => {
     loading.value = true;
@@ -141,21 +141,35 @@ export function useLDC() {
     const value = filter.value;
     if (field === "status") {
       StatusFilter.value = value;
-    } 
+    }
     fetchLDC(1);
   };
 
-const onSearch = (term: string) => {
-  searchTerm.value = term;
-  fetchLDC(1);     
-};
+  const onSearch = (term: string) => {
+    searchTerm.value = term;
+    fetchLDC(1);
+  };
 
-const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
-  orderBy.value = orderByField;
-  orderDirection.value = direction;
-  fetchLDC(1);
-} 
- 
+  const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+    orderBy.value = orderByField;
+    orderDirection.value = direction;
+    fetchLDC(1);
+  }
+
+  const exportLDC = async () => {
+    try {
+      const response = await LDCService.exportData({
+        searchingWord: searchTerm.value,
+        orderBy: orderBy.value,
+        orderDirection: orderDirection.value,
+        StatusFilter: StatusFilter.value
+      });
+      FileService.downloadBlob(response, "LedgerDetailCard-data.csv");
+    } catch (err: any) {
+      toastService.error(err);
+    }
+  };
+
   return {
     loading,
     apiLDC,
@@ -174,6 +188,7 @@ const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
     setPage: (p: number) => fetchLDC(p),
     onSearch,
     onFilterChange,
-    onSort
+    onSort,
+    exportLDC
   };
 }
