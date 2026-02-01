@@ -51,13 +51,13 @@ const { errors, accessScope } = useItems();
         <FormInput
           :label="$t('items.initialSerial')"
           :error="errors.initialSerial"
-          :placeholder="$t('items.initialSerialPlaceholder')"
+          placeholder="ITM-10245"
           :invalid="!!errors.initialSerial"
           class="mt-5"
         />
         <div class="flex gap-2 mt-2 items-center text-success-500">
           <VsxIcon iconName="InfoCircle" :size="16" type="linear" />
-          <p class="text-sm">By Default Item Code</p>
+          <p class="text-sm">{{ $t("items.initialSerialInfo") }}</p>
         </div>
       </div>
     </div>
