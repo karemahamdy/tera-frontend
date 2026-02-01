@@ -1,5 +1,5 @@
 import { toastService } from "@/app/services/toastService";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { LDCService } from "../services/LDC.service";
 import type { LDC } from "../types/LDC";

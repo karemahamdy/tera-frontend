@@ -51,7 +51,8 @@
     "template": "Template",
     "data": "Data",
     "terminate": "Terminate",
-    "editItem": "Edit Item"
+    "editItem": "Edit Item",
+    "hold": "Hold"
   },
   "table": {
     "description": "Description",
