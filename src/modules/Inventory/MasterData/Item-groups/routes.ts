@@ -24,6 +24,19 @@ export const ItemGroupsRoutes = [
       import("@/modules/Inventory/MasterData/Item-groups/pages/ItemGroupsForm.vue"),
     props: (route: any) => ({
       mode: "edit",
+      id: route.params.id,
+      level: Number(route.query.level || 1),
+    }),
+    meta: { permission: null },
+  },
+  {
+    path: "/item-groups/view/:id",
+    name: "ItemGroupView",
+    component: () =>
+      import("@/modules/Inventory/MasterData/Item-groups/pages/ItemGroupsForm.vue"),
+    props: (route: any) => ({
+      mode: "view",
+      id: route.params.id,
       level: Number(route.query.level || 1),
     }),
     meta: { permission: null },

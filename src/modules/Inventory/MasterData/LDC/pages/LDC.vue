@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { usewarehouse } from "../composables/useLDC";
+import { useLDC } from "../composables/useLDC";
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = usewarehouse();
+const { loading, fetchLDC, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, importLDC, apiLDC } = useLDC();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -32,30 +32,8 @@ const customItems = [
       },
     },
 ];
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-        code: "WH-001",
-        name: "John Moore",
-        transferLedger: "5",
-        zones: "Administration",
-        address: "Finance",
-        type: "Global",
-        status: "in Active",
-      },
-      {
-        code: "WH-001",
-        name: "John Moore",
-        transferLedger: "5",
-        zones: "Administration",
-        address: "Finance",
-        type: "Professional",
-        status: "Active",
-      },
-    ],
-  },
+onMounted(() => {
+    fetchLDC();
 });
 const filtersOperation = computed(() => {
     return [
@@ -64,6 +42,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
+                  { label: t("usersManagement.allStatus"), value: null },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
@@ -75,8 +54,8 @@ const columns = computed(() => {
     const Columns = [ 
         { field: 'code', header: t('warehouses.code'), sortable: true },
         { field: 'name', header: t('warehouses.name'), type: 'slot', sortable: true },
-        { field: 'created', header: t('table.created'), type: 'date', sortable: true },
-        { field: 'status', header: t('status'), type: 'status', sortable: true },
+        { field: 'createAt', header: t('table.created'), type: 'date', sortable: true },
+        { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -117,11 +96,11 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    await deleteBranch(rowToDelete.value.id).finally(() => {
-        isDeleting.value = false;
-        showDeleteDialog.value = false;
-        rowToDelete.value = null;
-    });
+    // await deleteBranch(rowToDelete.value.id).finally(() => {
+    //     isDeleting.value = false;
+    //     showDeleteDialog.value = false;
+    //     rowToDelete.value = null;
+    // });
 };
 
 const handleEdit = (row: any) => {
@@ -143,11 +122,17 @@ const addBranch = () => {
                 <PageHeader title="LDC.title" subtitle="LDC.subtitle" :showExport="true"
                     :showImport="true" :mainBtn="true" mainBtnText="LDC.addNew"   :showFilter="true"
                :filters="filtersOperation"
-                    searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
+               hasMenu
+                    searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" 
+                     templateFileUrl="/LedgerDetailCard/DownloadImportTemplate"
+                    dataFileUrl="/LedgerDetailCard/export-LDCs"
+                    templateFileName="LedgerDetailCard-data.csv" dataFileName="LedgerDetailCard-data.csv"
+                    @upload="importLDC"
+                    />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiLDC" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy />
               

@@ -1,40 +1,43 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Addwarehouses, Pagination, warehousesResponse } from "../types/LDC";
+import type {  Pagination, LDCResponse } from "../types/LDC";
 
 
-export const warehousesService = {
+export const LDCService = {
  async getAll(params: Pagination) {
  
-  const resp = await axiosWrapper.get<warehousesResponse>(
-    `/warehouses/GetAllwarehousess?${params}`
+  const resp = await axiosWrapper.get<LDCResponse>(
+    `/LedgerDetailCard`, { params }
   );
   return resp.data;
 },
 
-  async getById(id: string): Promise<Addwarehouses> {
-    const data = await axiosWrapper.get<any>(`/warehouses/${id}`);
+  async getById(id: string): Promise<any> {
+    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
     return data.data;
   },
 
-  async create(payload: Addwarehouses ) {
-    const data = await axiosWrapper.post<any>(`/warehouses/create`, payload);
+  async create(payload: any ) {
+    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
     return data.data;
   },
-  async update(id: string, payload: Addwarehouses) {
-    const data = await axiosWrapper.put<any>(`/warehouses/${id}`, payload);
+  async update(id: string, payload: any) {
+    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/warehouses/${id}`);
+    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
   },
 
  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(`/warehouses/${id}/status `, {
-      isActive
-    });
-    return data.data;
-  },
-
+  const data = await axiosWrapper.put<any>(
+    `/LedgerDetailCard/Status/${id}`,
+    null,
+    {
+      params: { isActive }
+    }
+  );
+  return data.data;
+}
 
 };
