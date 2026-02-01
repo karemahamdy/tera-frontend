@@ -1,14 +1,19 @@
 <script setup lang="ts">
-defineProps<{
+const props = withDefaults(defineProps<{
   label: string;
   modelValue: any;
   options: any[];
   error?: string;
   optionValue?: string;
- placeholder?: string
-}>();
+  placeholder?: string;
+  disabled?: boolean;
+}>(), {
+  optionValue: 'value',
+  placeholder: '',
+    disabled: false
+});
 
-defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <template>
@@ -19,11 +24,12 @@ defineEmits(["update:modelValue"]);
       class="w-full n"
       filter
       optionLabel="label"
-      :optionValue="optionValue"
-      :options="options"
-      :modelValue="modelValue"
-       :placeholder="placeholder"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      :optionValue="props.optionValue"
+      :options="props.options"
+      :modelValue="props.modelValue"
+      :placeholder="props.placeholder"
+      :disabled="props.disabled"
+      @update:modelValue="(v: any) => emit('update:modelValue', v)"
     />
 
     <small v-if="error" class="text-danger-500">
