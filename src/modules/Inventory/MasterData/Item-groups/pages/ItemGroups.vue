@@ -69,6 +69,7 @@ const headerTitle = computed(() => {
 const columns = computed(() => [
     { field: 'code', header: t('itemGroup.code'), sortable: true },
     { field: 'name', header: t('itemGroup.name'), sortable: true },
+    { field: 'description', header: t('itemGroup.description'), sortable: true },
     { field: 'itemsCount', header: t('itemGroup.itemsCount'), sortable: true },
     { field: 'action', header: t('action') },
 ]);
