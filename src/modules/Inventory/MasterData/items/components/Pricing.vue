@@ -9,56 +9,56 @@ const { errors, accessScope } = useItems();
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.defaultCurrency')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.defaultCurrencyID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.defaultCurrencyPlaceholder')"
         />
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.taxes')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.taxesID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.taxesPlaceholder')"
         />
         <div class="w-full md:col-span-2">
-          <p class="font-bold mb-5">{{ $t("items.accessScope") }}</p>
+          <p class="font-bold mb-5">{{ $t("items.multipleCurrency") }}</p>
           <div class="w-full flex flex-wrap gap-1 justify-between items-center">
             <div
               class="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-300"
             >
               <Checkbox v-model="accessScope" inputId="inputId" binary @click.stop />
               <label class="font-medium cursor-pointer" for="inputId">
-                {{ $t("roles.globalAccess") }}
+                {{ $t("items.allowMultipleCurrency") }}
               </label>
             </div>
           </div>
         </div>
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.standardCost')"
+          :error="errors.standardCost"
+          :placeholder="$t('items.standardCostPlaceholder')"
+          :invalid="!!errors.standardCost"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.salesPrice')"
+          :error="errors.salesPrice"
+          :placeholder="$t('items.salesPricePlaceholder')"
+          :invalid="!!errors.salesPrice"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.lastPurchasePrice')"
+          :error="errors.lastPurchasePrice"
+          :placeholder="$t('items.lastPurchasePricePlaceholder')"
+          :invalid="!!errors.lastPurchasePrice"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.lastMovingAverage')"
+          :error="errors.lastMovingAverage"
+          :placeholder="$t('items.lastMovingAveragePlaceholder')"
+          :invalid="!!errors.lastMovingAverage"
         />
       </div>
     </div>
