@@ -161,7 +161,7 @@ const handleEdit = (row: any) => {
 };
 
 const addBranch = () => {
-    // router.push('/warehouses/create');
+    router.push('/item-management/create');
 };
 
 </script>
