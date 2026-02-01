@@ -79,10 +79,17 @@ const confirmDelete = (row: any) => {
 const handleActionMenu = async (payload: any) => {
     const action = payload.action || payload;
     const data = payload.data || payload.row || payload;
-    if (action === "edit") {
-        if (data && data.id) {
-            handleEdit(data);
-        }
+    if (action === 'edit') {
+        router.push({
+            name: "LDCFormEdit",
+            params: { id: data.id },
+        });
+    }
+    if (action === 'view') {
+        router.push({
+            name: "LDCFormView",
+            params: { id: data.id },
+        });
     }
     if (action === 'delete') {
         confirmDelete(data);
@@ -101,10 +108,6 @@ const handleDeleteConfirm = async () => {
         showDeleteDialog.value = false;
         rowToDelete.value = null;
     });
-};
-
-const handleEdit = (row: any) => {
-    router.push(`/LDC/edit/${row.id}`);
 };
 
 const addLDC = () => {

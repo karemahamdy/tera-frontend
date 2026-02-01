@@ -10,10 +10,11 @@ import { useLDC } from "../composables/useLDC";
 import router from "@/app/router";
 
 const props = defineProps<{
-  mode: "edit" | "create";
+  mode: "edit" | "create" | "view";
 }>();
 
 const editMode = props.mode === "edit";
+const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
 const { accountLookups, getAccountsLookups } = useLookups();
 
@@ -101,24 +102,23 @@ const onSubmit = handleSubmit(async (values) => {
       <template #content>
         <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
          <FormInput :label="$t('LDC.code')" v-model="code" :placeholder="$t('LDC.codePlaceholder')"
-            :error="errors.code" :invalid="!!errors.code" />
-
+            :error="errors.code" :invalid="!!errors.code" :disabled="viewMode || editMode"/>
           <div class="grid grid-cols-2 gap-4">        
             <FormInput :label="$t('LDC.nameEn')" v-model="nameEn" :placeholder="$t('LDC.nameEnPlaceholder')"
-            :error="errors.nameEn" :invalid="!!errors.nameEn" :disabled="editMode" />
+            :error="errors.nameEn" :invalid="!!errors.nameEn" :disabled="viewMode" />
             <FormInput :label="$t('LDC.nameAr')" v-model="nameAr" :placeholder="$t('LDC.nameArPlaceholder')"
-              :error="errors.nameAr" :invalid="!!errors.nameAr" :disabled="editMode" />
+              :error="errors.nameAr" :invalid="!!errors.nameAr" :disabled="viewMode" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown v-for="field in accountFields" :key="field.key" :label="$t(field.label)"
+            <FormDropdown v-for="field in accountFields" :key="field.key" :label="$t(field.label)" :disabled="viewMode"
               v-model="fields[field.key]" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t(field.label)"
                />
           </div>
 
           <FormDropdown :label="$t('LDC.inventoryAdjustment')"
             v-model="inventoryAdjustment" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t('LDC.inventoryAdjustment')"
-            :error="errors.inventoryAdjustment" />
+            :error="errors.inventoryAdjustment" :disabled="viewMode"/>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
             <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDC' }"
