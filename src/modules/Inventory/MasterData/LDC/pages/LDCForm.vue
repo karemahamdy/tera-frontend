@@ -17,10 +17,7 @@ const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
 const { accountLookups, getAccountsLookups } = useLookups();
 
-const { createLDC, updateLDC } = useLDC();
-onMounted(async () => {
-  await getAccountsLookups();
-});
+const { createLDC, updateLDC, fetchLDCById } = useLDC();  
 
 interface AccountField {
   key: string;
@@ -54,7 +51,7 @@ const initialValues: LDCFormValues = {
   ...Object.fromEntries(accountFields.map(f => [f.key, null])),
 };
 
-const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
+const { errors, defineField, handleSubmit, setValues } = useForm<LDCFormValues>({
   validationSchema: LDCSchema,
   initialValues,
 });
@@ -68,25 +65,44 @@ const fields = Object.fromEntries(
   accountFields.map(f => [f.key, defineField(f.key)[0]])
 ) as Record<string, Ref<string | null>>;
 
+onMounted(async () => {
+  await getAccountsLookups();
+
+  if (editMode && props.id || viewMode && props.id) {
+    const data = await fetchLDCById(props.id);
+    if (data) {
+
+      const mappedValues: LDCFormValues = {
+        code: data.code ?? "",
+        nameAr: data.nameAr ?? "",
+        nameEn: data.nameEn ?? "",
+        inventoryAdjustment: data.inventoryAdjustment ?? null,
+        ...Object.fromEntries(accountFields.map(f => [f.key, data[f.key] ?? null])),
+      };
+      setValues(mappedValues);
+    }
+  }
+});
+
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
- if (viewMode) return;
+  if (viewMode) return;
 
   try {
     if (editMode && props.id) {
       await updateLDC(props.id, values);
     } else {
-    await createLDC(values);
+      await createLDC(values);
+    }
     router.push({ name: "LDC" });
-  } 
-}
-catch (error) {
+  } catch (error) {
     console.error("Error submitting form:", error);
   } finally {
     isSubmitting.value = false;
   }
 });
 </script>
+
 
 <template>
   <div>

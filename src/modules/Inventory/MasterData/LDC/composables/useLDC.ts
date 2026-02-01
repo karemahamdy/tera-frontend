@@ -156,20 +156,6 @@ export function useLDC() {
     fetchLDC(1);
   }
 
-  const exportLDC = async () => {
-    try {
-      const response = await LDCService.exportData({
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
-      });
-      FileService.downloadBlob(response, "LedgerDetailCard-data.csv");
-    } catch (err: any) {
-      toastService.error(err);
-    }
-  };
-
   return {
     loading,
     apiLDC,
@@ -188,7 +174,6 @@ export function useLDC() {
     setPage: (p: number) => fetchLDC(p),
     onSearch,
     onFilterChange,
-    onSort,
-    exportLDC
+    onSort
   };
 }

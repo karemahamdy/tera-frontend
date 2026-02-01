@@ -11,7 +11,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, fetchLDC, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, importLDC, apiLDC, deleteLDC, onFilterChange, exportLDC } = useLDC();
+const { loading, fetchLDC, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, importLDC, apiLDC, deleteLDC, onFilterChange } = useLDC();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -126,7 +126,7 @@ const addLDC = () => {
                hasMenu
                     searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addLDC" 
                      templateFileUrl="/LedgerDetailCard/DownloadImportTemplate"
-                    :onExportData="exportLDC"
+                    dataFileUrl="/LedgerDetailCard/export-LDCs"
                     templateFileName="LedgerDetailCard-data.csv" dataFileName="LedgerDetailCard-data.csv"
                     @upload="importLDC"
                     />
