@@ -56,7 +56,8 @@
     "clearFilters": "مسح الفلاتر",
     "template": "قالب",
     "data": "البيانات",
-    "terminate": "اغلاق"
+    "terminate": "اغلاق",
+    "editItem": "تعديل الصنف"
   },
   "table": {
     "description": "الوصف",
@@ -401,6 +402,7 @@
 
  },
   "itemList": {
+    "zone": "النطاق",
     "title": "قائمة الأصناف",
     "subtitle": "إدارة تفاصيل الأصناف والمخزون",
     "itemList": "قائمة الأصناف",
@@ -418,8 +420,10 @@
     "transactions": "المعاملات",
     "pricing": "التسعير",
     "inactive": "غير نشط",
-    "itemTransactions": "معاملات الصنف",
-    "date": "الوقت",
+    "transactiontype": "نوع المعاملة",
+    "transactionnumber": "رقم المعاملة",
+    "recentTransactions": "احدث المعاملات",
+    "date": "التاريخ",
     "transactionType": "نوع المعاملة",
     "transactionNumber": "رقم المعاملة",
     "quantity": "الكمية",
@@ -470,6 +474,7 @@
       "standardCost": "التكلفة القياسية",
       "totalValue": "القيمة الإجمالية",
       "itemAttachment": "مرفقات الصنف"
+
     },
     "cards": {
       "totalOnHand": "إجمالي المتوفر",
@@ -523,7 +528,10 @@
     "physicalCount": "فروقات الجرد",
     "cogs": "تكلفة البضاعة المباعة",
     "inventoryAdjustment": "تسوية المخزون",
-    "select": "اختر"
+    "select": "اختر",
+    "createdSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
+    "updatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
+    "deletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
   },
   "items": {
     "title": "العناصر",

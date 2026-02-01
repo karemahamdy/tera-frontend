@@ -35,7 +35,7 @@ const props = defineProps({
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'date', header: t('itemList.serialNumber') },
+        { field: 'date', header: t('itemList.date') },
         { field: 'warehouse', header: t('warehouses.title'), type: 'slot' },
         { field: 'transactiontype', header: t('itemList.transactiontype'), type: 'slot', Class: 'custom-badge' },
         { field: 'transactionNumber', header: t('itemList.transactionNumber') },
@@ -49,7 +49,7 @@ const columns = computed(() => {
 </script>
 
 <template>
-            <h1 class="text-lg font-bold text-[#717680] p-4">{{ $t("itemList.itemTransactions") }}</h1>  
+            <h1 class="text-lg font-bold text-[#717680] p-4">{{ $t("itemList.recentTransactions") }}</h1>  
                 <DynamicTable :columns="columns" :data="data" />         
 </template>
 

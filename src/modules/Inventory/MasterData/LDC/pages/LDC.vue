@@ -11,7 +11,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, fetchLDC, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, importLDC, apiLDC } = useLDC();
+const { loading, fetchLDC, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, importLDC, apiLDC, deleteLDC, onFilterChange } = useLDC();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -96,19 +96,19 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    // await deleteBranch(rowToDelete.value.id).finally(() => {
-    //     isDeleting.value = false;
-    //     showDeleteDialog.value = false;
-    //     rowToDelete.value = null;
-    // });
+    await deleteLDC(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
 };
 
 const handleEdit = (row: any) => {
     router.push(`/LDC/edit/${row.id}`);
 };
 
-const addBranch = () => {
-    router.push('/LDC/create');
+const addLDC = () => {
+    router.push({name: 'LDCCreate' });
 };
 
 </script>
@@ -120,10 +120,10 @@ const addBranch = () => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="LDC.title" subtitle="LDC.subtitle" :showExport="true"
-                    :showImport="true" :mainBtn="true" mainBtnText="LDC.addNew"   :showFilter="true"
-               :filters="filtersOperation"
+                    :showImport="true" :mainBtn="true" mainBtnText="LDC.addNew" :showFilter="true"
+               :filters="filtersOperation" @filter-change="onFilterChange"
                hasMenu
-                    searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" 
+                    searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addLDC" 
                      templateFileUrl="/LedgerDetailCard/DownloadImportTemplate"
                     dataFileUrl="/LedgerDetailCard/export-LDCs"
                     templateFileName="LedgerDetailCard-data.csv" dataFileName="LedgerDetailCard-data.csv"

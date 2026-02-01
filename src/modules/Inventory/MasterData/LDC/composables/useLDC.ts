@@ -16,6 +16,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
+const StatusFilter = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function useLDC() {
@@ -29,7 +30,8 @@ export function useLDC() {
       pageSize: pageSize.value,
       searchingWord: searchTerm.value,
       orderBy: orderBy.value,
-      orderDirection: orderDirection.value
+      orderDirection: orderDirection.value,
+      StatusFilter: StatusFilter.value
     });
     const payload = response && response.data ? response.data : response;
     apiLDC.value = payload.items ?? [];
@@ -57,7 +59,7 @@ export function useLDC() {
     }
   };
 
-  const createBranch = async (payload: any) => {
+  const createLDC = async (payload: any) => {
     loading.value = true;
     try {
       const response = await LDCService.create(payload);
@@ -72,7 +74,7 @@ export function useLDC() {
     }
   };
 
-  const updateBranch = async (id: string, payload: any) => {
+  const updateLDC = async (id: string, payload: any) => {
     loading.value = true;
     try {
       const response = await LDCService.update(id, payload);
@@ -87,7 +89,7 @@ export function useLDC() {
     }
   };
 
-  const deleteBranch = async (id: string) => {
+  const deleteLDC = async (id: string) => {
     loading.value = true;
     try {
       await LDCService.delete(id);
@@ -131,28 +133,39 @@ export function useLDC() {
     }
   };
 
+  const onFilterChange = (filter: {
+    filter: { field: string };
+    value: string;
+  }) => {
+    const field = filter.filter.field;
+    const value = filter.value;
+    if (field === "status") {
+      StatusFilter.value = value;
+    } 
+    fetchLDC(1);
+  };
+
 const onSearch = (term: string) => {
   searchTerm.value = term;
   fetchLDC(1);     
 };
+
 const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
   orderBy.value = orderByField;
   orderDirection.value = direction;
   fetchLDC(1);
 } 
-  const filteredTableData = computed(() => tableData.value.map((r) => ({ ...r })));
-
+ 
   return {
     loading,
     apiLDC,
     tableData,
-    filteredTableData,
     fetchLDC,
     importLDC,
     fetchLDCById,
-    createBranch,
-    updateBranch,
-    deleteBranch,
+    createLDC,
+    updateLDC,
+    deleteLDC,
     toggleActive,
     pageIndex,
     pageSize,
@@ -160,6 +173,7 @@ const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
     totalPages,
     setPage: (p: number) => fetchLDC(p),
     onSearch,
+    onFilterChange,
     onSort
   };
 }
