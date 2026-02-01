@@ -25,7 +25,7 @@ const validationErrors = ref<Record<string, string[]>>({});
 export function useItemGroup() {
   const { t } = useI18n();
 
-  const fetchItemGroups = async (page = 1, level?: string) => {
+  const fetchItemGroups = async (page = 1, level?: Number) => {
     loading.value = true;
     lastError.value = null;
     let levelToUse = level || currentLevel.value;
@@ -39,14 +39,14 @@ export function useItemGroup() {
       };
       levelToUse = levelMap[levelToUse] || "Category";
     }
-    currentLevel.value = levelToUse;
+    currentLevel.value = levelToUse as string;
 
     try {
       const response: any = await itemGroupsService.getAll({
         pageIndex: page,
         pageSize: pageSize.value,
         search: searchTerm.value,
-        level: levelToUse,
+        level: levelToUse as string,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
       });
