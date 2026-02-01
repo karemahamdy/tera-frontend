@@ -13,7 +13,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useLDC();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useLDC();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -149,11 +149,11 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    await deleteBranch(rowToDelete.value.id).finally(() => {
-        isDeleting.value = false;
-        showDeleteDialog.value = false;
-        rowToDelete.value = null;
-    });
+    // await deleteBranch(rowToDelete.value.id).finally(() => {
+    //     isDeleting.value = false;
+    //     showDeleteDialog.value = false;
+    //     rowToDelete.value = null;
+    // });
 };
 
 const handleEdit = (row: any) => {
