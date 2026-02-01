@@ -90,7 +90,7 @@ const accountsOptions = ref([
             :error="errors.inventoryAdjustment" />
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDCs' }"
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDC' }"
               :disabled="isSubmitting" />
 
             <BaseButton type="submit" :label="editMode ? 'button.save' : 'button.create'" variant="primary"

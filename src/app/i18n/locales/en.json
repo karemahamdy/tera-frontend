@@ -50,7 +50,8 @@
     "clearFilters": "Clear Filters",
     "template": "Template",
     "data": "Data",
-    "terminate": "Terminate"
+    "terminate": "Terminate",
+    "editItem": "Edit Item"
   },
   "table": {
     "description": "Description",
@@ -434,7 +435,7 @@
     "balance": "Balance",
     "quantity": "Quantity",
     "unitCost": "Unit Cost",
-    "itemTransactions": "Item Transactions",
+    "recentTransactions": "Recent Transactions",
     "stockByWarehouse": "Stock by Warehouse",
     "bySerialNumbers": "By Serial Numbers",
     "zone/Location": "Zone/Location",
@@ -533,7 +534,10 @@
     "physicalCount": "Physical Count",
     "cogs": "Cost of Goods Sold (COGS)",
     "inventoryAdjustment": "Inventory Adjustment",
-    "select": "Select"
+    "select": "Select",
+    "createdSuccessfully": "LDC created successfully",  
+    "updatedSuccessfully": "LDC updated successfully",
+    "deletedSuccessfully": "LDC deleted successfully"
   },
   "items": {
     "title": "Items",
