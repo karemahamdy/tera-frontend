@@ -10,6 +10,8 @@ const props = defineProps<{
 
 const isSubmitting = ref(false);
 const editMode = props.mode === "edit";
+// zones bound to WarehouseZones via v-model so parent receives emissions
+const zones = ref<any[]>([]);
 </script>
 
 <template>
@@ -42,7 +44,7 @@ const editMode = props.mode === "edit";
            <WarehouseInfo/>
             </TabPanel>
             <TabPanel value="additional">
-              <WarehouseZones />
+              <WarehouseZones v-model="zones" />
             </TabPanel>
           </TabPanels>
         </Tabs>

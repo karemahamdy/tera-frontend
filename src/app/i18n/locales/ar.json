@@ -375,9 +375,10 @@
     "subtitle": "قم بتنظيم العناصر في مجموعات هرمية",
     "additemGroup": "اضافة  ",
     "searchPlaceholder": "البحث عن الاسم او الرمز...",
-    "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ ",
-    "code": "الرمز",
-    "name": "الاسم",
+  "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ ",
+  "code":"الرمز",
+  "name": "الاسم",
+    "itemsCount": "عدد الاصناف",
     "group1": "مجموعة 1",
     "group2": "مجموعة 2",
     "group3": "مجموعة 3",
@@ -390,8 +391,15 @@
     "addNewGroup": "إضافة مجموعة جديدة",
     "itemGroupInfo": "أنشئ مجموعة جديدة لتنظيم أغراضك",
     "editItemsGroup": "تعديل المجموعة",
-    "editGroupInfo": "مراجعة وتحديث معلومات المجموعة"
-  },
+    "editGroupInfo": "مراجعة وتحديث معلومات المجموعة",
+    "addGroupInfo": "تعريف مجموعة جديدة لتصنيف العناصر",
+    "descriptionPlaceholder": "وصف الغرض من هذه المجموعة..",
+    "deletedSuccessfully": "تم حذف مجموعة العناصر بنجاح",
+    "createdSuccessfully": "تم إنشاء مجموعة العناصر بنجاح",
+    "updatedSuccessfully": "تم تحديث مجموعة العناصر بنجاح",
+    "itemGroupImportedSuccessfully": "تم استيراد مجموعة العناصر بنجاح"
+
+ },
   "itemList": {
     "title": "قائمة الأصناف",
     "subtitle": "إدارة تفاصيل الأصناف والمخزون",
