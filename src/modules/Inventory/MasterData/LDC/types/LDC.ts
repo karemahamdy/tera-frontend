@@ -1,4 +1,3 @@
-
 export interface LDC {
   id: string;
   code: string;
@@ -24,10 +23,10 @@ export interface LDCResponse {
 }
 
 export interface Pagination {
-     pageIndex: number;
-        pageSize?: number;
-        searchingWord?: string;
-        orderBy?: string;
-        orderDirection?: 'asc' | 'desc';
-        StatusFilter?: string;
+  pageIndex: number;
+  pageSize?: number;
+  searchingWord?: string;
+  orderBy?: string;
+  orderDirection?: "asc" | "desc";
+  StatusFilter?: string;
 }

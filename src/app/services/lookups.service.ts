@@ -29,4 +29,7 @@ export const LookupsService = {
     getUsersLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>(`/Users`);
   },
+   getAccountsLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/ChartOfAccountLookups?isActive=${isActive}`);
+  },
 };
