@@ -4,7 +4,7 @@ import alertIcon from '@/assets/images/alert.png';
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { usewarehouse } from "../../LDC/composables/useLDC";
+import { useLDC } from "../../LDC/composables/useLDC";
 import ItemsInfo from "../components/ItemsInfo.vue";
 
 const { t } = useI18n();
@@ -13,7 +13,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = usewarehouse();
+const { loading, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useLDC();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
