@@ -74,15 +74,6 @@ const filtersOperation = computed(() => {
             ],
         },
         {
-            placeholder: "warehouses.zones",
-            value: null,
-            field: "zones",
-            options: [        
-          { label: t("button.active"), value: "IsActive" },
-            { label: t("button.active"), value: "IsActive" }, 
-            ],
-        },
-        {
             placeholder: "activeSessions.allStatus",
             value: null,
             field: "status",
@@ -101,7 +92,7 @@ const columns = computed(() => {
         { field: 'type', header: t('warehouses.type'), type: 'badge', sortable: true , Class: 'custom-badge'},
         { field: 'address', header: t('warehouses.address'), sortable: true },
         { field: 'zones', header: t('warehouses.zones'), sortable: true },
-        { field: 'transferLedger', header: t('warehouses.transferLedger'), sortable: true },
+        { field: 'transferLedger', header: t('warehouses.transferAccount'), sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
