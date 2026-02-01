@@ -57,7 +57,8 @@
     "template": "قالب",
     "data": "البيانات",
     "terminate": "اغلاق",
-    "editItem": "تعديل الصنف"
+    "editItem": "تعديل الصنف",
+    "hold": "تعليق"
   },
   "table": {
     "description": "الوصف",

@@ -34,6 +34,16 @@ const customItems = [
             
         },
     },
+    {
+        slot: true,
+        label: t("button.hold"),
+        icon: "Lock",
+        color: "#F04438",
+        command: () => {
+            router.push({ name: "ItemView" });
+            
+        },
+    },
 ];
 const props = defineProps({
     data: {
