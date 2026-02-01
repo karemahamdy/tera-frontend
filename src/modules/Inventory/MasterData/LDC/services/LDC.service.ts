@@ -1,22 +1,22 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type {  Pagination, LDCResponse } from "../types/LDC";
+import type { Pagination, LDCResponse } from "../types/LDC";
 
 
 export const LDCService = {
- async getAll(params: Pagination) {
- 
-  const resp = await axiosWrapper.get<LDCResponse>(
-    `/LedgerDetailCard`, { params }
-  );
-  return resp.data;
-},
+  async getAll(params: Pagination) {
+
+    const resp = await axiosWrapper.get<LDCResponse>(
+      `/LedgerDetailCard`, { params }
+    );
+    return resp.data;
+  },
 
   async getById(id: string): Promise<any> {
     const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
     return data.data;
   },
 
-  async create(payload: any ) {
+  async create(payload: any) {
     const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
     return data.data;
   },
@@ -29,15 +29,28 @@ export const LDCService = {
     await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
   },
 
- async toggleActive(id: string, isActive: boolean) {
-  const data = await axiosWrapper.put<any>(
-    `/LedgerDetailCard/Status/${id}`,
-    null,
+  async toggleActive(id: string, isActive: boolean) {
+    const data = await axiosWrapper.put<any>(
+      `/LedgerDetailCard/Status/${id}`,
+      null,
+      {
+        params: { isActive }
+      }
+    );
+    return data.data;
+  },
+
+async exportData(payload: any) {
+  const  data  = await axiosWrapper.get<Blob>(
+    `/LedgerDetailCard/export-LDCs`,
     {
-      params: { isActive }
+      params: payload,       
+      responseType: "blob",
     }
   );
-  return data.data;
+
+      return data;
+;
 }
 
 };

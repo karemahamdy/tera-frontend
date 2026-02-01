@@ -40,7 +40,7 @@ const customItems = [
 
 onMounted(() => {
     const levelNum = Number(route.query.level || 1);
-    fetchItemGroups(levelNum);
+    fetchItemGroups(1, levelNum);
 });
 
 const tabs = computed(() => [

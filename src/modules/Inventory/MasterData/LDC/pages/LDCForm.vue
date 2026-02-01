@@ -2,8 +2,6 @@
 import { onMounted, ref } from "vue";
 import type { Ref } from "vue";
 import { useForm } from "vee-validate";
-import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
-import FormInput from "@/sharedComponents/inputs/FormInput.vue";
 import { LDCSchema } from "../validation/LDCSchema";
 import { useLookups } from "@/composables/useLookups";
 import { useLDC } from "../composables/useLDC";
@@ -11,6 +9,7 @@ import router from "@/app/router";
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
+  id?: string;
 }>();
 
 const editMode = props.mode === "edit";
@@ -18,7 +17,7 @@ const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
 const { accountLookups, getAccountsLookups } = useLookups();
 
-const { createLDC } = useLDC();
+const { createLDC, updateLDC } = useLDC();
 onMounted(async () => {
   await getAccountsLookups();
 });
@@ -71,11 +70,17 @@ const fields = Object.fromEntries(
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
+ if (viewMode) return;
 
   try {
+    if (editMode && props.id) {
+      await updateLDC(props.id, values);
+    } else {
     await createLDC(values);
     router.push({ name: "LDC" });
-  } catch (error) {
+  } 
+}
+catch (error) {
     console.error("Error submitting form:", error);
   } finally {
     isSubmitting.value = false;
