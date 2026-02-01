@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import type { Ref } from "vue";
 import { useForm } from "vee-validate";
 import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
+import FormInput from "@/sharedComponents/inputs/FormInput.vue";
 import { LDCSchema } from "../validation/LDCSchema";
 import { useLookups } from "@/composables/useLookups";
 import { useLDC } from "../composables/useLDC";
@@ -13,18 +15,18 @@ const props = defineProps<{
 
 const editMode = props.mode === "edit";
 const isSubmitting = ref(false);
+const { accountLookups, getAccountsLookups } = useLookups();
 
-const {
- accountLookups,
- getAccountsLookups
-} = useLookups();
-const { createLDC } = useLDC()
-
+const { createLDC } = useLDC();
 onMounted(async () => {
-  await Promise.all([getAccountsLookups()]);
-  
+  await getAccountsLookups();
 });
-const accountFields = [
+
+interface AccountField {
+  key: string;
+  label: string;
+}
+const accountFields: AccountField[] = [
   { key: "purchaseAccountId", label: "LDC.localPurchaseAccount" },
   { key: "localSalesAccountId", label: "LDC.localSalesAccount" },
   { key: "localPurchaseReturnId", label: "LDC.localPurchaseReturn" },
@@ -37,15 +39,24 @@ const accountFields = [
   { key: "cogsAccountId", label: "LDC.cogs" },
 ];
 
-const { errors, defineField, handleSubmit } = useForm({
+type LDCFormValues = {
+  code: string;
+  nameAr: string;
+  nameEn: string;
+  inventoryAdjustment: string | null;
+} & Record<string, string | null>;
+
+const initialValues: LDCFormValues = {
+  code: "",
+  nameAr: "",
+  nameEn: "",
+  inventoryAdjustment: null,
+  ...Object.fromEntries(accountFields.map(f => [f.key, null])),
+};
+
+const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
   validationSchema: LDCSchema,
-  initialValues: {
-    code: "",
-    nameAr: "",
-    nameEn: "",
-    inventoryAdjustment: "",
-    ...Object.fromEntries(accountFields.map(f => [f.key, null]))
-  }
+  initialValues,
 });
 
 const [code] = defineField("code");
@@ -54,31 +65,14 @@ const [nameEn] = defineField("nameEn");
 const [inventoryAdjustment] = defineField("inventoryAdjustment");
 
 const fields = Object.fromEntries(
-  accountFields.map((f: any) => [f.key, defineField(f.key)[0]])
-) as Record<string, any>;
+  accountFields.map(f => [f.key, defineField(f.key)[0]])
+) as Record<string, Ref<string | null>>;
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
 
   try {
-    const payload = {
-      code: values.code,
-      nameAr: values.nameAr,
-      nameEn: values.nameEn,
-      inventoryAdjustment: values.inventoryAdjustment,
-      purchaseAccountId: values.purchaseAccountId,
-      localSalesAccountId: values.localSalesAccountId,
-      localPurchaseReturnId: values.localPurchaseReturnId,        
-      localSalesReturnAccountId: values.localSalesReturnAccountId,
-      importPurchaseAccountId: values.importPurchaseAccountId,
-      importPurchaseReturnsAccountId: values.importPurchaseReturnsAccountId,
-      exportSalesAccountId: values.exportSalesAccountId,
-      exportSalesReturnAccountId: values.exportSalesReturnAccountId,
-      physicalCountAdjustmentId: values.physicalCountAdjustmentId,
-      cogsAccountId: values.cogsAccountId
-    };
-
-    await createLDC(payload);
+    await createLDC(values);
     router.push({ name: "LDC" });
   } catch (error) {
     console.error("Error submitting form:", error);
@@ -86,9 +80,7 @@ const onSubmit = handleSubmit(async (values) => {
     isSubmitting.value = false;
   }
 });
-
 </script>
-
 
 <template>
   <div>
