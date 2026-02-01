@@ -14,22 +14,22 @@ const { errors, accessScope } = useItems();
           :invalid="!!errors.code"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.name')"
+          :error="errors.name"
+          :placeholder="$t('items.namePlaceholder')"
+          :invalid="!!errors.name"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.nameAr')"
+          :error="errors.nameAr"
+          placeholder="أدخل اسم العنصر"
+          :invalid="!!errors.nameAr"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.codeHS')"
+          :error="errors.codeHS"
+          :placeholder="$t('items.codeHSPlaceholder')"
+          :invalid="!!errors.codeHS"
         />
         <div class="w-full md:col-span-2">
           <label class="text-gray-700 font-medium mb-2 block">
@@ -83,19 +83,19 @@ const { errors, accessScope } = useItems();
           :options="[]"
           :error="errors.branchID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.branchPlaceholder')"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.productionCode')"
+          :error="errors.productionCode"
+          :placeholder="$t('items.productionCodePlaceholder')"
+          :invalid="!!errors.productionCode"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.productionName')"
+          :error="errors.productionName"
+          :placeholder="$t('items.productionNamePlaceholder')"
+          :invalid="!!errors.productionName"
         />
       </div>
     </div>
@@ -106,85 +106,85 @@ const { errors, accessScope } = useItems();
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.warehouse')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.warehouseID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.warehousePlaceholder')"
         />
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.category')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.categoryID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.categoryPlaceholder')"
         />
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.itemGroup1')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.itemGroup1ID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.itemGroup1Placeholder')"
         />
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.itemGroup2')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.itemGroup2ID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.itemGroup2Placeholder')"
         />
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.itemGroup3')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.itemGroup3ID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.itemGroup3Placeholder')"
         />
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.itemGroup4')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.itemGroup4ID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.itemGroup4Placeholder')"
         />
       </div>
     </div>
     <div>
       <p class="font-bold mb-5 mt-10 text-lg">
-        {{ $t("items.warehouseClassification") }}
+        {{ $t("items.itemDetails") }}
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.itemType')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.itemTypeID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.itemTypePlaceholder')"
         />
         <FormDropdown
           class="w-full"
-          :label="$t('items.assignedBranch')"
+          :label="$t('items.manufacturer')"
           :options="[]"
-          :error="errors.branchID"
+          :error="errors.manufacturerID"
           optionValue="value"
-          :placeholder="$t('items.assignedBranch')"
+          :placeholder="$t('items.manufacturerPlaceholder')"
         />
         <FormInput
-          :label="$t('items.code')"
-          :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
-          :invalid="!!errors.code"
+          :label="$t('items.manufacturerPartNumber')"
+          :error="errors.manufacturerPartNumber"
+          :placeholder="$t('items.manufacturerPartNumberPlaceholder')"
+          :invalid="!!errors.manufacturerPartNumber"
         />
         <FormInput
-          :label="$t('items.code')"
+          :label="$t('items.barcodeSKU')"
           :error="errors.code"
-          :placeholder="$t('items.codePlaceholder')"
+          :placeholder="$t('items.barcodeSKUPlaceholder')"
           :invalid="!!errors.code"
         />
       </div>
