@@ -1,25 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useItems } from "../composables/useItems";
-const { errors } = useItems();
-
-const data = ref([
-  { id: 1, name: "Box", abbreviation: "BX", quantity: 0 },
-  { id: 2, name: "Packet", abbreviation: "PK", quantity: 0 },
-]);
-
-const addNewRule = () => {
-  data.value.push({
-    id: data.value.length + 1,
-    name: "",
-    abbreviation: "",
-    quantity: 0,
-  });
-};
-
-const deleteRule = (index: number) => {
-  data.value.splice(index, 1);
-};
+const { errors, baseUOM, rules, addNewRule, deleteRule } = useItems();
 </script>
 <template>
   <div>
@@ -29,7 +11,8 @@ const deleteRule = (index: number) => {
         class="w-full"
         :label="$t('items.baseUOM')"
         :options="[]"
-        :error="errors.branchID"
+        v-model="baseUOM"
+        :error="errors.baseUOM"
         optionValue="value"
         :placeholder="$t('items.baseUOMPlaceholder')"
       />
@@ -39,8 +22,8 @@ const deleteRule = (index: number) => {
         <div
           class="w-full bg-gray-100 rounded-xl flex flex-col items-center gap-3"
           :class="{
-            'base-body': data.length > 0 && $i18n.locale !== 'ar',
-            'base-body-ar': data.length > 0 && $i18n.locale === 'ar',
+            'base-body': rules.length > 0 && $i18n.locale !== 'ar',
+            'base-body-ar': rules.length > 0 && $i18n.locale === 'ar',
           }"
         >
           <div class="w-full flex flex-col items-center gap-1 mt-5">
@@ -53,13 +36,15 @@ const deleteRule = (index: number) => {
             <p class="text-2xl text-gray-700">1 Kilogram (KG)</p>
           </div>
           <div class="bg-primary-300 p-2 w-full rounded-b-xl">
-            <p class="text-center text-sm text-white">{{ $t("items.baseUnit") }}</p>
+            <p class="text-center text-sm text-white">
+              {{ $t("items.baseUnit") }}
+            </p>
           </div>
         </div>
       </div>
       <div class="md:col-span-3 flex flex-col items-center gap-3 mt-5">
         <div
-          v-for="(item, index) in data"
+          v-for="(item, index) in rules"
           :key="'key-' + index"
           class="p-5 border bg-gray-100 border-gray-300 rounded-xl w-full"
           :class="{
@@ -93,13 +78,14 @@ const deleteRule = (index: number) => {
                   :label="$t('items.quantity')"
                   type="number"
                   v-model="item.quantity"
-                  :error="errors.quantity"
                   :placeholder="$t('items.quantityPlaceholder')"
-                  :invalid="!!errors.quantity"
                 />
                 <div class="flex gap-2 mt-2 items-center text-success-500">
                   <VsxIcon iconName="InfoCircle" :size="16" type="linear" />
-                  <p class="text-sm">1 {{ item.name }} {{ $t("items.equal") }} {{ item.quantity }} {{ item.name }}</p>
+                  <p class="text-sm">
+                    1 {{ item.name }} {{ $t("items.equal") }}
+                    {{ item.quantity }} {{ item.name }}
+                  </p>
                 </div>
               </div>
               <div
@@ -127,7 +113,7 @@ const deleteRule = (index: number) => {
           class="p-3 cursor-pointer hover:bg-primary-100 border border-dashed bg-primary-50 border-primary-500 rounded-xl w-full text-primary-500 mt-3 gap-1 flex justify-center items-center"
         >
           <VsxIcon iconName="AddSquare" :size="24" type="linear" />
-            <p>{{ $t("items.addUOMRule") }}</p>
+          <p>{{ $t("items.addUOMRule") }}</p>
         </div>
       </div>
     </div>
