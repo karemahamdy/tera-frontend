@@ -372,7 +372,10 @@
     "rack": "Rack",
     "totalLocations": "Total Locations",
     "deleteZoneConfirm": "Are you sure you want to delete this zone?",
-    "add": "New warehouse"
+    "add": "New warehouse",
+    "warehouseCreatedSuccessfully": "Warehouse created successfully",
+    "warehouseUpdatedSuccessfully": "Warehouse updated successfully",
+    "warehouseDeletedSuccessfully": "Warehouse deleted successfully"
   },
   "itemGroup": {
     "title": "Item Group",

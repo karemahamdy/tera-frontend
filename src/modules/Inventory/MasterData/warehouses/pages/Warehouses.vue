@@ -12,12 +12,12 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, apiWarehouse, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, fetchWarehouse, onFilterChange, importWarehouse } = useWarehouse();
+const { loading, apiWarehouse, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, fetchWarehouse, onFilterChange, importWarehouse, deleteWarehouse } = useWarehouse();
 
 onMounted(() => {
-   fetchWarehouse ();
+    fetchWarehouse();
 });
-const emit = defineEmits(['search', 'action-menu-click']);
+
 const customItems = [
     {
         action: "toggleActive",
@@ -26,14 +26,14 @@ const customItems = [
         type: "switch",
         key: "isActive",
     },
-     {
-      slot: true,
-      label: t("button.view"),
-      icon: "Eye",
-      color: "#3F5FAC",
-      command: (row: any) => {
-        router.push({ name: "WarehouseView", params: { row } });
-      },
+    {
+        slot: true,
+        label: t("button.view"),
+        icon: "Eye",
+        color: "#3F5FAC",
+        command: (row: any) => {
+            router.push({ name: "WarehouseView", params: { row } });
+        },
     },
 ];
 
@@ -44,9 +44,9 @@ const filtersOperation = computed(() => {
             value: null,
             field: "type",
             options: [
-                { label: t("button.all"), value: "null" },
+                { label: t("button.all"), value: "" },
                 { label: t("button.professional"), value: "professional" },
-                { label: t("button.normal"), value: "normal" },   
+                { label: t("button.normal"), value: "normal" },
             ],
         },
         {
@@ -54,7 +54,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-                { label: t("button.all"), value: "null" },
+                { label: t("button.all"), value: "" },
                 { label: t("button.active"), value: "true" },
                 { label: t("button.inactive"), value: "false" },
             ],
@@ -63,10 +63,10 @@ const filtersOperation = computed(() => {
 });
 
 const columns = computed(() => {
-    const Columns = [ 
+    const Columns = [
         { field: 'code', header: t('warehouses.code'), sortable: true },
         { field: 'name', header: t('warehouses.name'), type: 'slot', sortable: true },
-        { field: 'type', header: t('warehouses.type'), type: 'badge', sortable: true , Class: 'custom-badge'},
+        { field: 'type', header: t('warehouses.type'), type: 'badge', sortable: true, Class: 'custom-badge' },
         { field: 'address', header: t('warehouses.address'), sortable: true },
         { field: 'zonesCount', header: t('warehouses.zones'), sortable: true },
         { field: 'transferAccount', header: t('warehouses.transferAccount'), sortable: true },
@@ -111,11 +111,11 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    // await deleteWarehouse(rowToDelete.value.id).finally(() => {
-    //     isDeleting.value = false;
-    //     showDeleteDialog.value = false;
-    //     rowToDelete.value = null;
-    // });
+    await deleteWarehouse(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
 };
 
 const handleEdit = (row: any) => {
@@ -136,23 +136,23 @@ const addBranch = () => {
             <template #title>
                 <PageHeader title="warehouses.title" subtitle="warehouses.subtitle" :showExport="true"
                     :showImport="true" :mainBtn="true" mainBtnText="warehouses.addWarehouse" :showFilter="true"
-                   :filters="filtersOperation" searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch"
-                    @filter-change="onFilterChange"  hasMenu  @upload="importWarehouse"
-                     templateFileUrl="/Warehouses/DownloadImportTemplate"
-                    templateFileName="Warehouses-data.csv" dataFileName="Warehouses-data.csv"
-                     />
+                    :filters="filtersOperation" searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch"
+                    :onMainBtnClick="addBranch" @filter-change="onFilterChange" hasMenu @upload="importWarehouse"
+                    templateFileUrl="/Warehouses/DownloadImportTemplate" templateFileName="Warehouses-data.csv"
+                    dataFileName="Warehouses-data.csv" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiWarehouse" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy />
-              
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
+                    @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy />
+
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('warehouses.deleteWarehousesConfirm')"
-            :buttons="[
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
+            :title="$t('warehouses.deleteWarehousesConfirm')" :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
             ]" @confirm="handleDeleteConfirm" />
