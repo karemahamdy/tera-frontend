@@ -61,4 +61,5 @@ export interface Pagination {
   level?: number;
   orderBy?: string;
   orderDirection?: 'asc' | 'desc';
+  StatusFilter?: string;
 }

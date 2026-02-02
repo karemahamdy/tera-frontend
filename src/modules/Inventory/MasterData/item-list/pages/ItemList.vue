@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useLDC } from "../../LDC/composables/useLDC";
 import ItemsInfo from "../components/ItemsInfo.vue";
+import { useItem } from "../composables/useItem";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -13,9 +13,11 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useLDC();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, apiItem, fetchItem, deleteItem, importItem, exportItem } = useItem();
+onMounted( () => {
+     fetchItem();
+});
 
-const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
     {
         action: "toggleActive",
@@ -29,10 +31,7 @@ const customItems = [
         label: t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
-        command: () => {
-            router.push({ name: "ItemView" });
-            
-        },
+        action: "view",
     },
     {
         slot: true,
@@ -45,31 +44,7 @@ const customItems = [
         },
     },
 ];
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                id: 1,
-                itemName: "Item A",
-                itemCode: "ITM-001",
-                itemGroup: "Electronics",
-                UOM: "Piece",
-                warehouse: "Main Warehouse",
-                status: "Active",
-            },
-            {
-                id: 2,
-                itemName: "Item A",
-                itemCode: "ITM-001",
-                itemGroup: "Electronics",
-                UOM: "Piece",
-                warehouse: "Main Warehouse",
-                status: "Active",
-            },
-        ],
-    },
-});
+
 const filtersOperation = computed(() => {
     return [
         {
@@ -113,12 +88,12 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'itemName', header: t('itemList.itemName'), sortable: true },
-        { field: 'itemCode', header: t('itemList.itemCode'), type: 'slot', sortable: true },
-        { field: 'itemGroup', header: t('itemList.itemGroup'), type: 'slot', sortable: true, Class: 'custom-badge' },
-        { field: 'UOM', header: t('itemList.UOM'), sortable: true },
-        { field: 'warehouse', header: t('itemList.warehouse'), sortable: true },
-        { field: 'status', header: t('status'), type: 'status', sortable: true },
+        { field: 'name', header: t('itemList.itemName'), sortable: true },
+        { field: 'code', header: t('itemList.itemCode'), type: 'slot', sortable: true },
+        { field: 'itemGroupName', header: t('itemList.itemGroup'), type: 'slot', sortable: true, Class: 'custom-badge' },
+        { field: 'baseUnitName', header: t('itemList.UOM'), sortable: true },
+        { field: 'wareHouse', header: t('itemList.warehouse'), sortable: true },
+        { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -133,6 +108,7 @@ const lastRecord = computed(() => {
     const last = pageIndex.value * pageSize.value;
     return Math.min(last, totalCount.value || last);
 });
+
 
 const confirmDelete = (row: any) => {
     rowToDelete.value = row;
@@ -159,11 +135,11 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    // await deleteBranch(rowToDelete.value.id).finally(() => {
-    //     isDeleting.value = false;
-    //     showDeleteDialog.value = false;
-    //     rowToDelete.value = null;
-    // });
+    await deleteItem(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
 };
 
 const handleEdit = (row: any) => {
@@ -184,15 +160,18 @@ const addBranch = () => {
             <template #title>
                 <PageHeader title="itemList.title" subtitle="itemList.subtitle" :showExport="true" :showImport="true"
                     :mainBtn="true" mainBtnText="itemList.addItem" :showFilter="true" :filters="filtersOperation"
-                    searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" >
+                    searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" 
+                    hasMenu @upload="importItem"
+                    :onExportData="exportItem" templateFileUrl="/Items/DownloadImportTemplate"
+                    templateFileName="Items-data.csv" dataFileName="Items-data.csv">
                   <template #middle>
-<ItemsInfo/>
+                  <ItemsInfo/>
                    </template>
                     </PageHeader>
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiItem" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy />
