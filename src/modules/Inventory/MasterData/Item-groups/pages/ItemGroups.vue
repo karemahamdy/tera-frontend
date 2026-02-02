@@ -121,8 +121,8 @@ const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
     try {
-        await deleteItemGroup(rowToDelete.value.id);
         showDeleteDialog.value = false;
+        await deleteItemGroup(rowToDelete.value.id);
         rowToDelete.value = null;
     } catch (error) {
         console.error(error);

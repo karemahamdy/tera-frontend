@@ -2,12 +2,12 @@
 export interface warehouses {
   id: string;
   code: string;
- name: string;
- address: string;
+  name: string;
+  address: string;
   isActive: boolean;
   type: string;
   zonesCount: number;
- transferAccount: string | null;
+  transferAccount: string | null;
 
 }
 
@@ -51,7 +51,7 @@ export interface Zone {
   columns: number;
   racks: number;
   locations: Location[];
-  isExpanded?: boolean; 
+  isExpanded?: boolean;
 }
 
 export interface Pagination {
