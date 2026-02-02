@@ -12,7 +12,6 @@ export interface warehouses {
 
 export interface warehousesResponse {
   data: {
-
     items: warehouses[];
     PageIndex: number;
     pageSize: number;
@@ -27,7 +26,7 @@ export interface warehousesResponse {
   id: string | null;
 }
 
-export interface Addwarehouses {
+export interface AddWarehouses {
   code: string;
   nameAr: string;
   nameEn: string;
@@ -55,10 +54,12 @@ export interface Zone {
 }
 
 export interface Pagination {
-     pageIndex: number;
-        pageSize?: number;
-        searchingWord?: string;
-        level?: number;
-        orderBy?: string;
-        orderDirection?: 'asc' | 'desc';
+  pageIndex: number;
+  pageSize?: number;
+  searchingWord?: string;
+  level?: number;
+  orderBy?: string;
+  orderDirection?: "asc" | "desc";
+  WarehouseType?: string;
+  IsActive?: string;
 }

@@ -1,13 +1,13 @@
 import { toastService } from "@/app/services/toastService";
-import { ref, computed } from "vue";
-
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+
+import { FileService } from "@/app/services/file.service";
 import { warehousesService } from "../services/warehouse.service";
-import type { Addwarehouses, warehouses } from "../types/warehouse";
+import type { warehouses } from "../types/warehouse";
 
 const loading = ref(false);
-const apiwarehouses = ref<warehouses[]>([]);
-const tableData = ref<any[]>([]);
+const apiWarehouse = ref<warehouses[]>([]);
 
 const pageIndex = ref(1);
 const pageSize = ref(10);
@@ -16,40 +16,39 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
+const WarehouseType = ref('');
+const IsActive = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-const lastError = ref<string | null>(null);
-const validationErrors = ref<Record<string, string[]>>({});
-
-export function usewarehouse() {
+export function useWarehouse() {
   const { t } = useI18n();
 
- const fetchwarehouses = async (page = 1) => {
-  loading.value = true;
-  lastError.value = null;
-  try {
-    const response: any = await warehousesService.getAll({
-      pageIndex: page,
-      pageSize: pageSize.value,
-      searchingWord: searchTerm.value,
-      orderBy: orderBy.value,
-      orderDirection: orderDirection.value
-    });
-    const payload = response && response.data ? response.data : response;
-    apiwarehouses.value = payload.items ?? [];
-    pageIndex.value = payload.pageIndex ?? page;
-    pageSize.value = payload.pageSize ?? pageSize.value;
-    totalCount.value = payload.totalCount ?? 0;
-    totalPages.value = payload.totalPages ?? 1;  
-  } catch (err: any) {
-    lastError.value = err?.message ?? "Failed to fetch branches";
-    toastService.error(err);
-  } finally {
-    loading.value = false;
-  }
-};
+  const fetchWarehouse = async (page = 1) => {
+    loading.value = true;
+    try {
+      const response: any = await warehousesService.getAll({
+        pageIndex: page,
+        pageSize: pageSize.value,
+        searchingWord: searchTerm.value,
+        orderBy: orderBy.value,
+        orderDirection: orderDirection.value,
+        WarehouseType: WarehouseType.value,
+        IsActive: IsActive.value
+      });
+      const payload = response && response.data ? response.data : response;
+      apiWarehouse.value = payload.items ?? [];
+      pageIndex.value = payload.pageIndex ?? page;
+      pageSize.value = payload.pageSize ?? pageSize.value;
+      totalCount.value = payload.totalCount ?? 0;
+      totalPages.value = payload.totalPages ?? 1;
+    } catch (err: any) {
+      toastService.error(err);
+    } finally {
+      loading.value = false;
+    }
+  };
 
-  const fetchBranchById = async (id: string) => {
+  const fetchWarehouseById = async (id: string) => {
     loading.value = true;
     try {
       const resp = await warehousesService.getById(id);
@@ -62,19 +61,14 @@ export function usewarehouse() {
     }
   };
 
-  const createBranch = async (payload: Addwarehouses) => {
+  const createWarehouse = async (payload: any) => {
     loading.value = true;
-    validationErrors.value = {};
     try {
       const response = await warehousesService.create(payload);
-      toastService.success(t("branch.branchCreatedSuccessfully"));
-      await fetchwarehouses(pageIndex.value);
+      toastService.success(t("Warehouse.WarehouseCreatedSuccessfully"));
+      await fetchWarehouse(pageIndex.value);
       return response;
     } catch (err: any) {
-      const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === 'object') {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
       throw err;
     } finally {
@@ -82,19 +76,14 @@ export function usewarehouse() {
     }
   };
 
-  const updateBranch = async (id: string, payload: Addwarehouses) => {
+  const updateWarehouse = async (id: string, payload: any) => {
     loading.value = true;
-    validationErrors.value = {};
     try {
       const response = await warehousesService.update(id, payload);
-      toastService.success(t("branch.branchUpdatedSuccessfully"));
-      await fetchwarehouses(pageIndex.value);
+      toastService.success(t("Warehouse.WarehouseUpdatedSuccessfully"));
+      await fetchWarehouse(pageIndex.value);
       return response;
     } catch (err: any) {
-      const errors = err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === 'object') {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
       throw err;
     } finally {
@@ -102,12 +91,12 @@ export function usewarehouse() {
     }
   };
 
-  const deleteBranch = async (id: string) => {
+  const deleteWarehouse = async (id: string) => {
     loading.value = true;
     try {
       await warehousesService.delete(id);
-      toastService.success((t("branch.branchDeletedSuccessfully")));
-      apiwarehouses.value = apiwarehouses.value.filter((b) => b.id !== id);
+      toastService.success((t("Warehouse.WarehouseDeletedSuccessfully")));
+      apiWarehouse.value = apiWarehouse.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -120,8 +109,8 @@ export function usewarehouse() {
     loading.value = true;
     try {
       await warehousesService.toggleActive(id, isActive);
-      toastService.success(`Branch is now ${isActive ? 'Active' : 'in Active'}`);
-      await fetchwarehouses(pageIndex.value);
+      toastService.success(`Warehouse is now ${isActive ? 'Active' : 'in Active'}`);
+      await fetchWarehouse(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -130,43 +119,81 @@ export function usewarehouse() {
     }
   };
 
+  const importWarehouse = async (file: File) => {
+    try {
+      await FileService.uploadFile(
+        "LedgerDetailCard/Import-Warehouses",
+        {
+          file: file,
+        },
+        "WarehouseFile"
+      );
+      toastService.success(t("Warehouse.WarehouseImportedSuccessfully"));
+      fetchWarehouse(1);
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
 
-const onSearch = (term: string) => {
-  searchTerm.value = term;
-  fetchwarehouses(1);     
-};
-const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
-  orderBy.value = orderByField;
-  orderDirection.value = direction;
-  fetchwarehouses(1);
-} 
-  const filteredTableData = computed(() => tableData.value.map((r) => ({ ...r })));
+  const onFilterChange = (filter: {
+    filter: { field: string };
+    value: string;
+  }) => {
+    const field = filter.filter.field;
+    const value = filter.value;
+    if (field === "status") {
+      IsActive.value = value ;
+    }
+     if (field === "type") {
+      WarehouseType.value = value;
+    }
+    fetchWarehouse(1);
+  };
 
-  const clearErrors = () => {
-    validationErrors.value = {};
-    lastError.value = null;
+  const onSearch = (term: string) => {
+    searchTerm.value = term;
+    fetchWarehouse(1);
+  };
+
+  const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+    orderBy.value = orderByField;
+    orderDirection.value = direction;
+    fetchWarehouse(1);
+  }
+
+  const exportWarehouse = async () => {
+    try {
+      const response = await warehousesService.exportData({
+        searchingWord: searchTerm.value,
+        orderBy: orderBy.value,
+        orderDirection: orderDirection.value,
+        WarehouseType: WarehouseType.value,
+        IsActive: IsActive.value
+      });
+      FileService.downloadBlob(response, "LedgerDetailCard-data.csv");
+    } catch (err: any) {
+      toastService.error(err);
+    }
   };
 
   return {
     loading,
-    apiwarehouses,
-    tableData,
-    filteredTableData,
-    fetchwarehouses,
-    fetchBranchById,
-    createBranch,
-    updateBranch,
-    deleteBranch,
+    apiWarehouse,
+    fetchWarehouse,
+    importWarehouse,
+    fetchWarehouseById,
+    createWarehouse,
+    updateWarehouse,
+    deleteWarehouse,
     toggleActive,
     pageIndex,
     pageSize,
     totalCount,
     totalPages,
-    setPage: (p: number) => fetchwarehouses(p),
-    lastError,
-    validationErrors,
-    clearErrors,
+    setPage: (p: number) => fetchWarehouse(p),
     onSearch,
-    onSort
+    onFilterChange,
+    onSort,
+    exportWarehouse
   };
 }

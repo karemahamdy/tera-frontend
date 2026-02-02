@@ -58,7 +58,10 @@
     "data": "البيانات",
     "terminate": "اغلاق",
     "editItem": "تعديل الصنف",
-    "hold": "تعليق"
+    "hold": "تعليق",
+    "normal": "عادي",
+    "professional": "محترف",
+    "all": "الكل"
   },
   "table": {
     "description": "الوصف",

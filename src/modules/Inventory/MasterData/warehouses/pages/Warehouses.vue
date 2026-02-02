@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { usewarehouse } from "../composables/usewarehouse";
-
+import { useWarehouse } from "../composables/usewarehouse";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -13,11 +12,11 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = usewarehouse();
+const { loading, apiWarehouse, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, fetchWarehouse, onFilterChange } = useWarehouse();
 
-// onMounted(() => {
-//     ();
-// });
+onMounted(() => {
+   fetchWarehouse ();
+});
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
     {
@@ -37,31 +36,7 @@ const customItems = [
       },
     },
 ];
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-        code: "WH-001",
-        name: "John Moore",
-        transferLedger: "5",
-        zones: "Administration",
-        address: "Finance",
-        type: "Global",
-        status: "in Active",
-      },
-      {
-        code: "WH-001",
-        name: "John Moore",
-        transferLedger: "5",
-        zones: "Administration",
-        address: "Finance",
-        type: "Professional",
-        status: "Active",
-      },
-    ],
-  },
-});
+
 const filtersOperation = computed(() => {
     return [
         {
@@ -69,17 +44,19 @@ const filtersOperation = computed(() => {
             value: null,
             field: "type",
             options: [
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.active"), value: "IsActive" },   
+                { label: t("button.all"), value: "null" },
+                { label: t("button.professional"), value: "professional" },
+                { label: t("button.normal"), value: "normal" },   
             ],
         },
         {
-            placeholder: "activeSessions.allStatus",
+            placeholder: "activeSessions.status",
             value: null,
             field: "status",
             options: [
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+                { label: t("button.all"), value: "null" },
+                { label: t("button.active"), value: "true" },
+                { label: t("button.inactive"), value: "false" },
             ],
         }
     ]
@@ -91,9 +68,9 @@ const columns = computed(() => {
         { field: 'name', header: t('warehouses.name'), type: 'slot', sortable: true },
         { field: 'type', header: t('warehouses.type'), type: 'badge', sortable: true , Class: 'custom-badge'},
         { field: 'address', header: t('warehouses.address'), sortable: true },
-        { field: 'zones', header: t('warehouses.zones'), sortable: true },
-        { field: 'transferLedger', header: t('warehouses.transferAccount'), sortable: true },
-        { field: 'status', header: t('status'), type: 'status', sortable: true },
+        { field: 'zonesCount', header: t('warehouses.zones'), sortable: true },
+        { field: 'transferAccount', header: t('warehouses.transferAccount'), sortable: true },
+        { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -134,11 +111,11 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    await deleteBranch(rowToDelete.value.id).finally(() => {
-        isDeleting.value = false;
-        showDeleteDialog.value = false;
-        rowToDelete.value = null;
-    });
+    // await deleteWarehouse(rowToDelete.value.id).finally(() => {
+    //     isDeleting.value = false;
+    //     showDeleteDialog.value = false;
+    //     rowToDelete.value = null;
+    // });
 };
 
 const handleEdit = (row: any) => {
@@ -158,13 +135,19 @@ const addBranch = () => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="warehouses.title" subtitle="warehouses.subtitle" :showExport="true"
-                    :showImport="true" :mainBtn="true" mainBtnText="warehouses.addWarehouse"   :showFilter="true"
-          :filters="filtersOperation"
-                    searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" />
+                    :showImport="true" :mainBtn="true" mainBtnText="warehouses.addWarehouse" :showFilter="true"
+                   :filters="filtersOperation" searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch"
+                    @filter-change="onFilterChange"
+               hasMenu
+                   
+                     templateFileUrl="/LedgerDetailCard/DownloadImportTemplate"
+    
+                    templateFileName="LedgerDetailCard-data.csv" dataFileName="LedgerDetailCard-data.csv"
+                     />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiWarehouse" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy />
               
