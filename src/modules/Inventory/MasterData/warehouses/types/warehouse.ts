@@ -1,13 +1,14 @@
-// types/branches.ts
+
 export interface warehouses {
   id: string;
   code: string;
-  nameAr: string;
-  nameEn: string;
-  addressEn?: string;
-  addressAr?: string;
+ name: string;
+ address: string;
   isActive: boolean;
-  createAt: string;
+  type: string;
+  zonesCount: number;
+ transferAccount: string | null;
+
 }
 
 export interface warehousesResponse {
@@ -50,7 +51,7 @@ export interface Zone {
   columns: number;
   racks: number;
   locations: Location[];
-  isExpanded?: boolean; // For UI toggle
+  isExpanded?: boolean; 
 }
 
 export interface Pagination {

@@ -170,7 +170,7 @@ export function useWarehouse() {
         WarehouseType: WarehouseType.value,
         IsActive: IsActive.value
       });
-      FileService.downloadBlob(response, "LedgerDetailCard-data.csv");
+      FileService.downloadBlob(response, "warehouse-data.csv");
     } catch (err: any) {
       toastService.error(err);
     }
