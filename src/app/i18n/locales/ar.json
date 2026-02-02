@@ -58,7 +58,10 @@
     "data": "البيانات",
     "terminate": "اغلاق",
     "editItem": "تعديل الصنف",
-    "hold": "تعليق"
+    "hold": "تعليق",
+    "normal": "عادي",
+    "professional": "محترف",
+    "all": "الكل"
   },
   "table": {
     "description": "الوصف",
@@ -370,7 +373,12 @@
     "totalLocations": "إجمالي المواقع",
     "deleteZoneConfirm": "هل أنت متأكد أنك تريد حذف هذا النطاق؟",
     "add": "إضافة مستودع",
-    "zoneAddedSuccessfully": "تمت إضافة النطاق بنجاح"
+    "zoneAddedSuccessfully": "تمت إضافة النطاق بنجاح",
+    "zoneUpdatedSuccessfully": "تم تحديث النطاق بنجاح",
+    "zoneDeletedSuccessfully": "تم حذف النطاق بنجاح",
+    "warehouseCreatedSuccessfully": "تم إنشاء المستودع بنجاح",
+    "warehouseUpdatedSuccessfully": "تم تحديث المستودع بنجاح",
+    "warehouseDeletedSuccessfully": "تم حذف المستودع بنجاح"
   },
   "itemGroup": {
     "title": "مجموعة العناصر",
