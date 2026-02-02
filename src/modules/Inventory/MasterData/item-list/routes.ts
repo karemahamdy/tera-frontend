@@ -9,22 +9,8 @@ export const ItemListRoutes = [
       permission: null
     },
   },
-  // {
-  //   path: "/item-list/create",
-  //   component: () => import("@/modules/Inventory/MasterData/item-list/pages/ItemListForm.vue"),
-  //   name: "ItemListCreate",
-  //   props: { mode: "create" },
-  //   meta: { permission: null },
-  // },
-  // {
-  //   path: "/item-list/edit/:id",
-  //   component: () => import("@/modules/Inventory/MasterData/item-list/pages/ItemListForm.vue"),
-  //   name: "ItemListEdit",
-  //   props: { mode: "edit" },
-  //   meta: { permission: null },
-  // },
   {
-    path: "/item-list/view",
+    path: "/item-list/view/:id",
     component: () => import("@/modules/Inventory/MasterData/item-list/pages/ItemView.vue"),
     name: "ItemView",
     props: { mode: "view" },

@@ -6,6 +6,8 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import ItemsInfo from "../components/ItemsInfo.vue";
 import { useItem } from "../composables/useItem";
+import { useLookups } from "@/composables/useLookups";
+
 
 const { t } = useI18n();
 const router = useRouter();
@@ -14,9 +16,14 @@ const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
 const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, apiItem, fetchItem, deleteItem, importItem, exportItem } = useItem();
+const { warehouseLookup, itemGroupLookups, getWarehouseLookups, getItemGroupLookups } = useLookups();  
 
 onMounted(() => {
-    fetchItem();
+    Promise.all([
+        fetchItem(),
+        getWarehouseLookups(),
+        getItemGroupLookups()
+    ]);
 });
 
 const customItems = [
@@ -39,10 +46,7 @@ const customItems = [
         label: t("button.hold"),
         icon: "Lock",
         color: "#F04438",
-        command: () => {
-            router.push({ name: "ItemView" });
-
-        },
+        action: "hold",
     },
 ];
 
@@ -64,8 +68,7 @@ const filtersOperation = computed(() => {
             field: "type",
             options: [
                 { label: t("button.all"), value: " " },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.active"), value: "IsActive" },
+                 ...itemGroupLookups.value
             ],
         },
         {
@@ -74,8 +77,8 @@ const filtersOperation = computed(() => {
             field: "zones",
             options: [
                 { label: t("button.all"), value: " " },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.active"), value: "IsActive" },
+                ...warehouseLookup.value
+
             ],
         },
     ]
@@ -121,6 +124,12 @@ const handleActionMenu = async (payload: any) => {
     if (action === 'delete') {
         confirmDelete(data);
     }
+       if (action === 'view') {
+        router.push({
+            name: "ItemView",
+            params: { id: data.id },
+        });
+    }
     if (action === "toggleActive") {
         if (loading.value) return;
         await toggleActive(data.id, !data.isActive);
@@ -154,7 +163,7 @@ const addBranch = () => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="itemList.title" subtitle="itemList.subtitle" :showExport="true" :showImport="true"
-                    :mainBtn="true" mainBtnText="itemList.addItem" :showFilter="true" :filters="filtersOperation"
+                    :mainBtn="true" mainBtnText="itemList.addItem" :showMultiFilter="true" :filters="filtersOperation"
                     searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch"
                     hasMenu @upload="importItem" :onExportData="exportItem"
                     templateFileUrl="/Items/DownloadImportTemplate" templateFileName="Items-data.csv"
