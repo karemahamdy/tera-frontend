@@ -12,7 +12,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, apiWarehouse, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, fetchWarehouse, onFilterChange, importWarehouse, deleteWarehouse } = useWarehouse();
+const { loading, apiWarehouse, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, fetchWarehouse, onFilterChange, importWarehouse, deleteWarehouse, exportWarehouse } = useWarehouse();
 
 onMounted(() => {
     fetchWarehouse();
@@ -31,9 +31,7 @@ const customItems = [
         label: t("button.view"),
         icon: "Eye",
         color: "#3F5FAC",
-        command: (row: any) => {
-            router.push({ name: "WarehouseView", params: { row } });
-        },
+        action: 'view',
     },
 ];
 
@@ -66,7 +64,7 @@ const columns = computed(() => {
     const Columns = [
         { field: 'code', header: t('warehouses.code'), sortable: true },
         { field: 'name', header: t('warehouses.name'), type: 'slot', sortable: true },
-        { field: 'type', header: t('warehouses.type'), type: 'badge', sortable: true, Class: 'custom-badge' },
+        { field: 'type', header: t('warehouses.type'), type: 'slot', sortable: true },
         { field: 'address', header: t('warehouses.address'), sortable: true },
         { field: 'zonesCount', header: t('warehouses.zones'), sortable: true },
         { field: 'transferAccount', header: t('warehouses.transferAccount'), sortable: true },
@@ -111,9 +109,9 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
+    showDeleteDialog.value = false;
     await deleteWarehouse(rowToDelete.value.id).finally(() => {
         isDeleting.value = false;
-        showDeleteDialog.value = false;
         rowToDelete.value = null;
     });
 };
@@ -138,15 +136,24 @@ const addBranch = () => {
                     :showImport="true" :mainBtn="true" mainBtnText="warehouses.addWarehouse" :showFilter="true"
                     :filters="filtersOperation" searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch"
                     :onMainBtnClick="addBranch" @filter-change="onFilterChange" hasMenu @upload="importWarehouse"
-                    templateFileUrl="/Warehouses/DownloadImportTemplate" templateFileName="Warehouses-data.csv"
-                    dataFileName="Warehouses-data.csv" />
+                    :onExportData="exportWarehouse" templateFileUrl="/Warehouses/DownloadImportTemplate"
+                    templateFileName="Warehouses-data.csv" dataFileName="Warehouses-data.csv" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiWarehouse" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy />
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
+                    <template  v-slot:["col-type"]="{ data }">
+                        <Badge class="px-3 py-1 rounded-full text-sm font-medium" :class="data.type === 'Professional'
+                            ? 'custom-badge'
+                            : 'prof-badge'">
+                            {{ data.type }}
+                        </Badge>
+                    </template>
+
+                </DynamicTable>
 
             </template>
         </card>
@@ -173,4 +180,22 @@ const addBranch = () => {
     font-size: 13px;
     padding: 20px 16px;
 }
+.custom-badge {
+  background: var(--color-primary-50);
+  color: var(--color-primary-500);
+  padding: 16px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.prof-badge {
+  background: var(--color-gray-100);
+  color: var(--color-gray-500);
+  padding: 16px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
 </style>
