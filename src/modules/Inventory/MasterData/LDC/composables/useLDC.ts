@@ -132,6 +132,20 @@ export function useLDC() {
       toastService.error(error as string);
     }
   };
+ const exportLDC = async () => {
+    try {
+      const response = await LDCService.exportData({
+        searchingWord: searchTerm.value,
+        orderBy: orderBy.value,
+        orderDirection: orderDirection.value,
+        StatusFilter: StatusFilter.value
+      });
+      FileService.downloadBlob(response, "LedgerDetailCard-data.csv");
+    } catch (err: any) {
+      toastService.error(err);
+    }
+  };
+
 
   const onFilterChange = (filter: {
     filter: { field: string };
@@ -166,6 +180,7 @@ export function useLDC() {
     createLDC,
     updateLDC,
     deleteLDC,
+    exportLDC,
     toggleActive,
     pageIndex,
     pageSize,
