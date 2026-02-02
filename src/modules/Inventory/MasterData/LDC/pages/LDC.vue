@@ -120,7 +120,7 @@ const addLDC = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="LDC.title" subtitle="LDC.subtitle" :showExport="true"
+                <PageHeader title="LDC.title" subtitle="LDC.subtitle" :showExport="false"
                     :showImport="false" :mainBtn="true" mainBtnText="LDC.addNew" :showFilter="true"
                :filters="filtersOperation" @filter-change="onFilterChange"
                     searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addLDC" 
