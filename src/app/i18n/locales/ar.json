@@ -408,7 +408,7 @@
     "createdSuccessfully": "تم إنشاء مجموعة العناصر بنجاح",
     "updatedSuccessfully": "تم تحديث مجموعة العناصر بنجاح",
     "itemGroupImportedSuccessfully": "تم استيراد مجموعة العناصر بنجاح"
-
+ 
  },
   "itemList": {
     "zone": "النطاق",
@@ -447,6 +447,10 @@
     "available": "المتاح",
     "onHold": "قيد الانتظار",
     "serialNumber": "الرقم التسلسلي",
+       "OutOfStock": "نفد من المخزون",
+    "MinimumStock": "الحد الأدنى للمخزون",
+    "ActiveItems": "العناصر النشطة",
+    "TotalItems": "إجمالي العناصر",
     "overview": {
       "overview": "نظرة عامة",
       "itemInformation": "معلومات الصنف",
@@ -483,7 +487,7 @@
       "standardCost": "التكلفة القياسية",
       "totalValue": "القيمة الإجمالية",
       "itemAttachment": "مرفقات الصنف"
-
+      
     },
     "cards": {
       "totalOnHand": "إجمالي المتوفر",

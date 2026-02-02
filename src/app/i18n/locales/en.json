@@ -452,6 +452,10 @@
     "serialNumber": "Serial Number",
     "zone": "Zone",
     "lastTransaction": "Last Transaction",
+    "TotalItems": "Total Items",
+      "ActiveItems": "Active Items",
+      "OutOfStock": "Out of Stock",
+      "MinimumStock": "Minimum Stock",
     "cards": {
       "totalOnHand": "Total On Hand",
       "allWarehouses": "All Warehouses",

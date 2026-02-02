@@ -2,14 +2,19 @@
 export interface itemList {
   id: string;
   code: string;
-  nameAr: string;
-  nameEn: string;
-  addressEn?: string;
-  addressAr?: string;
+ name: string;
+ wareHouse: string;
+ baseUnitName: string;
+ itemGroupName: string;
   isActive: boolean;
-  createAt: string;
 }
 
+export interface statistics {
+  totalItems?: number;
+  activeItems?: number;
+  outOfStockItems?: number;
+minStockItems?: number;
+}
 export interface itemListResponse {
   data: {
 
