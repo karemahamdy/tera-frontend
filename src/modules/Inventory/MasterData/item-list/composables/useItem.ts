@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { itemListService } from "../services/itemList.service";
 import type { itemList } from "../types/itemList";
+import { FileService } from "@/app/services/file.service";
 
 const loading = ref(false);
 const apiItem = ref<itemList[]>([]);
@@ -118,6 +119,36 @@ export function useItem() {
     }
   };
 
+   const importItem = async (file: File) => {
+      try {
+        await FileService.uploadFile(
+          "Items/importItems",
+          {
+            file: file,
+          },
+          "ItemFile"
+        );
+        toastService.success(t("Item.ItemImportedSuccessfully"));
+        fetchItem(1);
+      } catch (error) {
+        toastService.error(error as string);
+      }
+    };
+
+  const exportItem = async () => {
+    try {
+      const response = await itemListService.exportData({
+        searchingWord: searchTerm.value,
+        orderBy: orderBy.value,
+        orderDirection: orderDirection.value,
+        StatusFilter: StatusFilter.value
+      });
+      FileService.downloadBlob(response, "item-data.csv");
+    } catch (err: any) {
+      toastService.error(err);
+    }
+  };
+
   const onFilterChange = (filter: {
     filter: { field: string };
     value: string;
@@ -151,6 +182,8 @@ export function useItem() {
     updateItem,
     deleteItem,
     toggleActive,
+    importItem,
+    exportItem,
     pageIndex,
     pageSize,
     totalCount,

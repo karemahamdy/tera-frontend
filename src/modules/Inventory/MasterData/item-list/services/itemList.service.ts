@@ -11,16 +11,16 @@ export const itemListService = {
 },
 
   async getById(id: string): Promise<AdditemList> {
-    const data = await axiosWrapper.get<any>(`/itemList/${id}`);
+    const data = await axiosWrapper.get<any>(`/item/${id}`);
     return data.data;
   },
 
   async create(payload: AdditemList ) {
-    const data = await axiosWrapper.post<any>(`/itemList/create`, payload);
+    const data = await axiosWrapper.post<any>(`/item/create`, payload);
     return data.data;
   },
   async update(id: string, payload: AdditemList) {
-    const data = await axiosWrapper.put<any>(`/itemList/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/item/${id}`, payload);
     return data.data;
   },
 
@@ -35,5 +35,12 @@ export const itemListService = {
     return data.data;
   },
 
+ async exportData(payload: any) {
+    const data = await axiosWrapper.get<Blob>(`/item/exportItems`, {
+      params: payload,
+      responseType: "blob",
+    });
 
+    return data;
+  },
 };
