@@ -5,7 +5,7 @@ import type { AdditemList, itemListResponse, Pagination } from "../types/itemLis
 export const itemListService = {
  async getAll(params: Pagination) {
   const resp = await axiosWrapper.get<itemListResponse>(
-    `/itemList/GetAllitemLists?${params}`
+    `/item/GetAll?` , { params }
   );
   return resp.data;
 },
@@ -25,11 +25,11 @@ export const itemListService = {
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/itemList/${id}`);
+    await axiosWrapper.delete(`/item/${id}`);
   },
 
  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(`/itemList/${id}/status `, {
+    const data = await axiosWrapper.patch<any>(`/item/activate-deactivate-item/${id}/${isActive} `, {
       isActive
     });
     return data.data;
