@@ -129,7 +129,7 @@ catch (error) {
             <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDC' }"
               :disabled="isSubmitting" />
 
-            <BaseButton type="submit" :label="editMode ? 'button.save' : 'button.create'" variant="primary"
+            <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'" variant="primary"
               block :disabled="isSubmitting" :loading="isSubmitting" />
           </div>
         </form>
