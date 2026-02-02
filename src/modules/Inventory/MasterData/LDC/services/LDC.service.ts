@@ -40,17 +40,17 @@ export const LDCService = {
     return data.data;
   },
 
-async exportData(payload: any) {
-  const  data  = await axiosWrapper.get<Blob>(
-    `/LedgerDetailCard/export-LDCs`,
-    {
-      params: payload,       
-      responseType: "blob",
-    }
-  );
+  async exportData(payload: any) {
+    const data = await axiosWrapper.get<Blob>(
+      `/LedgerDetailCard/export-LDCs`,
+      {
+        params: payload,
+        responseType: "blob",
+      }
+    );
 
-      return data;
-;
-}
+    return data;
+    ;
+  }
 
 };

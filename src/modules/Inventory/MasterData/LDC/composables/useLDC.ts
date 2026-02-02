@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { LDCService } from "../services/LDC.service";
 import type { LDC } from "../types/LDC";
-import { FileService } from "@/app/services/file.service";
 
 const loading = ref(false);
 const apiLDC = ref<LDC[]>([]);
@@ -117,22 +116,6 @@ export function useLDC() {
     }
   };
 
-  const importLDC = async (file: File) => {
-    try {
-      await FileService.uploadFile(
-        "LedgerDetailCard/Import-LDCs",
-        {
-          file: file,
-        },
-        "LDCFile"
-      );
-      toastService.success(t("LDC.LDCImportedSuccessfully"));
-      fetchLDC(1);
-    } catch (error) {
-      toastService.error(error as string);
-    }
-  };
-
   const onFilterChange = (filter: {
     filter: { field: string };
     value: string;
@@ -156,26 +139,11 @@ export function useLDC() {
     fetchLDC(1);
   }
 
-  const exportLDC = async () => {
-    try {
-      const response = await LDCService.exportData({
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
-      });
-      FileService.downloadBlob(response, "LedgerDetailCard-data.csv");
-    } catch (err: any) {
-      toastService.error(err);
-    }
-  };
-
   return {
     loading,
     apiLDC,
     tableData,
     fetchLDC,
-    importLDC,
     fetchLDCById,
     createLDC,
     updateLDC,
@@ -188,7 +156,6 @@ export function useLDC() {
     setPage: (p: number) => fetchLDC(p),
     onSearch,
     onFilterChange,
-    onSort,
-    exportLDC
+    onSort
   };
 }
