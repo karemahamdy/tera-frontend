@@ -14,8 +14,9 @@ const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
 const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, apiItem, fetchItem, deleteItem, importItem, exportItem } = useItem();
-onMounted( () => {
-     fetchItem();
+
+onMounted(() => {
+    fetchItem();
 });
 
 const customItems = [
@@ -40,7 +41,7 @@ const customItems = [
         color: "#F04438",
         command: () => {
             router.push({ name: "ItemView" });
-            
+
         },
     },
 ];
@@ -48,19 +49,11 @@ const customItems = [
 const filtersOperation = computed(() => {
     return [
         {
-            placeholder: "usersManagement.allGroups",
-            value: null,
-            field: "status",
-            options: [
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
-            ]
-        },
-        {
             placeholder: "activeSessions.allStatus",
             value: null,
             field: "status",
             options: [
+                { label: t("button.all"), value: " " },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
@@ -70,6 +63,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "type",
             options: [
+                { label: t("button.all"), value: " " },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.active"), value: "IsActive" },
             ],
@@ -79,6 +73,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "zones",
             options: [
+                { label: t("button.all"), value: " " },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.active"), value: "IsActive" },
             ],
@@ -88,7 +83,7 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'name', header: t('itemList.itemName'), sortable: true },
+        { field: 'name', header: t('itemList.itemName'),type: 'slot',  sortable: true },
         { field: 'code', header: t('itemList.itemCode'), type: 'slot', sortable: true },
         { field: 'itemGroupName', header: t('itemList.itemGroup'), type: 'slot', sortable: true, Class: 'custom-badge' },
         { field: 'baseUnitName', header: t('itemList.UOM'), sortable: true },
@@ -160,21 +155,33 @@ const addBranch = () => {
             <template #title>
                 <PageHeader title="itemList.title" subtitle="itemList.subtitle" :showExport="true" :showImport="true"
                     :mainBtn="true" mainBtnText="itemList.addItem" :showFilter="true" :filters="filtersOperation"
-                    searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch" 
-                    hasMenu @upload="importItem"
-                    :onExportData="exportItem" templateFileUrl="/Items/DownloadImportTemplate"
-                    templateFileName="Items-data.csv" dataFileName="Items-data.csv">
-                  <template #middle>
-                  <ItemsInfo/>
-                   </template>
-                    </PageHeader>
+                    searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch"
+                    hasMenu @upload="importItem" :onExportData="exportItem"
+                    templateFileUrl="/Items/DownloadImportTemplate" templateFileName="Items-data.csv"
+                    dataFileName="Items-data.csv">
+                    <template #middle>
+                        <ItemsInfo />
+                    </template>
+                </PageHeader>
             </template>
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiItem" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy />
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
+                    <template v-slot:["col-name"]="{ data }">
+                         <div class="flex items-center gap-2 rounded">
+                        <Badge v-if="data.tracked" severity="success" class="circle-badge-sm">
+                            <VsxIcon iconName="Airdrop" :size="20" type="linear" />
+                        </Badge>
+                        <Badge v-else severity="transparent" class="circle-badge">
+                            <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
+                        </Badge>
+                        <div class="text-base text-gray-700">{{ data.name }}</div>
+                        </div>
+                    </template>
+                </DynamicTable>
 
             </template>
         </card>
@@ -200,5 +207,21 @@ const addBranch = () => {
     color: var(--color-gray-700);
     font-size: 13px;
     padding: 20px 16px;
+}
+.circle-badge-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+.circle-badge {
+ background-color: transparent;
+}
+.icon-transparent {
+  color: transparent; 
 }
 </style>

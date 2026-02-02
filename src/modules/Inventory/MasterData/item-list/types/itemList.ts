@@ -6,6 +6,7 @@ export interface itemList {
  wareHouse: string;
  baseUnitName: string;
  itemGroupName: string;
+ tracked: boolean;
   isActive: boolean;
 }
 
