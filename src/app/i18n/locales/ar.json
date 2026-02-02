@@ -56,7 +56,8 @@
     "clearFilters": "مسح الفلاتر",
     "template": "قالب",
     "data": "البيانات",
-    "terminate": "اغلاق"
+    "terminate": "اغلاق",
+    "remove": "إزالة"
   },
   "table": {
     "description": "الوصف",
@@ -622,6 +623,7 @@
     "lastPurchasePrice": "آخر سعر شراء",
     "lastPurchasePricePlaceholder": "أدخل آخر سعر شراء",
     "lastMovingAverage": "متوسط الحركة الأخير",
-    "lastMovingAveragePlaceholder": "أدخل متوسط الحركة الأخير"
+    "lastMovingAveragePlaceholder": "أدخل متوسط الحركة الأخير",
+    "nameArPlaceholder": "أدخل الاسم بالعربية"
   }
 }

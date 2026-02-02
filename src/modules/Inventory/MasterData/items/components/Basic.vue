@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useItems } from "../composables/useItems";
+import { useLookups } from "@/composables/useLookups";
+
 const {
   errors,
   code,
@@ -22,6 +25,41 @@ const {
   manufacturerPartNumber,
   barcodeSKU,
 } = useItems();
+
+const {
+  warehouseLookups,
+  userAssignedBranchesLookups,
+  categoryLookups,
+  group2Lookups,
+  group3Lookups,
+  group4Lookups,
+  group1Lookups,
+  itemTypeLookups,
+  businessPartnerLookups,
+  getItemCategoryLookups,
+  getWarehouseLookups,
+  getUserAssignedBranchesLookups,
+  getItemGroup1Lookups,
+  getItemGroup2Lookups,
+  getItemGroup3Lookups,
+  getItemGroup4Lookups,
+  getBusinessPartnerLookups,
+  getItemTypeLookups,
+} = useLookups();
+
+onMounted(() => {
+  Promise.all([
+    (getWarehouseLookups(),
+    getUserAssignedBranchesLookups(),
+    getItemCategoryLookups(),
+    getItemGroup1Lookups(),
+    getItemGroup2Lookups(),
+    getItemGroup3Lookups(),
+    getItemGroup4Lookups(),
+    getItemTypeLookups(),
+    getBusinessPartnerLookups()),
+  ]);
+});
 </script>
 <template>
   <div>
@@ -106,7 +144,7 @@ const {
         <FormDropdown
           class="w-full md:col-span-2"
           :label="$t('items.assignedBranch')"
-          :options="[]"
+          :options="userAssignedBranchesLookups"
           :error="errors.branchID"
           v-model="branchID"
           optionValue="value"
@@ -136,7 +174,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.warehouse')"
-          :options="[]"
+          :options="warehouseLookups"
           v-model="warehouseID"
           :error="errors.warehouseID"
           optionValue="value"
@@ -145,7 +183,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.category')"
-          :options="[]"
+          :options="categoryLookups"
           v-model="categoryID"
           :error="errors.categoryID"
           optionValue="value"
@@ -154,7 +192,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.itemGroup1')"
-          :options="[]"
+          :options="group1Lookups"
           v-model="itemGroup1ID"
           :error="errors.itemGroup1ID"
           optionValue="value"
@@ -163,7 +201,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.itemGroup2')"
-          :options="[]"
+          :options="group2Lookups"
           v-model="itemGroup2ID"
           :error="errors.itemGroup2ID"
           optionValue="value"
@@ -172,7 +210,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.itemGroup3')"
-          :options="[]"
+          :options="group3Lookups"
           v-model="itemGroup3ID"
           :error="errors.itemGroup3ID"
           optionValue="value"
@@ -181,7 +219,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.itemGroup4')"
-          :options="[]"
+          :options="group4Lookups"
           v-model="itemGroup4ID"
           :error="errors.itemGroup4ID"
           optionValue="value"
@@ -197,7 +235,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.itemType')"
-          :options="[]"
+          :options="itemTypeLookups"
           v-model="itemTypeID"
           :error="errors.itemTypeID"
           optionValue="value"
@@ -206,7 +244,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.manufacturer')"
-          :options="[]"
+          :options="businessPartnerLookups"
           v-model="manufacturerID"
           :error="errors.manufacturerID"
           optionValue="value"

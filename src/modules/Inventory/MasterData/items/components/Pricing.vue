@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useItems } from "../composables/useItems";
 const {
   errors,
@@ -10,6 +11,14 @@ const {
   lastPurchasePrice,
   lastMovingAverage,
 } = useItems();
+import { useLookups } from "@/composables/useLookups";
+
+const { currencyLookups, getCurrencyLookups, taxLookups, getTaxLookups } =
+  useLookups();
+
+onMounted(() => {
+  Promise.all([(getCurrencyLookups(), getTaxLookups())]);
+});
 </script>
 <template>
   <div>
@@ -19,7 +28,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.defaultCurrency')"
-          :options="[]"
+          :options="currencyLookups"
           v-model="defaultCurrencyID"
           :error="errors.defaultCurrencyID"
           optionValue="value"
@@ -28,7 +37,7 @@ const {
         <FormDropdown
           class="w-full"
           :label="$t('items.taxes')"
-          :options="[]"
+          :options="taxLookups"
           v-model="taxesID"
           :error="errors.taxesID"
           optionValue="value"

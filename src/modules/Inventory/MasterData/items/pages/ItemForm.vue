@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
 import { computed, ref } from "vue";
-
 import { useI18n } from "vue-i18n";
 import Basic from "../components/Basic.vue";
 import UOM from "../components/UOM.vue";

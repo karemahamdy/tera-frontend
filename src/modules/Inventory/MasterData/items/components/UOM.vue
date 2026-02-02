@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted } from "vue";
 import { useItems } from "../composables/useItems";
 const { errors, baseUOM, rules, addNewRule, deleteRule } = useItems();
+
+import { useLookups } from "@/composables/useLookups";
+
+const { unitsLookups, getUnitsLookups } = useLookups();
+
+onMounted(() => {
+  getUnitsLookups();
+});
 </script>
 <template>
   <div>
@@ -10,7 +18,7 @@ const { errors, baseUOM, rules, addNewRule, deleteRule } = useItems();
       <FormDropdown
         class="w-full"
         :label="$t('items.baseUOM')"
-        :options="[]"
+        :options="unitsLookups"
         v-model="baseUOM"
         :error="errors.baseUOM"
         optionValue="value"
@@ -61,8 +69,8 @@ const { errors, baseUOM, rules, addNewRule, deleteRule } = useItems();
                 <FormDropdown
                   class="w-full"
                   :label="$t('items.convertedTo')"
-                  :options="[]"
-                  v-model="item.name"
+                  :options="unitsLookups"
+                  v-model="item.id"
                   optionValue="value"
                   :placeholder="$t('items.convertedToPlaceholder')"
                 />
