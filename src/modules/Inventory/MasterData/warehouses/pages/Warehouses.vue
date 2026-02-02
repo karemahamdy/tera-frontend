@@ -12,7 +12,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, apiWarehouse, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, fetchWarehouse, onFilterChange } = useWarehouse();
+const { loading, apiWarehouse, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, fetchWarehouse, onFilterChange, importWarehouse } = useWarehouse();
 
 onMounted(() => {
    fetchWarehouse ();
@@ -137,12 +137,9 @@ const addBranch = () => {
                 <PageHeader title="warehouses.title" subtitle="warehouses.subtitle" :showExport="true"
                     :showImport="true" :mainBtn="true" mainBtnText="warehouses.addWarehouse" :showFilter="true"
                    :filters="filtersOperation" searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch"
-                    @filter-change="onFilterChange"
-               hasMenu
-                   
-                     templateFileUrl="/LedgerDetailCard/DownloadImportTemplate"
-    
-                    templateFileName="LedgerDetailCard-data.csv" dataFileName="LedgerDetailCard-data.csv"
+                    @filter-change="onFilterChange"  hasMenu  @upload="importWarehouse"
+                     templateFileUrl="/Warehouses/DownloadImportTemplate"
+                    templateFileName="Warehouses-data.csv" dataFileName="Warehouses-data.csv"
                      />
             </template>
             <!-- DynamicTable component -->

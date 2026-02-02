@@ -122,7 +122,7 @@ export function useWarehouse() {
   const importWarehouse = async (file: File) => {
     try {
       await FileService.uploadFile(
-        "LedgerDetailCard/Import-Warehouses",
+        "Warehouses/importWarehouses",
         {
           file: file,
         },
