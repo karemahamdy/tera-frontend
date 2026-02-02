@@ -143,7 +143,7 @@ const handleDeleteConfirm = async () => {
 };
 
 const handleEdit = (row: any) => {
-    router.push(`/warehouses/edit/${row.id}`);
+    router.push(`/item-management/edit/${row.id}`);
 };
 
 const addBranch = () => {
