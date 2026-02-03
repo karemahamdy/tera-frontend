@@ -546,9 +546,9 @@
     "cogs": "Cost of Goods Sold (COGS)",
     "inventoryAdjustment": "Inventory Adjustment",
     "select": "Select",
-    "createdSuccessfully": "LDC created successfully",  
-    "updatedSuccessfully": "LDC updated successfully",
-    "deletedSuccessfully": "LDC deleted successfully"
+    "LDCCreatedSuccessfully": "LDC created successfully",  
+    "LDCUpdatedSuccessfully": "LDC updated successfully",
+    "LDCDeletedSuccessfully": "LDC deleted successfully"
   },
   "items": {
     "title": "Items",

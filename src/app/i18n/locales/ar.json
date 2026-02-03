@@ -542,9 +542,9 @@
     "cogs": "تكلفة البضاعة المباعة",
     "inventoryAdjustment": "تسوية المخزون",
     "select": "اختر",
-    "createdSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
-    "updatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
-    "deletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
+    "LDCCreatedSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
+    "LDCUpdatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
+    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
   },
   "items": {
     "title": "العناصر",
