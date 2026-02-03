@@ -2,12 +2,12 @@ import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { itemListService } from "../services/itemList.service";
-import type { itemList } from "../types/itemList";
+import type { itemList, statistics } from "../types/itemList";
 import { FileService } from "@/app/services/file.service";
 
 const loading = ref(false);
 const apiItem = ref<itemList[]>([]);
-const statistics = ref<itemList[]>([]);
+const statistics = ref<statistics>({} as statistics);
 
 const pageIndex = ref(1);
 const pageSize = ref(10);

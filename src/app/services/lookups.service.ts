@@ -32,4 +32,10 @@ export const LookupsService = {
    getAccountsLookups(isActive: boolean = true) {
     return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/ChartOfAccountLookups?isActive=${isActive}`);
   },
+  getItemGroupLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/ItemClassificationLookups/Category`);
+  },
+  getWarehouseLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/WarehouseLookups?isActive=${isActive}`);
+  },
 };

@@ -106,7 +106,7 @@ export function useLDC() {
     loading.value = true;
     try {
       await LDCService.toggleActive(id, isActive);
-      toastService.success(`LDC is now ${isActive ? 'Active' : 'in Active'}`);
+      toastService.success((t("LDC.LDCUpdatedSuccessfully")));
       await fetchLDC(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);

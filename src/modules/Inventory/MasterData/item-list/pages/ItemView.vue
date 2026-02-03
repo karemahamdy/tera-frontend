@@ -26,7 +26,7 @@ const activeTab = ref("overview");
                     </div>
                     <p class="text-[#667085]">Hydraulic Pump Model A</p>
                 </div>
-            <BaseButton  :label="$t('button.editItem')" variant="primary" icon="Edit"/>
+            <BaseButton  :label="$t('button.editItem')" variant="primary" icon="Edit" />
             </div>
             </template>
 
