@@ -9,6 +9,7 @@ import ItemTransactions from '../components/ItemTransactions.vue';
 import Pricing from '../components/Pricing.vue';
 import Cards from '../components/Cards.vue';
 import Overview from '../components/Overview.vue';
+import router from '@/app/router';
 
 const route = useRoute();
 const { fetchItemOverview } = useItem();
@@ -21,6 +22,9 @@ onMounted(async () => {
     itemOverview.value = await fetchItemOverview(id);
   }
 });
+const handleEdit = () => {
+    router.push(`/item-management/edit/${route.params.id}`);
+};
 </script>
 
 <template>
@@ -38,7 +42,7 @@ onMounted(async () => {
                     </div>
                     <p class="text-[#667085]">{{ itemOverview.itemInformation.nameEn }}</p>
                 </div>
-            <BaseButton  :label="$t('button.editItem')" variant="primary" icon="Edit" />
+            <BaseButton  :label="$t('button.editItem')" variant="primary" icon="Edit" @click="handleEdit()" />
             </div>
             </template>
 
