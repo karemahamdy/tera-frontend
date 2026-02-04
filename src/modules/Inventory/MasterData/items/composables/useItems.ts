@@ -26,11 +26,9 @@ const { handleSubmit, errors, defineField, setValues } = useForm({
     manufacturerID: "",
     manufacturerPartNumber: "",
     barcodeSKU: "",
-
-    baseUOM: "",
+    baseUOM: "", // uom fields
     rules: [{ id: 1, name: "", quantity: 0 }],
-
-    tracking: "",
+    tracking: "", // tracking fields
     autoGenerate: false,
     initialSerial: "",
     reorderPoint: 0,
@@ -38,16 +36,14 @@ const { handleSubmit, errors, defineField, setValues } = useForm({
     maximumStockLevel: 0,
     leadTimeDays: 0,
     shelfLifeDays: 0,
-
-    defaultCurrencyID: "",
+    defaultCurrencyID: "", // pricing fields
     taxesID: "",
     multipleCurrency: false,
     standardCost: 0,
     salesPrice: 0,
     lastPurchasePrice: 0,
     lastMovingAverage: 0,
-
-    ledgerDetailCardID: "",
+    ledgerDetailCardID: "", // ledger fields
     costCenterID: "",
   },
 });
@@ -110,6 +106,52 @@ export function useItems() {
   const deleteRule = (index: number) => {
     rules.value.splice(index, 1);
   };
+
+  const handleSubmitWrapper = handleSubmit((values) => {
+    console.log("Form Submitted with values:", values);
+    console.log("Uploaded Files:", files.value);
+    let data = {
+      NameEn: values.name,  // NameEn *
+      NameAr: values.nameAr,  // NameAr
+      Code: values.code,  // Code *
+      Description: values.description,  // Description
+      AccessScope: values.accessScope,  // AccessScope
+      BranchId: values.branchID,  // BranchId
+      ProductionName: values.productionName,  // ProductionName
+      ProductionCode: values.productionCode,  // ProductionCode
+      HsCode: values.codeHS,  // HsCode
+      WareHouseId: values.warehouseID,  // WareHouseId
+      ItemGroupId1: values.itemGroup1ID,  // ItemGroupId1
+      ItemGroupId2: values.itemGroup2ID,  // ItemGroupId2
+      ItemGroupId3: values.itemGroup3ID,  // ItemGroupId3
+      ItemGroupId4: values.itemGroup4ID,  // ItemGroupId4
+      CategoryId: values.categoryID,  // CategoryId
+      ItemType: values.itemTypeID,  // ItemType
+      ManufacturerId: values.manufacturerID,  // ManufacturerId
+      Barcode: values.barcodeSKU,  // Barcode
+      ManufacturerPartNumber: values.manufacturerPartNumber,  // ManufacturerPartNumber
+      Tracked: values.tracking,  // Tracked
+      AutoGenerateSerial: values.autoGenerate,  // AutoGenerateSerial
+      InitialSerial: values.initialSerial,  // InitialSerial
+      ReorderPoint: values.reorderPoint,  // ReorderPoint
+      ReorderQuantity: values.reorderQuantity,  // ReorderQuantity
+      MaximumStockLevel: values.maximumStockLevel,  // MaximumStockLevel
+      LeadTime: values.leadTimeDays,  // LeadTime
+      ShelfLife: values.shelfLifeDays,  // ShelfLife
+      StandardCost: values.standardCost,  // StandardCost
+      SalesPrice: values.salesPrice,  // SalesPrice
+      LastPurchasePrice: values.lastPurchasePrice,  // LastPurchasePrice
+      LastMovingAverage: values.lastMovingAverage,  // LastMovingAverage
+      MultipleCurrency: values.multipleCurrency,  // MultipleCurrency
+      DefaultCurrencyId: values.defaultCurrencyID,  // DefaultCurrencyId
+      TaxId: values.taxesID,  // TaxId
+      LDCId: values.ledgerDetailCardID,  // LDCId
+      BaseUnitId: values.baseUOM,  // BaseUnitId
+      CostCenterId: values.costCenterID,  // CostCenterId
+      FormFiles: files.value,  // FormFiles
+      ItemUnitConversions: values.rules,  // ItemUnitConversions
+    }
+  });
 
   return {
     handleSubmit,
