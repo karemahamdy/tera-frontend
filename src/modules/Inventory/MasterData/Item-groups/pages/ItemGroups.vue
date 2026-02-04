@@ -26,6 +26,7 @@ const {
     pageIndex,
     pageSize,
     totalCount,
+    clearSearch,
 } = useItemGroup();
 
 const customItems = [
@@ -79,14 +80,17 @@ const onTabChange = (e: any) => {
     if (!tab) return;
     const level = tab.level;
     const levelMap: Record<string, number> = { 'Category': 1, 'Group1': 2, 'Group2': 3, 'Group3': 4, 'Group4': 5 };
+    clearSearch();
     router.replace({ query: { level: levelMap[level] } });
 };
 
 const firstRecord = computed(() => {
+    if (!totalCount.value || totalCount.value === 0) return 0;
     return (pageIndex.value - 1) * pageSize.value + 1;
 });
 
 const lastRecord = computed(() => {
+    if (!totalCount.value || totalCount.value === 0) return 0;
     const last = pageIndex.value * pageSize.value;
     return Math.min(last, totalCount.value || last);
 });
