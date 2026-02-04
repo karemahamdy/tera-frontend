@@ -45,7 +45,7 @@ export function useItemGroup() {
       const response: any = await itemGroupsService.getAll({
         pageIndex: page,
         pageSize: pageSize.value,
-        search: searchTerm.value,
+        searchingWord: searchTerm.value,
         level: levelToUse as string,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
