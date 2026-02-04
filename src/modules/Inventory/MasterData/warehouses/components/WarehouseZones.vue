@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useForm } from "vee-validate";
-import type { Zone, Location } from "../types/warehouse";
+import type { Zone, LocationRequest } from "../types/warehouse";
 
 const props = defineProps<{
   modelValue?: Zone[];
@@ -36,14 +36,15 @@ const isFormValid = computed(() => {
     Number(racks.value) > 0
   );
 });
+
 const generateLocations = (
   zoneCode: string,
   rows: number,
   cols: number,
   racks: number
-): Location[] => {
+): LocationRequest[] => {
   const total = rows * cols * racks;
-  const locations: Location[] = new Array(total);
+  const locations: LocationRequest[] = new Array(total);
 
   for (let i = 0; i < total; i++) {
     const r = Math.floor(i / (cols * racks)) + 1;            
@@ -73,7 +74,7 @@ const addZone = () => {
   const cols_num = Number(columns.value);
   const racks_num = Number(racks.value);
 
-  const locations = generateLocations(code.value, rows_num, cols_num, racks_num);
+  const locationRequest = generateLocations(code.value, rows_num, cols_num, racks_num);
 
   const zone: Zone = {
     id: self.crypto.randomUUID(),
@@ -82,7 +83,7 @@ const addZone = () => {
     rows: rows_num,
     columns: cols_num,
     racks: racks_num,
-    locations,
+    locationRequest,
     isExpanded: true
   };
 
@@ -205,7 +206,7 @@ const toggleExpand = (zone: Zone) => {
               <button class="text-primary-600 hover:text-primary-800" title="Edit">
               <VsxIcon iconName="Edit" :size="20" color="#F79009" type="linear" />
               </button>
-             <button @click="deleteZone(zone.id)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
+             <button @click="deleteZone(zone.id!)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
              <VsxIcon iconName="Trash" :size="20" color="#F04438" type="linear" />
               </button>
              <button @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
@@ -231,7 +232,7 @@ const toggleExpand = (zone: Zone) => {
              </div>
               <div>
                 <div class="text-xs text-gray-500">{{ $t('warehouses.totalLocations') }}</div>
-                 <div class="font-medium text-primary-600">{{ zone.locations.length }}</div>
+                 <div class="font-medium text-primary-600">{{ zone.locationRequest.length }}</div>
              </div>
             </div>
       
@@ -248,7 +249,7 @@ const toggleExpand = (zone: Zone) => {
                      </tr>
                   </thead>
                   <tbody class="">
-                     <tr v-for="loc in zone.locations" :key="loc.code" class="hover:bg-blue-50/50">
+                     <tr v-for="loc in zone.locationRequest" :key="loc.code" class="hover:bg-blue-50/50">
                         <td class="p-4 text-primary-600 font-medium">{{ loc.code }}</td>
                         <td class="p-4">{{ loc.row }}</td>
                         <td class="p-4">{{ loc.column }}</td>

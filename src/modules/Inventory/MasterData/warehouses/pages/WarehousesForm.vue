@@ -1,17 +1,64 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useForm } from "vee-validate";
+import { useRouter } from "vue-router";
 import WarehouseZones from "../components/WarehouseZones.vue";
 import WarehouseInfo from "../components/WarehouseInfo.vue";
+import { warehousesSchema } from "../validation/warehousesSchema";
+import { warehousesService } from "../services/warehouse.service";
+import type { AddWarehouses } from "../types/warehouse";
 
-const activeTab = ref("basic");
 const props = defineProps<{
   mode: "edit" | "create" | "view";
 }>();
 
+const router = useRouter();
 const isSubmitting = ref(false);
+const activeTab = ref("basic");
 const editMode = props.mode === "edit";
-// zones bound to WarehouseZones via v-model so parent receives emissions
-const zones = ref<any[]>([]);
+
+const { handleSubmit, errors, values, setFieldValue } = useForm<AddWarehouses>({
+  validationSchema: warehousesSchema,
+  initialValues: {
+    code: "",
+    nameEn: "",
+    nameAr: "",
+    description: "",
+    address: "",
+    managerId: "", // Should be handled or defaulted
+    type: "Normal",
+    operationalHours: "",
+    allowNegativeBalance: true,
+    defaultLedgerCardId: "",
+    transferAccountId: "",
+    isActive: true,
+    zones: []
+  }
+});
+
+// Update helper for WarehouseInfo
+const updateForm = (val: Partial<AddWarehouses>) => {
+    Object.entries(val).forEach(([key, value]) => {
+        setFieldValue(key as keyof AddWarehouses, value);
+    });
+};
+
+const onSubmit = handleSubmit(async (values) => {
+  isSubmitting.value = true;
+  try {
+    if (editMode) {
+        // ID handling would be needed here for update
+       // await warehousesService.update(id, values);
+    } else {
+       await warehousesService.create(values);
+    }
+    router.push({ name: "warehouses" });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isSubmitting.value = false;
+  }
+});
 </script>
 
 <template>
@@ -29,30 +76,40 @@ const zones = ref<any[]>([]);
         </div>
       </template>
       <template #content>
-        <Tabs v-model:value="activeTab" class="px-20">
-          <TabList>
-            <Tab value="basic">
-              {{ $t("warehouses.basicInfo") }}
-            </Tab>
-            <Tab value="additional">
-              {{ $t("warehouses.zonseInfo") }}
-            </Tab>
-          </TabList>
+        <form @submit="onSubmit">
+            <Tabs v-model:value="activeTab" class="px-20">
+            <TabList>
+                <Tab value="basic">
+                {{ $t("warehouses.basicInfo") }}
+                </Tab>
+                <Tab value="additional">
+                {{ $t("warehouses.zonseInfo") }}
+                </Tab>
+            </TabList>
 
-          <TabPanels>
-            <TabPanel value="basic">
-           <WarehouseInfo/>
-            </TabPanel>
-            <TabPanel value="additional">
-              <WarehouseZones v-model="zones" />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-        <div class="flex gap-4 px-20 mt-6">
-          <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'warehouses' }" />
-          <BaseButton type="submit" :label="editMode ? 'button.save' : 'button.create'" variant="primary" block
-            :loading="isSubmitting" />
-        </div>
+            <TabPanels>
+                <TabPanel value="basic">
+                 <WarehouseInfo 
+                    :modelValue="values" 
+                    :errors="errors"
+                    @update:modelValue="updateForm" 
+                 />
+                </TabPanel>
+                <TabPanel value="additional">
+                   <!-- Bind zones manually to setFieldValue -->
+                  <WarehouseZones 
+                    :modelValue="values.zones" 
+                    @update:modelValue="v => setFieldValue('zones', v)"
+                  />
+                </TabPanel>
+            </TabPanels>
+            </Tabs>
+            <div class="flex gap-4 px-20 mt-6">
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'warehouses' }" />
+            <BaseButton type="submit" :label="editMode ? 'button.save' : 'button.create'" variant="primary" block
+                :loading="isSubmitting" />
+            </div>
+        </form>
       </template>
     </Card>
   </div>
