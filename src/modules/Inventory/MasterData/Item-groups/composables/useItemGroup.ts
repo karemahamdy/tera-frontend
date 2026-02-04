@@ -124,7 +124,7 @@ export function useItemGroup() {
         {
           file: file,
         },
-        "itemGroupFile",
+        "file",
       );
       toastService.success(t("itemGroup.itemGroupImportedSuccessfully"));
       fetchItemGroups(pageIndex.value);
