@@ -17,6 +17,8 @@ const totalPages = ref(1);
 const searchTerm = ref("");
 const orderBy = ref("");
 const StatusFilter = ref("");
+const ItemGroupIds = ref<string[]>([]);
+const WarehouseIds = ref<string[]>([]);
 const orderDirection = ref<"asc" | "desc">("desc");
 
 export function useItem() {
@@ -32,6 +34,8 @@ export function useItem() {
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
         StatusFilter: StatusFilter.value,
+        ItemGroupIds: ItemGroupIds.value,
+        WarehouseIds: WarehouseIds.value
       });
       const payload = response?.data ?? response;
       const inventory = payload.inventoryItems;
@@ -119,21 +123,21 @@ export function useItem() {
     }
   };
 
-   const importItem = async (file: File) => {
-      try {
-        await FileService.uploadFile(
-          "Items/importItems",
-          {
-            file: file,
-          },
-          "ItemFile"
-        );
-        toastService.success(t("Item.ItemImportedSuccessfully"));
-        fetchItem(1);
-      } catch (error) {
-        toastService.error(error as string);
-      }
-    };
+  const importItem = async (file: File) => {
+    try {
+      await FileService.uploadFile(
+        "item/ImportItems",
+        {
+          file: file,
+        },
+        "ItemFile"
+      );
+      toastService.success(t("Item.ItemImportedSuccessfully"));
+      fetchItem(1);
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
 
   const exportItem = async () => {
     try {
@@ -155,8 +159,15 @@ export function useItem() {
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
+    if (field === "isActive") {
       StatusFilter.value = value;
+    }
+    if (field === "itemGroup") {
+      ItemGroupIds.value = Array.isArray(value) ? value : [value];
+
+    }
+    if (field === "Warehouse") {
+      WarehouseIds.value = Array.isArray(value) ? value : [value];
     }
     fetchItem(1);
   };
@@ -172,12 +183,27 @@ export function useItem() {
     fetchItem(1);
   };
 
+
+  const fetchItemOverview = async (id: string) => {
+    loading.value = true;
+    try {
+      const resp = await itemListService.getItemOverview(id);
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     loading,
     apiItem,
     statistics,
     fetchItem,
     fetchItemById,
+    fetchItemOverview,
     createItem,
     updateItem,
     deleteItem,

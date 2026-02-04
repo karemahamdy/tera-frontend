@@ -15,7 +15,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, apiItem, fetchItem, deleteItem, importItem, exportItem } = useItem();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, apiItem, fetchItem, deleteItem, importItem, exportItem, onFilterChange } = useItem();
 const { warehouseLookup, itemGroupLookups, getWarehouseLookups, getItemGroupLookups } = useLookups();  
 
 onMounted(() => {
@@ -55,7 +55,7 @@ const filtersOperation = computed(() => {
         {
             placeholder: "activeSessions.allStatus",
             value: null,
-            field: "status",
+            field: "isActive",
             options: [
                 { label: t("button.all"), value: " " },
                 { label: t("button.active"), value: "IsActive" },
@@ -65,7 +65,7 @@ const filtersOperation = computed(() => {
         {
             placeholder: "itemGroup.title",
             value: null,
-            field: "type",
+            field: "itemGroup",
             options: [
                 { label: t("button.all"), value: " " },
                  ...itemGroupLookups.value
@@ -74,11 +74,10 @@ const filtersOperation = computed(() => {
         {
             placeholder: "warehouses.title",
             value: null,
-            field: "zones",
+            field: "Warehouse",
             options: [
                 { label: t("button.all"), value: " " },
                 ...warehouseLookup.value
-
             ],
         },
     ]
@@ -165,8 +164,8 @@ const addBranch = () => {
                 <PageHeader title="itemList.title" subtitle="itemList.subtitle" :showExport="true" :showImport="true"
                     :mainBtn="true" mainBtnText="itemList.addItem" :showMultiFilter="true" :filters="filtersOperation"
                     searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch"
-                    hasMenu @upload="importItem" :onExportData="exportItem"
-                    templateFileUrl="/Items/DownloadImportTemplate" templateFileName="Items-data.csv"
+                    hasMenu @upload="importItem" :onExportData="exportItem" @filter-change="onFilterChange"
+                    templateFileUrl="/Item/DownloadImportTemplate" templateFileName="Items-data.csv"
                     dataFileName="Items-data.csv">
                     <template #middle>
                         <ItemsInfo />
