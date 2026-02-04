@@ -120,6 +120,7 @@ const toggleExpand = (zone: Zone) => {
           :label="$t('button.addNew')" 
           icon="pi pi-plus" 
           size="small" 
+          type="button"
           @click="addZone"
           :disabled="!isFormValid"
         />

@@ -375,7 +375,8 @@
     "add": "New warehouse",
     "warehouseCreatedSuccessfully": "Warehouse created successfully",
     "warehouseUpdatedSuccessfully": "Warehouse updated successfully",
-    "warehouseDeletedSuccessfully": "Warehouse deleted successfully"
+    "warehouseDeletedSuccessfully": "Warehouse deleted successfully",
+    "warehouseImportedSuccessfully": "Warehouse imported successfully"
   },
   "itemGroup": {
     "title": "Item Group",

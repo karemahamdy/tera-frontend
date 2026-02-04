@@ -27,17 +27,18 @@ const accountsOptions = [
 ];
 
 const managersOptions = [
-    { label: "Ahmed Hassan", value: "3fa85f64-5717-4562-b3fc-2c963f66afa6" }, // Example UUID
-    { label: "Manager 2", value: "manager-2-uuid" }
+    { label: "Ahmed Hassan", value: "" }, // Example UUID
+    { label: "Manager 2", value: "" }
 ];
 
 const typeOptions = [
     { label: "Normal", value: "Normal" },
-    { label: "Refrigerated", value: "Refrigerated" }
+    
+    { label: "Professional", value: "Professional" }
 ];
 
 const ldcOptions = [
-    { label: "LDC-INV-001", value: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
+    { label: "LDC-INV-001", value: "" },
 ];
 </script>
 

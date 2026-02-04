@@ -378,7 +378,8 @@
     "zoneDeletedSuccessfully": "تم حذف النطاق بنجاح",
     "warehouseCreatedSuccessfully": "تم إنشاء المستودع بنجاح",
     "warehouseUpdatedSuccessfully": "تم تحديث المستودع بنجاح",
-    "warehouseDeletedSuccessfully": "تم حذف المستودع بنجاح"
+    "warehouseDeletedSuccessfully": "تم حذف المستودع بنجاح",
+    "warehouseImportedSuccessfully": "تم استيراد المستودع بنجاح"
   },
   "itemGroup": {
     "title": "مجموعة العناصر",

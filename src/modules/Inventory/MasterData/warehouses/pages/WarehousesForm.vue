@@ -46,11 +46,20 @@ const updateForm = (val: Partial<AddWarehouses>) => {
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
   try {
+    const payload = { ...values };
+    
+    // Conditional logic: Only send zones if type is Professional (or not Normal)
+    // Adjust logic based on exact requirement. User said: 
+    // "if i take a professional and it must send zone , and if i take a normal it mustnot send zone"
+    if (payload.type === 'Normal') {
+        payload.zones = [];
+    }
+
     if (editMode) {
         // ID handling would be needed here for update
-       // await warehousesService.update(id, values);
+       // await warehousesService.update(id, payload);
     } else {
-       await warehousesService.create(values);
+       await warehousesService.create(payload);
     }
     router.push({ name: "warehouses" });
   } catch (error) {
