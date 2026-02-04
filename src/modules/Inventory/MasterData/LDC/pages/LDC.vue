@@ -11,7 +11,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, fetchLDC, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, importLDC, apiLDC, deleteLDC, onFilterChange, exportLDC } = useLDC();
+const { loading, fetchLDC, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, apiLDC, deleteLDC, onFilterChange } = useLDC();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -120,15 +120,10 @@ const addLDC = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="LDC.title" subtitle="LDC.subtitle" :showExport="true"
-                    :showImport="true" :mainBtn="true" mainBtnText="LDC.addNew" :showFilter="true"
+                <PageHeader title="LDC.title" subtitle="LDC.subtitle" :showExport="false"
+                    :showImport="false" :mainBtn="true" mainBtnText="LDC.addNew" :showFilter="true"
                :filters="filtersOperation" @filter-change="onFilterChange"
-               hasMenu
                     searchPlaceholder="LDC.searchPlaceholder" @search="onSearch" :onMainBtnClick="addLDC" 
-                     templateFileUrl="/LedgerDetailCard/DownloadImportTemplate"
-                    :onExportData="exportLDC"
-                    templateFileName="LedgerDetailCard-data.csv" dataFileName="LedgerDetailCard-data.csv"
-                    @upload="importLDC"
                     />
             </template>
             <!-- DynamicTable component -->

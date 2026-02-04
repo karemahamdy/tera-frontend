@@ -2,14 +2,20 @@
 export interface itemList {
   id: string;
   code: string;
-  nameAr: string;
-  nameEn: string;
-  addressEn?: string;
-  addressAr?: string;
+  name: string;
+  wareHouse: string;
+  baseUnitName: string;
+  itemGroupName: string;
+  tracked: boolean;
   isActive: boolean;
-  createAt: string;
 }
 
+export interface statistics {
+  totalItems?: number;
+  activeItems?: number;
+  outOfStockItems?: number;
+  minStockItems?: number;
+}
 export interface itemListResponse {
   data: {
 
@@ -61,4 +67,72 @@ export interface Pagination {
   level?: number;
   orderBy?: string;
   orderDirection?: 'asc' | 'desc';
+  StatusFilter?: string;
+  ItemGroupIds?: string[];
+  WarehouseIds?: string[];
+}
+
+export interface ItemInformation {
+  code: string;
+  nameEn: string;
+  nameAr: string | null;
+  hsCode: string | null;
+  description: string | null;
+  productionCode: string | null;
+  productionName: string | null;
+  accessScope: string;
+  branchName: string;
+  wareHouseName: string | null;
+  categoryName: string | null;
+  groupName: string | null;
+  itemType: string;
+  manufacturer: string | null;
+  manufacturerPartNumber: string | null;
+  barcode: string | null;
+}
+
+export interface ItemCostInformation {
+  lastMovingPrice: number;
+  lastPurchasePrice: number;
+  standardCost: number;
+  totalValue: number;
+}
+
+export interface ItemTrackingAndParameters {
+  tracked: boolean;
+  reorderPoint: number | null;
+  reorderQuantity: number | null;
+  leadTime: number | null;
+}
+
+export interface ItemUnitOfFeature {
+  unitName: string;
+  factor: number;
+  isBase: boolean;
+}
+
+export interface ItemGroupsOverview {
+  group1Name: string | null;
+  group2Name: string | null;
+  group3Name: string | null;
+  group4Name: string | null;
+}
+
+export interface ItemAttachment {
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  fileUrl: string;
+}
+
+export interface ItemOverview {
+  id: string;
+  code: string;
+  name: string | null;
+  itemInformation: ItemInformation;
+  itemCostInformation: ItemCostInformation;
+  itemTrackingAndParameters: ItemTrackingAndParameters;
+  itemAttachments: ItemAttachment[];
+  itemUnitsOfMeasure: ItemUnitOfFeature[];
+  itemGroups: ItemGroupsOverview;
 }

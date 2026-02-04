@@ -24,7 +24,10 @@ export const LDCRoutes = [
     path: "/LDC/edit/:id",
     component: () => import("@/modules/Inventory/MasterData/LDC/pages/LDCForm.vue"),
     name: "LDCFormEdit",
-     props: { mode: "edit" },
+      props: (route: any) => ({
+      mode: "edit",
+      id: route.params.id,
+    }),
     meta: {
       hide: true,
       localizedTitle: "LDC",
@@ -35,8 +38,11 @@ export const LDCRoutes = [
     path: "/LDC/view/:id",
     component: () => import("@/modules/Inventory/MasterData/LDC/pages/LDCForm.vue"),
     name: "LDCFormView",
-     props: { mode: "view" },
-    meta: {
+  props: (route: any) => ({
+      mode: "view",
+      id: route.params.id,
+    }),
+      meta: {
       hide: true,
       localizedTitle: "LDC",
       permission: null

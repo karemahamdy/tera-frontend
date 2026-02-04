@@ -17,10 +17,7 @@ const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
 const { accountLookups, getAccountsLookups } = useLookups();
 
-const { createLDC, updateLDC } = useLDC();
-onMounted(async () => {
-  await getAccountsLookups();
-});
+const { createLDC, updateLDC, fetchLDCById } = useLDC();  
 
 interface AccountField {
   key: string;
@@ -43,18 +40,18 @@ type LDCFormValues = {
   code: string;
   nameAr: string;
   nameEn: string;
-  inventoryAdjustment: string | null;
+  inventoryAdjustmentId: string | null;
 } & Record<string, string | null>;
 
 const initialValues: LDCFormValues = {
   code: "",
   nameAr: "",
   nameEn: "",
-  inventoryAdjustment: null,
+  inventoryAdjustmentId: null,
   ...Object.fromEntries(accountFields.map(f => [f.key, null])),
 };
 
-const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
+const { errors, defineField, handleSubmit, setValues } = useForm<LDCFormValues>({
   validationSchema: LDCSchema,
   initialValues,
 });
@@ -62,31 +59,53 @@ const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
 const [code] = defineField("code");
 const [nameAr] = defineField("nameAr");
 const [nameEn] = defineField("nameEn");
-const [inventoryAdjustment] = defineField("inventoryAdjustment");
+const [inventoryAdjustmentId] = defineField("inventoryAdjustmentId");
 
 const fields = Object.fromEntries(
   accountFields.map(f => [f.key, defineField(f.key)[0]])
 ) as Record<string, Ref<string | null>>;
 
+onMounted(async () => {
+  await getAccountsLookups();
+
+  if (editMode && props.id || viewMode && props.id) {
+    const data = await fetchLDCById(props.id);
+    if (data) {
+
+      const mappedValues: LDCFormValues = {
+        code: data.code ?? "",
+        nameAr: data.nameAr ?? "",
+        nameEn: data.nameEn ?? "",
+        inventoryAdjustmentId  : data.inventoryAdjustmentId   ?? null,
+        ...Object.fromEntries(accountFields.map(f => [f.key, data[f.key] ?? null])),
+      };
+      setValues(mappedValues);
+    }
+  }
+});
+
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
- if (viewMode) return;
+  if (viewMode) return;
 
   try {
     if (editMode && props.id) {
       await updateLDC(props.id, values);
     } else {
-    await createLDC(values);
-    router.push({ name: "LDC" });
-  } 
-}
-catch (error) {
+      await createLDC(values);
+    }
+        router.push({
+      name: "LDC",
+    
+    });
+  } catch (error) {
     console.error("Error submitting form:", error);
   } finally {
     isSubmitting.value = false;
   }
 });
 </script>
+
 
 <template>
   <div>
@@ -122,8 +141,8 @@ catch (error) {
           </div>
 
           <FormDropdown :label="$t('LDC.inventoryAdjustment')"
-            v-model="inventoryAdjustment" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t('LDC.inventoryAdjustment')"
-            :error="errors.inventoryAdjustment" :disabled="viewMode"/>
+            v-model="inventoryAdjustmentId" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t('LDC.inventoryAdjustment')"
+            :error="errors.inventoryAdjustmentId" :disabled="viewMode"/>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
             <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDC' }"

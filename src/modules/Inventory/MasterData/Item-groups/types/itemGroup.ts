@@ -10,7 +10,7 @@ itemsCount: number
 export interface Pagination {
      pageIndex: number;
         pageSize?: number;
-        search?: string;
+        searchingWord?: string;
         level?: string;
         orderBy?: string;
         orderDirection?: 'asc' | 'desc';

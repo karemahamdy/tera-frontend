@@ -11,7 +11,7 @@ const tableData = ref<any[]>([]);
 
 const pageIndex = ref(1);
 const pageSize = ref(10);
-const totalCount = ref(0);
+const totalCount = ref(1);
 const totalPages = ref(1);
 
 const searchTerm = ref("");
@@ -45,7 +45,7 @@ export function useItemGroup() {
       const response: any = await itemGroupsService.getAll({
         pageIndex: page,
         pageSize: pageSize.value,
-        search: searchTerm.value,
+        searchingWord: searchTerm.value,
         level: levelToUse as string,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
@@ -54,8 +54,8 @@ export function useItemGroup() {
       apiItemGroups.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
-      totalCount.value = payload.totalCount ?? 0;
-      totalPages.value = payload.totalPages ?? 1;
+      totalCount.value = payload.totalCount;
+      totalPages.value = payload.totalPages;
     } catch (err: any) {
       toastService.error(err);
     } finally {
@@ -138,6 +138,13 @@ export function useItemGroup() {
     fetchItemGroups(1);
   };
 
+  const clearSearch =  () => {
+    searchTerm.value = "";
+    orderBy.value = "";
+    orderDirection.value = "desc";
+
+  };
+
   const onSort = (orderByField: string, direction: "asc" | "desc") => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
@@ -167,6 +174,7 @@ export function useItemGroup() {
     validationErrors,
     clearErrors,
     onSearch,
+    clearSearch,
     onSort,
   };
 }

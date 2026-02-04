@@ -14,6 +14,9 @@ export function useLookups() {
   const IPLookups = ref<LookupsOption[]>([]);
   const departmentsLookups = ref<LookupsOption[]>([]);
   const accountLookups = ref<LookupsOption[]>([]);
+  const warehouseLookup = ref<LookupsOption[]>([]);
+  const itemGroupLookups = ref<LookupsOption[]>([]);
+
 
   const getGroupLookups = async (isActive: boolean = true) => {
     try {
@@ -126,6 +129,28 @@ export function useLookups() {
         toastService.error(error as string);
       }
     };
+     const getWarehouseLookups = async () => {
+      try {
+        const res = await LookupsService.getWarehouseLookups();
+        warehouseLookup.value = res.data.map((group) => ({
+          label: group.name,
+          value: group.id,
+        }));
+      } catch (error) {
+        toastService.error(error as string);
+      }
+    };
+     const getItemGroupLookups = async () => {
+      try {
+        const res = await LookupsService.getItemGroupLookups();
+        itemGroupLookups.value = res.data.map((group) => ({
+          label: group.name,
+          value: group.id,
+        }));
+      } catch (error) {
+        toastService.error(error as string);
+      }
+    };
 
   return {
     groupsLookups,
@@ -138,12 +163,16 @@ export function useLookups() {
     usersLookups,
     IPLookups,
     accountLookups,
+      warehouseLookup,
+    itemGroupLookups,
     getIPLookups,
     getGroupLookups,
     getBranchLookups,
     getEntityLookups,
     getRolesLookups,
     getScreenLookups,
+    getItemGroupLookups,
+    getWarehouseLookups,
     getDepartmentsLookups,
     getModuleLookups,
     getUsersLookups,
