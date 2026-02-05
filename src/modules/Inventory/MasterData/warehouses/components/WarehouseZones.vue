@@ -88,7 +88,7 @@ const addZone = () => {
 
   const updatedZones = [...(props.modelValue || []), zone];
   emit("update:modelValue", updatedZones);
-
+  
   code.value = "";
   name.value = "";
   rows.value = "";

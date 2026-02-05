@@ -1,39 +1,45 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Addwarehouses, warehousesResponse } from "../types/warehouse";
+import type { AddWarehouses, warehousesResponse } from "../types/warehouse";
 import type { Pagination } from "../types/warehouse";
 
 export const warehousesService = {
- async getAll(params: Pagination) {
-  const resp = await axiosWrapper.get<warehousesResponse>(
-    `/warehouses/GetAllwarehousess?${params}`
-  );
-  return resp.data;
-},
+  async getAll(params: Pagination) {
+    const resp = await axiosWrapper.get<warehousesResponse>(`/Warehouses`, {
+      params,
+    });
+    return resp.data;
+  },
 
-  async getById(id: string): Promise<Addwarehouses> {
-    const data = await axiosWrapper.get<any>(`/warehouses/${id}`);
+  async getById(id: string): Promise<AddWarehouses> {
+    const data = await axiosWrapper.get<any>(`/Warehouses/${id}`);
     return data.data;
   },
 
-  async create(payload: Addwarehouses ) {
-    const data = await axiosWrapper.post<any>(`/warehouses/create`, payload);
+  async create(payload: AddWarehouses) {
+    const data = await axiosWrapper.post<any>(`/Warehouses/create`, payload);
     return data.data;
   },
-  async update(id: string, payload: Addwarehouses) {
-    const data = await axiosWrapper.put<any>(`/warehouses/${id}`, payload);
+  async update(id: string, payload: AddWarehouses) {
+    const data = await axiosWrapper.put<any>(`/Warehouses/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/warehouses/${id}`);
+    await axiosWrapper.delete(`/Warehouses/${id}`);
   },
 
- async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(`/warehouses/${id}/status `, {
-      isActive
+  async toggleActive(id: string, isActive: boolean) {
+    const data = await axiosWrapper.put<any>(`/Warehouses/${id}/status `, {
+      isActive,
     });
     return data.data;
   },
+  async exportData(payload: any) {
+    const data = await axiosWrapper.get<Blob>(`/Warehouses/exportWarehouses`, {
+      params: payload,
+      responseType: "blob",
+    });
 
-
+    return data;
+  },
 };

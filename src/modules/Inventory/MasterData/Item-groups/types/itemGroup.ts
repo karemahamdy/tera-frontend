@@ -1,18 +1,17 @@
 export interface ItemGroup {
     id: string;
     code: string;
-    nameAr: string;
-    nameEn: string;
+    name: string;
+itemsCount: number
     level: number;
-    isActive: boolean;
-    createAt: string;
+   description?: string
 }
 
 export interface Pagination {
      pageIndex: number;
         pageSize?: number;
         searchingWord?: string;
-        level?: number;
+        level?: string;
         orderBy?: string;
         orderDirection?: 'asc' | 'desc';
 }
@@ -36,6 +35,5 @@ export interface AddItemGroup {
     code: string;
     nameAr: string;
     nameEn: string;
-    level: number;
-    isActive?: boolean;
+   description?: string;
 }

@@ -1,19 +1,14 @@
-
-export interface warehouses {
+export interface LDC {
   id: string;
   code: string;
-  nameAr: string;
-  nameEn: string;
- addressEn?: string;
- addressAr?: string;
+  name: string;
   isActive: boolean;
   createAt: string;
 }
 
-export interface warehousesResponse {
+export interface LDCResponse {
   data: {
-    
-    items: warehouses[];
+    items: LDC[];
     PageIndex: number;
     pageSize: number;
     totalCount: number;
@@ -27,20 +22,11 @@ export interface warehousesResponse {
   id: string | null;
 }
 
-export interface Addwarehouses {
-  code: string;
-  nameAr: string;
-  nameEn: string;
-  addressEn?: string;
- addressAr?: string;
-  isActive?: boolean;
-}
-
 export interface Pagination {
-     pageIndex: number;
-        pageSize?: number;
-        searchingWord?: string;
-        level?: number;
-        orderBy?: string;
-        orderDirection?: 'asc' | 'desc';
+  pageIndex: number;
+  pageSize?: number;
+  searchingWord?: string;
+  orderBy?: string;
+  orderDirection?: "asc" | "desc";
+  StatusFilter?: string;
 }

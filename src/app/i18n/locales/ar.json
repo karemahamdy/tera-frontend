@@ -57,7 +57,12 @@
     "template": "قالب",
     "data": "البيانات",
     "terminate": "اغلاق",
-    "remove": "إزالة"
+    "remove": "إزالة",
+    "editItem": "تعديل الصنف",
+    "hold": "تعليق",
+    "normal": "عادي",
+    "professional": "محترف",
+    "all": "الكل"
   },
   "table": {
     "description": "الوصف",
@@ -369,16 +374,22 @@
     "totalLocations": "إجمالي المواقع",
     "deleteZoneConfirm": "هل أنت متأكد أنك تريد حذف هذا النطاق؟",
     "add": "إضافة مستودع",
-    "zoneAddedSuccessfully": "تمت إضافة النطاق بنجاح"
+    "zoneAddedSuccessfully": "تمت إضافة النطاق بنجاح",
+    "zoneUpdatedSuccessfully": "تم تحديث النطاق بنجاح",
+    "zoneDeletedSuccessfully": "تم حذف النطاق بنجاح",
+    "warehouseCreatedSuccessfully": "تم إنشاء المستودع بنجاح",
+    "warehouseUpdatedSuccessfully": "تم تحديث المستودع بنجاح",
+    "warehouseDeletedSuccessfully": "تم حذف المستودع بنجاح"
   },
   "itemGroup": {
     "title": "مجموعة العناصر",
     "subtitle": "قم بتنظيم العناصر في مجموعات هرمية",
     "additemGroup": "اضافة  ",
     "searchPlaceholder": "البحث عن الاسم او الرمز...",
-    "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ ",
-    "code": "الرمز",
-    "name": "الاسم",
+  "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ ",
+  "code":"الرمز",
+  "name": "الاسم",
+    "itemsCount": "عدد الاصناف",
     "group1": "مجموعة 1",
     "group2": "مجموعة 2",
     "group3": "مجموعة 3",
@@ -391,9 +402,17 @@
     "addNewGroup": "إضافة مجموعة جديدة",
     "itemGroupInfo": "أنشئ مجموعة جديدة لتنظيم أغراضك",
     "editItemsGroup": "تعديل المجموعة",
-    "editGroupInfo": "مراجعة وتحديث معلومات المجموعة"
-  },
+    "editGroupInfo": "مراجعة وتحديث معلومات المجموعة",
+    "addGroupInfo": "تعريف مجموعة جديدة لتصنيف العناصر",
+    "descriptionPlaceholder": "وصف الغرض من هذه المجموعة..",
+    "deletedSuccessfully": "تم حذف مجموعة العناصر بنجاح",
+    "createdSuccessfully": "تم إنشاء مجموعة العناصر بنجاح",
+    "updatedSuccessfully": "تم تحديث مجموعة العناصر بنجاح",
+    "itemGroupImportedSuccessfully": "تم استيراد مجموعة العناصر بنجاح"
+ 
+ },
   "itemList": {
+    "zone": "النطاق",
     "title": "قائمة الأصناف",
     "subtitle": "إدارة تفاصيل الأصناف والمخزون",
     "itemList": "قائمة الأصناف",
@@ -411,8 +430,10 @@
     "transactions": "المعاملات",
     "pricing": "التسعير",
     "inactive": "غير نشط",
-    "itemTransactions": "معاملات الصنف",
-    "date": "الوقت",
+    "transactiontype": "نوع المعاملة",
+    "transactionnumber": "رقم المعاملة",
+    "recentTransactions": "احدث المعاملات",
+    "date": "التاريخ",
     "transactionType": "نوع المعاملة",
     "transactionNumber": "رقم المعاملة",
     "quantity": "الكمية",
@@ -427,6 +448,10 @@
     "available": "المتاح",
     "onHold": "قيد الانتظار",
     "serialNumber": "الرقم التسلسلي",
+       "OutOfStock": "نفد من المخزون",
+    "MinimumStock": "الحد الأدنى للمخزون",
+    "ActiveItems": "العناصر النشطة",
+    "TotalItems": "إجمالي العناصر",
     "overview": {
       "overview": "نظرة عامة",
       "itemInformation": "معلومات الصنف",
@@ -463,6 +488,7 @@
       "standardCost": "التكلفة القياسية",
       "totalValue": "القيمة الإجمالية",
       "itemAttachment": "مرفقات الصنف"
+      
     },
     "cards": {
       "totalOnHand": "إجمالي المتوفر",
@@ -495,7 +521,7 @@
     "searchPlaceholder": "البحث عن الاسم او الرمز...",
     "deleteLDCConfirm": "هل أنت متأكد أنك تريد حذف المستودع ",
     "addLDCInfo": "اضافة دفتر حسابات ",
-    "editLDCInfo": "",
+    "editLDCInfo": "تعديل دفتر حسابات ",
     "addLDCInfoDesc": "حدد سجلات المعاملات التفصيلية وتعيينات الحسابات",
     "editLDCInfoDesc": "تعديل سجلات المعاملات التفصيلية وتعيينات الحسابات",
     "code": "رمز الدفتر",
@@ -516,7 +542,10 @@
     "physicalCount": "فروقات الجرد",
     "cogs": "تكلفة البضاعة المباعة",
     "inventoryAdjustment": "تسوية المخزون",
-    "select": "اختر"
+    "select": "اختر",
+    "LDCCreatedSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
+    "LDCUpdatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
+    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
   },
   "items": {
     "title": "العناصر",

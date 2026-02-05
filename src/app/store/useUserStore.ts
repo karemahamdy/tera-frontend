@@ -93,6 +93,7 @@ export const useUserStore = defineStore("user", {
       } catch (e) {
         // ignore
       }
+       window.location.reload();
     },
 
     toggleLang() {

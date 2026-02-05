@@ -1,40 +1,56 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Addwarehouses, Pagination, warehousesResponse } from "../types/LDC";
+import type { Pagination, LDCResponse } from "../types/LDC";
 
 
-export const warehousesService = {
- async getAll(params: Pagination) {
- 
-  const resp = await axiosWrapper.get<warehousesResponse>(
-    `/warehouses/GetAllwarehousess?${params}`
-  );
-  return resp.data;
-},
+export const LDCService = {
+  async getAll(params: Pagination) {
 
-  async getById(id: string): Promise<Addwarehouses> {
-    const data = await axiosWrapper.get<any>(`/warehouses/${id}`);
+    const resp = await axiosWrapper.get<LDCResponse>(
+      `/LedgerDetailCard`, { params }
+    );
+    return resp.data;
+  },
+
+  async getById(id: string): Promise<any> {
+    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
     return data.data;
   },
 
-  async create(payload: Addwarehouses ) {
-    const data = await axiosWrapper.post<any>(`/warehouses/create`, payload);
+  async create(payload: any) {
+    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
     return data.data;
   },
-  async update(id: string, payload: Addwarehouses) {
-    const data = await axiosWrapper.put<any>(`/warehouses/${id}`, payload);
+  async update(id: string, payload: any) {
+    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/warehouses/${id}`);
+    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
   },
 
- async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(`/warehouses/${id}/status `, {
-      isActive
-    });
+  async toggleActive(id: string, isActive: boolean) {
+    const data = await axiosWrapper.put<any>(
+      `/LedgerDetailCard/Status/${id}`,
+      null,
+      {
+        params: { isActive }
+      }
+    );
     return data.data;
   },
 
+  async exportData(payload: any) {
+    const data = await axiosWrapper.get<Blob>(
+      `/LedgerDetailCard/export-LDCs`,
+      {
+        params: payload,
+        responseType: "blob",
+      }
+    );
+
+    return data;
+    ;
+  }
 
 };

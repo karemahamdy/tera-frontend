@@ -13,7 +13,6 @@ export function useLookups() {
   const usersLookups = ref<LookupsOption[]>([]);
   const IPLookups = ref<LookupsOption[]>([]);
   const departmentsLookups = ref<LookupsOption[]>([]);
-  const warehouseLookups = ref<LookupsOption[]>([]);
   const userAssignedBranchesLookups = ref<LookupsOption[]>([]);
   const itemTypeLookups = ref<LookupsOption[]>([]);
   const businessPartnerLookups = ref<LookupsOption[]>([]);
@@ -28,6 +27,9 @@ export function useLookups() {
   const group2Lookups = ref<LookupsOption[]>([]);
   const group3Lookups = ref<LookupsOption[]>([]);
   const group4Lookups = ref<LookupsOption[]>([]);
+  const accountLookups = ref<LookupsOption[]>([]);
+  const warehouseLookup = ref<LookupsOption[]>([]);
+  const itemGroupLookups = ref<LookupsOption[]>([]);
 
   const getGroupLookups = async (isActive: boolean = true) => {
     try {
@@ -123,18 +125,6 @@ export function useLookups() {
       usersLookups.value = res.data.map((group) => ({
         label: group.name,
         value: group.id,
-      }));
-    } catch (error) {
-      toastService.error(error as string);
-    }
-  };
-
-  const getWarehouseLookups = async () => {
-    try {
-      const res = await LookupsService.getWarehouseLookups();
-      warehouseLookups.value = res.data.map((item) => ({
-        label: item.name,
-        value: item.id,
       }));
     } catch (error) {
       toastService.error(error as string);
@@ -285,6 +275,40 @@ export function useLookups() {
     }
   };
 
+  const getAccountsLookups = async () => {
+    try {
+      const res = await LookupsService.getAccountsLookups();
+      accountLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+  const getWarehouseLookups = async () => {
+    try {
+      const res = await LookupsService.getWarehouseLookups();
+      warehouseLookup.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+  const getItemGroupLookups = async () => {
+    try {
+      const res = await LookupsService.getItemGroupLookups();
+      itemGroupLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     groupsLookups,
     branchesLookups,
@@ -295,7 +319,6 @@ export function useLookups() {
     departmentsLookups,
     usersLookups,
     IPLookups,
-    warehouseLookups,
     userAssignedBranchesLookups,
     categoryLookups,
     group1Lookups,
@@ -310,17 +333,20 @@ export function useLookups() {
     ledgerDetailCardLookups,
     costcenterLookups,
 
+    accountLookups,
+    warehouseLookup,
+    itemGroupLookups,
     getIPLookups,
     getGroupLookups,
     getBranchLookups,
     getEntityLookups,
     getRolesLookups,
     getScreenLookups,
+    getItemGroupLookups,
+    getWarehouseLookups,
     getDepartmentsLookups,
     getModuleLookups,
     getUsersLookups,
-    getWarehouseLookups,
-
     getUserAssignedBranchesLookups,
     getItemCategoryLookups,
     getItemGroup1Lookups,
@@ -334,5 +360,6 @@ export function useLookups() {
     getTaxLookups,
     getLedgerDetailCardLookups,
     getCostcenterLookups,
+    getAccountsLookups,
   };
 }

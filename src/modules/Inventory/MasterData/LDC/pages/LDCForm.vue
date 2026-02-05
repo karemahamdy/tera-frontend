@@ -1,53 +1,109 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import type { Ref } from "vue";
 import { useForm } from "vee-validate";
-import FormDropdown from "@/sharedComponents/inputs/FormDropdown.vue";
 import { LDCSchema } from "../validation/LDCSchema";
+import { useLookups } from "@/composables/useLookups";
+import { useLDC } from "../composables/useLDC";
+import router from "@/app/router";
 
 const props = defineProps<{
-  mode: "edit" | "create";
+  mode: "edit" | "create" | "view";
+  id?: string;
 }>();
 
 const editMode = props.mode === "edit";
+const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
+const { accountLookups, getAccountsLookups } = useLookups();
 
-const accountFields = [
-  { key: "localPurchaseAccount", label: "LDC.localPurchaseAccount" },
-  { key: "localSalesAccount", label: "LDC.localSalesAccount" },
-  { key: "localPurchaseReturn", label: "LDC.localPurchaseReturn" },
-  { key: "localSalesReturn", label: "LDC.localSalesReturn" },
-  { key: "importPurchaseAccount", label: "LDC.importPurchaseAccount" },
-  { key: "importPurchaseReturn", label: "LDC.importPurchaseReturn" },
-  { key: "exportSalesAccount", label: "LDC.exportSalesAccount" },
-  { key: "exportSalesReturn", label: "LDC.exportSalesReturn" },
-  { key: "physicalCount", label: "LDC.physicalCount" },
-  { key: "cogs", label: "LDC.cogs" },
+const { createLDC, updateLDC, fetchLDCById } = useLDC();  
+
+interface AccountField {
+  key: string;
+  label: string;
+}
+const accountFields: AccountField[] = [
+  { key: "purchaseAccountId", label: "LDC.localPurchaseAccount" },
+  { key: "localSalesAccountId", label: "LDC.localSalesAccount" },
+  { key: "localPurchaseReturnId", label: "LDC.localPurchaseReturn" },
+  { key: "localSalesReturnAccountId", label: "LDC.localSalesReturn" },
+  { key: "importPurchaseAccountId", label: "LDC.importPurchaseAccount" },
+  { key: "importPurchaseReturnsAccountId", label: "LDC.importPurchaseReturn" },
+  { key: "exportSalesAccountId", label: "LDC.exportSalesAccount" },
+  { key: "exportSalesReturnAccountId", label: "LDC.exportSalesReturn" },
+  { key: "physicalCountAdjustmentId", label: "LDC.physicalCount" },
+  { key: "cogsAccountId", label: "LDC.cogs" },
 ];
 
-const { errors, defineField } = useForm({
+type LDCFormValues = {
+  code: string;
+  nameAr: string;
+  nameEn: string;
+  inventoryAdjustmentId: string | null;
+} & Record<string, string | null>;
+
+const initialValues: LDCFormValues = {
+  code: "",
+  nameAr: "",
+  nameEn: "",
+  inventoryAdjustmentId: null,
+  ...Object.fromEntries(accountFields.map(f => [f.key, null])),
+};
+
+const { errors, defineField, handleSubmit, setValues } = useForm<LDCFormValues>({
   validationSchema: LDCSchema,
-  initialValues: {
-    code: "",
-    LDCNameAr: "",
-    LDCNameEn: "",
-    inventoryAdjustment: "",
-    ...Object.fromEntries(accountFields.map(f => [f.key, null]))
-  }
+  initialValues,
 });
 
 const [code] = defineField("code");
-const [LDCNameAr] = defineField("LDCNameAr");
-const [LDCNameEn] = defineField("LDCNameEn");
-const [inventoryAdjustment] = defineField("inventoryAdjustment");
+const [nameAr] = defineField("nameAr");
+const [nameEn] = defineField("nameEn");
+const [inventoryAdjustmentId] = defineField("inventoryAdjustmentId");
 
 const fields = Object.fromEntries(
-  accountFields.map((f: any) => [f.key, defineField(f.key)[0]])
-) as Record<string, any>;
+  accountFields.map(f => [f.key, defineField(f.key)[0]])
+) as Record<string, Ref<string | null>>;
 
-const accountsOptions = ref([
-  { label: "Account 1", value: 1 },
-  { label: "Account 2", value: 2 }
-]);
+onMounted(async () => {
+  await getAccountsLookups();
+
+  if (editMode && props.id || viewMode && props.id) {
+    const data = await fetchLDCById(props.id);
+    if (data) {
+
+      const mappedValues: LDCFormValues = {
+        code: data.code ?? "",
+        nameAr: data.nameAr ?? "",
+        nameEn: data.nameEn ?? "",
+        inventoryAdjustmentId  : data.inventoryAdjustmentId   ?? null,
+        ...Object.fromEntries(accountFields.map(f => [f.key, data[f.key] ?? null])),
+      };
+      setValues(mappedValues);
+    }
+  }
+});
+
+const onSubmit = handleSubmit(async (values) => {
+  isSubmitting.value = true;
+  if (viewMode) return;
+
+  try {
+    if (editMode && props.id) {
+      await updateLDC(props.id, values);
+    } else {
+      await createLDC(values);
+    }
+        router.push({
+      name: "LDC",
+    
+    });
+  } catch (error) {
+    console.error("Error submitting form:", error);
+  } finally {
+    isSubmitting.value = false;
+  }
+});
 </script>
 
 
@@ -68,32 +124,31 @@ const accountsOptions = ref([
       </template>
 
       <template #content>
-        <form @submit.prevent="" class="space-y-6 px-20">
+        <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
          <FormInput :label="$t('LDC.code')" v-model="code" :placeholder="$t('LDC.codePlaceholder')"
-            :error="errors.code" :invalid="!!errors.code" />
-
+            :error="errors.code" :invalid="!!errors.code" :disabled="viewMode || editMode"/>
           <div class="grid grid-cols-2 gap-4">        
-            <FormInput :label="$t('LDC.nameEn')" v-model="LDCNameEn" :placeholder="$t('LDC.nameEnPlaceholder')"
-            :error="errors.LDCNameEn" :invalid="!!errors.LDCNameEn" :disabled="editMode" />
-            <FormInput :label="$t('LDC.nameAr')" v-model="LDCNameAr" :placeholder="$t('LDC.nameArPlaceholder')"
-              :error="errors.LDCNameAr" :invalid="!!errors.LDCNameAr" :disabled="editMode" />
+            <FormInput :label="$t('LDC.nameEn')" v-model="nameEn" :placeholder="$t('LDC.nameEnPlaceholder')"
+            :error="errors.nameEn" :invalid="!!errors.nameEn" :disabled="viewMode" />
+            <FormInput :label="$t('LDC.nameAr')" v-model="nameAr" :placeholder="$t('LDC.nameArPlaceholder')"
+              :error="errors.nameAr" :invalid="!!errors.nameAr" :disabled="viewMode" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown v-for="field in accountFields" :key="field.key" :label="$t(field.label)"
-              v-model="fields[field.key]" :options="accountsOptions" :placeholder="$t('LDC.select') + ' ' + $t(field.label)"
+            <FormDropdown v-for="field in accountFields" :key="field.key" :label="$t(field.label)" :disabled="viewMode"
+              v-model="fields[field.key]" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t(field.label)"
                />
           </div>
 
           <FormDropdown :label="$t('LDC.inventoryAdjustment')"
-            v-model="inventoryAdjustment" :options="accountsOptions" :placeholder="$t('LDC.select') + ' ' + $t('LDC.inventoryAdjustment')"
-            :error="errors.inventoryAdjustment" />
+            v-model="inventoryAdjustmentId" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t('LDC.inventoryAdjustment')"
+            :error="errors.inventoryAdjustmentId" :disabled="viewMode"/>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDCs' }"
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDC' }"
               :disabled="isSubmitting" />
 
-            <BaseButton type="submit" :label="editMode ? 'button.save' : 'button.create'" variant="primary"
+            <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'" variant="primary"
               block :disabled="isSubmitting" :loading="isSubmitting" />
           </div>
         </form>

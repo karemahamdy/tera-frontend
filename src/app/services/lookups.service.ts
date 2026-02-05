@@ -49,7 +49,9 @@ export const LookupsService = {
       `/Lookups/WarehouseLookups?isActive=${isActive}`,
     );
   },
-  getItemClassificationLookups(level: "Category" | "Group1" | "Group2" | "Group3" | "Group4" = "Category") {
+  getItemClassificationLookups(
+    level: "Category" | "Group1" | "Group2" | "Group3" | "Group4" = "Category",
+  ) {
     return axiosWrapper.get<{ data: Lookups[] }>(
       `/Lookups/ItemClassificationLookups/${level}`,
     );
@@ -87,5 +89,15 @@ export const LookupsService = {
       `/Lookups/CostcenterLookups?isActive=${isActive}`,
     );
   },
-  
+
+  getAccountsLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/ChartOfAccountLookups?isActive=${isActive}`,
+    );
+  },
+  getItemGroupLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/ItemClassificationLookups/Category`,
+    );
+  },
 };
