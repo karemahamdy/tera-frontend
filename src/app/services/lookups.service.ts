@@ -38,4 +38,7 @@ export const LookupsService = {
   getWarehouseLookups(isActive: boolean = true) {
     return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/WarehouseLookups?isActive=${isActive}`);
   },
+  getLedgerDetailCardLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/LedgerDetailCardLookups?isActive=${isActive}`);
+  },
 };

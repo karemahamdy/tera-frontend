@@ -347,7 +347,8 @@
     "deleteWarehousesConfirm": "Are you sure you want to delete this Warehouse ?",
     "warehouseStatus": "Warehouse Status",
     "transferAccount": "Transfer Account",
-    "operationHours": "Operation Hours",
+    "operationHoursTo": "Operation Hours To",
+    "operationHoursFrom": "Operation Hours From",
     "warehouseType": "Warehouse Type",
     "manager": "Manager",
     "LDC": "Default Ledger Detail Card",
@@ -376,7 +377,11 @@
     "warehouseCreatedSuccessfully": "Warehouse created successfully",
     "warehouseUpdatedSuccessfully": "Warehouse updated successfully",
     "warehouseDeletedSuccessfully": "Warehouse deleted successfully",
-    "warehouseImportedSuccessfully": "Warehouse imported successfully"
+    "warehouseImportedSuccessfully": "Warehouse imported successfully",
+    "allowNegativeBalanceNote": "Note : By enabling this system will permit sales/transfers even if stock level iz zero or less",
+    "allowNegativeStockBalance": "Allow Negative Stock Balance",
+    "ProfessionalWarehouse": "Professional Warehouse",
+    "ProfessionalNote": " You can configure zones, rows, columns, and racks in the \"Zones & Locations\" tab after entering basic information."
   },
   "itemGroup": {
     "title": "Item Group",

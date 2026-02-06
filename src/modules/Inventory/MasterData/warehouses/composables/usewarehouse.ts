@@ -126,7 +126,7 @@ export function useWarehouse() {
         {
           file: file,
         },
-        "WarehouseFile"
+        "File"
       );
       toastService.success(t("warehouses.warehouseImportedSuccessfully"));
       fetchWarehouse(1);

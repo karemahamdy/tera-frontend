@@ -53,7 +53,8 @@ export interface AddWarehouses {
   type: string;
   description: string;
   address: string;
-  operationalHours: string;
+  fromTime: Date | null;
+  toTime: Date | null;
   allowNegativeBalance: boolean;
   defaultLedgerCardId: string;
   transferAccountId: string;

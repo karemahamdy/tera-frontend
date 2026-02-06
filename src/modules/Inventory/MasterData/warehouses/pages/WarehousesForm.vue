@@ -27,7 +27,8 @@ const { handleSubmit, errors, values, setFieldValue } = useForm<AddWarehouses>({
     address: "",
     managerId: "", // Should be handled or defaulted
     type: "Normal",
-    operationalHours: "",
+    fromTime: null,
+    toTime: null,
     allowNegativeBalance: true,
     defaultLedgerCardId: "",
     transferAccountId: "",
@@ -42,15 +43,26 @@ const updateForm = (val: Partial<AddWarehouses>) => {
         setFieldValue(key as keyof AddWarehouses, value);
     });
 };
+const formatTime = (date: Date | null) => {
+  if (!date) return "";
+
+  return date.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  });
+};
+
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
   try {
-    const payload = { ...values };
+    const payload = {
+  ...values,
+  operationalHours: `${formatTime(values.fromTime)} - ${formatTime(values.toTime)}`
+};
+
     
-    // Conditional logic: Only send zones if type is Professional (or not Normal)
-    // Adjust logic based on exact requirement. User said: 
-    // "if i take a professional and it must send zone , and if i take a normal it mustnot send zone"
     if (payload.type === 'Normal') {
         payload.zones = [];
     }
@@ -91,7 +103,7 @@ const onSubmit = handleSubmit(async (values) => {
                 <Tab value="basic">
                 {{ $t("warehouses.basicInfo") }}
                 </Tab>
-                <Tab value="additional">
+                <Tab  v-if="values.type === 'Professional'" value="additional">
                 {{ $t("warehouses.zonseInfo") }}
                 </Tab>
             </TabList>
@@ -104,7 +116,7 @@ const onSubmit = handleSubmit(async (values) => {
                     @update:modelValue="updateForm" 
                  />
                 </TabPanel>
-                <TabPanel value="additional">
+                <TabPanel v-if="values.type === 'Professional'" value="additional">
                    <!-- Bind zones manually to setFieldValue -->
                   <WarehouseZones 
                     :modelValue="values.zones" 

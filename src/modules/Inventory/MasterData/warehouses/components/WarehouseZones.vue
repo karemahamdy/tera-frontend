@@ -126,7 +126,8 @@ const toggleExpand = (zone: Zone) => {
         />
       </div>
 
-      <form class="space-y-6">
+     <div class="space-y-6">
+
         <div class="grid grid-cols-1 gap-4">
           <FormInput 
             :label="$t('warehouses.zoneCode')" 
@@ -188,7 +189,7 @@ const toggleExpand = (zone: Zone) => {
             </span>
           </div>
         </div>
-      </form>
+      </div>
     </div>
 
     <div v-if="props.modelValue && props.modelValue.length > 0" class="px-16">

@@ -16,7 +16,7 @@ export function useLookups() {
   const accountLookups = ref<LookupsOption[]>([]);
   const warehouseLookup = ref<LookupsOption[]>([]);
   const itemGroupLookups = ref<LookupsOption[]>([]);
-
+  const ledgerDetailCardLookups = ref<LookupsOption[]>([]);
 
   const getGroupLookups = async (isActive: boolean = true) => {
     try {
@@ -140,6 +140,17 @@ export function useLookups() {
         toastService.error(error as string);
       }
     };
+     const getLedgerDetailCardLookups = async () => {
+      try {
+        const res = await LookupsService.getLedgerDetailCardLookups();
+        ledgerDetailCardLookups.value = res.data.map((group) => ({
+          label: group.name,
+          value: group.id,
+        }));
+      } catch (error) {
+        toastService.error(error as string);
+      }
+    };
      const getItemGroupLookups = async () => {
       try {
         const res = await LookupsService.getItemGroupLookups();
@@ -165,6 +176,8 @@ export function useLookups() {
     accountLookups,
       warehouseLookup,
     itemGroupLookups,
+      ledgerDetailCardLookups,
+      getLedgerDetailCardLookups,
     getIPLookups,
     getGroupLookups,
     getBranchLookups,
