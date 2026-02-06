@@ -7,6 +7,11 @@ import { useLookups } from "@/composables/useLookups";
 
 const { unitsLookups, getUnitsLookups } = useLookups();
 
+const getUnitNameById = (id: string | number) => {
+  if (!id) return '';
+  return unitsLookups.value?.find(unit => unit.value === id)?.label || '';
+};
+
 onMounted(() => {
   getUnitsLookups();
 });
@@ -70,14 +75,14 @@ onMounted(() => {
                   class="w-full"
                   :label="$t('items.convertedTo')"
                   :options="unitsLookups"
-                  v-model="item.id"
+                  v-model="item.toUnitId"
                   optionValue="value"
                   :placeholder="$t('items.convertedToPlaceholder')"
                 />
                 <div class="flex gap-2 mt-2 items-center text-success-500">
                   <VsxIcon iconName="InfoCircle" :size="16" type="linear" />
                   <p class="text-sm">
-                    {{ $t("items.unitConvertedTo") }} {{ item.name }}
+                    {{ $t("items.unitConvertedTo") }} {{ getUnitNameById(item.toUnitId) }}
                   </p>
                 </div>
               </div>
@@ -85,14 +90,14 @@ onMounted(() => {
                 <FormInput
                   :label="$t('items.quantity')"
                   type="number"
-                  v-model="item.quantity"
+                  v-model="item.factor"
                   :placeholder="$t('items.quantityPlaceholder')"
                 />
                 <div class="flex gap-2 mt-2 items-center text-success-500">
                   <VsxIcon iconName="InfoCircle" :size="16" type="linear" />
                   <p class="text-sm">
-                    1 {{ item.name }} {{ $t("items.equal") }}
-                    {{ item.quantity }} {{ item.name }}
+                    1 {{ getUnitNameById(baseUOM) }} {{ $t("items.equal") }}
+                    {{ item.factor }} {{ getUnitNameById(item.toUnitId) }}
                   </p>
                 </div>
               </div>

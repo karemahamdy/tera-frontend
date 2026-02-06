@@ -1,6 +1,12 @@
 import { useForm } from "vee-validate";
 import { itemSchema } from "../validation/ItemSchema";
 import { ref } from "vue";
+import { ItemService } from "../services/item.service";
+import { toastService } from "@/app/services/toastService";
+import { useI18n } from "vue-i18n";
+import type { Item } from "../types/Item";
+import router from "@/app/router";
+import { useRoute } from "vue-router";
 
 const files = ref<File[]>([]);
 
@@ -27,7 +33,7 @@ const { handleSubmit, errors, defineField, setValues } = useForm({
     manufacturerPartNumber: "",
     barcodeSKU: "",
     baseUOM: "", // uom fields
-    rules: [{ id: 1, name: "", quantity: 0 }],
+    rules: [{ toUnitId: 1, name: "", factor: 0 }],
     tracking: "", // tracking fields
     autoGenerate: false,
     initialSerial: "",
@@ -92,71 +98,138 @@ const [lastMovingAverage] = defineField("lastMovingAverage");
 const [ledgerDetailCardID] = defineField("ledgerDetailCardID");
 const [costCenterID] = defineField("costCenterID");
 
-
 export function useItems() {
+  const route = useRoute();
+  const id = route.params.id ? String(route.params.id) : null;
+  const { t } = useI18n();
 
   // functions to manage rules
   const addNewRule = () => {
     rules.value.push({
-      id: rules.value.length + 1,
+      toUnitId: rules.value.length + 1,
       name: "",
-      quantity: 0,
+      factor: 0,
     });
   };
   const deleteRule = (index: number) => {
     rules.value.splice(index, 1);
   };
 
-  const handleSubmitWrapper = handleSubmit((values) => {
-    console.log("Form Submitted with values:", values);
-    console.log("Uploaded Files:", files.value);
-    let data = {
-      NameEn: values.name,  // NameEn *
-      NameAr: values.nameAr,  // NameAr
-      Code: values.code,  // Code *
-      Description: values.description,  // Description
-      AccessScope: values.accessScope,  // AccessScope
-      BranchId: values.branchID,  // BranchId
-      ProductionName: values.productionName,  // ProductionName
-      ProductionCode: values.productionCode,  // ProductionCode
-      HsCode: values.codeHS,  // HsCode
-      WareHouseId: values.warehouseID,  // WareHouseId
-      ItemGroupId1: values.itemGroup1ID,  // ItemGroupId1
-      ItemGroupId2: values.itemGroup2ID,  // ItemGroupId2
-      ItemGroupId3: values.itemGroup3ID,  // ItemGroupId3
-      ItemGroupId4: values.itemGroup4ID,  // ItemGroupId4
-      CategoryId: values.categoryID,  // CategoryId
-      ItemType: values.itemTypeID,  // ItemType
-      ManufacturerId: values.manufacturerID,  // ManufacturerId
-      Barcode: values.barcodeSKU,  // Barcode
-      ManufacturerPartNumber: values.manufacturerPartNumber,  // ManufacturerPartNumber
-      Tracked: values.tracking,  // Tracked
-      AutoGenerateSerial: values.autoGenerate,  // AutoGenerateSerial
-      InitialSerial: values.initialSerial,  // InitialSerial
-      ReorderPoint: values.reorderPoint,  // ReorderPoint
-      ReorderQuantity: values.reorderQuantity,  // ReorderQuantity
-      MaximumStockLevel: values.maximumStockLevel,  // MaximumStockLevel
-      LeadTime: values.leadTimeDays,  // LeadTime
-      ShelfLife: values.shelfLifeDays,  // ShelfLife
-      StandardCost: values.standardCost,  // StandardCost
-      SalesPrice: values.salesPrice,  // SalesPrice
-      LastPurchasePrice: values.lastPurchasePrice,  // LastPurchasePrice
-      LastMovingAverage: values.lastMovingAverage,  // LastMovingAverage
-      MultipleCurrency: values.multipleCurrency,  // MultipleCurrency
-      DefaultCurrencyId: values.defaultCurrencyID,  // DefaultCurrencyId
-      TaxId: values.taxesID,  // TaxId
-      LDCId: values.ledgerDetailCardID,  // LDCId
-      BaseUnitId: values.baseUOM,  // BaseUnitId
-      CostCenterId: values.costCenterID,  // CostCenterId
-      FormFiles: files.value,  // FormFiles
-      ItemUnitConversions: values.rules,  // ItemUnitConversions
+  const handleSubmitWrapper = handleSubmit(async (values) => {
+    try {
+      let data: Item = {
+        nameEn: values.name, // NameEn *
+        nameAr: values.nameAr, // NameAr
+        code: values.code, // Code *
+        description: values.description, // Description
+        accessScope: values.accessScope, // AccessScope
+        branchId: values.branchID, // BranchId
+        productionName: values.productionName, // ProductionName
+        productionCode: values.productionCode, // ProductionCode
+        hsCode: values.codeHS, // HsCode
+        wareHouseId: values.warehouseID, // WareHouseId
+        itemGroupId1: values.itemGroup1ID, // ItemGroupId1
+        itemGroupId2: values.itemGroup2ID, // ItemGroupId2
+        itemGroupId3: values.itemGroup3ID, // ItemGroupId3
+        itemGroupId4: values.itemGroup4ID, // ItemGroupId4
+        categoryId: values.categoryID, // CategoryId
+        itemType: values.itemTypeID, // ItemType
+        manufacturerId: values.manufacturerID, // ManufacturerId
+        barcode: values.barcodeSKU, // Barcode
+        manufacturerPartNumber: values.manufacturerPartNumber, // ManufacturerPartNumber
+        tracked: values.tracking, // Tracked
+        autoGenerateSerial: values.autoGenerate, // AutoGenerateSerial
+        initialSerial: values.initialSerial, // InitialSerial
+        reorderPoint: values.reorderPoint, // ReorderPoint
+        reorderQuantity: values.reorderQuantity, // ReorderQuantity
+        maximumStockLevel: values.maximumStockLevel, // MaximumStockLevel
+        leadTime: values.leadTimeDays, // LeadTime
+        shelfLife: values.shelfLifeDays, // ShelfLife
+        standardCost: values.standardCost, // StandardCost
+        salesPrice: values.salesPrice, // SalesPrice
+        lastPurchasePrice: values.lastPurchasePrice, // LastPurchasePrice
+        lastMovingAverage: values.lastMovingAverage, // LastMovingAverage
+        multipleCurrency: values.multipleCurrency, // MultipleCurrency
+        defaultCurrencyId: values.defaultCurrencyID, // DefaultCurrencyId
+        taxId: values.taxesID, // TaxId
+        ldcId: values.ledgerDetailCardID, // LDCId
+        baseUnitId: values.baseUOM, // BaseUnitId
+        costCenterId: values.costCenterID, // CostCenterId
+        itemUnitConversions: values.rules, // ItemUnitConversions
+      };
+      if (id) {
+        if (files.value && files.value.length > 0) {
+          data.newFiles = files.value;
+        }
+        await ItemService.update(id, data);
+        toastService.success(t("items.itemUpdatedSuccessfully"));
+      } else {
+        if (files.value && files.value.length > 0) {
+          data.formFiles = files.value;
+        }
+        await ItemService.create(data);
+        toastService.success(t("items.itemCreatedSuccessfully"));
+      }
+      router.replace({ name: "ItemList" });
+    } catch (error) {
+      toastService.error(error as string);
     }
   });
 
+  const loadItem = async () => {
+    if(id) {
+      try {
+        const data = await ItemService.getById(id);
+        setValues({
+          code: data.code,
+          name: data.nameEn,
+          nameAr: data.nameAr,
+          codeHS: data.hsCode,
+          description: data.description,
+          accessScope: data.accessScope,
+          branchID: data.branchId,
+          productionCode: data.productionCode,
+          productionName: data.productionName,
+          warehouseID: data.wareHouseId,
+          categoryID: data.categoryId,
+          itemGroup1ID: data.itemGroupId1,
+          itemGroup2ID: data.itemGroupId2,
+          itemGroup3ID: data.itemGroupId3,
+          itemGroup4ID: data.itemGroupId4,
+          itemTypeID: data.itemType,
+          manufacturerID: data.manufacturerId,
+          manufacturerPartNumber: data.manufacturerPartNumber,
+          barcodeSKU: data.barcode,
+          baseUOM: data.baseUnitId,
+          tracking: data.tracked,
+          autoGenerate: data.autoGenerateSerial,
+          initialSerial: data.initialSerial,
+          reorderPoint: data.reorderPoint,
+          reorderQuantity: data.reorderQuantity,
+          maximumStockLevel: data.maximumStockLevel,
+          leadTimeDays: data.leadTime,
+          shelfLifeDays: data.shelfLife,
+          defaultCurrencyID: data.defaultCurrencyId,
+          taxesID: data.taxId,
+          multipleCurrency: data.multipleCurrency,
+          standardCost: data.standardCost,
+          salesPrice: data.salesPrice,
+          lastPurchasePrice: data.lastPurchasePrice,
+          lastMovingAverage: data.lastMovingAverage,
+          ledgerDetailCardID: data.ldcId,
+          costCenterID: data.costCenterId,
+        });
+        files.value = data.files || [];
+        rules.value = data.itemUnitConversions as unknown as typeof rules.value;
+      } catch (error) {
+        toastService.error(error as string);
+      }
+    }
+  };
+
   return {
-    handleSubmit,
     errors,
-    
+
     code,
     name,
     nameAr,
@@ -176,10 +249,8 @@ export function useItems() {
     manufacturerID,
     manufacturerPartNumber,
     barcodeSKU,
-
     baseUOM,
     rules,
-
     tracking,
     autoGenerate,
     initialSerial,
@@ -188,7 +259,6 @@ export function useItems() {
     maximumStockLevel,
     leadTimeDays,
     shelfLifeDays,
-
     defaultCurrencyID,
     taxesID,
     multipleCurrency,
@@ -196,14 +266,13 @@ export function useItems() {
     salesPrice,
     lastPurchasePrice,
     lastMovingAverage,
-
     ledgerDetailCardID,
     costCenterID,
-
     files,
-
     addNewRule,
     deleteRule,
     setValues,
+    handleSubmitWrapper,
+    loadItem
   };
 }

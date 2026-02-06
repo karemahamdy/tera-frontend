@@ -656,6 +656,8 @@
     "lastPurchasePricePlaceholder": "Enter Last Purchase Price",
     "lastMovingAverage": "Last Moving Average",
     "lastMovingAveragePlaceholder": "Enter Last Moving Average",
-    "nameArPlaceholder": "أدخل الاسم بالعربية"
+    "nameArPlaceholder": "أدخل الاسم بالعربية",
+    "itemUpdatedSuccessfully": "Item updated successfully",
+    "itemCreatedSuccessfully": "Item created successfully"
   }
 }

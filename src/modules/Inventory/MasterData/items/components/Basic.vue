@@ -27,7 +27,7 @@ const {
 } = useItems();
 
 const {
-  warehouseLookups,
+  warehouseLookup,
   userAssignedBranchesLookups,
   categoryLookups,
   group2Lookups,
@@ -174,7 +174,7 @@ onMounted(() => {
         <FormDropdown
           class="w-full"
           :label="$t('items.warehouse')"
-          :options="warehouseLookups"
+          :options="warehouseLookup"
           v-model="warehouseID"
           :error="errors.warehouseID"
           optionValue="value"

@@ -653,6 +653,8 @@
     "lastPurchasePricePlaceholder": "أدخل آخر سعر شراء",
     "lastMovingAverage": "متوسط الحركة الأخير",
     "lastMovingAveragePlaceholder": "أدخل متوسط الحركة الأخير",
-    "nameArPlaceholder": "أدخل الاسم بالعربية"
+    "nameArPlaceholder": "أدخل الاسم بالعربية",
+    "itemUpdatedSuccessfully": "تم تحديث الصنف بنجاح",
+    "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح"
   }
 }

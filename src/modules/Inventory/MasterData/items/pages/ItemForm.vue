@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ScreenHeader from "@/sharedComponents/ScreenHeader.vue";
-import { computed, ref } from "vue";
+import TabMenu from "primevue/tabmenu";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Basic from "../components/Basic.vue";
 import UOM from "../components/UOM.vue";
@@ -9,7 +10,13 @@ import Pricing from "../components/Pricing.vue";
 import Ledger from "../components/Ledger.vue";
 import Attachment from "../components/Attachment.vue";
 import FormButtons from "../components/FormButtons.vue";
+import { useItems } from "../composables/useItems";
+const { handleSubmitWrapper, errors, loadItem } = useItems();
 const { t } = useI18n();
+
+const props = defineProps<{
+  mode: "edit" | "create";
+}>();
 
 const tabs = computed(() => [
   { label: t("items.basic"), level: 0 },
@@ -37,6 +44,11 @@ const previousTab = () => {
   }
 };
 
+onMounted(() => {
+  if (props.mode === "edit") {
+    loadItem();
+  }
+});
 </script>
 
 <template>
@@ -46,20 +58,25 @@ const previousTab = () => {
       subtitle="masterData"
       actionName="items.addNew"
     />
+    <div v-if="Object.keys(errors).length > 0" class="w-full p-5 border border-dashed border-danger-500 bg-danger-200 my-5 rounded-xl">
+      <div v-for="(errorList, field) in errors" :key="field" class="mb-2 text-black">
+        <strong>{{ $t(`items.${field}`) }}:</strong> {{ $t(errorList as string) }}
+      </div>
+    </div>
     <TabMenu
       :model="tabs"
       :activeIndex="activeIndex"
       @tab-change="onTabChange"
     />
-    <div class="text-black bg-white p-5">
+    <form @submit.prevent="handleSubmitWrapper" class="text-black bg-white p-5">
       <Basic v-if="activeIndex === 0" />
       <UOM v-if="activeIndex === 1" />
       <Tracking v-if="activeIndex === 2" />
       <Pricing v-if="activeIndex === 3" />
       <Ledger v-if="activeIndex === 4" />
       <Attachment v-if="activeIndex === 5" />
-      <FormButtons :activeIndex="activeIndex" @next="nextTab" @previous="previousTab" />
-    </div>
+      <FormButtons :activeIndex="activeIndex" @next="nextTab" @previous="previousTab" :mode="mode" />
+    </form>
   </div>
 </template>
 
