@@ -18,7 +18,7 @@ export interface Item {
   manufacturerId: string;
   barcode: string;
   manufacturerPartNumber: string;
-  tracked: string;
+  tracked: boolean;
   autoGenerateSerial: boolean;
   initialSerial: string;
   reorderPoint: number;

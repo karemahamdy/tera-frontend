@@ -10,7 +10,7 @@ import { useRoute } from "vue-router";
 
 const files = ref<File[]>([]);
 
-const { handleSubmit, errors, defineField, setValues } = useForm({
+const { handleSubmit, errors, defineField, setValues, resetForm } = useForm({
   validationSchema: itemSchema,
   initialValues: {
     code: "",
@@ -115,6 +115,10 @@ export function useItems() {
     rules.value.splice(index, 1);
   };
 
+  const editRule = (index: number) => {
+    rules.value[index] = { toUnitId: -1, name: "", factor: 0 };
+  };
+
   const handleSubmitWrapper = handleSubmit(async (values) => {
     try {
       let data: Item = {
@@ -137,7 +141,7 @@ export function useItems() {
         manufacturerId: values.manufacturerID, // ManufacturerId
         barcode: values.barcodeSKU, // Barcode
         manufacturerPartNumber: values.manufacturerPartNumber, // ManufacturerPartNumber
-        tracked: values.tracking, // Tracked
+        tracked: values.tracking == "serialTracking" ? true : false , // Tracked
         autoGenerateSerial: values.autoGenerate, // AutoGenerateSerial
         initialSerial: values.initialSerial, // InitialSerial
         reorderPoint: values.reorderPoint, // ReorderPoint
@@ -177,7 +181,7 @@ export function useItems() {
   });
 
   const loadItem = async () => {
-    if(id) {
+    if (id) {
       try {
         const data = await ItemService.getById(id);
         setValues({
@@ -201,7 +205,7 @@ export function useItems() {
           manufacturerPartNumber: data.manufacturerPartNumber,
           barcodeSKU: data.barcode,
           baseUOM: data.baseUnitId,
-          tracking: data.tracked,
+          tracking: data.tracked ? "serialTracking" : "noTracking",
           autoGenerate: data.autoGenerateSerial,
           initialSerial: data.initialSerial,
           reorderPoint: data.reorderPoint,
@@ -225,6 +229,11 @@ export function useItems() {
         toastService.error(error as string);
       }
     }
+  };
+
+  const resetFormToInitialValues = () => {
+    resetForm();
+    files.value = [];
   };
 
   return {
@@ -271,8 +280,10 @@ export function useItems() {
     files,
     addNewRule,
     deleteRule,
+    editRule,
     setValues,
     handleSubmitWrapper,
-    loadItem
+    loadItem,
+    resetFormToInitialValues
   };
 }

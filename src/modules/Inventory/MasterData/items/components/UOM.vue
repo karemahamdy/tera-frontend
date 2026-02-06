@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useItems } from "../composables/useItems";
-const { errors, baseUOM, rules, addNewRule, deleteRule } = useItems();
+const { errors, baseUOM, rules, addNewRule, deleteRule, editRule } = useItems();
 
 import { useLookups } from "@/composables/useLookups";
 
@@ -46,7 +46,7 @@ onMounted(() => {
               color="#5584FF"
               type="linear"
             />
-            <p class="text-2xl text-gray-700">1 Kilogram (KG)</p>
+            <p class="text-2xl text-gray-700">1 {{ getUnitNameById(baseUOM) }}</p>
           </div>
           <div class="bg-primary-300 p-2 w-full rounded-b-xl">
             <p class="text-center text-sm text-white">
@@ -105,6 +105,7 @@ onMounted(() => {
                 class="md:col-span-1 p-5 flex flex-col justify-center items-center gap-3"
               >
                 <a
+                  @click="editRule(index)"
                   class="w-full cursor-pointer flex gap-1 justify-center items-center py-1 rounded-xl border border-warning-500 bg-warning-50 hover:bg-warning-100 text-warning-500"
                 >
                   <VsxIcon iconName="Edit2" :size="16" type="linear" />

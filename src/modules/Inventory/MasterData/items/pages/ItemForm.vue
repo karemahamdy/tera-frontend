@@ -11,7 +11,7 @@ import Ledger from "../components/Ledger.vue";
 import Attachment from "../components/Attachment.vue";
 import FormButtons from "../components/FormButtons.vue";
 import { useItems } from "../composables/useItems";
-const { handleSubmitWrapper, errors, loadItem } = useItems();
+const { handleSubmitWrapper, errors, loadItem, resetFormToInitialValues } = useItems();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -47,6 +47,8 @@ const previousTab = () => {
 onMounted(() => {
   if (props.mode === "edit") {
     loadItem();
+  } else {
+    resetFormToInitialValues()
   }
 });
 </script>

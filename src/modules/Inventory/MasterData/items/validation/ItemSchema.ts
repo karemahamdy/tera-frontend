@@ -16,17 +16,20 @@ export const itemSchema = yup.object({
   itemGroup2ID: yup.string().nullable(),
   itemGroup3ID: yup.string().nullable(),
   itemGroup4ID: yup.string().nullable(),
-  itemTypeID: yup.string().nullable(),
+  itemTypeID: yup.string().required("form.fieldRequired"),
   manufacturerID: yup.string().nullable(),
   manufacturerPartNumber: yup.string().nullable(),
   barcodeSKU: yup.string().nullable(),
-  baseUOM: yup.string().nullable(), // uom fields
-  rules: yup.array().of(
-    yup.object({
-      toUnitId: yup.string().required(),
-      factor: yup.number().nullable(),
-    })
-  ),
+  baseUOM: yup.string().required("form.fieldRequired"), // uom fields
+  rules: yup
+    .array()
+    .of(
+      yup.object({
+        toUnitId: yup.string().required("form.fieldRequired"),
+        factor: yup.number().nullable(),
+      }),
+    )
+    .min(1, "form.fieldRequired"),
   tracking: yup.string().nullable(), // tracking fields
   autoGenerate: yup.boolean().nullable(),
   initialSerial: yup.string().nullable(),
