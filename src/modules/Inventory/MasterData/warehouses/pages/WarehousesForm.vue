@@ -25,7 +25,7 @@ const { handleSubmit, errors, values, setFieldValue } = useForm<AddWarehouses>({
     nameAr: "",
     description: "",
     address: "",
-    managerId: "", // Should be handled or defaulted
+    managerId: "",
     type: "Normal",
     fromTime: null,
     toTime: null,
@@ -37,7 +37,6 @@ const { handleSubmit, errors, values, setFieldValue } = useForm<AddWarehouses>({
   }
 });
 
-// Update helper for WarehouseInfo
 const updateForm = (val: Partial<AddWarehouses>) => {
     Object.entries(val).forEach(([key, value]) => {
         setFieldValue(key as keyof AddWarehouses, value);

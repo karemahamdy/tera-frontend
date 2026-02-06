@@ -1,13 +1,12 @@
 import * as yup from "yup";
 
 export const warehousesSchema = yup.object({
-  code: yup.string().required("form.fieldRequired"),
-  nameEn: yup.string().required("form.fieldRequired"),
-  nameAr: yup.string().required("form.fieldRequired"),
+  code: yup.string().required("form.fieldRequired").min(3, "form.min_3"),
+  nameEn: yup.string().required("form.fieldRequired").min(3, "form.min_3"),
+  nameAr: yup.string().required("form.fieldRequired").min(3, "form.min_3"),
   address: yup.string().nullable(),
   description: yup.string().nullable(),
 
-  // IDs need to be strings, usually UUIDs. Required if strictly needed by backend.
   managerId: yup.string().nullable(),
   defaultLedgerCardId: yup.string().nullable(),
   transferAccountId: yup.string().nullable(),
@@ -27,5 +26,5 @@ export const warehousesSchema = yup.object({
       racks: yup.number().required(),
       locationRequest: yup.array()
     })
-  ).nullable() // Zones might be optional initially or empty
+  ).nullable() 
 });

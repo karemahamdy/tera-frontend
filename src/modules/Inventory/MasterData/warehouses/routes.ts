@@ -24,7 +24,7 @@ export const InventoryRoutes = [
     meta: { permission: null },
   },
     {
-    path: "/warehouses/view",
+    path: "/warehouses/view/:id",
     component: () => import("@/modules/Inventory/MasterData/warehouses/pages/WarehousesForm.vue"),
     name: "WarehousesView",
     props: { mode: "view" },
