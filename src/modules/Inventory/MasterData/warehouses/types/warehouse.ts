@@ -49,15 +49,21 @@ export interface AddWarehouses {
   code: string;
   nameEn: string;
   nameAr: string;
-  managerId: string;
+  managerId: string | null;
   type: string;
-  description: string;
-  address: string;
-  fromTime: Date | null;
-  toTime: Date | null;
+  description: string | null;
+  address: string | null;
+
+  // Form-specific fields
+  fromTime?: Date | null;
+  toTime?: Date | null;
+
+  // Payload-specific fields
+  operationalHours?: string | null;
+
   allowNegativeBalance: boolean;
-  defaultLedgerCardId: string;
-  transferAccountId: string;
+  defaultLedgerCardId: string | null;
+  transferAccountId: string | null;
   isActive: boolean;
   zones: Zone[];
 }

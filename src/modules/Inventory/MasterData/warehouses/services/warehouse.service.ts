@@ -12,7 +12,7 @@ export const warehousesService = {
 
   async getById(id: string): Promise<AddWarehouses> {
     const data = await axiosWrapper.get<any>(`/Warehouses/${id}`);
-    return data.data;
+    return data.data || data;
   },
 
   async create(payload: AddWarehouses) {

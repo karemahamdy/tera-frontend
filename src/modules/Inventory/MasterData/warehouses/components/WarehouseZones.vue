@@ -112,8 +112,14 @@ const editZone = (zone: Zone) => {
   deleteZone(zone.id!);
 };
 
-const toggleExpand = (zone: Zone) => {
-  zone.isExpanded = !zone.isExpanded;
+const toggleExpand = (zoneToToggle: Zone) => {
+  const updatedZones = (props.modelValue || []).map(z => {
+    if (z.id === zoneToToggle.id) {
+      return { ...z, isExpanded: !z.isExpanded };
+    }
+    return z;
+  });
+  emit("update:modelValue", updatedZones);
 };
 </script>
 
@@ -221,7 +227,7 @@ const toggleExpand = (zone: Zone) => {
              <button type="button" @click="deleteZone(zone.id!)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
              <VsxIcon iconName="Trash" :size="20" color="#F04438" type="linear" />
               </button>
-             <button @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
+             <button type="button" @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
                   <VsxIcon v-if="zone.isExpanded" iconName="ArrowSquareUp" :size="20" color="#3F5FAC" type="linear" />
                   <VsxIcon v-else="zone.isExpanded" iconName="ArrowSquareDown" :size="20" color="#3F5FAC" type="linear" />
               </button>
