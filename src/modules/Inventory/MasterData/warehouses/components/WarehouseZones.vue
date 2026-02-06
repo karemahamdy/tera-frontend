@@ -102,6 +102,16 @@ const deleteZone = (id: string) => {
   emit("update:modelValue", updatedZones);
 };
 
+const editZone = (zone: Zone) => {
+  code.value = zone.code;
+  name.value = zone.name;
+  rows.value = String(zone.rows);
+  columns.value = String(zone.columns);
+  racks.value = String(zone.racks);
+  
+  deleteZone(zone.id!);
+};
+
 const toggleExpand = (zone: Zone) => {
   zone.isExpanded = !zone.isExpanded;
 };
@@ -204,11 +214,11 @@ const toggleExpand = (zone: Zone) => {
               <span class="font-bold mb-2 text-lg text-gray-900">{{ zone.name }}</span>
               <Tag severity="success" class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">{{ zone.code }}</Tag>
             </div>
-            <div class="flex items-center gap-2">
-              <button class="text-primary-600 hover:text-primary-800" title="Edit">
+    <div class="flex items-center gap-2">
+              <button type="button" @click="editZone(zone)" class="text-primary-600 hover:text-primary-800" title="Edit">
               <VsxIcon iconName="Edit" :size="20" color="#F79009" type="linear" />
               </button>
-             <button @click="deleteZone(zone.id!)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
+             <button type="button" @click="deleteZone(zone.id!)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
              <VsxIcon iconName="Trash" :size="20" color="#F04438" type="linear" />
               </button>
              <button @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
