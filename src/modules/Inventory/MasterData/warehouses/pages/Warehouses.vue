@@ -97,6 +97,11 @@ const handleActionMenu = async (payload: any) => {
             handleEdit(data);
         }
     }
+    if(action === 'view') {
+        if (data && data.id) {
+            router.push(`/warehouses/view/${data.id}`);
+        }
+    }
     if (action === 'delete') {
         confirmDelete(data);
     }

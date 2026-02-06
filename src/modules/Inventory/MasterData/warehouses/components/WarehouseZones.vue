@@ -5,6 +5,7 @@ import type { Zone, LocationRequest } from "../types/warehouse";
 
 const props = defineProps<{
   modelValue?: Zone[];
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -133,6 +134,7 @@ const toggleExpand = (zoneToToggle: Zone) => {
           <p class="text-sm text-gray-500">{{ $t('warehouses.configureZones') }}</p>
         </div>
         <BaseButton 
+          v-if="!disabled"
           :label="$t('button.addNew')" 
           icon="pi pi-plus" 
           size="small" 
@@ -142,7 +144,7 @@ const toggleExpand = (zoneToToggle: Zone) => {
         />
       </div>
 
-     <div class="space-y-6">
+     <div v-if="!disabled" class="space-y-6">
 
         <div class="grid grid-cols-1 gap-4">
           <FormInput 
@@ -221,10 +223,10 @@ const toggleExpand = (zoneToToggle: Zone) => {
               <Tag severity="success" class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">{{ zone.code }}</Tag>
             </div>
     <div class="flex items-center gap-2">
-              <button type="button" @click="editZone(zone)" class="text-primary-600 hover:text-primary-800" title="Edit">
+              <button v-if="!disabled" type="button" @click="editZone(zone)" class="text-primary-600 hover:text-primary-800" title="Edit">
               <VsxIcon iconName="Edit" :size="20" color="#F79009" type="linear" />
               </button>
-             <button type="button" @click="deleteZone(zone.id!)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
+             <button v-if="!disabled" type="button" @click="deleteZone(zone.id!)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
              <VsxIcon iconName="Trash" :size="20" color="#F04438" type="linear" />
               </button>
              <button type="button" @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">

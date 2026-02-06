@@ -8,6 +8,7 @@ const { t } = useI18n();
 const props = defineProps<{
     modelValue: Partial<AddWarehouses>;
     errors: Record<string, string | undefined>;
+    disabled?: boolean;
 }>();
 
 const {
@@ -47,29 +48,29 @@ const typeOptions = [
         <div class="flex gap-4">
             <FormInput class="w-1/2" :label="$t('warehouses.code')" :modelValue="data.code"
                 @update:modelValue="(v: any) => update('code', v)" :error="errors.code" :invalid="!!errors.code"
-                placeholder="WH-MAIN-001" />
+                placeholder="WH-MAIN-001" :disabled="disabled" />
 
             <FormInput class="w-1/2" :label="$t('warehouses.name')" :modelValue="data.nameEn"
                 @update:modelValue="(v: any) => update('nameEn', v)" :error="errors.nameEn" :invalid="!!errors.nameEn"
-                placeholder="Main Central Warehouse" />
+                placeholder="Main Central Warehouse" :disabled="disabled" />
         </div>
 
         <div class="flex gap-4">
             <FormInput class="w-1/2" :label="$t('itemGroup.itemGroupNameAr')" :modelValue="data.nameAr"
                 @update:modelValue="(v: any) => update('nameAr', v)" :error="errors.nameAr" :invalid="!!errors.nameAr"
-                placeholder="المستودع الرئيسي" />
+                placeholder="المستودع الرئيسي" :disabled="disabled" />
 
             <FormInput class="w-1/2" :label="$t('branch.address')" :modelValue="data.address"
                 @update:modelValue="(v: any) => update('address', v)" :error="errors.address" :invalid="!!errors.address"
-                placeholder="Industrial Zone, Block 5, Cairo – Egypt" />
+                placeholder="Industrial Zone, Block 5, Cairo – Egypt" :disabled="disabled" />
         </div>
 
         <div class="flex gap-4">
             <FormDropdown class="w-1/2" :label="$t('warehouses.manager')" :modelValue="data.managerId"
-                @update:modelValue="(v: any) => update('managerId', v)" :options="usersLookups" placeholder="Select Manager" />
+                @update:modelValue="(v: any) => update('managerId', v)" :options="usersLookups" placeholder="Select Manager" :disabled="disabled" />
 
             <FormDropdown class="w-1/2" :label="$t('warehouses.warehouseType')" :modelValue="data.type"
-                @update:modelValue="(v: any) => update('type', v)" :options="typeOptions" placeholder="Normal" />
+                @update:modelValue="(v: any) => update('type', v)" :options="typeOptions" placeholder="Normal" :disabled="disabled" />
         </div>
 
         <div>
@@ -79,7 +80,7 @@ const typeOptions = [
 
             <Textarea :modelValue="data.description" @update:modelValue="v => update('description', v)" rows="2"
                 class="w-full p-3 border rounded-lg" :class="{ 'border-danger-500': errors.description }"
-                :placeholder="$t('warehouses.descriptionPlaceholder')" />
+                :placeholder="$t('warehouses.descriptionPlaceholder')" :disabled="disabled" />
 
             <small v-if="errors.description" class="text-danger-500">
                 {{ $t(errors.description) }}
@@ -89,11 +90,11 @@ const typeOptions = [
         <div class="flex gap-4 items-center">
             <FormDropdown class="w-1/2" :label="$t('warehouses.LDC')" :modelValue="data.defaultLedgerCardId"
                 @update:modelValue="(v: any) => update('defaultLedgerCardId', v)" :options="ledgerDetailCardLookups"
-                placeholder="LDC-INV-001" />
+                placeholder="LDC-INV-001" :disabled="disabled" />
 
             <FormDropdown class="w-1/2" :label="$t('warehouses.transferAccount')" :modelValue="data.transferAccountId"
                 @update:modelValue="(v: any) => update('transferAccountId', v)" :options="ledgerDetailCardLookups"
-                placeholder="1305 – Warehouse Transfer Account" />
+                placeholder="1305 – Warehouse Transfer Account" :disabled="disabled" />
 
         </div>
 
@@ -104,7 +105,7 @@ const typeOptions = [
                 </label>
 
                 <Calendar :modelValue="data.fromTime" placeholder="8:00 AM – 6:00 PM" timeOnly
-                    @update:modelValue="(v: any) => update('fromTime', v)" />
+                    @update:modelValue="(v: any) => update('fromTime', v)" :disabled="disabled" />
             </div>
 
             <div class="field">
@@ -113,13 +114,13 @@ const typeOptions = [
                 </label>
 
                 <Calendar :modelValue="data.toTime" placeholder="8:00 AM – 6:00 PM" timeOnly
-                 @update:modelValue="(v: any) => update('toTime', v)"/>
+                 @update:modelValue="(v: any) => update('toTime', v)" :disabled="disabled" />
 
             </div>
 
             <div class="w-1/2 flex items-center justify-between ">
                 <ToggleItem class="w-1/2" :title="$t('warehouses.warehouseStatus')" label="Active"
-                    :modelValue="data.isActive" @update:modelValue="(v: any) => update('isActive', v)" />
+                    :modelValue="data.isActive" @update:modelValue="(v: any) => update('isActive', v)" :disabled="disabled" />
             </div>
         </div>
 
@@ -127,7 +128,7 @@ const typeOptions = [
         <div class=" border border-warning-300 bg-warning-50 rounded-xl p-4">
             <label class="flex items-start gap-3 cursor-pointer">
                 <input type="checkbox" class="mt-1 w-4 h-4" :checked="data.allowNegativeBalance"
-                    @change="update('allowNegativeBalance', ($event.target as HTMLInputElement).checked)" />
+                    @change="update('allowNegativeBalance', ($event.target as HTMLInputElement).checked)" :disabled="disabled" />
 
                 <div>
                     <p class="font-medium text-gray-500">

@@ -19,6 +19,7 @@ const route = useRoute();
 const isSubmitting = ref(false);
 const activeTab = ref("basic");
 const editMode = props.mode === "edit";
+const viewMode = props.mode === "view";
 const warehouseId = route.params.id as string;
 
 const { handleSubmit, errors, values, setFieldValue, setValues } = useForm<AddWarehouses>({
@@ -65,7 +66,7 @@ const parseTime = (timeStr: string) => {
 };
 
 onMounted(async () => {
-    if (editMode && warehouseId) {
+    if ((editMode || viewMode) && warehouseId) {
         try {
             const data = await fetchWarehouseById(warehouseId);
             if (!data) return;
@@ -190,6 +191,7 @@ const onSubmit = handleSubmit(async (values) => {
                  <WarehouseInfo 
                     :modelValue="values" 
                     :errors="errors"
+                    :disabled="viewMode"
                     @update:modelValue="updateForm" 
                  />
                 </TabPanel>
@@ -197,15 +199,19 @@ const onSubmit = handleSubmit(async (values) => {
                    <!-- Bind zones manually to setFieldValue -->
                   <WarehouseZones 
                     :modelValue="values.zones" 
+                    :disabled="viewMode"
                     @update:modelValue="v => setFieldValue('zones', v)"
                   />
                 </TabPanel>
             </TabPanels>
             </Tabs>
-            <div class="flex gap-4 px-20 mt-6">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'warehouses' }" />
+            <div v-if="!viewMode" class="flex gap-4 px-20 mt-6">
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'Warehouses' }" />
             <BaseButton type="submit" :label="editMode ? 'button.save' : 'button.create'" variant="primary" block
                 :loading="isSubmitting" />
+            </div>
+            <div v-else class="flex gap-4 px-20 mt-6">
+            <BaseButton label="button.back" variant="ghost" block :to="{ name: 'Warehouses' }" />
             </div>
         </form>
       </template>
