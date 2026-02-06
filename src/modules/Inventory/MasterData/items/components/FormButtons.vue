@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   activeIndex: number;
+  mode: "edit" | "create";
 }>();
 </script>
 
@@ -36,7 +37,7 @@ defineProps<{
       v-if="activeIndex === 5"
       class="w-1/6 bg-primary-500 hover:bg-primary-700 cursor-pointer text-white py-2 rounded flex items-center justify-center gap-2 px-10"
     >
-      {{ $t("items.createItem") }}
+      {{ mode === "create" ? $t("items.createItem") : $t("button.edit") }}
     </button>
   </div>
 </template>

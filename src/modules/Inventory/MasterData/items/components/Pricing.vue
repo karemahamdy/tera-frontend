@@ -1,6 +1,24 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useItems } from "../composables/useItems";
-const { errors, accessScope } = useItems();
+const {
+  errors,
+  defaultCurrencyID,
+  taxesID,
+  multipleCurrency,
+  standardCost,
+  salesPrice,
+  lastPurchasePrice,
+  lastMovingAverage,
+} = useItems();
+import { useLookups } from "@/composables/useLookups";
+
+const { currencyLookups, getCurrencyLookups, taxLookups, getTaxLookups } =
+  useLookups();
+
+onMounted(() => {
+  Promise.all([(getCurrencyLookups(), getTaxLookups())]);
+});
 </script>
 <template>
   <div>
@@ -10,7 +28,8 @@ const { errors, accessScope } = useItems();
         <FormDropdown
           class="w-full"
           :label="$t('items.defaultCurrency')"
-          :options="[]"
+          :options="currencyLookups"
+          v-model="defaultCurrencyID"
           :error="errors.defaultCurrencyID"
           optionValue="value"
           :placeholder="$t('items.defaultCurrencyPlaceholder')"
@@ -18,7 +37,8 @@ const { errors, accessScope } = useItems();
         <FormDropdown
           class="w-full"
           :label="$t('items.taxes')"
-          :options="[]"
+          :options="taxLookups"
+          v-model="taxesID"
           :error="errors.taxesID"
           optionValue="value"
           :placeholder="$t('items.taxesPlaceholder')"
@@ -29,7 +49,12 @@ const { errors, accessScope } = useItems();
             <div
               class="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-300"
             >
-              <Checkbox v-model="accessScope" inputId="inputId" binary @click.stop />
+              <Checkbox
+                v-model="multipleCurrency"
+                inputId="inputId"
+                binary
+                @click.stop
+              />
               <label class="font-medium cursor-pointer" for="inputId">
                 {{ $t("items.allowMultipleCurrency") }}
               </label>
@@ -39,24 +64,32 @@ const { errors, accessScope } = useItems();
         <FormInput
           :label="$t('items.standardCost')"
           :error="errors.standardCost"
+          type="number"
+          v-model="standardCost"
           :placeholder="$t('items.standardCostPlaceholder')"
           :invalid="!!errors.standardCost"
         />
         <FormInput
           :label="$t('items.salesPrice')"
           :error="errors.salesPrice"
+          type="number"
+          v-model="salesPrice"
           :placeholder="$t('items.salesPricePlaceholder')"
           :invalid="!!errors.salesPrice"
         />
         <FormInput
           :label="$t('items.lastPurchasePrice')"
           :error="errors.lastPurchasePrice"
+          type="number"
+          v-model="lastPurchasePrice"
           :placeholder="$t('items.lastPurchasePricePlaceholder')"
           :invalid="!!errors.lastPurchasePrice"
         />
         <FormInput
           :label="$t('items.lastMovingAverage')"
           :error="errors.lastMovingAverage"
+          type="number"
+          v-model="lastMovingAverage"
           :placeholder="$t('items.lastMovingAveragePlaceholder')"
           :invalid="!!errors.lastMovingAverage"
         />

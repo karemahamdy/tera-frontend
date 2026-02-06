@@ -51,6 +51,7 @@
     "template": "Template",
     "data": "Data",
     "terminate": "Terminate",
+    "remove": "Remove",
     "editItem": "Edit Item",
     "hold": "Hold",
     "normal": "Normal",
@@ -605,6 +606,7 @@
     "categoryPlaceholder": "Select Category",
     "itemDetails": "Item Details",
     "itemType": "Item Type",
+    "itemTypeID": "Item Type",
     "itemTypePlaceholder": "Select Item Type",
     "manufacturer": "Manufacturer",
     "manufacturerPlaceholder": "Select Manufacturer",
@@ -616,6 +618,7 @@
     "baseUOMPlaceholder": "Select Unit of Measure",
     "baseUnit": "Base Unit",
     "rule": "Rule",
+    "rules": "Rules",
     "convertedTo": "Converted To",
     "convertedToPlaceholder": "Select Converted Unit",
     "quantity": "Quantity",
@@ -654,6 +657,9 @@
     "lastPurchasePrice": "Last Purchase Price",
     "lastPurchasePricePlaceholder": "Enter Last Purchase Price",
     "lastMovingAverage": "Last Moving Average",
-    "lastMovingAveragePlaceholder": "Enter Last Moving Average"
+    "lastMovingAveragePlaceholder": "Enter Last Moving Average",
+    "nameArPlaceholder": "أدخل الاسم بالعربية",
+    "itemUpdatedSuccessfully": "Item updated successfully",
+    "itemCreatedSuccessfully": "Item created successfully"
   }
 }

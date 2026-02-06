@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { useItems } from "../composables/useItems";
-const { errors, accessScope } = useItems();
+const {
+  errors,
+  tracking,
+  autoGenerate,
+  initialSerial,
+  reorderPoint,
+  reorderQuantity,
+  maximumStockLevel,
+  leadTimeDays,
+  shelfLifeDays,
+} = useItems();
 </script>
 <template>
   <div class="flex flex-wrap gap-4">
@@ -14,7 +24,7 @@ const { errors, accessScope } = useItems();
             inputId="input1"
             name="access"
             value="noTracking"
-            v-model="accessScope"
+            v-model="tracking"
           />
           <label class="ml-2 cursor-pointer" for="input1">
             {{ $t("items.noTracking") }}
@@ -31,7 +41,7 @@ const { errors, accessScope } = useItems();
             inputId="input2"
             name="access"
             value="serialTracking"
-            v-model="accessScope"
+            v-model="tracking"
           />
           <label class="ml-2 cursor-pointer" for="input2">
             {{ $t("items.serialTracking") }}
@@ -43,7 +53,12 @@ const { errors, accessScope } = useItems();
         </div>
         <hr class="mt-5 text-gray-300" />
         <div class="flex items-center gap-5 mt-5">
-          <Checkbox v-model="accessScope" inputId="input3" binary @click.stop />
+          <Checkbox
+            v-model="autoGenerate"
+            inputId="input3"
+            binary
+            @click.stop
+          />
           <label class="ml-2 cursor-pointer" for="input3">
             {{ $t("items.autoGenerateSerialWhileReciving") }}
           </label>
@@ -51,6 +66,7 @@ const { errors, accessScope } = useItems();
         <FormInput
           :label="$t('items.initialSerial')"
           :error="errors.initialSerial"
+          v-model="initialSerial"
           placeholder="ITM-10245"
           :invalid="!!errors.initialSerial"
           class="mt-5"
@@ -65,30 +81,40 @@ const { errors, accessScope } = useItems();
       <FormInput
         :label="$t('items.reorderPoint')"
         :error="errors.reorderPoint"
+        v-model="reorderPoint"
+        type="number"
         :placeholder="$t('items.reorderPointPlaceholder')"
         :invalid="!!errors.reorderPoint"
       />
       <FormInput
         :label="$t('items.reorderQuantity')"
         :error="errors.reorderQuantity"
+        v-model="reorderQuantity"
+        type="number"
         :placeholder="$t('items.reorderQuantityPlaceholder')"
         :invalid="!!errors.reorderQuantity"
       />
       <FormInput
         :label="$t('items.maximumStockLevel')"
         :error="errors.maximumStockLevel"
+        v-model="maximumStockLevel"
+        type="number"
         :placeholder="$t('items.maximumStockLevelPlaceholder')"
         :invalid="!!errors.maximumStockLevel"
       />
       <FormInput
         :label="$t('items.leadTimeDays')"
         :error="errors.leadTimeDays"
+        v-model="leadTimeDays"
+        type="number"
         :placeholder="$t('items.leadTimeDaysPlaceholder')"
         :invalid="!!errors.leadTimeDays"
       />
       <FormInput
         :label="$t('items.shelfLifeDays')"
         :error="errors.shelfLifeDays"
+        v-model="shelfLifeDays"
+        type="number"
         :placeholder="$t('items.shelfLifeDaysPlaceholder')"
         :invalid="!!errors.shelfLifeDays"
       />
