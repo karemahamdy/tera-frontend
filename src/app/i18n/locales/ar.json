@@ -755,12 +755,15 @@
     "itemTransferMerge": "نقل/دمج الصنف",
     "itemTransferMergeDescription": "نقل أو دمج من صنف إلى آخر مع الحفاظ على سجل التتبع",
     "newTransaction": "معاملة جديدة",
-    "itemTransactionsSearchPlaceholder": "ابحث عن المعاملات حسب النوع أو التاريخ أو المرجع...",
+    "itemTransactionsSearchPlaceholder": "ابحث عن المعاملات...",
     "sourceItem": "الصنف المصدر",
     "warehouse": "المستودع",
     "targetItem": "الصنف المستهدف",
     "transactions": "المعاملات",
     "type": "النوع",
-    "transferDate": "تاريخ النقل"
+    "transferDate": "تاريخ النقل",
+    "allTypes": "كل الانواع",
+    "transfer": "نقل",
+    "merge": "دمج"
   }
 }

@@ -54,9 +54,9 @@ const filtersOperation = computed(() => {
             value: null,
             field: "type",
             options: [
-                  { label: t("operation.allTypes"), value: null },
-                { label: t("button.Pending"), value: "IsActive" },
-                { label: t("button.Posted"), value: "InActive" },
+                { label: t("operation.allTypes"), value: null },
+                { label: t("operation.transfer"), value: "transfer" },
+                { label: t("operation.merge"), value: "merge" },
             ],
         }
     ]

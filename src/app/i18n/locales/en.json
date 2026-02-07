@@ -761,12 +761,15 @@
     "itemTransferMerge": "Item Transfer/Merge",
     "itemTransferMergeDescription": "Transfer or merge from one item to another while maintaining traceability records",
     "newTransaction": "New Transaction",
-    "itemTransactionsSearchPlaceholder": "Search transactions by type, date, or reference...",
+    "itemTransactionsSearchPlaceholder": "Search transactions...",
     "sourceItem": "Source Item",
     "warehouse": "Warehouse",
     "targetItem": "Target Item",
     "transactions": "Transactions",
     "type": "Type",
-    "transferDate": "Transfer Date"
+    "transferDate": "Transfer Date",
+    "allTypes": "All Types",
+    "transfer": "Transfer",
+    "merge": "Merge"
   }
 }
