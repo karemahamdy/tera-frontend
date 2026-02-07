@@ -12,7 +12,7 @@ export const warehousesService = {
 
   async getById(id: string): Promise<AddWarehouses> {
     const data = await axiosWrapper.get<any>(`/Warehouses/${id}`);
-    return data.data;
+    return data.data || data;
   },
 
   async create(payload: AddWarehouses) {
@@ -29,9 +29,7 @@ export const warehousesService = {
   },
 
   async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(`/Warehouses/${id}/status `, {
-      isActive,
-    });
+    const data = await axiosWrapper.put<any>(`/Warehouses/${id}/status?isActive=${isActive}`)
     return data.data;
   },
   async exportData(payload: any) {

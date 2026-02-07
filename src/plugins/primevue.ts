@@ -38,7 +38,7 @@ import TabPanel from 'primevue/tabpanel';
 import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
-
+import Calendar from 'primevue/calendar';
 export function setupPrimeVue(app: App) {
   app.use(PrimeVue, {
     theme: {
@@ -88,4 +88,5 @@ app.component('TabList', TabList);
 app.component('Tab', Tab);
 app.component('TabPanels', TabPanels);
 app.component('TabPanel', TabPanel);
+app.component('Calendar', Calendar);
 }
