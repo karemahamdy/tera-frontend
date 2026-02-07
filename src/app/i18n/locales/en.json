@@ -770,6 +770,22 @@
     "transferDate": "Transfer Date",
     "allTypes": "All Types",
     "transfer": "Transfer",
-    "merge": "Merge"
+    "merge": "Merge",
+    "itemHold": "Item Hold",
+    "itemHoldRelease": "Item Hold / Release",
+    "itemHoldReleaseDescription": "Manage inventory holds for quality checks, reservations, and damage",
+    "itemHoldSearchPlaceholder": "Search holds...",
+    "createHold": "Create Hold",
+    "reservation": "Reservation",
+    "qcHold": "QC Hold",
+    "code": "Code",
+    "itemName": "Item Name",
+    "zone": "Zone",
+    "quantity": "Quantity",
+    "reason": "Reason",
+    "date": "Date",
+    "serial": "Serial",
+    "action": "Action",
+    "release": "Release"
   }
 }

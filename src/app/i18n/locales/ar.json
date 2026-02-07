@@ -764,6 +764,22 @@
     "transferDate": "تاريخ النقل",
     "allTypes": "كل الانواع",
     "transfer": "نقل",
-    "merge": "دمج"
+    "merge": "دمج",
+    "itemHold": "حجز الصنف",
+    "itemHoldRelease": "حجز / تحرير الصنف",
+    "itemHoldReleaseDescription": "إدارة حجوزات المخزون للفحوصات الجودة والحجوزات والأضرار",
+    "itemHoldSearchPlaceholder": "ابحث عن الحجوزات...",
+    "createHold": "إنشاء حجز",
+    "reservation": "حجز",
+    "qcHold": "QC Hold",
+    "code": "الكود",
+    "itemName": "اسم الصنف",
+    "zone": "المنطقة",
+    "quantity": "الكمية",
+    "reason": "السبب",
+    "date": "التاريخ",
+    "serial": "الرقم التسلسلي",
+    "action": "الإجراء",
+    "release": "تحرير"
   }
 }
