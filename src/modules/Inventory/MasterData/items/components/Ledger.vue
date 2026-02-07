@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import { useItems } from "../composables/useItems";
-const { errors } = useItems();
+const { errors, ledgerDetailCardID, costCenterID } = useItems();
+import { onMounted } from "vue";
+import { useLookups } from "@/composables/useLookups";
+const {
+  ledgerDetailCardLookups,
+  getLedgerDetailCardLookups,
+  costcenterLookups,
+  getCostcenterLookups,
+} = useLookups();
+
+onMounted(() => {
+  Promise.all([(getLedgerDetailCardLookups(), getCostcenterLookups())]);
+});
 </script>
 <template>
   <div>
@@ -12,16 +24,18 @@ const { errors } = useItems();
         <FormDropdown
           class="w-full"
           :label="$t('items.ledgerDetailCard')"
-          :options="[]"
-          :error="errors.branchID"
+          :options="ledgerDetailCardLookups"
+          v-model="ledgerDetailCardID"
+          :error="errors.ledgerDetailCardID"
           optionValue="value"
           :placeholder="$t('items.selectLedgerDetailCard')"
         />
         <FormDropdown
           class="w-full"
           :label="$t('items.costCenter')"
-          :options="[]"
-          :error="errors.branchID"
+          :options="costcenterLookups"
+          v-model="costCenterID"
+          :error="errors.costCenterID"
           optionValue="value"
           :placeholder="$t('items.selectDefaultCostCenter')"
         />
