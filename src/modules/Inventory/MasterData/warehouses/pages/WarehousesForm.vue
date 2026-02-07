@@ -8,7 +8,7 @@ import { warehousesSchema } from "../validation/warehousesSchema";
 import { useWarehouse } from "../composables/usewarehouse";
 import type { AddWarehouses } from "../types/warehouse";
 
-const { fetchWarehouseById, createWarehouse, updateWarehouse, loading } = useWarehouse();
+const { fetchWarehouseById, createWarehouse, updateWarehouse } = useWarehouse();
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
@@ -70,10 +70,6 @@ onMounted(async () => {
         try {
             const data = await fetchWarehouseById(warehouseId);
             if (!data) return;
-            
-            console.log("Fetched Warehouse Data:", data);
-
-            // Parse operationalHours
             let fromTime = null;
             let toTime = null;
             const opHours = data.operationalHours || (data as any).OperationalHours;
@@ -87,26 +83,17 @@ onMounted(async () => {
 
             setValues({
                 code: data.code || "",
-                nameEn: (data as any).name || "", // Map 'name' to nameEn
-                nameAr: (data as any).name || "", // Map 'name' to nameAr as fallback
+                nameEn: (data as any).name || "", 
+                nameAr: (data as any).name || "",
                 description: data.description || "",
                 address: data.address || "",
-                
-                // Handle potential object or ID for these fields based on common patterns
-                managerId: (data as any).manager?.id ?? data.managerId ?? (data as any).manager ?? null,
-                
+                managerId: (data as any).manager?.id ?? data.managerId ?? (data as any).manager ?? null, 
                 type: data.type || "Normal",
-                
-                // Map transferLedger -> defaultLedgerCardId
-                defaultLedgerCardId: (data as any).transferLedger?.id ?? data.defaultLedgerCardId ?? (data as any).transferLedger ?? null,
-                
-                // Map transferAccount -> transferAccountId
-                transferAccountId: (data as any).transferAccount?.id ?? data.transferAccountId ?? (data as any).transferAccount ?? null,
-                
-                allowNegativeBalance: data.allowNegativeBalance ?? true,
-                isActive: data.isActive ?? true,
-                
-                // Transform Zones: locations -> locationRequest, locationCode -> code
+                defaultLedgerCardId: (data as any).transferLedger?.id ?? data.defaultLedgerCardId ?? (data as any).transferLedger ,
+                transferAccountId: (data as any).transferAccount?.id ?? data.transferAccountId ?? (data as any).transferAccount ,               
+                allowNegativeBalance: data.allowNegativeBalance,
+                isActive: data.isActive,
+            
                 zones: (data.zones || []).map((z: any) => {
                     return {
                         id: z.id,
@@ -115,7 +102,7 @@ onMounted(async () => {
                         rows: z.rows,
                         columns: z.columns,
                         racks: z.racks,
-                        isExpanded: false, // Start collapsed for better UX
+                        isExpanded: false, 
                         locationRequest: (z.locations || []).map((l: any) => ({
                             code: l.locationCode,
                             row: l.row,
@@ -123,8 +110,7 @@ onMounted(async () => {
                             rack: l.rack
                         }))
                     };
-                }),
-                
+                }),       
                 fromTime,
                 toTime
             });
