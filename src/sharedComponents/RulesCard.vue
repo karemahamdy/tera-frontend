@@ -31,7 +31,7 @@ const { t } = useI18n();
   <div class="rounded-xl border p-4 shadow-sm mt-2" :class="variantClass">
     <h3 class="font-semibold mb-2">{{ t(title) }}</h3>
 
-    <ul class="list-disc ps-5 space-y-1 text-sm">
+    <ul class="list-disc ps-5 space-y-2 text-sm mx-4">
       <li v-for="(item, i) in items" :key="i">{{ t(item) }}</li>
     </ul>
   </div>

@@ -57,6 +57,7 @@ const navItems: NavItem[] = [
           { label: "Purchase Waybill", route: "/purchase-waybill" },
           { label: "Sales Waybill", route: "/sales-waybill" },
           { label: "Sales Return", route: "/sales-return" },
+          { label: "Purchase Return", route: "/purchase-return" },
         ],
       },
     ],

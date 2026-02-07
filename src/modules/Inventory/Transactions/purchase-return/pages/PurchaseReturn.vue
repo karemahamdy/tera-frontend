@@ -4,7 +4,7 @@ import alertIcon from '@/assets/images/alert.png';
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSalesReturn } from "../composables/useSalesReturn";
+import { usePurchaseReturn } from "../composables/usePurchasReturn";
 import RulesCard from "@/sharedComponents/RulesCard.vue";
 
 
@@ -13,15 +13,15 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange } = useSalesReturn();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange } = usePurchaseReturn();
 
 const rules = [
-  "salesRules.stockAvailable",    
-  "salesRules.serialLot",         
-  "salesRules.multiUoM",          
-  "salesRules.shippingStock",    
-  "salesRules.carrierIntegration" ,
-  "salesRules.serialIntegration" 
+  "purchaseRules.stockAvailable",    
+  "purchaseRules.serialLot",         
+  "purchaseRules.multiUoM",          
+  "purchaseRules.shippingStock",    
+  "purchaseRules.carrierIntegration" ,
+  "purchaseRules.serialIntegration" 
 ];
 
 
@@ -36,7 +36,7 @@ const props = defineProps({
                 date: "Oct 11, 2025",
                 purchaseOrder: "PO-025",
                 totalValues: "$45,000",
-                status: "Posted"
+                status: "Completed"
             },
             {
                 WaybillId: "PW-2026-001",
@@ -64,39 +64,38 @@ onMounted(() => {
 });
 const filtersOperation = computed(() => {
     return [
+          {
+            placeholder: "purchaseReturn.allsupplier",
+            value: null,
+            field: "supplier",
+            options: [
+                { label: t("purchaseReturn.supplier"), value: null },
+                { label: t("button.Completed"), value: "IsActive" },
+                { label: t("button.Pending"), value: "InActive" },
+            ],
+        },
         {
             placeholder: "activeSessions.allStatus",
             value: null,
             field: "status",
             options: [
                 { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.Posted"), value: "IsActive" },
+                { label: t("button.Completed"), value: "IsActive" },
                 { label: t("button.Pending"), value: "InActive" },
             ],
         },
-         {
-            placeholder: "salesReturn.reason",
-            value: null,
-            field: "status",
-            options: [
-                { label: t("salesReturn.reason"), value: null },
-                { label: t("button.Posted"), value: "IsActive" },
-                { label: t("button.Pending"), value: "InActive" },
-            ],
-        }
     ]
 });
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'WaybillId', header: t('salesReturn.returnId'), sortable: true },
-        { field: 'invioceId', header: t('salesReturn.customer'), sortable: true },
-        { field: 'WaybillId', header: t('salesReturn.invoiceID'), sortable: true },
-        { field: 'WaybillId', header: t('salesReturn.originalWaybill'), sortable: true },
-        { field: 'supplier', header: t('salesReturn.items'), type: 'slot', sortable: true },
-        { field: 'date', header: t('salesReturn.date'), type: 'date', sortable: true },
-        { field: 'purchaseOrder', header: t('salesReturn.total'), sortable: true },
-        { field: 'reason', header: t('salesReturn.reason'), type: 'slot', sortable: true },
+        { field: 'WaybillId', header: t('purchaseReturn.returnId'), sortable: true },
+        { field: 'invioceId', header: t('purchaseReturn.supplier'), sortable: true },
+        { field: 'WaybillId', header: t('purchaseReturn.originalPW'), sortable: true },
+        { field: 'date', header: t('purchaseReturn.date'), type: 'date', sortable: true },
+        { field: 'supplier', header: t('purchaseReturn.items'), type: 'slot', sortable: true },
+        { field: 'purchaseOrder', header: t('purchaseReturn.total'), sortable: true },
+        { field: 'reason', header: t('purchaseReturn.reason'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -154,23 +153,23 @@ const addPurchaseWaybill = () => {
     router.push({ name: 'PurchaseWaybillCreate' });
 };
 const getStatusBadge = (status: any) => {
-    return status === "Posted" ? "status-active" : "status-inactive";
+    return status === "Completed" ? "status-active" : "status-inactive";
 }
 const getStatusText = (status: any) => {
-    return status === "Posted" ? "status-text-active" : "status-text-inactive";
+    return status === "Completed" ? "status-text-active" : "status-text-inactive";
 }
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory" subtitle="masterData" actionName="salesReturn.salesReturn" />
+        <ScreenHeader title="inventory" subtitle="masterData" actionName="purchaseReturn.purchaseReturn" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="salesReturn.salesReturn" subtitle="salesReturn.subtitle" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="salesReturn.addNew" :showFilter="true"
+                <PageHeader title="purchaseReturn.purchaseReturn" subtitle="purchaseReturn.subtitle" :showExport="false"
+                    :showImport="false" :mainBtn="true" mainBtnText="purchaseReturn.addNew" :showFilter="true"
                     :filters="filtersOperation" @filter-change="onFilterChange"
-                    searchPlaceholder="salesReturn.searchPlaceholder" @search="onSearch"
+                    searchPlaceholder="purchaseReturn.searchPlaceholder" @search="onSearch"
                     :onMainBtnClick="addPurchaseWaybill" />
             </template>
             <!-- DynamicTable component -->
@@ -191,11 +190,11 @@ const getStatusText = (status: any) => {
                 </DynamicTable>
             </template>
             <template #footer>
-                <RulesCard title="salesRules.ruleHeader" :items="rules" color="success" />
+                <RulesCard title="purchaseRules.ruleHeader" :items="rules" color="success" />
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('salesReturn.deleteConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('purchaseReturn.deleteConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },

@@ -698,7 +698,7 @@
     "deleteConfirm" : "Are you sure you want to delete this sales?"
   },
    "salesReturn": {
-    "salesReturn": "Sales SalesReturn",
+    "salesReturn": "Sales Return",
     "subtitle": "Process customer returns and inbound receipts from sales",
     "addNew": "New Sales Return",
     "searchPlaceholder": "Search returns...",
@@ -710,6 +710,22 @@
     "date": "Date",
     "items": "Items",
     "originalWaybill": "Original Waybill",
+    "deleteConfirm" : "Are you sure you want to delete this item?"
+  },
+   "purchaseReturn": {
+    "purchaseReturn": "Purchase Return ",
+    "subtitle": "Return defective or incorrect items to suppliers",
+    "addNew": "New Sales Return",
+    "searchPlaceholder": "Search returns...",
+    "returnId": "Return ID",
+    "invoiceID": "Invoice ID",
+    "supplier": "Supplier",
+    "allsupplier": "All Supplier",
+    "total": "Total",
+    "reason": "Reason",
+    "date": "Date",
+    "items": "Items",
+    "originalPW": "Original PW",
     "deleteConfirm" : "Are you sure you want to delete this item?"
   },
   "rules": {
@@ -728,5 +744,14 @@
     "shippingStock": "Based on inspection: Return to Stock, Scrap, or Return to Supplier",
     "carrierIntegration": "Process credit note if approved",
     "serialIntegration": "Serial/lot numbers tracked throughout return process"
+  },
+   "purchaseRules": {
+    "ruleHeader": "Purchase Return Process:",
+    "stockAvailable": "Link to original purchase waybill",
+    "serialLot": "Select items and quantities to return with reason codes",
+    "multiUoM": "Generate Return Authorization (RA) number",
+    "shippingStock": "Arrange pickup with supplier",
+    "carrierIntegration": "Upon shipment, reduce inventory and create debit note",
+    "serialIntegration": "Track credit from supplier for returned goods"
   }
 }
