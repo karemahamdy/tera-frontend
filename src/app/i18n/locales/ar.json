@@ -57,6 +57,7 @@
     "template": "قالب",
     "data": "البيانات",
     "terminate": "اغلاق",
+    "remove": "إزالة",
     "editItem": "تعديل الصنف",
     "hold": "تعليق",
     "normal": "عادي",
@@ -601,6 +602,7 @@
     "categoryPlaceholder": "اختر الفئة",
     "itemDetails": "تفاصيل الصنف",
     "itemType": "نوع الصنف",
+    "itemTypeID": "نوع الصنف",
     "itemTypePlaceholder": "اختر نوع الصنف",
     "manufacturer": "الصانع",
     "manufacturerPlaceholder": "اختر الصانع",
@@ -612,6 +614,7 @@
     "baseUOMPlaceholder": "اختر وحدة القياس الأساسية",
     "baseUnit": "الوحدة الأساسية",
     "rule": "القاعدة",
+    "rules": "القواعد",
     "convertedTo": "محول إلى",
     "convertedToPlaceholder": "اختر وحدة القياس المحولة",
     "quantity": "الكمية",
@@ -651,6 +654,9 @@
     "lastPurchasePrice": "آخر سعر شراء",
     "lastPurchasePricePlaceholder": "أدخل آخر سعر شراء",
     "lastMovingAverage": "متوسط الحركة الأخير",
-    "lastMovingAveragePlaceholder": "أدخل متوسط الحركة الأخير"
+    "lastMovingAveragePlaceholder": "أدخل متوسط الحركة الأخير",
+    "nameArPlaceholder": "أدخل الاسم بالعربية",
+    "itemUpdatedSuccessfully": "تم تحديث الصنف بنجاح",
+    "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح"
   }
 }

@@ -1,25 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted } from "vue";
 import { useItems } from "../composables/useItems";
-const { errors } = useItems();
+const { errors, baseUOM, rules, addNewRule, deleteRule, editRule } = useItems();
 
-const data = ref([
-  { id: 1, name: "Box", abbreviation: "BX", quantity: 0 },
-  { id: 2, name: "Packet", abbreviation: "PK", quantity: 0 },
-]);
+import { useLookups } from "@/composables/useLookups";
 
-const addNewRule = () => {
-  data.value.push({
-    id: data.value.length + 1,
-    name: "",
-    abbreviation: "",
-    quantity: 0,
-  });
+const { unitsLookups, getUnitsLookups } = useLookups();
+
+const getUnitNameById = (id: string | number) => {
+  if (!id) return '';
+  return unitsLookups.value?.find(unit => unit.value === id)?.label || '';
 };
 
-const deleteRule = (index: number) => {
-  data.value.splice(index, 1);
-};
+onMounted(() => {
+  getUnitsLookups();
+});
 </script>
 <template>
   <div>
@@ -28,8 +23,9 @@ const deleteRule = (index: number) => {
       <FormDropdown
         class="w-full"
         :label="$t('items.baseUOM')"
-        :options="[]"
-        :error="errors.branchID"
+        :options="unitsLookups"
+        v-model="baseUOM"
+        :error="errors.baseUOM"
         optionValue="value"
         :placeholder="$t('items.baseUOMPlaceholder')"
       />
@@ -39,8 +35,8 @@ const deleteRule = (index: number) => {
         <div
           class="w-full bg-gray-100 rounded-xl flex flex-col items-center gap-3"
           :class="{
-            'base-body': data.length > 0 && $i18n.locale !== 'ar',
-            'base-body-ar': data.length > 0 && $i18n.locale === 'ar',
+            'base-body': rules.length > 0 && $i18n.locale !== 'ar',
+            'base-body-ar': rules.length > 0 && $i18n.locale === 'ar',
           }"
         >
           <div class="w-full flex flex-col items-center gap-1 mt-5">
@@ -50,16 +46,18 @@ const deleteRule = (index: number) => {
               color="#5584FF"
               type="linear"
             />
-            <p class="text-2xl text-gray-700">1 Kilogram (KG)</p>
+            <p class="text-2xl text-gray-700">1 {{ getUnitNameById(baseUOM) }}</p>
           </div>
           <div class="bg-primary-300 p-2 w-full rounded-b-xl">
-            <p class="text-center text-sm text-white">{{ $t("items.baseUnit") }}</p>
+            <p class="text-center text-sm text-white">
+              {{ $t("items.baseUnit") }}
+            </p>
           </div>
         </div>
       </div>
       <div class="md:col-span-3 flex flex-col items-center gap-3 mt-5">
         <div
-          v-for="(item, index) in data"
+          v-for="(item, index) in rules"
           :key="'key-' + index"
           class="p-5 border bg-gray-100 border-gray-300 rounded-xl w-full"
           :class="{
@@ -76,15 +74,15 @@ const deleteRule = (index: number) => {
                 <FormDropdown
                   class="w-full"
                   :label="$t('items.convertedTo')"
-                  :options="[]"
-                  v-model="item.name"
+                  :options="unitsLookups"
+                  v-model="item.toUnitId"
                   optionValue="value"
                   :placeholder="$t('items.convertedToPlaceholder')"
                 />
                 <div class="flex gap-2 mt-2 items-center text-success-500">
                   <VsxIcon iconName="InfoCircle" :size="16" type="linear" />
                   <p class="text-sm">
-                    {{ $t("items.unitConvertedTo") }} {{ item.name }}
+                    {{ $t("items.unitConvertedTo") }} {{ getUnitNameById(item.toUnitId) }}
                   </p>
                 </div>
               </div>
@@ -92,20 +90,22 @@ const deleteRule = (index: number) => {
                 <FormInput
                   :label="$t('items.quantity')"
                   type="number"
-                  v-model="item.quantity"
-                  :error="errors.quantity"
+                  v-model="item.factor"
                   :placeholder="$t('items.quantityPlaceholder')"
-                  :invalid="!!errors.quantity"
                 />
                 <div class="flex gap-2 mt-2 items-center text-success-500">
                   <VsxIcon iconName="InfoCircle" :size="16" type="linear" />
-                  <p class="text-sm">1 {{ item.name }} {{ $t("items.equal") }} {{ item.quantity }} {{ item.name }}</p>
+                  <p class="text-sm">
+                    1 {{ getUnitNameById(baseUOM) }} {{ $t("items.equal") }}
+                    {{ item.factor }} {{ getUnitNameById(item.toUnitId) }}
+                  </p>
                 </div>
               </div>
               <div
                 class="md:col-span-1 p-5 flex flex-col justify-center items-center gap-3"
               >
                 <a
+                  @click="editRule(index)"
                   class="w-full cursor-pointer flex gap-1 justify-center items-center py-1 rounded-xl border border-warning-500 bg-warning-50 hover:bg-warning-100 text-warning-500"
                 >
                   <VsxIcon iconName="Edit2" :size="16" type="linear" />
@@ -127,7 +127,7 @@ const deleteRule = (index: number) => {
           class="p-3 cursor-pointer hover:bg-primary-100 border border-dashed bg-primary-50 border-primary-500 rounded-xl w-full text-primary-500 mt-3 gap-1 flex justify-center items-center"
         >
           <VsxIcon iconName="AddSquare" :size="24" type="linear" />
-            <p>{{ $t("items.addUOMRule") }}</p>
+          <p>{{ $t("items.addUOMRule") }}</p>
         </div>
       </div>
     </div>
