@@ -100,7 +100,4 @@ export const LookupsService = {
       `/Lookups/ItemClassificationLookups/Category`,
     );
   },
-  getLedgerDetailCardLookups(isActive: boolean = true) {
-    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/LedgerDetailCardLookups?isActive=${isActive}`);
-  },
 };

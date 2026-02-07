@@ -8,7 +8,7 @@ import { warehousesSchema } from "../validation/warehousesSchema";
 import { useWarehouse } from "../composables/usewarehouse";
 import type { AddWarehouses } from "../types/warehouse";
 
-const { fetchWarehouseById, createWarehouse, updateWarehouse, loading } = useWarehouse();
+const { fetchWarehouseById, createWarehouse, updateWarehouse } = useWarehouse();
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
