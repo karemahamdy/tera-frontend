@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useItems } from "../composables/useItems";
-const { errors, files } = useItems();
+const { files } = useItems();
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
