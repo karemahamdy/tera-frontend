@@ -115,11 +115,12 @@ onMounted(() => {
           <div class="w-full flex flex-wrap gap-1 justify-between items-center">
             <div
               class="w-[49%] flex items-center gap-3 p-3 rounded-xl border border-gray-300"
+              @click="branchID = ''"
             >
               <RadioButton
                 inputId="global"
                 name="access"
-                value="global"
+                value="Global"
                 v-model="accessScope"
               />
               <label class="font-medium cursor-pointer" for="global">
@@ -132,7 +133,7 @@ onMounted(() => {
               <RadioButton
                 inputId="branch"
                 name="access"
-                value="branch"
+                value="BranchLimited"
                 v-model="accessScope"
               />
               <label class="font-medium cursor-pointer" for="branch">
@@ -142,6 +143,7 @@ onMounted(() => {
           </div>
         </div>
         <FormDropdown
+          v-if="accessScope === 'BranchLimited'"
           class="w-full md:col-span-2"
           :label="$t('items.assignedBranch')"
           :options="userAssignedBranchesLookups"
