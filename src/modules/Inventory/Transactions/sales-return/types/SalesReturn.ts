@@ -1,4 +1,4 @@
-export interface SalesWaybill {
+export interface SalesReturn {
   id: string;
   code: string;
   name: string;
@@ -6,9 +6,9 @@ export interface SalesWaybill {
   createAt: string;
 }
 
-export interface SalesWaybillResponse {
+export interface SalesReturnResponse {
   data: {
-    items: SalesWaybill[];
+    items: SalesReturn[];
     PageIndex: number;
     pageSize: number;
     totalCount: number;

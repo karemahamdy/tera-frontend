@@ -4,7 +4,7 @@ import alertIcon from '@/assets/images/alert.png';
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useSalesWaybill } from "../composables/useSales";
+import { useSalesReturn } from "../composables/useSalesReturn";
 import RulesCard from "@/sharedComponents/RulesCard.vue";
 
 
@@ -13,7 +13,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesWaybill, onFilterChange } = useSalesWaybill();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange } = useSalesReturn();
 
 const rules = [
   "salesRules.stockAvailable",    
@@ -79,7 +79,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-                { label: t("usersManagement.reason"), value: null },
+                { label: t("salesReturn.reason"), value: null },
                 { label: t("button.Posted"), value: "IsActive" },
                 { label: t("button.Pending"), value: "InActive" },
             ],
@@ -143,7 +143,7 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    await deleteSalesWaybill(rowToDelete.value.id).finally(() => {
+    await deleteSalesReturn(rowToDelete.value.id).finally(() => {
         isDeleting.value = false;
         showDeleteDialog.value = false;
         rowToDelete.value = null;
