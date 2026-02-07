@@ -58,7 +58,8 @@
     "professional": "Professional",
     "all": "All",
     "Pending": "Pending",
-    "Posted": "Posted"
+    "Posted": "Posted",
+    "Shipped": "Shipped"
   },
   "table": {
     "description": "Description",
@@ -684,19 +685,88 @@
     "totalValues": "Total Values",
     "deleteConfirm" : "Are you sure you want to delete this Purchase?"
   },
+    "salesWaybill": {
+    "salesWaybill": "Sales Waybill",
+    "subtitle": "Manage outbound sales shipments and customer deliveries",
+    "addNew": "New Sales Waybill",
+    "searchPlaceholder": "Search by ID, customer...",
+    "WaybillId": "Waybill ID",
+    "customer": "Customer",
+    "total": "Total",
+    "date": "Date",
+    "items": "Items",
+    "tracking": "Tracking",
+    "deleteConfirm" : "Are you sure you want to delete this sales?"
+  },
+   "salesReturn": {
+    "salesReturn": "Sales Return",
+    "subtitle": "Process customer returns and inbound receipts from sales",
+    "addNew": "New Sales Return",
+    "searchPlaceholder": "Search returns...",
+    "returnId": "Return ID",
+    "invoiceID": "Invoice ID",
+    "customer": "Customer",
+    "total": "Total",
+    "reason": "Reason",
+    "date": "Date",
+    "items": "Items",
+    "originalWaybill": "Original Waybill",
+    "deleteConfirm" : "Are you sure you want to delete this item?"
+  },
+   "purchaseReturn": {
+    "purchaseReturn": "Purchase Return ",
+    "subtitle": "Return defective or incorrect items to suppliers",
+    "addNew": "New Sales Return",
+    "searchPlaceholder": "Search returns...",
+    "returnId": "Return ID",
+    "invoiceID": "Invoice ID",
+    "supplier": "Supplier",
+    "allsupplier": "All Supplier",
+    "total": "Total",
+    "reason": "Reason",
+    "date": "Date",
+    "items": "Items",
+    "originalPW": "Original PW",
+    "deleteConfirm" : "Are you sure you want to delete this item?"
+  },
+  "rules": {
+    "ruleHeader": "Sales Waybill Business Rules:",
+    "stockAvailable": "Items must have available stock (not on hold or reserved)",
+    "serialLot": "Serial/Lot tracked items require specific selection from available inventory",
+    "multiUoM": "Multi-UoM pricing automatically applies based on selected unit",
+    "shippingStock": "Shipping reduces available stock immediately upon posting",
+    "carrierIntegration": "Integration with carrier tracking systems for shipment updates"
+  },
+   "salesRules": {
+    "ruleHeader": "Sales Return Workflow:",
+    "stockAvailable": "Create return linked to original sales waybill",
+    "serialLot": "Specify return reason and expected return date",
+    "multiUoM": "Upon receipt, perform quality inspection",
+    "shippingStock": "Based on inspection: Return to Stock, Scrap, or Return to Supplier",
+    "carrierIntegration": "Process credit note if approved",
+    "serialIntegration": "Serial/lot numbers tracked throughout return process"
+  },
+   "purchaseRules": {
+    "ruleHeader": "Purchase Return Process:",
+    "stockAvailable": "Link to original purchase waybill",
+    "serialLot": "Select items and quantities to return with reason codes",
+    "multiUoM": "Generate Return Authorization (RA) number",
+    "shippingStock": "Arrange pickup with supplier",
+    "carrierIntegration": "Upon shipment, reduce inventory and create debit note",
+    "serialIntegration": "Track credit from supplier for returned goods"
+  },
   "operation": {
-    "title": "Operation",
+    "title": "Operations",
     "itemTransactions": "Item Transactions",
     "itemTransferMerge": "Item Transfer/Merge",
-    "itemTransferMergeDescription": "Transfer Or merge from one item to another while maintaining audit trail",
+    "itemTransferMergeDescription": "Transfer or merge from one item to another while maintaining traceability records",
     "newTransaction": "New Transaction",
     "itemTransactionsSearchPlaceholder": "Search transactions by type, date, or reference...",
     "sourceItem": "Source Item",
-    "targetItem": "Target Item",
     "warehouse": "Warehouse",
+    "targetItem": "Target Item",
     "transactions": "Transactions",
     "type": "Type",
-    "transferDate": "Transfer Date",
-    "allTypes": "All Types"
+    "transferDate": "Transfer Date"
   }
 }
