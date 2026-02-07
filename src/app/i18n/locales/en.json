@@ -697,6 +697,21 @@
     "tracking": "Tracking",
     "deleteConfirm" : "Are you sure you want to delete this sales?"
   },
+   "salesReturn": {
+    "salesReturn": "Sales SalesReturn",
+    "subtitle": "Process customer returns and inbound receipts from sales",
+    "addNew": "New Sales Return",
+    "searchPlaceholder": "Search returns...",
+    "returnId": "Return ID",
+    "invoiceID": "Invoice ID",
+    "customer": "Customer",
+    "total": "Total",
+    "reason": "Reason",
+    "date": "Date",
+    "items": "Items",
+    "originalWaybill": "Original Waybill",
+    "deleteConfirm" : "Are you sure you want to delete this item?"
+  },
   "rules": {
     "ruleHeader": "Sales Waybill Business Rules:",
     "stockAvailable": "Items must have available stock (not on hold or reserved)",
@@ -704,5 +719,14 @@
     "multiUoM": "Multi-UoM pricing automatically applies based on selected unit",
     "shippingStock": "Shipping reduces available stock immediately upon posting",
     "carrierIntegration": "Integration with carrier tracking systems for shipment updates"
+  },
+   "salesRules": {
+    "ruleHeader": "Sales Return Workflow:",
+    "stockAvailable": "Create return linked to original sales waybill",
+    "serialLot": "Specify return reason and expected return date",
+    "multiUoM": "Upon receipt, perform quality inspection",
+    "shippingStock": "Based on inspection: Return to Stock, Scrap, or Return to Supplier",
+    "carrierIntegration": "Process credit note if approved",
+    "serialIntegration": "Serial/lot numbers tracked throughout return process"
   }
 }

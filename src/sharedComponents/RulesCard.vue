@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
-type ColorVariant = "warning" | "success" | "info" | "danger" | "neutral";
+type ColorVariant = "warning" | "success" | "primary" | "danger" | "neutral";
 
 interface Props {
   title: string;
@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
 const variants: Record<ColorVariant, string> = {
   warning: "bg-warning-50 border-warning-300 text-gray-700",
   success: "bg-success-50 border-success-300 text-gray-700",
-  info: "bg-primary-50 border-primary-300 text-gray-700",
+  primary: "bg-primary-50 border-primary-300 text-gray-700",
   danger: "bg-danger-50 border-danger-300 text-gray-700",
   neutral: "bg-gray-50 border-gray-300 text-gray-700",
 };
