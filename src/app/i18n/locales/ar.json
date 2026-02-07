@@ -348,7 +348,8 @@
     "deleteWarehousesConfirm": "هل أنت متأكد أنك تريد حذف هذا المستودع؟",
     "warehouseStatus": "حالة المستودع",
     "transferAccount": "حساب التحويل",
-    "operationHours": "ساعات التشغيل",
+    "operationHoursTo": "ساعات العمل إلى",  
+    "operationHoursFrom": "ساعات العمل من",
     "warehouseType": "نوع المستودع",
     "manager": "مدير المستودع",
     "LDC": "بطاقة تفاصيل الأستاذ الافتراضية",
@@ -379,7 +380,13 @@
     "zoneDeletedSuccessfully": "تم حذف النطاق بنجاح",
     "warehouseCreatedSuccessfully": "تم إنشاء المستودع بنجاح",
     "warehouseUpdatedSuccessfully": "تم تحديث المستودع بنجاح",
-    "warehouseDeletedSuccessfully": "تم حذف المستودع بنجاح"
+    "warehouseDeletedSuccessfully": "تم حذف المستودع بنجاح",
+    "warehouseImportedSuccessfully": "تم استيراد المستودع بنجاح",
+   "allowNegativeBalanceNote": "عند التفعيل سيسمح النظام بالبيع أو التحويل حتى لو كان المخزون صفر أو أقل",
+"allowNegativeStockBalance": "السماح برصيد مخزون سلبي",
+"ProfessionalWarehouse": "المستودع الاحترافي",
+"ProfessionalNote":
+ "يمكنك تكوين المناطق والصفوف والأعمدة والرفوف في علامة التبويب \"المناطق والمواقع\" بعد إدخال المعلومات الأساسية."
   },
   "itemGroup": {
     "title": "مجموعة العناصر",

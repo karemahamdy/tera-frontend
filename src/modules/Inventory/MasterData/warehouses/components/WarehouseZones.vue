@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useForm } from "vee-validate";
-import type { Zone, Location } from "../types/warehouse";
+import type { Zone, LocationRequest } from "../types/warehouse";
 
 const props = defineProps<{
   modelValue?: Zone[];
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -36,14 +37,15 @@ const isFormValid = computed(() => {
     Number(racks.value) > 0
   );
 });
+
 const generateLocations = (
   zoneCode: string,
   rows: number,
   cols: number,
   racks: number
-): Location[] => {
+): LocationRequest[] => {
   const total = rows * cols * racks;
-  const locations: Location[] = new Array(total);
+  const locations: LocationRequest[] = new Array(total);
 
   for (let i = 0; i < total; i++) {
     const r = Math.floor(i / (cols * racks)) + 1;            
@@ -73,7 +75,7 @@ const addZone = () => {
   const cols_num = Number(columns.value);
   const racks_num = Number(racks.value);
 
-  const locations = generateLocations(code.value, rows_num, cols_num, racks_num);
+  const locationRequest = generateLocations(code.value, rows_num, cols_num, racks_num);
 
   const zone: Zone = {
     id: self.crypto.randomUUID(),
@@ -82,7 +84,7 @@ const addZone = () => {
     rows: rows_num,
     columns: cols_num,
     racks: racks_num,
-    locations,
+    locationRequest,
     isExpanded: true
   };
 
@@ -101,8 +103,24 @@ const deleteZone = (id: string) => {
   emit("update:modelValue", updatedZones);
 };
 
-const toggleExpand = (zone: Zone) => {
-  zone.isExpanded = !zone.isExpanded;
+const editZone = (zone: Zone) => {
+  code.value = zone.code;
+  name.value = zone.name;
+  rows.value = String(zone.rows);
+  columns.value = String(zone.columns);
+  racks.value = String(zone.racks);
+  
+  deleteZone(zone.id!);
+};
+
+const toggleExpand = (zoneToToggle: Zone) => {
+  const updatedZones = (props.modelValue || []).map(z => {
+    if (z.id === zoneToToggle.id) {
+      return { ...z, isExpanded: !z.isExpanded };
+    }
+    return z;
+  });
+  emit("update:modelValue", updatedZones);
 };
 </script>
 
@@ -116,15 +134,18 @@ const toggleExpand = (zone: Zone) => {
           <p class="text-sm text-gray-500">{{ $t('warehouses.configureZones') }}</p>
         </div>
         <BaseButton 
+          v-if="!disabled"
           :label="$t('button.addNew')" 
           icon="pi pi-plus" 
           size="small" 
+          type="button"
           @click="addZone"
           :disabled="!isFormValid"
         />
       </div>
 
-      <form class="space-y-6">
+     <div v-if="!disabled" class="space-y-6">
+
         <div class="grid grid-cols-1 gap-4">
           <FormInput 
             :label="$t('warehouses.zoneCode')" 
@@ -186,7 +207,7 @@ const toggleExpand = (zone: Zone) => {
             </span>
           </div>
         </div>
-      </form>
+      </div>
     </div>
 
     <div v-if="props.modelValue && props.modelValue.length > 0" class="px-16">
@@ -201,14 +222,14 @@ const toggleExpand = (zone: Zone) => {
               <span class="font-bold mb-2 text-lg text-gray-900">{{ zone.name }}</span>
               <Tag severity="success" class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">{{ zone.code }}</Tag>
             </div>
-            <div class="flex items-center gap-2">
-              <button class="text-primary-600 hover:text-primary-800" title="Edit">
+    <div class="flex items-center gap-2">
+              <button v-if="!disabled" type="button" @click="editZone(zone)" class="text-primary-600 hover:text-primary-800" title="Edit">
               <VsxIcon iconName="Edit" :size="20" color="#F79009" type="linear" />
               </button>
-             <button @click="deleteZone(zone.id)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
+             <button v-if="!disabled" type="button" @click="deleteZone(zone.id!)" class="text-red-600 hover:text-red-800" :title="$t('button.delete')">
              <VsxIcon iconName="Trash" :size="20" color="#F04438" type="linear" />
               </button>
-             <button @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
+             <button type="button" @click="toggleExpand(zone)" class="text-gray-500 hover:text-gray-700">
                   <VsxIcon v-if="zone.isExpanded" iconName="ArrowSquareUp" :size="20" color="#3F5FAC" type="linear" />
                   <VsxIcon v-else="zone.isExpanded" iconName="ArrowSquareDown" :size="20" color="#3F5FAC" type="linear" />
               </button>
@@ -231,7 +252,7 @@ const toggleExpand = (zone: Zone) => {
              </div>
               <div>
                 <div class="text-xs text-gray-500">{{ $t('warehouses.totalLocations') }}</div>
-                 <div class="font-medium text-primary-600">{{ zone.locations.length }}</div>
+                 <div class="font-medium text-primary-600">{{ zone.locationRequest.length }}</div>
              </div>
             </div>
       
@@ -248,7 +269,7 @@ const toggleExpand = (zone: Zone) => {
                      </tr>
                   </thead>
                   <tbody class="">
-                     <tr v-for="loc in zone.locations" :key="loc.code" class="hover:bg-blue-50/50">
+                     <tr v-for="loc in zone.locationRequest" :key="loc.code" class="hover:bg-blue-50/50">
                         <td class="p-4 text-primary-600 font-medium">{{ loc.code }}</td>
                         <td class="p-4">{{ loc.row }}</td>
                         <td class="p-4">{{ loc.column }}</td>

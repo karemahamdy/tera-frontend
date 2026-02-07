@@ -6,8 +6,15 @@ export const itemSchema = yup.object({
   nameAr: yup.string().nullable(),
   codeHS: yup.string().nullable(),
   description: yup.string().nullable(),
-  accessScope: yup.string().nullable(),
-  branchID: yup.string().nullable(),
+  accessScope: yup.string().required("form.fieldRequired"),
+  branchID: yup
+    .string()
+    .nullable()
+    .when("accessScope", {
+      is: "BranchLimited",
+      then: (schema) => schema.required("form.fieldRequired"),
+      otherwise: (schema) => schema.nullable(),
+    }),
   productionCode: yup.string().nullable(),
   productionName: yup.string().nullable(),
   warehouseID: yup.string().nullable(),
@@ -20,7 +27,7 @@ export const itemSchema = yup.object({
   manufacturerID: yup.string().nullable(),
   manufacturerPartNumber: yup.string().nullable(),
   barcodeSKU: yup.string().nullable(),
-  baseUOM: yup.string().required("form.fieldRequired"), // uom fields
+  baseUOM: yup.string().required("form.fieldRequired"),
   rules: yup
     .array()
     .of(
@@ -30,7 +37,7 @@ export const itemSchema = yup.object({
       }),
     )
     .min(1, "form.fieldRequired"),
-  tracking: yup.string().nullable(), // tracking fields
+  tracking: yup.string().nullable(),
   autoGenerate: yup.boolean().nullable(),
   initialSerial: yup.string().nullable(),
   reorderPoint: yup.number().nullable(),
@@ -38,13 +45,13 @@ export const itemSchema = yup.object({
   maximumStockLevel: yup.number().nullable(),
   leadTimeDays: yup.number().nullable(),
   shelfLifeDays: yup.number().nullable(),
-  defaultCurrencyID: yup.string().nullable(), // pricing fields
+  defaultCurrencyID: yup.string().nullable(),
   taxesID: yup.string().nullable(),
   multipleCurrency: yup.boolean().nullable(),
   standardCost: yup.number().nullable(),
   salesPrice: yup.number().nullable(),
   lastPurchasePrice: yup.number().nullable(),
   lastMovingAverage: yup.number().nullable(),
-  ledgerDetailCardID: yup.string().nullable(), // ledger fields
+  ledgerDetailCardID: yup.string().nullable(),
   costCenterID: yup.string().nullable(),
 });

@@ -27,16 +27,7 @@ export interface warehousesResponse {
   id: string | null;
 }
 
-export interface AddWarehouses {
-  code: string;
-  nameAr: string;
-  nameEn: string;
-  addressEn?: string;
-  addressAr?: string;
-  isActive?: boolean;
-}
-
-export interface Location {
+export interface LocationRequest {
   code: string;
   row: string;
   column: string;
@@ -44,14 +35,37 @@ export interface Location {
 }
 
 export interface Zone {
-  id: string;
   code: string;
   name: string;
   rows: number;
   columns: number;
   racks: number;
-  locations: Location[];
+  locationRequest: LocationRequest[];
   isExpanded?: boolean;
+  id?: string; // Optional for UI tracking
+}
+
+export interface AddWarehouses {
+  code: string;
+  nameEn: string;
+  nameAr: string;
+  managerId: string | null;
+  type: string;
+  description: string | null;
+  address: string | null;
+
+  // Form-specific fields
+  fromTime?: Date | null;
+  toTime?: Date | null;
+
+  // Payload-specific fields
+  operationalHours?: string | null;
+
+  allowNegativeBalance: boolean;
+  defaultLedgerCardId: string | null;
+  transferAccountId: string | null;
+  isActive: boolean;
+  zones: Zone[];
 }
 
 export interface Pagination {

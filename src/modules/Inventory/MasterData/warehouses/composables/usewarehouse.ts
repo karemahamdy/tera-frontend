@@ -11,7 +11,7 @@ const apiWarehouse = ref<warehouses[]>([]);
 
 const pageIndex = ref(1);
 const pageSize = ref(10);
-const totalCount = ref(0);
+const totalCount = ref(1);
 const totalPages = ref(1);
 
 const searchTerm = ref('');
@@ -39,8 +39,8 @@ export function useWarehouse() {
       apiWarehouse.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
-      totalCount.value = payload.totalCount ?? 0;
-      totalPages.value = payload.totalPages ?? 1;
+      totalCount.value = payload.totalCount;
+      totalPages.value = payload.totalPages;
     } catch (err: any) {
       toastService.error(err);
     } finally {
@@ -65,7 +65,7 @@ export function useWarehouse() {
     loading.value = true;
     try {
       const response = await warehousesService.create(payload);
-      toastService.success(t("Warehouse.WarehouseCreatedSuccessfully"));
+      toastService.success(t("warehouses.warehouseCreatedSuccessfully"));
       await fetchWarehouse(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -80,7 +80,7 @@ export function useWarehouse() {
     loading.value = true;
     try {
       const response = await warehousesService.update(id, payload);
-      toastService.success(t("Warehouse.WarehouseUpdatedSuccessfully"));
+      toastService.success(t("warehouses.warehouseUpdatedSuccessfully"));
       await fetchWarehouse(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -95,7 +95,7 @@ export function useWarehouse() {
     loading.value = true;
     try {
       await warehousesService.delete(id);
-      toastService.success((t("Warehouse.WarehouseDeletedSuccessfully")));
+      toastService.success((t("warehouses.warehouseDeletedSuccessfully")));
       apiWarehouse.value = apiWarehouse.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);
@@ -109,7 +109,7 @@ export function useWarehouse() {
     loading.value = true;
     try {
       await warehousesService.toggleActive(id, isActive);
-      toastService.success(`Warehouse is now ${isActive ? 'Active' : 'in Active'}`);
+      toastService.success(t("warehouses.warehouseUpdatedSuccessfully"));
       await fetchWarehouse(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -126,9 +126,9 @@ export function useWarehouse() {
         {
           file: file,
         },
-        "WarehouseFile"
+        "File"
       );
-      toastService.success(t("Warehouse.WarehouseImportedSuccessfully"));
+      toastService.success(t("warehouses.warehouseImportedSuccessfully"));
       fetchWarehouse(1);
     } catch (error) {
       toastService.error(error as string);
