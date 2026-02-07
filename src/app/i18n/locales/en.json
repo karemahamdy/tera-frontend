@@ -56,7 +56,9 @@
     "hold": "Hold",
     "normal": "Normal",
     "professional": "Professional",
-    "all": "All"
+    "all": "All",
+    "Pending": "Pending",
+    "Posted": "Posted"
   },
   "table": {
     "description": "Description",
@@ -408,7 +410,7 @@
     "editItemsGroup": "Edit Group info",
     "editGroupInfo": "Review and update group information",
     "addGroupInfo": "Define a new group to classify items",
-    "descriptionPlaceholder": "Describe the purpose of this group..", 
+    "descriptionPlaceholder": "Describe the purpose of this group..",
     "deletedSuccessfully": "Item Group deleted successfully",
     "createdSuccessfully": "Item Group created successfully",
     "updatedSuccessfully": "Item Group updated successfully",
@@ -460,9 +462,9 @@
     "zone": "Zone",
     "lastTransaction": "Last Transaction",
     "TotalItems": "Total Items",
-      "ActiveItems": "Active Items",
-      "OutOfStock": "Out of Stock",
-      "MinimumStock": "Minimum Stock",
+    "ActiveItems": "Active Items",
+    "OutOfStock": "Out of Stock",
+    "MinimumStock": "Minimum Stock",
     "cards": {
       "totalOnHand": "Total On Hand",
       "allWarehouses": "All Warehouses",
@@ -553,7 +555,7 @@
     "cogs": "Cost of Goods Sold (COGS)",
     "inventoryAdjustment": "Inventory Adjustment",
     "select": "Select",
-    "LDCCreatedSuccessfully": "LDC created successfully",  
+    "LDCCreatedSuccessfully": "LDC created successfully",
     "LDCUpdatedSuccessfully": "LDC updated successfully",
     "LDCDeletedSuccessfully": "LDC deleted successfully"
   },
@@ -583,7 +585,7 @@
     "costCenter": "Cost Center",
     "basicInformation": "Basic Information",
     "code": "Item Code",
-    "codePlaceholder":"Enter Item Code",
+    "codePlaceholder": "Enter Item Code",
     "name": "Item Name 1",
     "namePlaceholder": "Enter Item Name",
     "nameAr": "Item Name (AR)",
@@ -667,5 +669,18 @@
     "nameArPlaceholder": "أدخل الاسم بالعربية",
     "itemUpdatedSuccessfully": "Item updated successfully",
     "itemCreatedSuccessfully": "Item created successfully"
+  },
+  "purchaseWaybill": {
+    "purchaseWaybill": "Purchase Waybill",
+    "subtitle": "Manage inbound purchase receipts",
+    "addNew": "New Purchase",
+    "searchPlaceholder": "Search by ID, supplier, PO...",
+    "WaybillId": "Waybill ID",
+    "invioceId": "Invoice ID",
+    "supplier": "Supplier",
+    "date": "Date",
+    "purchaseOrder": "Purchase Order",
+    "totalValues": "Total Values",
+    "deleteConfirm" : "Are you sure you want to delete this Purchase?"
   }
 }
