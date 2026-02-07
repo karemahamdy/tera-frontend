@@ -62,7 +62,9 @@
     "hold": "تعليق",
     "normal": "عادي",
     "professional": "محترف",
-    "all": "الكل"
+    "all": "الكل",
+    "Posted": "ترحيل",
+    "Pending": "معلق"
   },
   "table": {
     "description": "الوصف",
@@ -665,5 +667,19 @@
     "nameArPlaceholder": "أدخل الاسم بالعربية",
     "itemUpdatedSuccessfully": "تم تحديث الصنف بنجاح",
     "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح"
-  }
+  },
+ "purchaseWaybill": {
+  "purchaseWaybill": "إذن استلام مشتريات",
+  "subtitle": "إدارة استلامات المشتريات الواردة",
+  "addNew": "إضافة عملية شراء جديدة",
+  "searchPlaceholder": "ابحث برقم الإذن أو المورد أو أمر الشراء...",
+  "WaybillId": "رقم الإذن",
+  "invioceId": "رقم الفاتورة",
+  "supplier": "المورد",
+  "date": "التاريخ",
+  "purchaseOrder": "أمر الشراء",
+  "totalValues": "إجمالي القيم",
+   "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الاذن "
+}
+
 }

@@ -67,7 +67,13 @@ const generateLocations = (
   return locations;
 };
 
-
+const generateId = (): string => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
 const addZone = () => {
   if (!isFormValid.value) return;
 
@@ -78,7 +84,7 @@ const addZone = () => {
   const locationRequest = generateLocations(code.value, rows_num, cols_num, racks_num);
 
   const zone: Zone = {
-    id: self.crypto.randomUUID(),
+    id: generateId(),
     code: code.value,
     name: name.value,
     rows: rows_num,
