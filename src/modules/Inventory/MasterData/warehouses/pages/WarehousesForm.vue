@@ -8,7 +8,7 @@ import { warehousesSchema } from "../validation/warehousesSchema";
 import { useWarehouse } from "../composables/usewarehouse";
 import type { AddWarehouses } from "../types/warehouse";
 
-const { fetchWarehouseById, createWarehouse, updateWarehouse } = useWarehouse();
+const { fetchWarehouseById, createWarehouse, updateWarehouse, loading } = useWarehouse();
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
@@ -34,7 +34,7 @@ const { handleSubmit, errors, values, setFieldValue, setValues } = useForm<AddWa
     type: "Normal",
     fromTime: null,
     toTime: null,
-    allowNegativeBalance: true,
+    allowNegativeBalance: false,
     defaultLedgerCardId: null,
     transferAccountId: null,
     isActive: true,
@@ -59,9 +59,11 @@ const formatTime = (date: Date | null | undefined) => {
 
 const parseTime = (timeStr: string) => {
   if (!timeStr) return null;
-  const [hours, minutes] = timeStr.split(':').map(Number);
+  const [hoursRaw, minutesRaw] = timeStr.split(':');
+  const hours = Number(hoursRaw);
+  const minutes = Number(minutesRaw);
   const date = new Date();
-  date.setHours(hours, minutes, 0, 0);
+  date.setHours(Number.isNaN(hours) ? 0 : hours, Number.isNaN(minutes) ? 0 : minutes, 0, 0);
   return date;
 };
 
@@ -70,6 +72,7 @@ onMounted(async () => {
         try {
             const data = await fetchWarehouseById(warehouseId);
             if (!data) return;
+      
             let fromTime = null;
             let toTime = null;
             const opHours = data.operationalHours || (data as any).OperationalHours;
@@ -83,17 +86,17 @@ onMounted(async () => {
 
             setValues({
                 code: data.code || "",
-                nameEn: (data as any).name || "", 
-                nameAr: (data as any).name || "",
+                nameEn: (data as any).namenameEn || "", 
+                nameAr: (data as any).namenameAr || "", 
                 description: data.description || "",
                 address: data.address || "",
-                managerId: (data as any).manager?.id ?? data.managerId ?? (data as any).manager ?? null, 
+                managerId: (data as any).manager?.id ?? data.managerId ?? (data as any).manager ?? null,  
                 type: data.type || "Normal",
-                defaultLedgerCardId: (data as any).transferLedger?.id ?? data.defaultLedgerCardId ?? (data as any).transferLedger ,
-                transferAccountId: (data as any).transferAccount?.id ?? data.transferAccountId ?? (data as any).transferAccount ,               
-                allowNegativeBalance: data.allowNegativeBalance,
-                isActive: data.isActive,
-            
+                defaultLedgerCardId: (data as any).transferLedger?.id ?? data.defaultLedgerCardId ?? (data as any).transferLedger ?? null,   
+                transferAccountId: (data as any).transferAccount?.id ?? data.transferAccountId ?? (data as any).transferAccount ?? null,        
+                allowNegativeBalance: data.allowNegativeBalance ?? true,
+                isActive: data.isActive ?? true,
+      
                 zones: (data.zones || []).map((z: any) => {
                     return {
                         id: z.id,
@@ -110,7 +113,8 @@ onMounted(async () => {
                             rack: l.rack
                         }))
                     };
-                }),       
+                }),
+                
                 fromTime,
                 toTime
             });
@@ -182,7 +186,6 @@ const onSubmit = handleSubmit(async (values) => {
                  />
                 </TabPanel>
                 <TabPanel v-if="values.type === 'Professional'" value="additional">
-                   <!-- Bind zones manually to setFieldValue -->
                   <WarehouseZones 
                     :modelValue="values.zones" 
                     :disabled="viewMode"

@@ -1,9 +1,9 @@
 import * as yup from "yup";
 
 export const warehousesSchema = yup.object({
-  code: yup.string().required("form.fieldRequired").min(3, "form.min_3"),
-  nameEn: yup.string().required("form.fieldRequired").min(3, "form.min_3"),
-  nameAr: yup.string().required("form.fieldRequired").min(3, "form.min_3"),
+  code: yup.string().nullable(),
+  nameEn: yup.string().nullable(),
+  nameAr: yup.string().nullable(),
   address: yup.string().nullable(),
   description: yup.string().nullable(),
 
