@@ -669,7 +669,8 @@
     "lastMovingAveragePlaceholder": "Enter Last Moving Average",
     "nameArPlaceholder": "أدخل الاسم بالعربية",
     "itemUpdatedSuccessfully": "Item updated successfully",
-    "itemCreatedSuccessfully": "Item created successfully"
+    "itemCreatedSuccessfully": "Item created successfully",
+    "branchID": "Assigned Branch"
   },
   "purchaseWaybill": {
     "purchaseWaybill": "Purchase Waybill",
@@ -753,5 +754,19 @@
     "shippingStock": "Arrange pickup with supplier",
     "carrierIntegration": "Upon shipment, reduce inventory and create debit note",
     "serialIntegration": "Track credit from supplier for returned goods"
+  },
+  "operation": {
+    "title": "Operations",
+    "itemTransactions": "Item Transactions",
+    "itemTransferMerge": "Item Transfer/Merge",
+    "itemTransferMergeDescription": "Transfer or merge from one item to another while maintaining traceability records",
+    "newTransaction": "New Transaction",
+    "itemTransactionsSearchPlaceholder": "Search transactions by type, date, or reference...",
+    "sourceItem": "Source Item",
+    "warehouse": "Warehouse",
+    "targetItem": "Target Item",
+    "transactions": "Transactions",
+    "type": "Type",
+    "transferDate": "Transfer Date"
   }
 }

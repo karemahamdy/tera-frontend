@@ -351,7 +351,7 @@
     "deleteWarehousesConfirm": "هل أنت متأكد أنك تريد حذف هذا المستودع؟",
     "warehouseStatus": "حالة المستودع",
     "transferAccount": "حساب التحويل",
-    "operationHoursTo": "ساعات العمل إلى",  
+    "operationHoursTo": "ساعات العمل إلى",
     "operationHoursFrom": "ساعات العمل من",
     "warehouseType": "نوع المستودع",
     "manager": "مدير المستودع",
@@ -385,20 +385,19 @@
     "warehouseUpdatedSuccessfully": "تم تحديث المستودع بنجاح",
     "warehouseDeletedSuccessfully": "تم حذف المستودع بنجاح",
     "warehouseImportedSuccessfully": "تم استيراد المستودع بنجاح",
-   "allowNegativeBalanceNote": "عند التفعيل سيسمح النظام بالبيع أو التحويل حتى لو كان المخزون صفر أو أقل",
-"allowNegativeStockBalance": "السماح برصيد مخزون سلبي",
-"ProfessionalWarehouse": "المستودع الاحترافي",
-"ProfessionalNote":
- "يمكنك تكوين المناطق والصفوف والأعمدة والرفوف في علامة التبويب \"المناطق والمواقع\" بعد إدخال المعلومات الأساسية."
+    "allowNegativeBalanceNote": "عند التفعيل سيسمح النظام بالبيع أو التحويل حتى لو كان المخزون صفر أو أقل",
+    "allowNegativeStockBalance": "السماح برصيد مخزون سلبي",
+    "ProfessionalWarehouse": "المستودع الاحترافي",
+    "ProfessionalNote": "يمكنك تكوين المناطق والصفوف والأعمدة والرفوف في علامة التبويب \"المناطق والمواقع\" بعد إدخال المعلومات الأساسية."
   },
   "itemGroup": {
     "title": "مجموعة العناصر",
     "subtitle": "قم بتنظيم العناصر في مجموعات هرمية",
     "additemGroup": "اضافة  ",
     "searchPlaceholder": "البحث عن الاسم او الرمز...",
-  "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ ",
-  "code":"الرمز",
-  "name": "الاسم",
+    "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة الاصناف؟ ",
+    "code": "الرمز",
+    "name": "الاسم",
     "itemsCount": "عدد الاصناف",
     "group1": "مجموعة 1",
     "group2": "مجموعة 2",
@@ -419,8 +418,7 @@
     "createdSuccessfully": "تم إنشاء مجموعة العناصر بنجاح",
     "updatedSuccessfully": "تم تحديث مجموعة العناصر بنجاح",
     "itemGroupImportedSuccessfully": "تم استيراد مجموعة العناصر بنجاح"
- 
- },
+  },
   "itemList": {
     "zone": "النطاق",
     "title": "قائمة الأصناف",
@@ -458,7 +456,7 @@
     "available": "المتاح",
     "onHold": "قيد الانتظار",
     "serialNumber": "الرقم التسلسلي",
-       "OutOfStock": "نفد من المخزون",
+    "OutOfStock": "نفد من المخزون",
     "MinimumStock": "الحد الأدنى للمخزون",
     "ActiveItems": "العناصر النشطة",
     "TotalItems": "إجمالي العناصر",
@@ -498,7 +496,6 @@
       "standardCost": "التكلفة القياسية",
       "totalValue": "القيمة الإجمالية",
       "itemAttachment": "مرفقات الصنف"
-      
     },
     "cards": {
       "totalOnHand": "إجمالي المتوفر",
@@ -632,7 +629,6 @@
     "addUOMRule": "إضافة تحويل جديد",
     "unitConvertedTo": "الوحدة المحولة إلى",
     "equal": "يساوي",
-
     "trackingMethod": "طريقة التتبع",
     "noTracking": "لا تتبع",
     "trackOnlyByQuantity": "تتبع فقط حسب الكمية",
@@ -667,90 +663,104 @@
     "lastMovingAveragePlaceholder": "أدخل متوسط الحركة الأخير",
     "nameArPlaceholder": "أدخل الاسم بالعربية",
     "itemUpdatedSuccessfully": "تم تحديث الصنف بنجاح",
-    "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح"
+    "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح",
+    "branchID": "الفرع المعين"
   },
- "purchaseWaybill": {
-  "purchaseWaybill": "إذن استلام مشتريات",
-  "subtitle": "إدارة استلامات المشتريات الواردة",
-  "addNew": "إضافة عملية شراء جديدة",
-  "searchPlaceholder": "ابحث برقم الإذن أو المورد أو أمر الشراء...",
-  "WaybillId": "رقم الإذن",
-  "invioceId": "رقم الفاتورة",
-  "supplier": "المورد",
-  "allsupplier": "كل الموردين",
-  "date": "التاريخ",
-  "purchaseOrder": "أمر الشراء",
-  "totalValues": "إجمالي القيم",
-   "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الاذن "
-},
-"salesWaybill": {
-  "salesWaybill": "إذن صرف مبيعات",
-  "subtitle": "إدارة شحنات المبيعات الصادرة وتسليمات العملاء",
-  "addNew": "إضافة إذن مبيعات جديد",
-  "searchPlaceholder": "ابحث برقم الإذن أو العميل...",
-  "WaybillId": "رقم الإذن",
-  "customer": "العميل",
-  "total": "الإجمالي",
-  "date": "التاريخ",
-  "items": "الأصناف",
-  "tracking": "التتبع",
-  "deleteConfirm": "هل أنت متأكد أنك تريد حذف عملية البيع هذه؟"
-},
-"salesReturn": {
-  "salesReturn": "مرتجع المبيعات",
-  "subtitle": "معالجة عوائد العملاء والإيصالات الواردة من المبيعات",
-  "addNew": "إضافة مرتجع جديد",
-  "searchPlaceholder": "ابحث عن المرتجعات...",
-  "returnId": "رقم المرتجع",
-  "invoiceID": "رقم الفاتورة",
-  "customer": "العميل",
-  "total": "الإجمالي",
-  "reason": "السبب",
-  "date": "التاريخ",
-  "items": "العناصر",
-  "originalWaybill": "إذن البيع الأصلي",
-  "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العنصر؟"
-},
-"purchaseReturn": {
-  "purchaseReturn": "مرتجع مشتريات",
-  "subtitle": "إرجاع الأصناف التالفة أو غير الصحيحة إلى الموردين",
-  "addNew": "مرتجع مشتريات جديد",
-  "searchPlaceholder": "ابحث في المرتجعات...",
-  "returnId": "رقم المرتجع",
-  "invoiceID": "رقم الفاتورة",
-  "supplier": "المورد",
-  "total": "الإجمالي",
-  "reason": "سبب الإرجاع",
-  "date": "التاريخ",
-  "items": "الأصناف",
-  "originalPW": "إذن الشراء الأصلي",
-  "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العنصر؟"
-},
-"purchaseRules": {
-  "ruleHeader": "خطوات عملية مرتجع المشتريات:",
-  "stockAvailable": "ربط المرتجع بإذن الشراء الأصلي",
-  "serialLot": "اختيار الأصناف والكميات المراد إرجاعها مع تحديد سبب الإرجاع",
-  "multiUoM": "إنشاء رقم تصريح الإرجاع (RA)",
-  "shippingStock": "تنسيق الاستلام مع المورد",
-  "carrierIntegration": "عند الشحن يتم خصم المخزون وإنشاء إشعار مدين",
-  "serialIntegration": "متابعة إشعار الدائن من المورد للبضائع المرتجعة"
-},
+  "purchaseWaybill": {
+    "purchaseWaybill": "إذن استلام مشتريات",
+    "subtitle": "إدارة استلامات المشتريات الواردة",
+    "addNew": "إضافة عملية شراء جديدة",
+    "searchPlaceholder": "ابحث برقم الإذن أو المورد أو أمر الشراء...",
+    "WaybillId": "رقم الإذن",
+    "invioceId": "رقم الفاتورة",
+    "supplier": "المورد",
+    "allsupplier": "كل الموردين",
+    "date": "التاريخ",
+    "purchaseOrder": "أمر الشراء",
+    "totalValues": "إجمالي القيم",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الاذن "
+  },
+  "salesWaybill": {
+    "salesWaybill": "إذن صرف مبيعات",
+    "subtitle": "إدارة شحنات المبيعات الصادرة وتسليمات العملاء",
+    "addNew": "إضافة إذن مبيعات جديد",
+    "searchPlaceholder": "ابحث برقم الإذن أو العميل...",
+    "WaybillId": "رقم الإذن",
+    "customer": "العميل",
+    "total": "الإجمالي",
+    "date": "التاريخ",
+    "items": "الأصناف",
+    "tracking": "التتبع",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف عملية البيع هذه؟"
+  },
+  "salesReturn": {
+    "salesReturn": "مرتجع المبيعات",
+    "subtitle": "معالجة عوائد العملاء والإيصالات الواردة من المبيعات",
+    "addNew": "إضافة مرتجع جديد",
+    "searchPlaceholder": "ابحث عن المرتجعات...",
+    "returnId": "رقم المرتجع",
+    "invoiceID": "رقم الفاتورة",
+    "customer": "العميل",
+    "total": "الإجمالي",
+    "reason": "السبب",
+    "date": "التاريخ",
+    "items": "العناصر",
+    "originalWaybill": "إذن البيع الأصلي",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العنصر؟"
+  },
+  "purchaseReturn": {
+    "purchaseReturn": "مرتجع مشتريات",
+    "subtitle": "إرجاع الأصناف التالفة أو غير الصحيحة إلى الموردين",
+    "addNew": "مرتجع مشتريات جديد",
+    "searchPlaceholder": "ابحث في المرتجعات...",
+    "returnId": "رقم المرتجع",
+    "invoiceID": "رقم الفاتورة",
+    "supplier": "المورد",
+    "total": "الإجمالي",
+    "reason": "سبب الإرجاع",
+    "date": "التاريخ",
+    "items": "الأصناف",
+    "originalPW": "إذن الشراء الأصلي",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العنصر؟"
+  },
+  "purchaseRules": {
+    "ruleHeader": "خطوات عملية مرتجع المشتريات:",
+    "stockAvailable": "ربط المرتجع بإذن الشراء الأصلي",
+    "serialLot": "اختيار الأصناف والكميات المراد إرجاعها مع تحديد سبب الإرجاع",
+    "multiUoM": "إنشاء رقم تصريح الإرجاع (RA)",
+    "shippingStock": "تنسيق الاستلام مع المورد",
+    "carrierIntegration": "عند الشحن يتم خصم المخزون وإنشاء إشعار مدين",
+    "serialIntegration": "متابعة إشعار الدائن من المورد للبضائع المرتجعة"
+  },
   "rules": {
-  "ruleHeader" : "قواعد عمل بوليصة الشحن الخاصة بالمبيعات:",
+    "ruleHeader": "قواعد عمل بوليصة الشحن الخاصة بالمبيعات:",
     "stockAvailable": "يجب أن تكون العناصر متاحة في المخزون (ليست محجوزة أو مؤجلة)",
     "serialLot": "العناصر المتتبعة بالرقم التسلسلي/الدفعة تتطلب اختيارًا محددًا من المخزون المتاح",
     "multiUoM": "يتم تطبيق التسعير متعدد الوحدات تلقائيًا بناءً على الوحدة المحددة",
     "shippingStock": "الشحن يقلل المخزون المتاح فور النشر",
     "carrierIntegration": "التكامل مع أنظمة تتبع شركات النقل لتحديث الشحنات"
   },
-"salesRules": {
-  "ruleHeader": "إجراءات سير عمل مرتجع المبيعات:",
-  "stockAvailable": "إنشاء مرتجع مرتبط بإذن البيع الأصلي",
-  "serialLot": "تحديد سبب المرتجع وتاريخ العودة المتوقع",
-  "multiUoM": "عند الاستلام، إجراء فحص الجودة",
-  "shippingStock": "بناءً على الفحص: إرجاع للمخزون، التخلص، أو الإرجاع للمورد",
-  "carrierIntegration": "معالجة إشعار الائتمان إذا تمت الموافقة",
-  "serialIntegration": "تتبع الأرقام التسلسلية/دفعات خلال عملية المرتجع"
-}
-
+  "salesRules": {
+    "ruleHeader": "إجراءات سير عمل مرتجع المبيعات:",
+    "stockAvailable": "إنشاء مرتجع مرتبط بإذن البيع الأصلي",
+    "serialLot": "تحديد سبب المرتجع وتاريخ العودة المتوقع",
+    "multiUoM": "عند الاستلام، إجراء فحص الجودة",
+    "shippingStock": "بناءً على الفحص: إرجاع للمخزون، التخلص، أو الإرجاع للمورد",
+    "carrierIntegration": "معالجة إشعار الائتمان إذا تمت الموافقة",
+    "serialIntegration": "تتبع الأرقام التسلسلية/دفعات خلال عملية المرتجع"
+  },
+  "operation": {
+    "title": "العمليات",
+    "itemTransactions": "معاملات الصنف",
+    "itemTransferMerge": "نقل/دمج الصنف",
+    "itemTransferMergeDescription": "نقل أو دمج من صنف إلى آخر مع الحفاظ على سجل التتبع",
+    "newTransaction": "معاملة جديدة",
+    "itemTransactionsSearchPlaceholder": "ابحث عن المعاملات حسب النوع أو التاريخ أو المرجع...",
+    "sourceItem": "الصنف المصدر",
+    "warehouse": "المستودع",
+    "targetItem": "الصنف المستهدف",
+    "transactions": "المعاملات",
+    "type": "النوع",
+    "transferDate": "تاريخ النقل"
+  }
 }
