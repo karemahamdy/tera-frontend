@@ -1,4 +1,4 @@
-export interface PurchaseWaybill {
+export interface ItemTransactions {
   id: string;
   code: string;
   name: string;
@@ -6,9 +6,9 @@ export interface PurchaseWaybill {
   createAt: string;
 }
 
-export interface PurchaseWaybillResponse {
+export interface ItemTransactionsResponse {
   data: {
-    items: PurchaseWaybill[];
+    items: ItemTransactions[];
     PageIndex: number;
     pageSize: number;
     totalCount: number;

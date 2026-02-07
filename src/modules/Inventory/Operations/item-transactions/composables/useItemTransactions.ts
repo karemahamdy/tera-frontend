@@ -1,11 +1,11 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { PurchaseWaybill } from "../types/ItemTransactions";
-import { PurchaseWaybillService } from "../services/ItemTransactions.service";
+import type { ItemTransactions } from "../types/ItemTransactions";
+import { ItemTransactionsService } from "../services/ItemTransactions.service";
 
 const loading = ref(false);
-const apiPurchaseWaybill = ref<PurchaseWaybill[]>([]);
+const apiItemTransactions = ref<ItemTransactions[]>([]);
 const tableData = ref<any[]>([]);
 
 const pageIndex = ref(1);
@@ -18,13 +18,13 @@ const orderBy = ref('');
 const StatusFilter = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-export function usePurchaseWaybill() {
+export function useItemTransactions() {
   const { t } = useI18n();
 
-  const fetchPurchaseWaybill = async (page = 1) => {
+  const fetchItemTransactions = async (page = 1) => {
     loading.value = true;
     try {
-      const response: any = await PurchaseWaybillService.getAll({
+      const response: any = await ItemTransactionsService.getAll({
         pageIndex: page,
         pageSize: pageSize.value,
         searchingWord: searchTerm.value,
@@ -33,7 +33,7 @@ export function usePurchaseWaybill() {
         StatusFilter: StatusFilter.value
       });
       const payload = response && response.data ? response.data : response;
-      apiPurchaseWaybill.value = payload.items ?? [];
+      apiItemTransactions.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
       totalCount.value = payload.totalCount ?? 0;
@@ -45,10 +45,10 @@ export function usePurchaseWaybill() {
     }
   };
 
-  const fetchPurchaseWaybillById = async (id: string) => {
+  const fetchItemTransactionsById = async (id: string) => {
     loading.value = true;
     try {
-      const resp = await PurchaseWaybillService.getById(id);
+      const resp = await ItemTransactionsService.getById(id);
       return resp;
     } catch (err: any) {
       toastService.error(err);
@@ -58,12 +58,12 @@ export function usePurchaseWaybill() {
     }
   };
 
-  const createPurchaseWaybill = async (payload: any) => {
+  const createItemTransactions = async (payload: any) => {
     loading.value = true;
     try {
-      const response = await PurchaseWaybillService.create(payload);
-      toastService.success(t("PurchaseWaybill.PurchaseWaybillCreatedSuccessfully"));
-      await fetchPurchaseWaybill(pageIndex.value);
+      const response = await ItemTransactionsService.create(payload);
+      toastService.success(t("ItemTransactions.ItemTransactionsCreatedSuccessfully"));
+      await fetchItemTransactions(pageIndex.value);
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -73,12 +73,12 @@ export function usePurchaseWaybill() {
     }
   };
 
-  const updatePurchaseWaybill = async (id: string, payload: any) => {
+  const updateItemTransactions = async (id: string, payload: any) => {
     loading.value = true;
     try {
-      const response = await PurchaseWaybillService.update(id, payload);
-      toastService.success(t("PurchaseWaybill.PurchaseWaybillUpdatedSuccessfully"));
-      await fetchPurchaseWaybill(pageIndex.value);
+      const response = await ItemTransactionsService.update(id, payload);
+      toastService.success(t("ItemTransactions.ItemTransactionsUpdatedSuccessfully"));
+      await fetchItemTransactions(pageIndex.value);
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -88,12 +88,12 @@ export function usePurchaseWaybill() {
     }
   };
 
-  const deletePurchaseWaybill = async (id: string) => {
+  const deleteItemTransactions = async (id: string) => {
     loading.value = true;
     try {
-      await PurchaseWaybillService.delete(id);
-      toastService.success((t("PurchaseWaybill.PurchaseWaybillDeletedSuccessfully")));
-      apiPurchaseWaybill.value = apiPurchaseWaybill.value.filter((b) => b.id !== id);
+      await ItemTransactionsService.delete(id);
+      toastService.success((t("ItemTransactions.ItemTransactionsDeletedSuccessfully")));
+      apiItemTransactions.value = apiItemTransactions.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -105,9 +105,9 @@ export function usePurchaseWaybill() {
   const toggleActive = async (id: string, isActive: boolean) => {
     loading.value = true;
     try {
-      await PurchaseWaybillService.toggleActive(id, isActive);
-      toastService.success((t("PurchaseWaybill.PurchaseWaybillUpdatedSuccessfully")));
-      await fetchPurchaseWaybill(pageIndex.value);
+      await ItemTransactionsService.toggleActive(id, isActive);
+      toastService.success((t("ItemTransactions.ItemTransactionsUpdatedSuccessfully")));
+      await fetchItemTransactions(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -125,35 +125,35 @@ export function usePurchaseWaybill() {
     if (field === "status") {
       StatusFilter.value = value;
     }
-    fetchPurchaseWaybill(1);
+    fetchItemTransactions(1);
   };
 
   const onSearch = (term: string) => {
     searchTerm.value = term;
-    fetchPurchaseWaybill(1);
+    fetchItemTransactions(1);
   };
 
   const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
-    fetchPurchaseWaybill(1);
+    fetchItemTransactions(1);
   }
 
   return {
     loading,
-    apiPurchaseWaybill,
+    apiItemTransactions,
     tableData,
-    fetchPurchaseWaybill,
-    fetchPurchaseWaybillById,
-    createPurchaseWaybill,
-    updatePurchaseWaybill,
-    deletePurchaseWaybill,
+    fetchItemTransactions,
+    fetchItemTransactionsById,
+    createItemTransactions,
+    updateItemTransactions,
+    deleteItemTransactions,
     toggleActive,
     pageIndex,
     pageSize,
     totalCount,
     totalPages,
-    setPage: (p: number) => fetchPurchaseWaybill(p),
+    setPage: (p: number) => fetchItemTransactions(p),
     onSearch,
     onFilterChange,
     onSort

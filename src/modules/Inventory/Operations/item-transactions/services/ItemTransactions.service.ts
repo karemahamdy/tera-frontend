@@ -1,11 +1,11 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, PurchaseWaybillResponse,  } from "../types/ItemTransactions";
+import type { Pagination, ItemTransactionsResponse,  } from "../types/ItemTransactions";
 
 
-export const PurchaseWaybillService = {
+export const ItemTransactionsService = {
   async getAll(params: Pagination) {
 
-    const resp = await axiosWrapper.get<PurchaseWaybillResponse>(
+    const resp = await axiosWrapper.get<ItemTransactionsResponse>(
       `/purchase-waybill`, { params }
     );
     return resp.data;

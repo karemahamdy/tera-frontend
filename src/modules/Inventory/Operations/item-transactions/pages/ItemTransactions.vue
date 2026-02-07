@@ -2,14 +2,14 @@
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { usePurchaseWaybill } from "../composables/useItemTransactions";
+import { useItemTransactions } from "../composables/useItemTransactions";
 
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange } = usePurchaseWaybill();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange } = useItemTransactions();
 
 const props = defineProps({
   data: {
@@ -45,7 +45,7 @@ const customItems = [
     },
 ];
 onMounted(() => {
-    // fetchPurchaseWaybill();
+    // fetchItemTransactions();
 });
 const filtersOperation = computed(() => {
     return [
@@ -96,13 +96,13 @@ const handleActionMenu = async (payload: any) => {
     const data = payload.data || payload.row || payload;
     if (action === 'edit') {
         router.push({
-            name: "PurchaseWaybillFormEdit",
+            name: "ItemTransactionsFormEdit",
             params: { id: data.id },
         });
     }
     if (action === 'view') {
         router.push({
-            name: "PurchaseWaybillFormView",
+            name: "ItemTransactionsFormView",
             params: { id: data.id },
         });
     }
@@ -111,8 +111,8 @@ const handleActionMenu = async (payload: any) => {
     }
 };
 
-const addPurchaseWaybill = () => {
-    router.push({name: 'PurchaseWaybillCreate' });
+const addItemTransactions = () => {
+    router.push({name: 'ItemTransactionsCreate' });
 };
 </script>
 
@@ -125,7 +125,7 @@ const addPurchaseWaybill = () => {
                 <PageHeader title="operation.itemTransferMerge" subtitle="operation.itemTransferMergeDescription" :showExport="false"
                     :showImport="false" :mainBtn="true" mainBtnText="operation.newTransaction" :showFilter="true"
                :filters="filtersOperation" @filter-change="onFilterChange"
-                    searchPlaceholder="operation.itemTransactionsSearchPlaceholder" @search="onSearch" :onMainBtnClick="addPurchaseWaybill" 
+                    searchPlaceholder="operation.itemTransactionsSearchPlaceholder" @search="onSearch" :onMainBtnClick="addItemTransactions" 
                     />
             </template>
             <!-- DynamicTable component -->
