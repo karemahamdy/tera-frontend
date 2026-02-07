@@ -51,6 +51,13 @@ const navItems: NavItem[] = [
           { label: "LDC", route: "/LDC" },
         ],
       },
+        {
+        label: "Transaction",
+        children: [
+          { label: "Purchase Waybill", route: "/purchase-waybill" },
+
+        ],
+      },
     ],
   }
 ];
