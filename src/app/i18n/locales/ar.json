@@ -628,7 +628,6 @@
     "addUOMRule": "إضافة تحويل جديد",
     "unitConvertedTo": "الوحدة المحولة إلى",
     "equal": "يساوي",
-
     "trackingMethod": "طريقة التتبع",
     "noTracking": "لا تتبع",
     "trackOnlyByQuantity": "تتبع فقط حسب الكمية",
@@ -663,7 +662,8 @@
     "lastMovingAveragePlaceholder": "أدخل متوسط الحركة الأخير",
     "nameArPlaceholder": "أدخل الاسم بالعربية",
     "itemUpdatedSuccessfully": "تم تحديث الصنف بنجاح",
-    "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح"
+    "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح",
+    "branchID": "الفرع المعين"
   },
   "purchaseWaybill": {
     "purchaseWaybill": "إذن استلام مشتريات",

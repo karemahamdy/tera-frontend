@@ -69,7 +69,7 @@ const items = computed(() => {
         if (props.templateFileUrl) {
           FileService.downloadFile(
             props.templateFileUrl,
-            props.templateFileName
+            props.templateFileName,
           );
         } else {
           props.onExportTemplate && props.onExportTemplate();
@@ -102,14 +102,16 @@ const onFileChange = (event) => {
 };
 
 const handleExportClick = async () => {
-  if (props.hasMenu) return; 
+  if (props.hasMenu) return;
   try {
     if (props.onExport) {
       props.onExport();
     } else if (props.dataFileUrl) {
-      if (props.requiresBody ) {
-        const body = mapFiltersToBody(props.filters); 
-        const response = await axiosWrapper.post(props.dataFileUrl, body, { responseType: 'blob' });
+      if (props.requiresBody) {
+        const body = mapFiltersToBody(props.filters);
+        const response = await axiosWrapper.post(props.dataFileUrl, body, {
+          responseType: "blob",
+        });
         downloadBlob(response, props.dataFileName);
       } else {
         await FileService.downloadFile(props.dataFileUrl, props.dataFileName);
@@ -122,7 +124,9 @@ const handleExportClick = async () => {
 </script>
 
 <template>
-  <div class="heading-section flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+  <div
+    class="heading-section flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+  >
     <!-- Title + Subtitle -->
     <div class="flex flex-col">
       <h2 class="heading-title">{{ $t(title) }}</h2>
@@ -132,15 +136,39 @@ const handleExportClick = async () => {
     <!-- Action Buttons -->
     <div class="flex flex-wrap justify- md:justify-end gap-3">
       <!-- Import -->
-      <BaseButton v-if="showImport" :label="$t('import')" icon="Import" variant="outline-primary"
-        @click="triggerFileInput" />
-      <input ref="fileInput" type="file" class="hidden" :accept="accept" @change="onFileChange" />
+      <BaseButton
+        v-if="showImport"
+        :label="$t('import')"
+        icon="Import"
+        variant="outline-primary"
+        @click="triggerFileInput"
+      />
+      <input
+        ref="fileInput"
+        type="file"
+        class="hidden"
+        :accept="accept"
+        @change="onFileChange"
+      />
       <!-- Export -->
-      <BaseButton v-if="showExport" :label="$t('export')" icon="Export" variant="outline-primary" :hasMenu="hasMenu"
-         @click="handleExportClick"  :items="hasMenu ? items : []" />
+      <BaseButton
+        v-if="showExport"
+        :label="$t('export')"
+        icon="Export"
+        variant="outline-primary"
+        :hasMenu="hasMenu"
+        @click="handleExportClick"
+        :items="hasMenu ? items : []"
+      />
       <!-- Main Button -->
-      <BaseButton v-if="mainBtn" :label="$t(mainBtnText)" icon="AddSquare" variant="primary" :disabled="!mainBtnValid"
-        @click="onMainBtnClick && onMainBtnClick()" />
+      <BaseButton
+        v-if="mainBtn"
+        :label="$t(mainBtnText)"
+        icon="AddSquare"
+        variant="primary"
+        :disabled="!mainBtnValid"
+        @click="onMainBtnClick && onMainBtnClick()"
+      />
 
       <slot name="actionBtn"></slot>
     </div>
@@ -149,19 +177,53 @@ const handleExportClick = async () => {
   <!-- Search + Filters -->
   <div class="flex gap-[10px] mt-2 flex-nowrap">
     <span class="p-input-icon-left search-input">
-      <InputText v-if="showSearch" v-model="searchQuery" :placeholder="$t(searchPlaceholder)" @input="onInput" />
+      <InputText
+        v-if="showSearch"
+        v-model="searchQuery"
+        :placeholder="$t(searchPlaceholder)"
+        @input="onInput"
+      />
     </span>
     <template v-if="showFilter">
-      <Dropdown v-for="(filter, index) in filters" :key="index" v-model="filter.value" :options="filter.options"
-        :placeholder="$t(filter.placeholder)" :optionLabel="$t(filter.optionLabel || 'label')"
-        :optionValue="$t(filter.optionValue || 'value')" :showClear="filter.showClear"
-        @change="(e) => onFilterChange(filter, e)" filter />
+      <Dropdown
+        v-for="(filter, index) in filters"
+        :key="index"
+        v-model="filter.value"
+        :options="filter.options"
+        :placeholder="$t(filter.placeholder)"
+        :optionLabel="$t(filter.optionLabel || 'label')"
+        :optionValue="$t(filter.optionValue || 'value')"
+        :showClear="filter.showClear"
+        @change="(e) => onFilterChange(filter, e)"
+        filter
+      />
     </template>
     <template v-if="showMultiFilter">
-      <MultiSelect v-for="(filter, index) in filters" :maxSelectedLabels="3" :key="index" v-model="filter.value" :options="filter.options"
-        :placeholder="$t(filter.placeholder)" :optionLabel="$t(filter.optionLabel || 'label')"
-        :optionValue="$t(filter.optionValue || 'value')" :showClear="filter.showClear"
-        @change="(e) => onFilterChange(filter, e)" filter />
+      <template v-for="(filter, index) in filters" :key="index">
+        <Dropdown
+          v-if="filter.isSingle"
+          v-model="filter.value"
+          :options="filter.options"
+          :placeholder="$t(filter.placeholder)"
+          :optionLabel="$t(filter.optionLabel || 'label')"
+          :optionValue="$t(filter.optionValue || 'value')"
+          :showClear="filter.showClear"
+          @change="(e) => onFilterChange(filter, e)"
+          filter
+        />
+        <MultiSelect
+          v-else
+          :maxSelectedLabels="3"
+          v-model="filter.value"
+          :options="filter.options"
+          :placeholder="$t(filter.placeholder)"
+          :optionLabel="$t(filter.optionLabel || 'label')"
+          :optionValue="$t(filter.optionValue || 'value')"
+          :showClear="filter.showClear"
+          @change="(e) => onFilterChange(filter, e)"
+          filter
+        />
+      </template>
     </template>
   </div>
 </template>

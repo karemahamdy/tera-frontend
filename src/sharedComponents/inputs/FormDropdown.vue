@@ -33,7 +33,7 @@ const emit = defineEmits(["update:modelValue"]);
     />
 
     <small v-if="error" class="text-danger-500">
-      {{ error }}
+      {{ $t(error) }}
     </small>
   </div>
 </template>

@@ -56,6 +56,7 @@ const filtersOperation = computed(() => {
             placeholder: "activeSessions.allStatus",
             value: null,
             field: "isActive",
+            isSingle: true,
             options: [
                 { label: t("button.all"), value: " " },
                 { label: t("button.active"), value: "IsActive" },

@@ -668,7 +668,8 @@
     "lastMovingAveragePlaceholder": "Enter Last Moving Average",
     "nameArPlaceholder": "أدخل الاسم بالعربية",
     "itemUpdatedSuccessfully": "Item updated successfully",
-    "itemCreatedSuccessfully": "Item created successfully"
+    "itemCreatedSuccessfully": "Item created successfully",
+    "branchID": "Assigned Branch"
   },
   "purchaseWaybill": {
     "purchaseWaybill": "Purchase Waybill",

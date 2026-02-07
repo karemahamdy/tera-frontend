@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import StatusDialog from "@/sharedComponents/StatusDialog.vue";
-import alertIcon from '@/assets/images/alert.png';
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -11,8 +9,7 @@ const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
-const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deletePurchaseWaybill, onFilterChange } = usePurchaseWaybill();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange } = usePurchaseWaybill();
 
 const props = defineProps({
   data: {
@@ -114,25 +111,9 @@ const handleActionMenu = async (payload: any) => {
     }
 };
 
-const handleDeleteConfirm = async () => {
-    if (!rowToDelete.value) return;
-    isDeleting.value = true;
-    await deletePurchaseWaybill(rowToDelete.value.id).finally(() => {
-        isDeleting.value = false;
-        showDeleteDialog.value = false;
-        rowToDelete.value = null;
-    });
-};
-
 const addPurchaseWaybill = () => {
     router.push({name: 'PurchaseWaybillCreate' });
 };
-const getStatusBadge = (status: any) => {
-  return status === "Posted" ? "status-active" : "status-inactive";
-}
-const getStatusText = (status: any) => {
-  return status === "Posted" ? "status-text-active" : "status-text-inactive";
-}
 </script>
 
 <template>
@@ -163,12 +144,6 @@ const getStatusText = (status: any) => {
               
             </template>
         </card>
-
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('purchaseWaybill.deleteConfirm')"
-            :buttons="[
-                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
-                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
-            ]" @confirm="handleDeleteConfirm" />
 
     </div>
 </template>
