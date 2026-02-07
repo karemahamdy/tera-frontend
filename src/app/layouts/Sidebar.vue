@@ -51,15 +51,21 @@ const navItems: NavItem[] = [
           { label: "LDC", route: "/LDC" },
         ],
       },
-        {
+      {
         label: "Transaction",
         children: [
           { label: "Purchase Waybill", route: "/purchase-waybill" },
-
+          { label: "Sales Waybill", route: "/sales-waybill" },
+          { label: "Sales Return", route: "/sales-return" },
+          { label: "Purchase Return", route: "/purchase-return" },
         ],
       },
+      {
+        label: "Operations",
+        children: [{ label: "Item Transactions", route: "/item-transactions" }],
+      },
     ],
-  }
+  },
 ];
 
 function logout() {
@@ -68,10 +74,12 @@ function logout() {
 </script>
 
 <template>
-  <aside :class="[
-    'sidebar-bg text-white transition-all duration-200 shadow h-screen',
-    collapsed ? 'w-16' : 'w-72',
-  ]">
+  <aside
+    :class="[
+      'sidebar-bg text-white transition-all duration-200 shadow h-screen',
+      collapsed ? 'w-16' : 'w-72',
+    ]"
+  >
     <!-- HEADER -->
     <div class="h-16 flex items-center px-5 border-b border-gray-200">
       <div class="flex items-center gap-5 w-full">
@@ -89,36 +97,55 @@ function logout() {
         <ul class="space-y-1">
           <!-- Dashboard -->
           <li>
-            <router-link to="/home" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5" :activeClass="$i18n.locale === 'ar'
-              ? 'active active-link-ar'
-              : 'active active-link'
-              ">
+            <router-link
+              to="/home"
+              class="flex items-center gap-3 px-3 py-2 rounded hover:bg-white/5"
+              :activeClass="
+                $i18n.locale === 'ar'
+                  ? 'active active-link-ar'
+                  : 'active active-link'
+              "
+            >
               <VsxIcon iconName="Element4" :size="24" type="linear" />
               <span v-if="!collapsed">{{ $t("Dashboard") }}</span>
             </router-link>
           </li>
 
           <!-- Dynamic Items -->
-          <SidebarItem v-for="item in navItems" :key="item.label" :item="item" :collapsed="collapsed" :activeClass="$i18n.locale === 'ar'
-            ? 'active active-link-ar'
-            : 'active active-link'
-            " />
+          <SidebarItem
+            v-for="item in navItems"
+            :key="item.label"
+            :item="item"
+            :collapsed="collapsed"
+            :activeClass="
+              $i18n.locale === 'ar'
+                ? 'active active-link-ar'
+                : 'active active-link'
+            "
+          />
         </ul>
       </nav>
 
       <!-- FOOTER -->
       <div class="p-3 mt-10 space-y-1">
-        <button class="w-full p-2 rounded hover:bg-white/5 text-gray-500 flex items-center gap-3">
+        <button
+          class="w-full p-2 rounded hover:bg-white/5 text-gray-500 flex items-center gap-3"
+        >
           <VsxIcon iconName="Setting2" :size="24" type="linear" />
           <span v-if="!collapsed">Settings</span>
         </button>
 
-        <button class="w-full p-2 rounded hover:bg-white/5 text-success-500 flex items-center gap-3">
+        <button
+          class="w-full p-2 rounded hover:bg-white/5 text-success-500 flex items-center gap-3"
+        >
           <VsxIcon iconName="Headphone" :size="24" type="linear" />
           <span v-if="!collapsed">Help</span>
         </button>
 
-        <button class="w-full p-2 rounded hover:bg-white/5 text-danger-500 flex items-center gap-3" @click="logout">
+        <button
+          class="w-full p-2 rounded hover:bg-white/5 text-danger-500 flex items-center gap-3"
+          @click="logout"
+        >
           <VsxIcon iconName="LogoutCurve" :size="24" type="linear" />
           <span v-if="!collapsed">Logout</span>
         </button>
