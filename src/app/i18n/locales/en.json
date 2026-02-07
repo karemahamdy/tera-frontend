@@ -682,5 +682,20 @@
     "purchaseOrder": "Purchase Order",
     "totalValues": "Total Values",
     "deleteConfirm" : "Are you sure you want to delete this Purchase?"
+  },
+  "operation": {
+    "title": "Operation",
+    "itemTransactions": "Item Transactions",
+    "itemTransferMerge": "Item Transfer/Merge",
+    "itemTransferMergeDescription": "Transfer Or merge from one item to another while maintaining audit trail",
+    "newTransaction": "New Transaction",
+    "itemTransactionsSearchPlaceholder": "Search transactions by type, date, or reference...",
+    "sourceItem": "Source Item",
+    "targetItem": "Target Item",
+    "warehouse": "Warehouse",
+    "transactions": "Transactions",
+    "type": "Type",
+    "transferDate": "Transfer Date",
+    "allTypes": "All Types"
   }
 }

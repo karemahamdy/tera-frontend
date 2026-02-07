@@ -17,6 +17,8 @@ import { itemManagementRoutes } from "@/modules/Inventory/MasterData/items/route
 import { ItemGroupsRoutes } from "@/modules/Inventory/MasterData/Item-groups/routes";
 import { ItemListRoutes } from "@/modules/Inventory/MasterData/item-list/routes";
 import { PurchaseWaybillRoutes } from "@/modules/Inventory/Transactions/purchase-waybill/routes";
+import { ItemTransactionsRoutes } from "@/modules/Inventory/Operations/item-transactions/routes";
+
 const defaultTitle = "Tera ERP";
 const routes = [
   ...authRoutes,
@@ -42,6 +44,7 @@ const routes = [
       ...itemManagementRoutes,
       ...ItemListRoutes,
       ...PurchaseWaybillRoutes,
+      ...ItemTransactionsRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
