@@ -20,6 +20,9 @@ const props = defineProps({
   totalRecords: { type: Number, default: 1 },
   lazy: { type: Boolean, default: false },
   scrollPaginator: { type: Boolean, default: false },
+   showEdit: { type: Boolean, default: true },
+    showView: { type: Boolean, default: true },
+  showDelete: { type: Boolean, default: true },
 });
 
 const emit = defineEmits(["action-menu-click", "page-change", "order-change"]);
@@ -191,11 +194,14 @@ onBeforeUnmount(() => {
         </a>
       </template></Menu>
 
-    <ActionMenu ref="menu" :showView="true" :showEdit="true" :showDelete="true" :customItems="customItems"
+    <ActionMenu ref="menu" :showView="showView"
+  :showEdit="showEdit"
+  :showDelete="showDelete" :customItems="customItems"
       @view="row => emit('action-menu-click', { action: 'view', row })"
       @edit="row => emit('action-menu-click', { action: 'edit', row })"
       @delete="row => emit('action-menu-click', { action: 'delete', row })"
       @resetPassword="row => emit('action-menu-click', { action: 'resetPassword', row })"
+      
       @custom="payload => emit('action-menu-click', payload)">
       <template #item="{ item, row }">
         <slot name="menu-item" :item="item" :row="row" />

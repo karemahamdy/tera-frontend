@@ -4,7 +4,8 @@ import alertIcon from '@/assets/images/alert.png';
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { usePhysicalCount } from "../composables/usePhysicalCount";
+import { useInventoryAdjustment } from "../composables/useInventoryAdjustment";
+
 
 
 const { t } = useI18n();
@@ -12,7 +13,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, deletePhysicalCount } = usePhysicalCount();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, deleteInventoryAdjustment } = useInventoryAdjustment();
 
 const props = defineProps({
   data: {
@@ -53,13 +54,13 @@ const customItems = [
 const filtersOperation = computed(() => {
     return [
         {
-            placeholder: "operation.allTypes",
+            placeholder: "salesReturn.reason",
             value: null,
             field: "status",
             options: [
-                  { label: t("button.all"), value: null },
-                { label: t("button.Pending"), value: "IsActive" },
-                { label: t("button.Posted"), value: "InActive" },
+                { label: t("salesReturn.reason"), value: null },
+                { label: t("button.Posted"), value: "IsActive" },
+                { label: t("button.Pending"), value: "InActive" },
             ],
         }
     ]
@@ -67,15 +68,13 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'WaybillId', header: t('PhysicalCount.CountID'), sortable: true },
-        { field: 'invioceId', header: t('PhysicalCount.CountDate'), sortable: true },
-        { field: 'supplier', header: t('PhysicalCount.warehouse'), type: 'slot', sortable: true },
-        { field: 'date', header: t('PhysicalCount.zone'), type: 'date', sortable: true },
-         { field: 'purchaseOrder', header: t('PhysicalCount.total'), sortable: true },
-        { field: 'totalValues', header: t('PhysicalCount.Counted'), type: 'slot', sortable: true },
-        { field: 'totalValues', header: t('PhysicalCount.Variances'), type: 'slot', sortable: true },
+        { field: 'totalValues', header: t('InventoryAdjustment.AdjustmentID'), type: 'slot', sortable: true },
+        { field: 'invioceId', header: t('InventoryAdjustment.items'), sortable: true },
+        { field: 'supplier', header: t('InventoryAdjustment.warehouse'), type: 'slot', sortable: true },
+        { field: 'date', header: t('InventoryAdjustment.zone'), type: 'date', sortable: true },
+        { field: 'WaybillId', header: t('InventoryAdjustment.reason'), sortable: true },
+        { field: 'date', header: t('InventoryAdjustment.date'), type: 'date', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
-        { field: 'totalValues', header: t('PhysicalCount.Adjustment'), type: 'slot', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -121,7 +120,7 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    await deletePhysicalCount(rowToDelete.value.id).finally(() => {
+    await deleteInventoryAdjustment(rowToDelete.value.id).finally(() => {
         isDeleting.value = false;
         showDeleteDialog.value = false;
         rowToDelete.value = null;
@@ -141,14 +140,14 @@ const getStatusText = (status: any) => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader t title="inventory" subtitle="operation.title" actionName="PhysicalCount.PhysicalCount" />
+        <ScreenHeader t title="inventory" subtitle="operation.title" actionName="InventoryAdjustment.InventoryAdjustment" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="PhysicalCount.PhysicalCount" subtitle="PhysicalCount.subtitle" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="PhysicalCount.addNew" :showFilter="true"
+                <PageHeader title="InventoryAdjustment.InventoryAdjustment" subtitle="InventoryAdjustment.subtitle" :showExport="false"
+                    :showImport="false" :mainBtn="true" mainBtnText="InventoryAdjustment.addNew" :showFilter="true"
                :filters="filtersOperation" @filter-change="onFilterChange"
-                    searchPlaceholder="PhysicalCount.searchPlaceholder" @search="onSearch" :onMainBtnClick="addPurchaseWaybill" 
+                    searchPlaceholder="InventoryAdjustment.searchPlaceholder" @search="onSearch" :onMainBtnClick="addPurchaseWaybill" 
                     />
             </template>
             <!-- DynamicTable component -->
@@ -170,7 +169,7 @@ const getStatusText = (status: any) => {
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('PhysicalCount.deleteConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('InventoryAdjustment.deleteConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },

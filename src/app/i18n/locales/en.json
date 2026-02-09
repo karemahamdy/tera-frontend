@@ -791,7 +791,7 @@
     "action": "Action",
     "release": "Release"
   },
-     "PhysicalCount": {
+   "PhysicalCount": {
     "PhysicalCount": "Physical Count",
     "subtitle": "Physical inventory counting and reconciliation",
     "addNew": "Create New Count",
@@ -802,6 +802,19 @@
     "Variances": "Variances",
     "total": "Total Items",
     "Adjustment": "Adjustment",
+    "date": "Date",
+    "items": "Items",
+     "zone": "Zone",
+    "warehouse": "Warehouse",
+    "deleteConfirm" : "Are you sure you want to delete this item?"
+  },
+  "InventoryAdjustment": {
+    "InventoryAdjustment": "Inventory Adjustment",
+    "subtitle": "Adjust quantity or cost for variance reconciliation",
+    "addNew": "New Adjustment",
+    "searchPlaceholder": "Search...",
+    "AdjustmentID": "Adjustment ID",
+     "reason": "Reason",
     "date": "Date",
     "items": "Items",
      "zone": "Zone",

@@ -801,6 +801,19 @@
   "zone": "المنطقة",
   "warehouse": "المخزن",
   "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+},
+"InventoryAdjustment": {
+  "InventoryAdjustment": "تسوية المخزون",
+  "subtitle": "تعديل الكمية أو التكلفة لمعالجة فروقات الجرد",
+  "addNew": "إنشاء تسوية جديدة",
+  "searchPlaceholder": "بحث...",
+  "AdjustmentID": "رقم التسوية",
+  "reason": "السبب",
+  "date": "التاريخ",
+  "items": "الأصناف",
+  "zone": "المنطقة",
+  "warehouse": "المخزن",
+  "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
 }
 
 }

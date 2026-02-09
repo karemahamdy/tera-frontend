@@ -66,6 +66,7 @@ const navItems: NavItem[] = [
           { label: "Item Transactions", route: "/item-transactions" },
           { label: "Item Hold", route: "/item-hold" },
           { label: "Physical Count", route: "/physical-count" },
+          { label: "Inventory Adjustment", route: "/inventory-adjustment" },
         ],
       },
     ],
