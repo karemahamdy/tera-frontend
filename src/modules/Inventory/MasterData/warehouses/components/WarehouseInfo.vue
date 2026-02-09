@@ -9,6 +9,7 @@ const props = defineProps<{
     modelValue: Partial<AddWarehouses>;
     errors: Record<string, string | undefined>;
     disabled?: boolean;
+      disableCode?: boolean;
 }>();
 
 const {
@@ -51,7 +52,7 @@ const typeOptions = [
         <div class="flex gap-4">
             <FormInput class="w-1/2" :label="$t('warehouses.code')" :modelValue="data.code"
                 @update:modelValue="(v: any) => update('code', v)" :error="errors.code" :invalid="!!errors.code"
-                placeholder="WH-MAIN-001" :disabled="disabled" />
+                placeholder="WH-MAIN-001" :disabled="disabled || disableCode"/>
 
             <FormInput class="w-1/2" :label="$t('warehouses.name')" :modelValue="data.nameEn"
                 @update:modelValue="(v: any) => update('nameEn', v)" :error="errors.nameEn" :invalid="!!errors.nameEn"
