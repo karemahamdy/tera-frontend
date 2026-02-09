@@ -39,7 +39,6 @@ import TabList from "primevue/tablist";
 import Tab from "primevue/tab";
 import TabPanels from "primevue/tabpanels";
 import Calendar from "primevue/calendar";
-import Stepper from 'primevue/stepper';
 import StepList from 'primevue/steplist';
 import StepPanels from 'primevue/steppanels';
 import StepItem from 'primevue/stepitem';
