@@ -462,6 +462,9 @@
     "MinimumStock": "الحد الأدنى للمخزون",
     "ActiveItems": "العناصر النشطة",
     "TotalItems": "إجمالي العناصر",
+       "ItemCreatedSuccessfully": "تم اضافة العنصر بنجاح",
+    "ItemUpdatedSuccessfully": "تم تعديل العنصر بنجاح",
+    "ItemDeletedSuccessfully": "تم حذف العنصر بنجاح",
     "overview": {
       "overview": "نظرة عامة",
       "itemInformation": "معلومات الصنف",

@@ -69,7 +69,7 @@ export function useItem() {
     loading.value = true;
     try {
       const response = await itemListService.create(payload);
-      toastService.success(t("Item.ItemCreatedSuccessfully"));
+      toastService.success(t("itemList.ItemCreatedSuccessfully"));
       await fetchItem(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -84,7 +84,7 @@ export function useItem() {
     loading.value = true;
     try {
       const response = await itemListService.update(id, payload);
-      toastService.success(t("Item.ItemUpdatedSuccessfully"));
+      toastService.success(t("itemList.ItemUpdatedSuccessfully"));
       await fetchItem(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -99,7 +99,7 @@ export function useItem() {
     loading.value = true;
     try {
       await itemListService.delete(id);
-      toastService.success(t("Item.ItemDeletedSuccessfully"));
+      toastService.success(t("itemList.ItemDeletedSuccessfully"));
       apiItem.value = apiItem.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);
@@ -113,7 +113,7 @@ export function useItem() {
     loading.value = true;
     try {
       await itemListService.toggleActive(id, isActive);
-      toastService.success(`Item is now ${isActive ? "Active" : "in Active"}`);
+      toastService.success(t("itemList.ItemUpdatedSuccessfully"));
       await fetchItem(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -130,9 +130,9 @@ export function useItem() {
         {
           file: file,
         },
-        "ItemFile"
+        "file"
       );
-      toastService.success(t("Item.ItemImportedSuccessfully"));
+      toastService.success(t("itemList.ItemImportedSuccessfully"));
       fetchItem(1);
     } catch (error) {
       toastService.error(error as string);
