@@ -418,6 +418,9 @@
     "itemGroupImportedSuccessfully": "Item Group imported successfully"
   },
   "itemList": {
+       "ItemCreatedSuccessfully": "Item created successfully",
+    "ItemUpdatedSuccessfully": "Item updated successfully",
+    "ItemDeletedSuccessfully": "Item deleted successfully",
     "title": "Items",
     "subtitle": "Browse and manage all inventory items",
     "addItem": "Add New Item",
