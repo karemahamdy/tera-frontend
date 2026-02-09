@@ -719,7 +719,7 @@
    "purchaseReturn": {
     "purchaseReturn": "Purchase Return ",
     "subtitle": "Return defective or incorrect items to suppliers",
-    "addNew": "New Sales Return",
+    "addNew": "New Purchase Return",
     "searchPlaceholder": "Search returns...",
     "returnId": "Return ID",
     "invoiceID": "Invoice ID",

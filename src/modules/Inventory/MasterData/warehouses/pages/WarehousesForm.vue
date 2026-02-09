@@ -86,8 +86,8 @@ onMounted(async () => {
 
             setValues({
                 code: data.code || "",
-                nameEn: (data as any).namenameEn || "", 
-                nameAr: (data as any).namenameAr || "", 
+                nameEn: (data as any).nameEn || "", 
+                nameAr: (data as any).nameAr || "", 
                 description: data.description || "",
                 address: data.address || "",
                 managerId: (data as any).manager?.id ?? data.managerId ?? (data as any).manager ?? null,  
