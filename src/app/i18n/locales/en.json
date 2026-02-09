@@ -820,5 +820,21 @@
      "zone": "Zone",
     "warehouse": "Warehouse",
     "deleteConfirm" : "Are you sure you want to delete this item?"
+  },
+   "OpeningBalance": {
+    "OpeningBalance": "Opening Balance",
+    "subtitle": "System initialization - Capture existing stock at go-live",
+    "addNew": "Create Opening Balance",
+    "searchPlaceholder": "Search holds...",
+    "OBID": "OB ID",
+     "TotalValue": "Total Value",
+    "date": "Date",
+    "UnitCost": "Unit Cost",
+     "Uom": "Uom",
+    "ItemName": "Item Name",
+     "Quantity": "Quantity",
+    "warehouse": "Warehouse",
+     "zone": "Zone",
+    "deleteConfirm" : "Are you sure you want to delete this item?"
   }
 }

@@ -24,6 +24,7 @@ import { PurchaseReturnRoutes } from "@/modules/Inventory/Transactions/purchase-
 import { ItemHoldRoutes } from "@/modules/Inventory/Operations/item-hold/routes";
 import { PhysicalCountRoutes } from "@/modules/Inventory/Operations/physical-count/routes";
 import { InventoryAdjustmentRoutes } from "@/modules/Inventory/Operations/inventory-adjustment/routes";
+import { OpeningBalanceRoutes } from "@/modules/Inventory/Operations/opening-balance/routes";
 
 const defaultTitle = "Tera ERP";
 const routes = [
@@ -57,6 +58,7 @@ const routes = [
       ...ItemHoldRoutes,
       ...PhysicalCountRoutes,
       ...InventoryAdjustmentRoutes,
+      ...OpeningBalanceRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),
