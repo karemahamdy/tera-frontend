@@ -4,11 +4,13 @@ import { ref } from "vue";
 import { ItemService } from "../services/item.service";
 import { toastService } from "@/app/services/toastService";
 import { useI18n } from "vue-i18n";
-import type { Item } from "../types/Item";
+import type { Item, ItemFiles } from "../types/Item";
 import router from "@/app/router";
 import { useRoute } from "vue-router";
 
 const files = ref<File[]>([]);
+const oldFiles = ref<ItemFiles[]>([]);
+const deletedFileIds = ref<string[]>([]);
 
 const { handleSubmit, errors, defineField, setValues, resetForm } = useForm({
   validationSchema: itemSchema,
@@ -33,7 +35,7 @@ const { handleSubmit, errors, defineField, setValues, resetForm } = useForm({
     manufacturerPartNumber: "",
     barcodeSKU: "",
     baseUOM: "", // uom fields
-    rules: [{ toUnitId: 1, name: "", factor: 0 }],
+    rules: [{ toUnitId: 1, factor: 0 }],
     tracking: "", // tracking fields
     autoGenerate: false,
     initialSerial: "",
@@ -107,7 +109,6 @@ export function useItems() {
   const addNewRule = () => {
     rules.value.push({
       toUnitId: rules.value.length + 1,
-      name: "",
       factor: 0,
     });
   };
@@ -116,7 +117,7 @@ export function useItems() {
   };
 
   const editRule = (index: number) => {
-    rules.value[index] = { toUnitId: -1, name: "", factor: 0 };
+    rules.value[index] = { toUnitId: -1, factor: 0 };
   };
 
   const handleSubmitWrapper = handleSubmit(async (values) => {
@@ -141,7 +142,7 @@ export function useItems() {
         manufacturerId: values.manufacturerID, // ManufacturerId
         barcode: values.barcodeSKU, // Barcode
         manufacturerPartNumber: values.manufacturerPartNumber, // ManufacturerPartNumber
-        tracked: values.tracking == "serialTracking" ? true : false , // Tracked
+        tracked: values.tracking == "serialTracking" ? true : false, // Tracked
         autoGenerateSerial: values.autoGenerate, // AutoGenerateSerial
         initialSerial: values.initialSerial, // InitialSerial
         reorderPoint: values.reorderPoint, // ReorderPoint
@@ -152,7 +153,7 @@ export function useItems() {
         standardCost: values.standardCost, // StandardCost
         salesPrice: values.salesPrice, // SalesPrice
         lastPurchasePrice: values.lastPurchasePrice, // LastPurchasePrice
-        lastMovingAverage: values.lastMovingAverage, // LastMovingAverage
+        lastMovingPrice: values.lastMovingAverage, // LastMovingAverage
         multipleCurrency: values.multipleCurrency, // MultipleCurrency
         defaultCurrencyId: values.defaultCurrencyID, // DefaultCurrencyId
         taxId: values.taxesID, // TaxId
@@ -164,6 +165,9 @@ export function useItems() {
       if (id) {
         if (files.value && files.value.length > 0) {
           data.newFiles = files.value;
+        }
+        if (deletedFileIds.value && deletedFileIds.value.length > 0) {
+          data.deletedFileIds = deletedFileIds.value;
         }
         await ItemService.update(id, data);
         toastService.success(t("items.itemUpdatedSuccessfully"));
@@ -183,6 +187,7 @@ export function useItems() {
   const loadItem = async () => {
     if (id) {
       try {
+        resetFormToInitialValues()
         const data = await ItemService.getById(id);
         setValues({
           code: data.code,
@@ -196,10 +201,10 @@ export function useItems() {
           productionName: data.productionName,
           warehouseID: data.wareHouseId,
           categoryID: data.categoryId,
-          itemGroup1ID: data.itemGroupId1,
-          itemGroup2ID: data.itemGroupId2,
-          itemGroup3ID: data.itemGroupId3,
-          itemGroup4ID: data.itemGroupId4,
+          itemGroup1ID: data.group1Id,
+          itemGroup2ID: data.group2Id,
+          itemGroup3ID: data.group3Id,
+          itemGroup4ID: data.group4Id,
           itemTypeID: data.itemType,
           manufacturerID: data.manufacturerId,
           manufacturerPartNumber: data.manufacturerPartNumber,
@@ -219,11 +224,11 @@ export function useItems() {
           standardCost: data.standardCost,
           salesPrice: data.salesPrice,
           lastPurchasePrice: data.lastPurchasePrice,
-          lastMovingAverage: data.lastMovingAverage,
+          lastMovingAverage: data.lastMovingPrice,
           ledgerDetailCardID: data.ldcId,
           costCenterID: data.costCenterId,
         });
-        files.value = data.files || [];
+        setFiles(data.files || []);
         rules.value = data.itemUnitConversions as unknown as typeof rules.value;
       } catch (error) {
         toastService.error(error as string);
@@ -231,9 +236,22 @@ export function useItems() {
     }
   };
 
+  const setFiles = (fileList: ItemFiles[]) => {
+    oldFiles.value = fileList;
+  };
+
+  const setDeletedFiles = (index: number) => {
+    if (oldFiles.value[index]) {
+      deletedFileIds.value.push(oldFiles.value[index].id);
+    }
+    oldFiles.value.splice(index, 1);
+  };
+
   const resetFormToInitialValues = () => {
     resetForm();
     files.value = [];
+    oldFiles.value = [];
+    deletedFileIds.value = [];
   };
 
   return {
@@ -278,12 +296,14 @@ export function useItems() {
     ledgerDetailCardID,
     costCenterID,
     files,
+    oldFiles,
     addNewRule,
     deleteRule,
     editRule,
     setValues,
     handleSubmitWrapper,
     loadItem,
-    resetFormToInitialValues
+    resetFormToInitialValues,
+    setDeletedFiles
   };
 }
