@@ -20,6 +20,8 @@ const isSubmitting = ref(false);
 const activeTab = ref("basic");
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
+const disableCode = editMode || viewMode;
+
 const warehouseId = route.params.id as string;
 
 const { handleSubmit, errors, values, setFieldValue, setValues } = useForm<AddWarehouses>({
@@ -86,8 +88,8 @@ onMounted(async () => {
 
             setValues({
                 code: data.code || "",
-                nameEn: (data as any).namenameEn || "", 
-                nameAr: (data as any).namenameAr || "", 
+                nameEn: (data as any).nameEn || "", 
+                nameAr: (data as any).nameAr || "", 
                 description: data.description || "",
                 address: data.address || "",
                 managerId: (data as any).manager?.id ?? data.managerId ?? (data as any).manager ?? null,  
@@ -182,6 +184,7 @@ const onSubmit = handleSubmit(async (values) => {
                     :modelValue="values" 
                     :errors="errors"
                     :disabled="viewMode"
+                     :disableCode="disableCode"
                     @update:modelValue="updateForm" 
                  />
                 </TabPanel>
@@ -200,7 +203,7 @@ const onSubmit = handleSubmit(async (values) => {
                 :loading="isSubmitting" />
             </div>
             <div v-else class="flex gap-4 px-20 mt-6">
-            <BaseButton label="button.back" variant="ghost" block :to="{ name: 'Warehouses' }" />
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'Warehouses' }" />
             </div>
         </form>
       </template>

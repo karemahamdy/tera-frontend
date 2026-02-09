@@ -149,8 +149,8 @@ const handleDeleteConfirm = async () => {
     });
 };
 
-const addPurchaseWaybill = () => {
-    router.push({ name: 'PurchaseWaybillCreate' });
+const addPurchaseReturn = () => {
+    router.push({ name: 'PurchaseReturnCreate' });
 };
 const getStatusBadge = (status: any) => {
     return status === "Completed" ? "status-active" : "status-inactive";
@@ -170,7 +170,7 @@ const getStatusText = (status: any) => {
                     :showImport="false" :mainBtn="true" mainBtnText="purchaseReturn.addNew" :showFilter="true"
                     :filters="filtersOperation" @filter-change="onFilterChange"
                     searchPlaceholder="purchaseReturn.searchPlaceholder" @search="onSearch"
-                    :onMainBtnClick="addPurchaseWaybill" />
+                    :onMainBtnClick="addPurchaseReturn" />
             </template>
             <!-- DynamicTable component -->
             <template #content>

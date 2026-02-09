@@ -9,13 +9,16 @@ const props = defineProps<{
     modelValue: Partial<AddWarehouses>;
     errors: Record<string, string | undefined>;
     disabled?: boolean;
+      disableCode?: boolean;
 }>();
 
 const {
     usersLookups,
     getUsersLookups,
     ledgerDetailCardLookups,
-    getLedgerDetailCardLookups
+    getLedgerDetailCardLookups,
+    accountLookups,
+     getAccountsLookups 
 } = useLookups();
 
 const emit = defineEmits<{
@@ -30,6 +33,7 @@ const data = computed({
 onMounted(() => {
     getUsersLookups();
     getLedgerDetailCardLookups();
+    getAccountsLookups()
 });
 
 const update = (key: keyof AddWarehouses, value: any) => {
@@ -48,7 +52,7 @@ const typeOptions = [
         <div class="flex gap-4">
             <FormInput class="w-1/2" :label="$t('warehouses.code')" :modelValue="data.code"
                 @update:modelValue="(v: any) => update('code', v)" :error="errors.code" :invalid="!!errors.code"
-                placeholder="WH-MAIN-001" :disabled="disabled" />
+                placeholder="WH-MAIN-001" :disabled="disabled || disableCode"/>
 
             <FormInput class="w-1/2" :label="$t('warehouses.name')" :modelValue="data.nameEn"
                 @update:modelValue="(v: any) => update('nameEn', v)" :error="errors.nameEn" :invalid="!!errors.nameEn"
@@ -93,7 +97,7 @@ const typeOptions = [
                 placeholder="LDC-INV-001" :disabled="disabled" />
 
             <FormDropdown class="w-1/2" :label="$t('warehouses.transferAccount')" :modelValue="data.transferAccountId"
-                @update:modelValue="(v: any) => update('transferAccountId', v)" :options="ledgerDetailCardLookups"
+                @update:modelValue="(v: any) => update('transferAccountId', v)" :options="accountLookups"
                 placeholder="1305 – Warehouse Transfer Account" :disabled="disabled" />
 
         </div>

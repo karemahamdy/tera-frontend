@@ -418,7 +418,7 @@
     "itemGroupImportedSuccessfully": "Item Group imported successfully"
   },
   "itemList": {
-       "ItemCreatedSuccessfully": "Item created successfully",
+    "ItemCreatedSuccessfully": "Item created successfully",
     "ItemUpdatedSuccessfully": "Item updated successfully",
     "ItemDeletedSuccessfully": "Item deleted successfully",
     "title": "Items",
@@ -686,9 +686,9 @@
     "date": "Date",
     "purchaseOrder": "Purchase Order",
     "totalValues": "Total Values",
-    "deleteConfirm" : "Are you sure you want to delete this Purchase?"
+    "deleteConfirm": "Are you sure you want to delete this Purchase?"
   },
-    "salesWaybill": {
+  "salesWaybill": {
     "salesWaybill": "Sales Waybill",
     "subtitle": "Manage outbound sales shipments and customer deliveries",
     "addNew": "New Sales Waybill",
@@ -699,9 +699,9 @@
     "date": "Date",
     "items": "Items",
     "tracking": "Tracking",
-    "deleteConfirm" : "Are you sure you want to delete this sales?"
+    "deleteConfirm": "Are you sure you want to delete this sales?"
   },
-   "salesReturn": {
+  "salesReturn": {
     "salesReturn": "Sales Return",
     "subtitle": "Process customer returns and inbound receipts from sales",
     "addNew": "New Sales Return",
@@ -714,12 +714,12 @@
     "date": "Date",
     "items": "Items",
     "originalWaybill": "Original Waybill",
-    "deleteConfirm" : "Are you sure you want to delete this item?"
+    "deleteConfirm": "Are you sure you want to delete this item?"
   },
-   "purchaseReturn": {
+  "purchaseReturn": {
     "purchaseReturn": "Purchase Return ",
     "subtitle": "Return defective or incorrect items to suppliers",
-    "addNew": "New Sales Return",
+    "addNew": "New Purchase Return",
     "searchPlaceholder": "Search returns...",
     "returnId": "Return ID",
     "invoiceID": "Invoice ID",
@@ -730,7 +730,7 @@
     "date": "Date",
     "items": "Items",
     "originalPW": "Original PW",
-    "deleteConfirm" : "Are you sure you want to delete this item?"
+    "deleteConfirm": "Are you sure you want to delete this item?"
   },
   "rules": {
     "ruleHeader": "Sales Waybill Business Rules:",
@@ -740,7 +740,7 @@
     "shippingStock": "Shipping reduces available stock immediately upon posting",
     "carrierIntegration": "Integration with carrier tracking systems for shipment updates"
   },
-   "salesRules": {
+  "salesRules": {
     "ruleHeader": "Sales Return Workflow:",
     "stockAvailable": "Create return linked to original sales waybill",
     "serialLot": "Specify return reason and expected return date",
@@ -749,7 +749,7 @@
     "carrierIntegration": "Process credit note if approved",
     "serialIntegration": "Serial/lot numbers tracked throughout return process"
   },
-   "purchaseRules": {
+  "purchaseRules": {
     "ruleHeader": "Purchase Return Process:",
     "stockAvailable": "Link to original purchase waybill",
     "serialLot": "Select items and quantities to return with reason codes",
@@ -790,6 +790,52 @@
     "serial": "Serial",
     "action": "Action",
     "release": "Release"
+  },
+  "PhysicalCount": {
+    "PhysicalCount": "Physical Count",
+    "subtitle": "Physical inventory counting and reconciliation",
+    "addNew": "Create New Count",
+    "searchPlaceholder": "Search...",
+    "CountID": "Count ID",
+    "CountDate": "Count Date",
+    "Counted": "Counted",
+    "Variances": "Variances",
+    "total": "Total Items",
+    "Adjustment": "Adjustment",
+    "date": "Date",
+    "items": "Items",
+    "zone": "Zone",
+    "warehouse": "Warehouse",
+    "deleteConfirm": "Are you sure you want to delete this item?"
+  },
+  "InventoryAdjustment": {
+    "InventoryAdjustment": "Inventory Adjustment",
+    "subtitle": "Adjust quantity or cost for variance reconciliation",
+    "addNew": "New Adjustment",
+    "searchPlaceholder": "Search...",
+    "AdjustmentID": "Adjustment ID",
+    "reason": "Reason",
+    "date": "Date",
+    "items": "Items",
+    "zone": "Zone",
+    "warehouse": "Warehouse",
+    "deleteConfirm": "Are you sure you want to delete this item?"
+  },
+  "OpeningBalance": {
+    "OpeningBalance": "Opening Balance",
+    "subtitle": "System initialization - Capture existing stock at go-live",
+    "addNew": "Create Opening Balance",
+    "searchPlaceholder": "Search holds...",
+    "OBID": "OB ID",
+    "TotalValue": "Total Value",
+    "date": "Date",
+    "UnitCost": "Unit Cost",
+    "Uom": "Uom",
+    "ItemName": "Item Name",
+    "Quantity": "Quantity",
+    "warehouse": "Warehouse",
+    "zone": "Zone",
+    "deleteConfirm": "Are you sure you want to delete this item?"
   },
   "inventoryRequest": {
     "allTypes": "All Types",

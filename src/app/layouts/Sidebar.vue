@@ -64,7 +64,10 @@ const navItems: NavItem[] = [
         label: "Operations",
         children: [
           { label: "Item Transactions", route: "/item-transactions" },
-          { label: "Item Hold", route: "/item-hold" }
+          { label: "Item Hold", route: "/item-hold" },
+          { label: "Physical Count", route: "/physical-count" },
+          { label: "Adjustment", route: "/inventory-adjustment" },
+          { label: "Opening Balance", route: "/opening-balance" },
         ],
       },
     ],

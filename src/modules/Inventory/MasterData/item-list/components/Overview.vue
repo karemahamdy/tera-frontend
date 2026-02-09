@@ -22,9 +22,9 @@ const downloadFile = (url: string) => {
     <!-- Item Information Section -->
     <section class="mb-4 border border-gray-200 p-4 rounded-[12px]">
         <h3 class="text-lg font-bold text-[#101828] mb-6">{{ $t('itemList.overview.itemInformation') }}</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-6">
             <!-- Left Column -->
-            <div class="space-y-5">
+            <div class="space-y-5  md:border-r md:border-gray-200 md:pr-6">
                 <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemCode') }}:</span><span class="text-[#101828] text-sm font-medium">{{ data.itemInformation.code }}</span>
                 </div>
                 <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemName1') }}:</span><span class="text-[#101828] text-sm font-medium">{{ data.itemInformation.nameEn }}</span></div>
@@ -49,8 +49,6 @@ const downloadFile = (url: string) => {
                 <div class="flex justify-between items-center"><span
                         class="text-[#667085] text-sm">{{ $t('itemList.overview.warehouse') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ data.itemInformation.wareHouseName }}</span></div>
-                <div class="flex justify-between items-center"><span class="text-[#667085] text-sm">{{ $t('itemList.overview.itemGroup') }}:</span><span class="text-[#101828] text-sm font-medium">{{ data.itemInformation.groupName }}</span>
-                </div>
                 <div class="flex justify-between items-center"><span
                         class="text-[#667085] text-sm">{{ $t('itemList.overview.category') }}:</span><span
                         class="text-[#101828] text-sm font-medium">{{ data.itemInformation.categoryName }}</span></div>
