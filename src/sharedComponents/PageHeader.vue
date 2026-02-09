@@ -238,4 +238,8 @@ const handleExportClick = async () => {
   width: 100%;
   background-color: var(--color-gray-100);
 }
+
+.p-multiselect-header .p-checkbox.p-component {
+  display: none !important;
+}
 </style>
