@@ -460,7 +460,7 @@
     "MinimumStock": "الحد الأدنى للمخزون",
     "ActiveItems": "العناصر النشطة",
     "TotalItems": "إجمالي العناصر",
-       "ItemCreatedSuccessfully": "تم اضافة العنصر بنجاح",
+    "ItemCreatedSuccessfully": "تم اضافة العنصر بنجاح",
     "ItemUpdatedSuccessfully": "تم تعديل العنصر بنجاح",
     "ItemDeletedSuccessfully": "تم حذف العنصر بنجاح",
     "overview": {
@@ -784,5 +784,39 @@
     "serial": "الرقم التسلسلي",
     "action": "الإجراء",
     "release": "تحرير"
+  },
+  "inventoryRequest": {
+    "allTypes": "جميع الأنواع",
+    "inbound": "وارد",
+    "outbound": "صادر",
+    "transfer": "تحويل",
+    "requestId": "رقم الطلب",
+    "requestedBy": "المطلوب من قبل",
+    "type": "النوع",
+    "date": "التاريخ",
+    "items": "الأصناف",
+    "reason": "السبب",
+    "action": "الإجراء",
+    "inventoryRequest": "طلب المخزون",
+    "description": "إدارة طلبات المواد المطلوبة من الأقسام",
+    "searchPlaceholder": "ابحث عن طلبات المخزون...",
+    "newRequest": "طلب جديد",
+    "transaction": "معاملة"
+  },
+  "warehouseTransaction": {
+    "waybillId": "رقم الإذن",
+    "date": "التاريخ",
+    "direction": "الاتجاه",
+    "request": "الطلب",
+    "warehouse": "المستودع",
+    "ledgerStatus": "حالة الدفتر",
+    "action": "الإجراء",
+    "warehouseTransaction": "معاملات المستودع",
+    "description": "إدارة وتتبع جميع حركات المخزون الواردة والصادرة والداخلية",
+    "newTransaction": "معاملة جديدة",
+    "searchPlaceholder": "ابحث عن المرتجعات...",
+    "allDirections": "جميع الاتجاهات",
+    "allWarehouse": "جميع المستودعات",
+    "allStatus": "جميع الحالات"
   }
 }

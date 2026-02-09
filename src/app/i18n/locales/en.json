@@ -790,5 +790,39 @@
     "serial": "Serial",
     "action": "Action",
     "release": "Release"
+  },
+  "inventoryRequest": {
+    "allTypes": "All Types",
+    "inbound": "Inbound",
+    "outbound": "Outbound",
+    "transfer": "transfer",
+    "requestId": "Request ID",
+    "requestedBy": "Requested By",
+    "type": "Type",
+    "date": "Date",
+    "items": "Items",
+    "reason": "Reason",
+    "action": "Action",
+    "inventoryRequest": "Inventory Request",
+    "description": "Manage material requisition requests from departments",
+    "searchPlaceholder": "Search inventory requests...",
+    "newRequest": "New Request",
+    "transaction": "Transaction"
+  },
+  "warehouseTransaction": {
+    "waybillId": "Waybill ID",
+    "date": "Date",
+    "direction": "Direction",
+    "request": "Request",
+    "warehouse": "Warehouse",
+    "ledgerStatus": "Ledger Status",
+    "action": "Action",
+    "warehouseTransaction": "Warehouse Transactions",
+    "description": "Manage and track all inbound, outbound, and internal stock movement",
+    "newTransaction": "New Transaction",
+    "searchPlaceholder": "Search returns...",
+    "allDirections": "All Directions",
+    "allWarehouse": "All Warehouse",
+    "allStatus": "All Status"
   }
 }
