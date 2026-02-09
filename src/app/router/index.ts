@@ -22,6 +22,7 @@ import { SalesWaybillRoutes } from "@/modules/Inventory/Transactions/sales-waybi
 import { SalesReturnRoutes } from "@/modules/Inventory/Transactions/sales-return/routes";
 import { PurchaseReturnRoutes } from "@/modules/Inventory/Transactions/purchase-return/routes";
 import { ItemHoldRoutes } from "@/modules/Inventory/Operations/item-hold/routes";
+import { PhysicalCountRoutes } from "@/modules/Inventory/Operations/physical-count/routes";
 
 const defaultTitle = "Tera ERP";
 const routes = [
@@ -53,6 +54,7 @@ const routes = [
       ...SalesReturnRoutes,
       ...PurchaseReturnRoutes,
       ...ItemHoldRoutes,
+      ...PhysicalCountRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),

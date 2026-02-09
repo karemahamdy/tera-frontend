@@ -790,5 +790,22 @@
     "serial": "Serial",
     "action": "Action",
     "release": "Release"
+  },
+     "PhysicalCount": {
+    "PhysicalCount": "Physical Count",
+    "subtitle": "Physical inventory counting and reconciliation",
+    "addNew": "Create New Count",
+    "searchPlaceholder": "Search...",
+    "CountID": "Count ID",
+    "CountDate": "Count Date",
+    "Counted": "Counted",
+    "Variances": "Variances",
+    "total": "Total Items",
+    "Adjustment": "Adjustment",
+    "date": "Date",
+    "items": "Items",
+     "zone": "Zone",
+    "warehouse": "Warehouse",
+    "deleteConfirm" : "Are you sure you want to delete this item?"
   }
 }

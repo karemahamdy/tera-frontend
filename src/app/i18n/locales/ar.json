@@ -784,5 +784,23 @@
     "serial": "الرقم التسلسلي",
     "action": "الإجراء",
     "release": "تحرير"
-  }
+  },
+  "PhysicalCount": {
+  "PhysicalCount": "الجرد الفعلي",
+  "subtitle": "جرد المخزون الفعلي ومطابقة الفروقات",
+  "addNew": "إنشاء جرد جديد",
+  "searchPlaceholder": "بحث...",
+  "CountID": "رقم الجرد",
+  "CountDate": "تاريخ الجرد",
+  "Counted": "تم جرده",
+  "Variances": "الفروقات",
+  "total": "إجمالي الأصناف",
+  "Adjustment": "تسوية",
+  "date": "التاريخ",
+  "items": "الأصناف",
+  "zone": "المنطقة",
+  "warehouse": "المخزن",
+  "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+}
+
 }
