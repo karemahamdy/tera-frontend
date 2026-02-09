@@ -418,6 +418,9 @@
     "itemGroupImportedSuccessfully": "Item Group imported successfully"
   },
   "itemList": {
+       "ItemCreatedSuccessfully": "Item created successfully",
+    "ItemUpdatedSuccessfully": "Item updated successfully",
+    "ItemDeletedSuccessfully": "Item deleted successfully",
     "title": "Items",
     "subtitle": "Browse and manage all inventory items",
     "addItem": "Add New Item",
@@ -761,12 +764,31 @@
     "itemTransferMerge": "Item Transfer/Merge",
     "itemTransferMergeDescription": "Transfer or merge from one item to another while maintaining traceability records",
     "newTransaction": "New Transaction",
-    "itemTransactionsSearchPlaceholder": "Search transactions by type, date, or reference...",
+    "itemTransactionsSearchPlaceholder": "Search transactions...",
     "sourceItem": "Source Item",
     "warehouse": "Warehouse",
     "targetItem": "Target Item",
     "transactions": "Transactions",
     "type": "Type",
-    "transferDate": "Transfer Date"
+    "transferDate": "Transfer Date",
+    "allTypes": "All Types",
+    "transfer": "Transfer",
+    "merge": "Merge",
+    "itemHold": "Item Hold",
+    "itemHoldRelease": "Item Hold / Release",
+    "itemHoldReleaseDescription": "Manage inventory holds for quality checks, reservations, and damage",
+    "itemHoldSearchPlaceholder": "Search holds...",
+    "createHold": "Create Hold",
+    "reservation": "Reservation",
+    "qcHold": "QC Hold",
+    "code": "Code",
+    "itemName": "Item Name",
+    "zone": "Zone",
+    "quantity": "Quantity",
+    "reason": "Reason",
+    "date": "Date",
+    "serial": "Serial",
+    "action": "Action",
+    "release": "Release"
   }
 }
