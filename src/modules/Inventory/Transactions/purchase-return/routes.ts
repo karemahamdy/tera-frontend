@@ -9,5 +9,14 @@ export const PurchaseReturnRoutes = [
       permission: null
     },
   },
-  
+  {
+    path: "/purchase-return/create",
+    component: () => import("@/modules/Inventory/Transactions/purchase-return/pages/PurchaseReturnForm.vue"),
+    name: "PurchaseReturnCreate",
+    meta: {
+      hide: true,
+      localizedTitle: "PurchaseReturn",
+      permission: null
+    },
+  },
 ];
