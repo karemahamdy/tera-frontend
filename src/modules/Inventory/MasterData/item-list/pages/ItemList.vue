@@ -64,7 +64,7 @@ const filtersOperation = computed(() => {
             ],
         },
         {
-            placeholder: "itemGroup.title",
+            placeholder: "items.category",
             value: null,
             field: "itemGroup",
             options: [
@@ -88,7 +88,7 @@ const columns = computed(() => {
     const Columns = [
         { field: 'name', header: t('itemList.itemName'),type: 'slot',  sortable: true },
         { field: 'code', header: t('itemList.itemCode'), type: 'slot', sortable: true },
-        { field: 'itemGroupName', header: t('itemList.itemGroup'), type: 'slot', sortable: true, Class: 'custom-badge' },
+        { field: 'itemGroupName', header: t('items.category'), type: 'slot', sortable: true, Class: 'custom-badge' },
         { field: 'baseUnitName', header: t('itemList.UOM'), sortable: true },
         { field: 'wareHouse', header: t('itemList.warehouse'), sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },

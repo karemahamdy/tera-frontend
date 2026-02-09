@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useItems } from "../composables/useItems";
-const { files } = useItems();
+const { files, oldFiles, setDeletedFiles } = useItems();
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
@@ -39,6 +39,10 @@ const openFile = (file: File) => {
 
 const isImage = (file: File) => file.type.startsWith("image/");
 const isPdf = (file: File) => file.type === "application/pdf";
+
+const openFileByUrl = (url: string) => {
+  window.open(url, "_blank");
+};
 </script>
 
 <template>
@@ -79,64 +83,102 @@ const isPdf = (file: File) => file.type === "application/pdf";
     </p>
 
     <div
-      v-if="files.length"
+      v-if="files.length || oldFiles.length"
       class="p-5 w-full space-y-3 grid grid-cols-4 gap-4 flex-wrap"
     >
-      <div
-        v-for="(file, index) in files"
-        :key="index"
-        class="border bg-gray-100 border-gray-300 rounded-xl p-3 h-full cursor-pointer hover:bg-gray-200"
-        @click="openFile(file)"
-      >
-        <!-- PREVIEW -->
+      <template v-if="oldFiles.length">
         <div
-          class="mb-3 h-32 flex items-center justify-center overflow-hidden rounded-lg bg-white"
+          v-for="(oldFile, index) in oldFiles"
+          :key="oldFile.id"
+          class="border bg-gray-100 border-gray-300 rounded-xl p-3 h-full cursor-pointer hover:bg-gray-200"
+          @click="openFileByUrl(oldFile.url)"
         >
-          <!-- Image preview -->
-          <img
-            v-if="isImage(file)"
-            :src="getFileUrl(file)"
-            class="h-full object-contain"
-          />
-
-          <!-- PDF first page preview -->
-          <embed
-            v-else-if="isPdf(file)"
-            :src="getFileUrl(file) + '#page=1'"
-            type="application/pdf"
-            class="h-full w-full"
-          />
-
-          <!-- Fallback -->
-          <VsxIcon
-            v-else
-            iconName="Document"
-            :size="40"
-            type="linear"
-            class="text-gray-400"
-          />
-        </div>
-
-        <!-- FILE INFO -->
-        <p class="font-medium truncate text-center" :title="file.name">
-          {{ file.name }}
-        </p>
-
-        <p class="text-sm text-gray-500 text-center">
-          {{ (file.size / 1024).toFixed(2) }} KB
-        </p>
-
-        <!-- REMOVE -->
-        <div class="flex justify-center mt-4">
-          <button
-            class="px-5 cursor-pointer flex gap-1 items-center py-1 rounded-xl bg-danger-500 hover:bg-danger-700 text-white"
-            @click.stop="files.splice(index, 1)"
+          <!-- PREVIEW -->
+          <div
+            class="mb-3 h-32 flex items-center justify-center overflow-hidden rounded-lg bg-white"
           >
-            <VsxIcon iconName="Trash" :size="16" type="linear" />
-            {{ $t("button.remove") }}
-          </button>
+            <VsxIcon
+              iconName="Document"
+              :size="40"
+              type="linear"
+              class="text-gray-400"
+            />
+          </div>
+
+          <!-- FILE INFO -->
+          <p class="font-medium truncate text-center" :title="oldFile.fileName">
+            {{ oldFile.fileName }}
+          </p>
+
+          <!-- REMOVE -->
+          <div class="flex justify-center mt-4">
+            <button
+              class="px-5 cursor-pointer flex gap-1 items-center py-1 rounded-xl bg-danger-500 hover:bg-danger-700 text-white"
+              @click.stop="setDeletedFiles(index)"
+            >
+              <VsxIcon iconName="Trash" :size="16" type="linear" />
+              {{ $t("button.remove") }}
+            </button>
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-if="files.length">
+        <div
+          v-for="(file, index) in files"
+          :key="index"
+          class="border bg-gray-100 border-gray-300 rounded-xl p-3 h-full cursor-pointer hover:bg-gray-200"
+          @click="openFile(file)"
+        >
+          <!-- PREVIEW -->
+          <div
+            class="mb-3 h-32 flex items-center justify-center overflow-hidden rounded-lg bg-white"
+          >
+            <!-- Image preview -->
+            <img
+              v-if="isImage(file)"
+              :src="getFileUrl(file)"
+              class="h-full object-contain"
+            />
+
+            <!-- PDF first page preview -->
+            <embed
+              v-else-if="isPdf(file)"
+              :src="getFileUrl(file) + '#page=1'"
+              type="application/pdf"
+              class="h-full w-full"
+            />
+
+            <!-- Fallback -->
+            <VsxIcon
+              v-else
+              iconName="Document"
+              :size="40"
+              type="linear"
+              class="text-gray-400"
+            />
+          </div>
+
+          <!-- FILE INFO -->
+          <p class="font-medium truncate text-center" :title="file.name">
+            {{ file.name }}
+          </p>
+
+          <p class="text-sm text-gray-500 text-center">
+            {{ (file.size / 1024).toFixed(2) }} KB
+          </p>
+
+          <!-- REMOVE -->
+          <div class="flex justify-center mt-4">
+            <button
+              class="px-5 cursor-pointer flex gap-1 items-center py-1 rounded-xl bg-danger-500 hover:bg-danger-700 text-white"
+              @click.stop="files.splice(index, 1)"
+            >
+              <VsxIcon iconName="Trash" :size="16" type="linear" />
+              {{ $t("button.remove") }}
+            </button>
+          </div>
+        </div>
+      </template>
     </div>
 
     <div
