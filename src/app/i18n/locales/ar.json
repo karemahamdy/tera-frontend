@@ -784,5 +784,52 @@
     "serial": "الرقم التسلسلي",
     "action": "الإجراء",
     "release": "تحرير"
-  }
+  },
+  "PhysicalCount": {
+  "PhysicalCount": "الجرد الفعلي",
+  "subtitle": "جرد المخزون الفعلي ومطابقة الفروقات",
+  "addNew": "إنشاء جرد جديد",
+  "searchPlaceholder": "بحث...",
+  "CountID": "رقم الجرد",
+  "CountDate": "تاريخ الجرد",
+  "Counted": "تم جرده",
+  "Variances": "الفروقات",
+  "total": "إجمالي الأصناف",
+  "Adjustment": "تسوية",
+  "date": "التاريخ",
+  "items": "الأصناف",
+  "zone": "المنطقة",
+  "warehouse": "المخزن",
+  "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+},
+"InventoryAdjustment": {
+  "InventoryAdjustment": "تسوية المخزون",
+  "subtitle": "تعديل الكمية أو التكلفة لمعالجة فروقات الجرد",
+  "addNew": "إنشاء تسوية جديدة",
+  "searchPlaceholder": "بحث...",
+  "AdjustmentID": "رقم التسوية",
+  "reason": "السبب",
+  "date": "التاريخ",
+  "items": "الأصناف",
+  "zone": "المنطقة",
+  "warehouse": "المخزن",
+  "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+},
+"OpeningBalance": {
+  "OpeningBalance": "الرصيد الافتتاحي",
+  "subtitle": "تهيئة النظام - تسجيل المخزون الحالي عند بدء التشغيل",
+  "addNew": "إنشاء رصيد افتتاحي",
+  "searchPlaceholder": "بحث...",
+  "OBID": "رقم الرصيد الافتتاحي",
+  "TotalValue": "إجمالي القيمة",
+  "date": "التاريخ",
+  "UnitCost": "تكلفة الوحدة",
+  "Uom": "وحدة القياس",
+  "ItemName": "اسم الصنف",
+  "Quantity": "الكمية",
+  "warehouse": "المخزن",
+  "zone": "المنطقة",
+  "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+}
+
 }
