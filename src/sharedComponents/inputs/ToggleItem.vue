@@ -3,6 +3,7 @@ defineProps<{
   title: string;
   label: string;
   modelValue: boolean;
+  disabled?: boolean;
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -15,6 +16,7 @@ defineEmits(["update:modelValue"]);
     <div class="flex items-center gap-3">
       <ToggleSwitch
         :modelValue="modelValue"
+        :disabled="disabled"
         @update:modelValue="$emit('update:modelValue', $event)"
       />
       <span>{{ label }}</span>
