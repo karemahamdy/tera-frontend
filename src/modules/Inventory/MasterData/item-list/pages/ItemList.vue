@@ -187,7 +187,7 @@ const addBranch = () => {
                         <Badge v-else severity="transparent" class="circle-badge">
                             <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
                         </Badge>
-                        <div class="text-base text-gray-700">{{ data.name }}</div>
+                        <div class="text-base text-gray-700">{{ data.code }}</div>
                         </div>
                     </template>
                 </DynamicTable>
