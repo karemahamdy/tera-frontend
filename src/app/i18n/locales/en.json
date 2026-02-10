@@ -870,5 +870,28 @@
     "allDirections": "All Directions",
     "allWarehouse": "All Warehouse",
     "allStatus": "All Status"
+  },
+  "itemTransaction": {
+    "createNewTransaction": "Create New Transaction",
+    "newTransactionDescription": "Transfer Or merge from one item to another while maintaining audit trail",
+    "transactionType": "Transaction Type",
+    "selectTransactionType": "Select Transaction Type",
+    "notes": "Notes",
+    "notesPlaceholder": "Add any relevant notes...",
+    "sourceTargetItems": "Source and Target Items",
+    "sourceItem": "Source Item",
+    "sourceItemFrom": "Source Item (Form)",
+    "sourceItemSelect": "Select Source Item",
+    "targetItemSelect": "Select Target Item",
+    "targetItemTo": "Target Item (To)",
+    "targetItem": "Target Item",
+    "irreversibleOperation": "IRREVERSIBLE OPERATION",
+    "irreversibleOperation1": "• All quantities, transactions, and history from the source item will be transferred to the target item. The source item will become INACTIVE but not deleted.",
+    "irreversibleOperation2": "• Warehouse selection is disabled when merging. The merge will apply to all warehouses.",
+    "sourceItemDetails": "Source Item Details:",
+    "targetItemDetails": "Target Item Details:",
+    "totalQuantity": "• Total Quantity: ",
+    "locations": "• Locations: ",
+    "transactions": "• Transactions: "
   }
 }
