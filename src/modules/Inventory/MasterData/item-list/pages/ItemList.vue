@@ -86,8 +86,8 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'name', header: t('itemList.itemName'),type: 'slot',  sortable: true },
-        { field: 'code', header: t('itemList.itemCode'), type: 'slot', sortable: true },
+        { field: 'code', header: t('itemList.itemCode'),type: 'slot',  sortable: true },
+        { field: 'name', header: t('itemList.itemName'), type: 'slot', sortable: true },
         { field: 'itemGroupName', header: t('items.category'), type: 'slot', sortable: true, Class: 'custom-badge' },
         { field: 'baseUnitName', header: t('itemList.UOM'), sortable: true },
         { field: 'wareHouse', header: t('itemList.warehouse'), sortable: true },
@@ -179,7 +179,7 @@ const addBranch = () => {
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
-                    <template v-slot:["col-name"]="{ data }">
+                    <template v-slot:["col-code"]="{ data }">
                          <div class="flex items-center gap-2 rounded">
                         <Badge v-if="data.tracked" severity="success" class="circle-badge-sm">
                             <VsxIcon iconName="Airdrop" :size="20" type="linear" />
