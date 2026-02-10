@@ -136,7 +136,7 @@ const addItemTransactions = () => {
                     <template  v-slot:["col-type"]="{ data }">
                         <div class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
                             <VsxIcon v-if="data.type === 'Transfer'" iconName="ArrowSwapHorizontal" type="linear" />
-                            <VsxIcon v-else iconName="Routing" type="linear" />
+                            <VsxIcon v-else iconName="Routing2" type="linear" />
                             <span>{{ data.type }}</span>
                         </div>
                     </template>
