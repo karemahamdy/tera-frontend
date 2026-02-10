@@ -6,6 +6,7 @@ import InputText from 'primevue/inputtext';
 import Select from 'primevue/select';
 // import Textarea from 'primevue/textarea';
 import RadioButton from 'primevue/radiobutton';
+import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue';
 
 // const { t } = useI18n();
 const emit = defineEmits(['prev', 'submit']);
@@ -87,51 +88,12 @@ const grandTotal = 4814.25; // Calculation logic would go here
 
             <!-- Right Column: Summary -->
             <div class="w-full lg:w-1/3">
-                <div class="bg-primary-50 rounded-xl p-6 border border-gray-100 sticky top-4">
-                    <h3 class="font-bold text-lg text-gray-700 mb-4 flex items-center gap-2">
-                        <VsxIcon iconName="MenuBoard" :size="20" type="linear" color="#3F5FAC" />
-                        Summary
-                    </h3>
-
-                    <div class="space-y-3 mb-6">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Sub total ($)</span>
-                            <span class="font-bold text-gray-700">${{ subTotal.toFixed(2) }}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Sub total (SAR)</span>
-                            <span class="font-bold text-success-500">SAR 12,600.00</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Total Tax ($)</span>
-                            <span class="font-bold text-gray-700">{{ taxTotal.toFixed(2) }}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Total Tax (SAR)</span>
-                            <span class="font-bold text-success-500">SAR 229.25</span>
-                        </div>
-                    </div>
-
-                    <div class="p-4  border-t border-b border-gray-300">
-                        <label class="text-xs font-medium text-gray-700 uppercase mb-1 block">Global Discount</label>
-                        <div class="flex items-center gap-2">
-                            <InputText v-model.number="globalDiscount" prefix="-$" placeholder="0.00"
-                                class="flex-1 bg-gray-50 border-none" />
-                            <span class="text-success-500 text-sm font-bold">-SAR 0.00</span>
-                        </div>
-                    </div>
-
-                    <div class=" border-t border-gray-200">
-                        <div class="flex justify-between items-end mb-1">
-                            <span class="text-gray-700 font-bold text-lg">Grand Total</span>
-                            <span class="text-primary-700 font-bold text-2xl">${{ grandTotal }}</span>
-                        </div>
-                        <div class="flex justify-between items-end mb-1">
-                         <span class="text-left text-gray-500 font-light text-base">Include all taxes and fees</span>
-                            <span class="text-right text-success-500 text-sm font-medium">SAR 13,814.25</span>
-                        </div>
-                    </div>
-                </div>
+                <TransactionSummary 
+                    :subTotal="subTotal"
+                    :taxTotal="taxTotal"
+                    :grandTotal="grandTotal"
+                    v-model:globalDiscount="globalDiscount"
+                />
             </div>
         </div>
     </div>

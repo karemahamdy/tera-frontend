@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 import InputText from 'primevue/inputtext';
-import Select from 'primevue/select'; // PrimeVue 4 uses Select instead of Dropdown
-import Dialog from 'primevue/dialog';
-
+import Select from 'primevue/select'; 
+import BaseButton from '@/sharedComponents/BaseButton.vue';
+import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
+import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
 
 const emit = defineEmits(['next', 'prev']);
 
@@ -53,11 +52,10 @@ const items = ref([
 ]);
 
 // --- Computed ---
-const subtotal = computed(() => items.value.reduce((sum, item) => sum + item.total, 0));
+const subtotal = computed(() => items.value.reduce((sum: number, item: any) => sum + item.total, 0));
 
 // --- Item Selection Dialog ---
 const showItemDialog = ref(false);
-const searchQuery = ref('');
 const availableItems = ref([
   { code: 'ITM-001', name: 'Hydraulic Pump Model A', unit: 'PCS' },
   { code: 'ITM-045', name: 'Industrial Bearing 6205', unit: 'PCS' },
@@ -69,7 +67,7 @@ const openItemDialog = () => {
     showItemDialog.value = true;
 };
 
-const addItem = (item: any) => {
+const handleSelectItem = (item: any) => {
     items.value.push({
         id: Date.now(),
         code: item.code,
@@ -83,50 +81,22 @@ const addItem = (item: any) => {
         total: 0,
         serials: []
     });
-    showItemDialog.value = false;
 };
 
 // --- Quantity/Serial Dialog ---
 const showQtyDialog = ref(false);
 const currentItem = ref<any>(null);
-const serialInput = ref('');
-const qtyInput = ref("0");
-const batchInput = ref('');
-const expireDateInput = ref();
-const serialList = ref<any[]>([]);
 
 const openQtyDialog = (item: any) => {
     currentItem.value = item;
-    serialList.value = [...item.serials];
     showQtyDialog.value = true;
 };
 
-const addSerial = () => {
-    if (!serialInput.value && !qtyInput.value) return;
-    
-    serialList.value.push({
-        serial: serialInput.value,
-        qty: qtyInput.value || 1,
-        batch: batchInput.value,
-        expire: expireDateInput.value,
-        comment: ''
-    });
-    
-    // Reset inputs
-    serialInput.value = '';
-    // Keep batch/expire for convenience?
-};
-
-const saveSerials = () => {
+const handleSaveSerials = (payload: any) => {
     if (currentItem.value) {
-        currentItem.value.serials = [...serialList.value];
-        currentItem.value.quantity = serialList.value.reduce((acc, curr) => acc + Number(curr.qty), 0);
+        currentItem.value.serials = payload.serials;
+        currentItem.value.quantity = payload.totalQty;
     }
-    showQtyDialog.value = false;
-};
-
-const removeSerial = (index: number) => {
-    serialList.value.splice(index, 1);
 };
 
 const removeItem = (index: number) => {
@@ -237,121 +207,19 @@ const removeItem = (index: number) => {
 
     <!-- ================= DIALOGS ================= -->
 
-    <!-- Select Item Dialog -->
-    <Dialog v-model:visible="showItemDialog" modal header="Select Item" :style="{ width: '50vw' }" :breakpoints="{ '960px': '75vw', '641px': '90vw' }">
-        <div class="flex flex-col gap-4">
-            <span class="p-input-icon-left w-full">
-                <i class="pi pi-search" />
-                <InputText v-model="searchQuery" placeholder="Search items..." class="w-full bg-gray-50 border-gray-200" />
-            </span>
-            
-            <div class="overflow-y-auto max-h-[400px]">
-                <div v-for="item in availableItems" :key="item.code" class="flex items-center justify-between p-3 border-b border-gray-100 hover:bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-sm">
-                             <i class="pi pi-box"></i>
-                        </div>
-                        <div>
-                            <div class="font-bold text-gray-900">{{ item.code }}</div>
-                            <div class="text-sm text-gray-500">{{ item.name }}</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-gray-500 text-sm">{{ item.unit }}</span>
-                        <BaseButton label="Add" size="small" class="bg-primary-800 hover:bg-primary-900 text-white text-xs px-4" @click="addItem(item)" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </Dialog>
+    <ItemSelectionDialog 
+      v-model:visible="showItemDialog" 
+      :items="availableItems" 
+      @select="handleSelectItem" 
+    />
 
-    <!-- Add Quantity/Serial Dialog -->
-    <Dialog v-model:visible="showQtyDialog" modal :header="`Add Quantity - ${currentItem?.code}`" :style="{ width: '60vw' }" :breakpoints="{ '960px': '75vw', '641px': '95vw' }">
-        <div class="flex flex-col md:flex-row gap-6">
-            <!-- Left Form -->
-            <div class="w-full md:w-1/3 flex flex-col gap-4">
-                <h3 class="font-bold text-lg text-gray-900">Select Quantity</h3>
-                
-                <div class="flex flex-col gap-1">
-                    <label class="text-xs text-gray-600 font-medium">Serial</label>
-                     <InputText v-model="serialInput" placeholder="Enter Serial" class="w-full" />
-                </div>
-
-                 <div class="flex gap-2">
-                    <div class="flex flex-col gap-1 w-1/2">
-                        <label class="text-xs text-gray-600 font-medium">Quantity</label>
-                        <InputText v-model.number="qtyInput" placeholder="0" class="w-full" />
-                    </div>
-                    <div class="flex flex-col gap-1 w-1/2">
-                        <label class="text-xs text-gray-600 font-medium">Batch Number</label>
-                        <InputText v-model="batchInput" placeholder="Batch ID" class="w-full" />
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-1">
-                    <label class="text-xs text-gray-600 font-medium">Expire Date</label>
-                     <DatePicker v-model="expireDateInput" placeholder="Enter Expire date" class="w-full" />
-                </div>
-
-                <div class="flex flex-col gap-1">
-                     <label class="text-xs text-gray-600 font-medium">Comment</label>
-                     <Textarea v-model="serialInput" rows="3" placeholder="Additional notes..." class="w-full resize-none" />
-                </div>
-
-                <BaseButton label="Add Serial" class="w-full bg-primary-700 hover:bg-primary-800 text-white mt-2" @click="addSerial" />
-                <BaseButton label="Cancel" variant="ghost" @click="showQtyDialog = false" />
-            </div>
-
-            <!-- Right list -->
-            <div class="w-full md:w-2/3 bg-primary-50 rounded-lg p-4">
-                <div class="flex justify- items-center mb-4">
-                    <h3 class="font-bold text-lg text-gray-900">Added Serial</h3>
-                    <span class="text-sm text-gray-500">Identify items to return from selected original waybill.</span>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="text-xs text-gray-500 uppercase border-b border-gray-200">
-                            <tr>
-                                <th class="py-2">Serial</th>
-                                <th class="py-2">QTY</th>
-                                <th class="py-2">Batch</th>
-                                <th class="py-2">Expire</th>
-                                <th class="py-2">Comment</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-700">
-                             <tr v-for="(s, idx) in serialList" :key="idx" class="border-b border-gray-100">
-                                <td class="py-2 font-medium">{{ s.serial }}</td>
-                                <td class="py-2">{{ s.qty }}</td>
-                                <td class="py-2 text-xs uppercase bg-gray-100 px-1 rounded">{{ s.batch }}</td>
-                                <td class="py-2 text-gray-500">{{ s.expire ? new Date(s.expire).toLocaleDateString() : '-' }}</td>
-                                <td class="py-2 text-gray-500 truncate max-w-[100px]">{{ s.comment }}</td>
-                                <td class="py-2 text-right">
-                                    <button class="text-red-400 hover:text-red-600" @click="removeSerial(idx)">
-                                        <i class="pi pi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                 <div class="flex justify-between items-center mt-auto p-4 border-t border-gray-200 bg-white">
-                     <div class="flex flex-col">
-                        <span class="text-xs text-gray-500">Total QTY</span>
-                        <span class="text-xl font-bold text-primary-700">{{ serialList.reduce((acc, curr) => acc + Number(curr.qty), 0) }}</span>
-                     </div>
-                     <div class="flex gap-2">
-                         <BaseButton label="Cancel" variant="ghost" @click="showQtyDialog = false" />
-                         <BaseButton label="Finalize & Save" class="bg-primary-800 text-white border-none hover:bg-primary-900" @click="saveSerials" />
-                     </div>
-                 </div>
-
-            </div>
-        </div>
-    </Dialog>
+    <QuantitySerialDialog
+      v-if="currentItem" 
+      v-model:visible="showQtyDialog" 
+      :item="currentItem" 
+      :initialSerials="currentItem.serials"
+      @save="handleSaveSerials" 
+    />
 
   </div>
 </template>
