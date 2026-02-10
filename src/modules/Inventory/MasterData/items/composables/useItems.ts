@@ -256,7 +256,7 @@ export function useItems() {
 
   return {
     errors,
-
+    id,
     code,
     name,
     nameAr,

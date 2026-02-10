@@ -5,6 +5,7 @@ import { useLookups } from "@/composables/useLookups";
 
 const {
   errors,
+  id,
   code,
   name,
   nameAr,
@@ -72,6 +73,7 @@ onMounted(() => {
           v-model="code"
           :placeholder="$t('items.codePlaceholder')"
           :invalid="!!errors.code"
+          :disabled="id"
         />
         <FormInput
           :label="$t('items.name')"
