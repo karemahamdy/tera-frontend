@@ -58,7 +58,7 @@ const filtersOperation = computed(() => {
             field: "isActive",
             isSingle: true,
             options: [
-                { label: t("button.all"), value: " " },
+                { label: t("button.all"), value: null },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
@@ -68,7 +68,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "itemGroup",
             options: [
-                { label: t("button.all"), value: " " },
+                // { label: t("button.all"), value: " " },
                  ...itemGroupLookups.value
             ],
         },
@@ -77,7 +77,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "Warehouse",
             options: [
-                { label: t("button.all"), value: " " },
+                // { label: t("button.all"), value: " " },
                 ...warehouseLookup.value
             ],
         },
