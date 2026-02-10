@@ -93,7 +93,7 @@ onMounted(() => {
                         {{ $t("itemTransaction.notes") }}
                     </label>
                     <Textarea :modelValue="notes" rows="2" class="w-full p-3 border rounded-lg"
-                        :placeholder="$t('itemTransaction.notesPlaceholder')" :disabled="disabled" />
+                        :placeholder="$t('itemTransaction.notesPlaceholder')" />
                 </div>
 
                 <div v-if="transactionType === 'merge'"
