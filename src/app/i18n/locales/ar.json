@@ -864,5 +864,28 @@
     "allDirections": "جميع الاتجاهات",
     "allWarehouse": "جميع المستودعات",
     "allStatus": "جميع الحالات"
+  },
+  "itemTransaction": {
+    "createNewTransaction": "إنشاء معاملة جديدة",
+    "newTransactionDescription": "نقل أو دمج من صنف إلى آخر مع الحفاظ على سجل التدقيق",
+    "transactionType": "نوع المعاملة",
+    "selectTransactionType": "اختر نوع المعاملة",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "أضف أي ملاحظات ذات صلة...",
+    "sourceTargetItems": "الأصناف المصدر والمستهدفة",
+    "sourceItem": "الصنف المصدر",
+    "sourceItemFrom": "الصنف المصدر (من)",
+    "sourceItemSelect": "اختر الصنف المصدر",
+    "targetItemSelect": "اختر الصنف المستهدف",
+    "targetItemTo": "الصنف المستهدف (إلى)",
+    "targetItem": "الصنف المستهدف",
+    "irreversibleOperation": "عملية غير قابلة للرجوع",
+    "irreversibleOperation1": "• جميع الكميات والمعاملات والسجل من الصنف المصدر سيتم نقلها إلى الصنف المستهدف. سيصبح الصنف المصدر غير نشط ولن يتم حذفه.",
+    "irreversibleOperation2": "• تحديد المستودع معطل عند الدمج. سيتم تطبيق الدمج على جميع المستودعات.",
+    "sourceItemDetails": "تفاصيل الصنف المصدر:",
+    "targetItemDetails": "تفاصيل الصنف المستهدف:",
+    "totalQuantity": "• إجمالي الكمية: ",
+    "locations": "• المواقع: ",
+    "transactions": "• المعاملات: "
   }
 }
