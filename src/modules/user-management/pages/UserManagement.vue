@@ -287,11 +287,6 @@ onMounted(() => {
           @order-change="sort"
           lazy
         >
-          <template v-slot:["col-accessScope"]="{ data }">
-              <div>
-                {{ data.accessScope === 'Global' ? $t('users.global') : $t('users.branch') }}
-              </div>
-          </template>
           <template v-slot:["col-fullName"]="{ data }">
             <div class="flex items-center gap-2 rounded">
               <Badge
