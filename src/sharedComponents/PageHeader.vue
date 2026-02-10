@@ -240,6 +240,23 @@ const handleExportClick = async () => {
 }
 
 .p-multiselect-header .p-checkbox.p-component {
-  display: none !important;
+  position: relative;
+}
+.p-multiselect-header .p-checkbox.p-component::after {
+  position: absolute;
+  content: "All";
+  left: 2rem;
+}
+
+html[dir="rtl"] .p-multiselect-header .p-checkbox.p-component::after {
+  content: "الكل";
+  left: unset;
+  right: 2rem;
+}
+
+.p-multiselect-header {
+  flex-direction: column-reverse !important;
+  align-items: flex-start !important;
+  gap: 0.75rem;
 }
 </style>
