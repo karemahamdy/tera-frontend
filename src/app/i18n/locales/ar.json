@@ -498,7 +498,8 @@
       "lastCost": "آخر تكلفة",
       "standardCost": "التكلفة القياسية",
       "totalValue": "القيمة الإجمالية",
-      "itemAttachment": "مرفقات الصنف"
+      "itemAttachment": "مرفقات الصنف",
+      "noAttachments" : "لا يوجد مرفقات"
     },
     "cards": {
       "totalOnHand": "إجمالي المتوفر",
