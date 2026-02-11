@@ -710,7 +710,6 @@
 "ReceivingWarehousePlaceholder": "اختر المخزن",
 "zone": "المنطقة",
 "zonePlaceholder": "اختر المنطقة"
-
   },
   "salesWaybill": {
     "salesWaybill": "إذن صرف مبيعات",
@@ -723,7 +722,24 @@
     "date": "التاريخ",
     "items": "الأصناف",
     "tracking": "التتبع",
-    "deleteConfirm": "هل أنت متأكد أنك تريد حذف عملية البيع هذه؟"
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف عملية البيع هذه؟",
+      "CustomerDetails": "تفاصيل العميل",
+    "WaybillNumber": "رقم بوليصة الشحن",
+    "WaybillNumberPlaceholder": "أدخل رقم بوليصة الشحن",
+    "Customer": "العميل",
+    "CustomerPlaceholder": "اختر العميل",
+    "SalesOrderReference": "رقم طلب البيع",
+    "SalesOrderReferencePlaceholder": "أدخل رقم طلب البيع",
+    "WaybillDate": "تاريخ البوليصة",
+    "WaybillDatePlaceholder": "اختر تاريخ البوليصة",
+    "ExpectedDelivery": "تاريخ التسليم المتوقع",
+    "ExpectedDeliveryPlaceholder": "اختر تاريخ التسليم المتوقع",
+    "TrackingNumber": "رقم التتبع",
+    "TrackingNumberPlaceholder": "أدخل رقم التتبع",
+    "ShippingAddress": "عنوان الشحن",
+    "ShippingAddressPlaceholder": "أدخل عنوان الشحن",
+    "PurchaseOrder": "أمر الشراء",
+    "SalesOrderPlaceholder": "اختر أمر الشراء"
   },
   "salesReturn": {
     "salesReturn": "مرتجع المبيعات",

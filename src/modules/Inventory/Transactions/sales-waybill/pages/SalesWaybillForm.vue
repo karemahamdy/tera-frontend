@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import SupplierDetails from '../components/SupplierDetails.vue';
+import SalesDetails from '../components/SalesDetails.vue';
 import WarehouseDetails from '../components/WarehouseDetails.vue';
 import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
 import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
@@ -21,7 +21,7 @@ const submit = () => {
 };
 
 const steps = [
-  { label: "Commercial Details" },
+  { label: "Sales Details" },
   { label: "Warehouse Details" },
   { label: "Line Items" },
   { label: "Payment" }
@@ -34,7 +34,7 @@ const steps = [
     <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
-          <SupplierDetails v-if="activeStep === 0" />
+          <SalesDetails v-if="activeStep === 0" />
           <WarehouseDetails v-else-if="activeStep === 1" />
           <LineItems v-else-if="activeStep === 2" @next="nextTab" @prev="previousTab" />
           <Payment v-else-if="activeStep === 3" @prev="previousTab" @submit="submit" />

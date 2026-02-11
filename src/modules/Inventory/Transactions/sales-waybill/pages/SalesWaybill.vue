@@ -139,7 +139,7 @@ const handleDeleteConfirm = async () => {
 };
 
 const addPurchaseWaybill = () => {
-    router.push({ name: 'PurchaseWaybillCreate' });
+    router.push({ name: 'SalesWaybillCreate' });
 };
 const getStatusBadge = (status: any) => {
     return status === "Shipped" ? "status-active" : "status-inactive";

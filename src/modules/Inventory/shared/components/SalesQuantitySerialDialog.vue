@@ -27,6 +27,7 @@ const columns = computed(() => [
     { field: 'qty', header: t('serial.qty') },
     { field: 'batch', header: t('serial.batch') },
     { field: 'expire', header: t('serial.expire') },
+    { field: 'serialNumber2', header: t('serial.serialNumber2') },
     { field: 'comment', header: t('serial.comment') },
     { field: 'action', header: '' }
 ]);
@@ -105,52 +106,14 @@ watch(localVisible, (newVal) => emit('update:visible', newVal));
                         <InputText v-model="serialInput" :placeholder="t('serial.selectSerial')" class="w-full" />
                     </div>
 
-                    <div class="flex gap-2">
-                        <div class="flex flex-col gap-1 w-1/2">
-                            <label class="text-xs text-gray-600 font-medium">
-                                {{ t('serial.batch') }}
-                            </label>
-                            <InputText v-model="batchInput" :placeholder="t('serial.batch')" class="w-full" />
-                        </div>
 
-                        <div class="flex flex-col gap-1 w-1/2">
-                            <label class="text-xs text-gray-600 font-medium">
-                                {{ t('serial.quantity') }}
-                            </label>
-                            <InputText v-model.number="qtyInput" :placeholder="t('serial.enterQuantity')"
-                                class="w-full" />
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col gap-1">
+                    <div class="flex flex-col gap-1 w-full">
                         <label class="text-xs text-gray-600 font-medium">
-                            {{ t('serial.expire') }}
+                            {{ t('serial.quantity') }}
                         </label>
-                        <InputText v-model="expireDateInput" :placeholder="t('serial.date')" class="w-[105]" />
+                        <InputText v-model.number="qtyInput" :placeholder="t('serial.enterQuantity')" class="w-full" />
                     </div>
 
-                    <div class="flex gap-2">
-                        <div class="flex flex-col gap-1 w-1/2">
-                            <label class="text-xs text-gray-600 font-medium">
-                                {{ t('serial.serialNumber2') }}
-                            </label>
-                            <InputText :placeholder="t('serial.enterSN2')" class="w-full" />
-                        </div>
-
-                        <div class="flex flex-col gap-1 w-1/2">
-                            <label class="text-xs text-gray-600 font-medium">
-                                {{ t('serial.serialNumber3') }}
-                            </label>
-                            <InputText :placeholder="t('serial.enterSN3')" class="w-full" />
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs text-gray-600 font-medium">
-                            {{ t('serial.comment') }}
-                        </label>
-                        <InputText v-model="commentInput" :placeholder="t('serial.note')" class="w-full" />
-                    </div>
                 </div>
 
                 <div class="mt-auto flex flex-col gap-3">

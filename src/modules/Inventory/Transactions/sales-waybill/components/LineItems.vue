@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
+import SalesQuantitySerialDialog from '@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue';
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
-import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
+
 
 const { t } = useI18n();
 const emit = defineEmits(['next', 'prev']);
@@ -206,17 +207,16 @@ const removeItem = (data: any) => {
                 ${{ subtotal.toFixed(2) }}
             </span>
         </div>
+ 
+     <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
 
-        <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
-
-        <QuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
+        <SalesQuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
             :initialSerials="currentItem.serials" @save="handleSaveSerials" />
 
     </div>
 </template>
 
 <style scoped>
-/* Custom Table Styles override if needed, using tailwind classes mostly */
 :deep(.p-select) {
     border-color: #f3f4f6;
     background-color: #f9fafb;
