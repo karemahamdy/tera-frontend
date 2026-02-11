@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, nextTick  } from "vue";
 import Notification from "@/sharedComponents/Notification.vue";
 import ChangeUserPassword from "@/sharedComponents/ChangeUserPassword.vue";
 import type { Branch, ChangePassword } from "../types/user";
 import { toastService } from "@/app/services/toastService";
+import routesCode from '@/app/constant/routes-code.json';
+
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -96,35 +100,56 @@ const handlePasswordChanged = async (values: ChangePassword) => {
     toastService.error(error as string);
   }
 };
+
+
+const selectedValue = ref(null);
+
+const treeOptions = computed(() => {
+  const mapModules = (modules: any[]): any[] => {
+    return modules.map((item) => ({
+      key: item.code,
+      label: item.name,
+      data: item,
+      selectable: !item.children || item.children.length === 0,
+      children: item.children ? mapModules(item.children) : [],
+    }));
+  };
+
+  return mapModules(userStore.modules);
+});
+
+const onSelect = async () => {
+  if (selectedValue.value) {
+    const code = Object.keys(selectedValue.value)[0];
+    const routeCodePath = routesCode[code as keyof typeof routesCode];
+    if (routeCodePath) router.push(routeCodePath);
+    else router.push(`/${code}`);
+
+    await nextTick();
+    selectedValue.value = null;
+  }
+}
+
 </script>
 <template>
   <header class="h-16 flex items-center px-4 bg-white/80 backdrop-blur shadow">
     <div class="flex-1 flex items-center justify-between w-full">
-      <div class="text-gray-500 flex items-center gap-2">
-        <VsxIcon iconName="SearchNormal" :size="24" type="linear" />
-        <input
-          v-model="q"
-          :placeholder="$t('table.search')"
-          class="p-2 rounded w-64"
-        />
+      <div class="text-gray-500 flex items-center gap-2 topbar w-full">
+        <TreeSelect showClear selectionMode="single" v-model="selectedValue" :options="treeOptions"
+          :placeholder="$t('table.search')" @change="onSelect" filter class="w-1/2">
+          <template #dropdownicon>
+            <VsxIcon iconName="SearchNormal" :size="24" type="linear" />
+          </template>
+        </TreeSelect>
       </div>
 
       <div class="flex items-center gap-3">
         <!-- Branch Switcher -->
-        <Dropdown
-          v-if="branches.length > 0"
-          filter
-          v-model="selectedBranch"
-          :options="branches"
-          :optionLabel="$i18n.locale === 'ar' ? 'nameAr' : 'nameEn'"
-          :placeholder="$t('Select Branches')"
-          class="w-48"
-        />
+        <Dropdown v-if="branches.length > 0" filter v-model="selectedBranch" :options="branches"
+          :optionLabel="$i18n.locale === 'ar' ? 'nameAr' : 'nameEn'" :placeholder="$t('Select Branches')"
+          class="w-48" />
 
-        <button
-          class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full"
-          @click="switchLanguage"
-        >
+        <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full" @click="switchLanguage">
           <VsxIcon iconName="Translate" :size="24" type="linear" />
         </button>
 
@@ -134,21 +159,12 @@ const handlePasswordChanged = async (values: ChangePassword) => {
         </button> -->
         <Notification />
 
-        <div
-          class="flex items-center gap-2 cursor-pointer"
-          @click="toggleMenu"
-          aria-haspopup="true"
-          aria-controls="user_menu"
-        >
-          <Avatar
-            :image="userProfile?.profileImageUrl || undefined"
-            :label="
-              !userProfile?.profileImageUrl
-                ? userProfile?.fullName.charAt(0)
-                : ''
-            "
-            shape="circle"
-          />
+        <div class="flex items-center gap-2 cursor-pointer" @click="toggleMenu" aria-haspopup="true"
+          aria-controls="user_menu">
+          <Avatar :image="userProfile?.profileImageUrl || undefined" :label="!userProfile?.profileImageUrl
+            ? userProfile?.fullName.charAt(0)
+            : ''
+            " shape="circle" />
 
           <span v-if="!collapsed" class="hidden sm:inline text-gray-500">
             <span class="font-semibold">
@@ -163,9 +179,8 @@ const handlePasswordChanged = async (values: ChangePassword) => {
         <Menu ref="menu" id="user_menu" :model="menuItems" popup>
           <template #item="{ item }">
             <div>
-              <a class="p-2 flex gap-3 items-center cursor-pointer" @click="item.command?.({ originalEvent: $event, item })"
-              :class="{'text-danger-500': item.isDanger }"
-              >
+              <a class="p-2 flex gap-3 items-center cursor-pointer"
+                @click="item.command?.({ originalEvent: $event, item })" :class="{ 'text-danger-500': item.isDanger }">
                 <VsxIcon :iconName="item.icon" :size="24" type="linear" />
                 {{ item.label }}
               </a>
@@ -176,9 +191,16 @@ const handlePasswordChanged = async (values: ChangePassword) => {
     </div>
   </header>
   <template v-if="showDialog">
-    <ChangeUserPassword
-      v-model:visible="showDialog"
-      @passwordChanged="handlePasswordChanged"
-    />
+    <ChangeUserPassword v-model:visible="showDialog" @passwordChanged="handlePasswordChanged" />
   </template>
 </template>
+
+
+<style>
+.topbar .p-treeselect.p-component.p-inputwrapper {
+  flex-direction: row-reverse !important;
+  border: unset !important;
+  box-shadow: unset !important;
+  background-color: var(--color-gray-50) !important;
+}
+</style>
