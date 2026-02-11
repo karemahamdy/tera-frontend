@@ -57,7 +57,7 @@ export interface Zone {
   columns: number;
   racks: number;
   locations: Location[];
-  isExpanded?: boolean; // For UI toggle
+  isExpanded?: boolean; 
 }
 
 export interface Pagination {
@@ -135,4 +135,63 @@ export interface ItemOverview {
   itemAttachments: ItemAttachment[];
   itemUnitsOfMeasure: ItemUnitOfFeature[];
   itemGroups: ItemGroupsOverview;
+}
+
+export interface ItemTransaction {
+  date: string;
+  warehaouse: string;
+  transactionType: string;
+  transactionDocNumber: string;
+  qountity: number;
+  balance: number;
+  unitCoust: number;
+}
+
+export interface ItemTransactionResponse {
+  items: ItemTransaction[];
+  pageIndex: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+}
+
+export interface WarehouseStock {
+  warehouseCode: string;
+  zoneLocation: string;
+  availableQuantity: number;
+  holdQuantity: number;
+  onHandQuantity: number;
+}
+
+export interface LastTransaction {
+  warehauseCode: string;
+  serialNumber: string;
+  zoneCode: string;
+  status: string;
+  lastTransactionCode: string;
+  transactionType: string;
+  quantity: number;
+}
+
+export interface ItemStockResponse {
+  warehouseStockDto: WarehouseStock[];
+  lastTransactionsDto: LastTransaction[];
+}
+
+export interface PricingDetail {
+  basePricing: number;
+  baseOfUnitNumber: number;
+  unitName: string;
+  baseName: string;
+}
+
+export interface ItemPricingResponse {
+  lastPurchasePriceDto: PricingDetail | null;
+  lastSalsePriceDto: PricingDetail | null;
+}
+
+export interface ItemCards {
+  totalOnHand: number;
+  available: number;
+  holdItem: number;
 }
