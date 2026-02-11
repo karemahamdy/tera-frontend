@@ -893,5 +893,25 @@
     "totalQuantity": "• Total Quantity: ",
     "locations": "• Locations: ",
     "transactions": "• Transactions: "
+  },
+  "itemHold": {
+    "createItemHold": "Create Item Hold",
+    "createItemHoldDescription": "Manage inventory holds for quality checks, reservations, and damage",
+    "item": "Item",
+    "itemPlaceholder": "Select Item...",
+    "holdType": "Hold Type",
+    "holdTypePlaceholder": "Select Hold Type",
+    "holdDate": "Hold Date",
+    "holdDatePlaceholder": "Enter Hold date",
+    "add": "Add",
+    "quantity": "Quantity",
+    "quantityPlaceholder": "Enter Quantity",
+    "notes": "Reason / Notes",
+    "notesPlaceholder": "Detailed reason for hold...",
+    "holdProcess": "Hold Process",
+    "holdProcess1": "• Add items Want to be hold",
+    "holdProcess2": "• Select hold type and reason",
+    "holdProcess3": "• For serial items: select specific serial numbers",
+    "holdProcess4": "• Items blocked from transactions"
   }
 }
