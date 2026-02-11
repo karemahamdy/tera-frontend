@@ -81,10 +81,11 @@ function logout() {
 
           <!-- Dynamic Items -->
           <SidebarItem
-            v-for="item in modulesItems"
+            v-for="item in userStore.modules"
             :key="item.code"
             :item="item"
             :collapsed="collapsed"
+            icon="SecurityUser"
             :activeClass="
               $i18n.locale === 'ar'
                 ? 'active active-link-ar'

@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axiosWrapper from "@/app/http/axiosWrapper";
 import i18n from "@/app/i18n/index";
+import type { ModulesItem, QuickAccessItem } from "@/app/types/navigation";
+
 import type {
   User,
   UserData,
@@ -64,6 +66,7 @@ export const useUserStore = defineStore("user", {
     lang: Lang() as string,
     entities: [] as Entity[],
     userProfile: null as UserGlobalProfile | null,
+    modules: [] as QuickAccessItem[],
     requiresPasswordReset:
       localStorage.getItem("requiresPasswordReset") === "true",
     getSessionErrorMsgFlag: true,
@@ -84,7 +87,7 @@ export const useUserStore = defineStore("user", {
       document.documentElement.setAttribute("lang", lang);
       document.documentElement.setAttribute(
         "dir",
-        lang === "en" ? "ltr" : "rtl"
+        lang === "en" ? "ltr" : "rtl",
       );
 
       try {
@@ -106,13 +109,13 @@ export const useUserStore = defineStore("user", {
       const response = await axiosWrapper.post<UserData>(
         "/Auth/login",
         payload,
-        {}
+        {},
       );
       const tokens = response.data as AuthData;
       this.requiresPasswordReset = response.data.requiresPasswordReset;
       localStorage.setItem(
         "requiresPasswordReset",
-        String(response.data.requiresPasswordReset)
+        String(response.data.requiresPasswordReset),
       );
       this.rememberMe = payload.rememberMe;
       localStorage.setItem("rememberMe", String(payload.rememberMe));
@@ -128,7 +131,7 @@ export const useUserStore = defineStore("user", {
       try {
         const tokens = await axiosWrapper.post<AuthDataResponse>(
           "/Auth/refresh-token",
-          { refreshToken: this.refreshToken }
+          { refreshToken: this.refreshToken },
         );
         this.setTokens(tokens.data as AuthData);
         return true;
@@ -196,12 +199,12 @@ export const useUserStore = defineStore("user", {
     async switchBranch(branchId: string) {
       try {
         const response = await axiosWrapper.post<SwitchBranch>(
-          `/user-profile/switch-branch?BranchId=${branchId}`
+          `/user-profile/switch-branch?BranchId=${branchId}`,
         );
         // Update local state
         if (this.userProfile && this.userProfile.branches) {
           const newBranch = this.userProfile.branches.available.find(
-            (b) => b.id === branchId
+            (b) => b.id === branchId,
           );
           if (newBranch) {
             this.userProfile.branches.current = newBranch;
@@ -221,13 +224,27 @@ export const useUserStore = defineStore("user", {
       this.entities = data.data as Entity[];
     },
 
+    normalizeModules(items: ModulesItem[]): QuickAccessItem[] {
+      return items.map((item) => {
+        const children = [...(item.screens ?? []), ...(item.sections ?? [])];
+        return {
+          code: item.code,
+          name: item.name,
+          children: this.normalizeModules(children),
+        };
+      });
+    },
+
     // ------------------------------------
     // FETCH USER PROFILE
     // ------------------------------------
     async fetchUserProfile() {
       try {
-        const response = await axiosWrapper.get<{ data: UserGlobalProfile }>("/user-profile");
+        const response = await axiosWrapper.get<{ data: UserGlobalProfile }>(
+          "/user-profile",
+        );
         this.userProfile = response.data;
+        this.modules = this.normalizeModules(response.data.modules)
         return this.userProfile;
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
