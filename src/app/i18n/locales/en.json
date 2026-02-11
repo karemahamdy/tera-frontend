@@ -958,6 +958,58 @@
     "globalDiscount": "Global Discount",
     "grandTotal": "Grand Total",
     "includeAllTaxes": "Include all taxes and fees"
+  },
+  "serial": {
+    "selectQuantity": "Select Quantity",
+    "serial": "Serial",
+    "serialNumber": "Serial Number",
+    "serialNumber2": "Serial Number 2",
+    "serialNumber3": "Serial Number 3",
+    "selectSerial": "Select Serial",
+    "enterSN2": "Enter S/N 2",
+    "enterSN3": "Enter S/N 3",
+    "batch": "Batch",
+    "quantity": "Quantity",
+    "qty": "QTY",
+    "enterQuantity": "Enter Quantity",
+    "expire": "Expire",
+    "date": "Date",
+    "comment": "Comment",
+    "note": "Note",
+    "addSerial": "Add Serial",
+    "addedSerial": "Added Serial",
+    "identifyItems": "Identify items to return from selected original waybill.",
+    "totalQty": "Total QTY",
+    "finalizeSave": "Finalize & Save"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "import": "Import"
+  },
+  "itemsList": {
+    "title": "Line Items",
+    "description": "Add items to your purchase waybill. Tracked items require serial/batch assignment.",
+    "addItem": "Add Item",
+    "add": "Add",
+    "itemCode": "Item Code",
+    "itemName": "Item Name",
+    "quantity": "Quantity",
+    "uom": "UOM",
+    "warehouse": "Warehouse",
+    "zone": "Zone",
+    "unitPrice": "Unit Price",
+    "tax": "Tax %",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "items": "Items"
+  },
+  "itemDialog": {
+    "selectItem": "Select Item",
+    "search": "Search items...",
+    "itemCode": "Item Code",
+    "itemName": "Item Name",
+    "unit": "Unit",
+    "add": "Add"
   }
 
 }

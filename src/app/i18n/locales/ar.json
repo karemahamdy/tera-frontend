@@ -951,6 +951,58 @@
     "globalDiscount": "الخصم العام",
     "grandTotal": "الإجمالي الكلي",
     "includeAllTaxes": "يشمل جميع الضرائب والرسوم"
+  },
+  "serial": {
+    "selectQuantity": "اختيار الكمية",
+    "serial": "السيريال",
+    "serialNumber": "الرقم التسلسلي",
+    "serialNumber2": "الرقم التسلسلي 2",
+    "serialNumber3": "الرقم التسلسلي 3",
+    "selectSerial": "اختر السيريال",
+    "enterSN2": "ادخل سيريال 2",
+    "enterSN3": "ادخل سيريال 3",
+    "batch": "الدفعة",
+    "quantity": "الكمية",
+    "qty": "الكمية",
+    "enterQuantity": "ادخل الكمية",
+    "expire": "تاريخ الانتهاء",
+    "date": "التاريخ",
+    "comment": "ملاحظة",
+    "note": "ملاحظة",
+    "addSerial": "إضافة سيريال",
+    "addedSerial": "السيريالات المضافة",
+    "identifyItems": "حدد العناصر المراد إرجاعها من إذن الشحن الأصلي.",
+    "totalQty": "إجمالي الكمية",
+    "finalizeSave": "حفظ وإنهاء"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "import": "استيراد"
+  },
+  "itemsList": {
+    "title": "عناصر الفاتورة",
+    "description": "أضف العناصر إلى إذن الشراء. العناصر المتتبعة تحتاج إلى تحديد سيريال أو باتش.",
+    "addItem": "إضافة عنصر",
+    "add": "إضافة",
+    "itemCode": "كود الصنف",
+    "itemName": "اسم الصنف",
+    "quantity": "الكمية",
+    "uom": "الوحدة",
+    "warehouse": "المخزن",
+    "zone": "المنطقة",
+    "unitPrice": "سعر الوحدة",
+    "tax": "الضريبة %",
+    "total": "الإجمالي",
+    "subtotal": "الإجمالي الفرعي",
+    "items": "عنصر"
+  },
+  "itemDialog": {
+    "selectItem": "اختيار صنف",
+    "search": "ابحث عن صنف...",
+    "itemCode": "كود الصنف",
+    "itemName": "اسم الصنف",
+    "unit": "الوحدة",
+    "add": "إضافة"
   }
 
 }

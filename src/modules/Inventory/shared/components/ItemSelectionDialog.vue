@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-// import BaseButton from '@/sharedComponents/BaseButton.vue';
+import { ref, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   visible: boolean;
@@ -26,34 +26,96 @@ const selectItem = (item: any) => {
   emit('select', item);
   localVisible.value = false;
 };
+
+const columns = computed(() => {
+    return [
+        { field: 'code', header: t('itemDialog.itemCode'), sortable: true },
+        { field: 'name', header: t('itemDialog.itemName'), sortable: true },
+        { field: 'unit', header: t('itemDialog.unit'), sortable: true },
+        { field: 'action', header: '' }
+    ];
+});
+
+const filteredItems = computed(() => {
+    if (!searchQuery.value) return props.items;
+    const query = searchQuery.value.toLowerCase();
+    return props.items.filter((item: any) => 
+        item.code?.toLowerCase().includes(query) || 
+        item.name?.toLowerCase().includes(query)
+    );
+});
 </script>
 
 <template>
-    <Dialog v-model:visible="localVisible" modal header="Select Item" :style="{ width: '50vw' }" :breakpoints="{ '960px': '75vw', '641px': '90vw' }">
+    <Dialog 
+      v-model:visible="localVisible" 
+      modal 
+      :header="t('itemDialog.selectItem')" 
+      :style="{ width: '60vw' }" 
+      :breakpoints="{ '960px': '75vw', '641px': '90vw' }"
+    >
         <div class="flex flex-col gap-4">
-            <span class="p-input-icon-left w-full">
-                <i class="pi pi-search" />
-                <InputText v-model="searchQuery" placeholder="Search items..." class="w-full bg-gray-50 border-gray-200" />
+            <span class="w-full">
+                <InputText 
+                  v-model="searchQuery" 
+                  :placeholder="t('itemDialog.search')" 
+                  class="w-full bg-gray-50 border-gray-200" 
+                />
             </span>
             
-            <div class="overflow-y-auto max-h-[400px]">
-                <div v-for="item in items" :key="item.code" class="flex items-center justify-between p-3 border-b border-gray-100 hover:bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-sm">
-                             <i class="pi pi-box"></i>
+            <div class="overflow-hidden rounded-lg border border-gray-100">
+                <DynamicTable 
+                    :columns="columns" 
+                    :data="filteredItems" 
+                    :paginator="false" 
+                    :rows="5"
+                    :showView="false"
+                    :showEdit="false"
+                    :showDelete="false"
+                >
+                    <template #col-code="{ data }">
+                         <div class="flex items-center gap-2 rounded">
+                        <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
+                            <VsxIcon iconName="Airdrop" :size="20" type="linear" />
+                        </Badge>
+                        <Badge v-else severity="transparent" class="circle-badge">
+                            <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
+                        </Badge>
+                        <div class="text-base text-gray-700">{{ data.code }}</div>
                         </div>
-                        <div>
-                            <div class="font-bold text-gray-900">{{ item.code }}</div>
-                            <div class="text-sm text-gray-500">{{ item.name }}</div>
+                    </template>
+                    
+                    <template #col-action="{ data }">
+                        <div class="flex justify-end">
+                            <BaseButton 
+                              :label="t('itemDialog.add')" 
+                              size="small" 
+                              varient="primary" 
+                              @click="selectItem(data)" 
+                            />
                         </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-gray-500 text-sm">{{ item.unit }}</span>
-                        <!-- Using BaseButton as requested -->
-                        <BaseButton label="Add" size="small" class="bg-primary-800 hover:bg-primary-900 text-white text-xs px-4" @click="selectItem(item)" />
-                    </div>
-                </div>
+                    </template>
+                </DynamicTable>
             </div>
         </div>
     </Dialog>
 </template>
+
+<style scoped>
+.circle-badge-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+.circle-badge {
+ background-color: transparent;
+}
+.icon-transparent {
+  color: transparent; 
+}
+</style>
