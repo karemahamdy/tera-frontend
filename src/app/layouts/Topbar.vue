@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick  } from "vue";
+import { ref, computed, onMounted, nextTick } from "vue";
 import Notification from "@/sharedComponents/Notification.vue";
 import ChangeUserPassword from "@/sharedComponents/ChangeUserPassword.vue";
 import type { Branch, ChangePassword } from "../types/user";
@@ -133,7 +133,7 @@ const onSelect = async () => {
 </script>
 <template>
   <header class="h-16 flex items-center px-4 bg-white/80 backdrop-blur shadow">
-    <div class="flex-1 flex items-center justify-between w-full">
+    <div class="flex-1 flex items-center justify-between w-1/2">
       <div class="text-gray-500 flex items-center gap-2 topbar w-full">
         <TreeSelect showClear selectionMode="single" v-model="selectedValue" :options="treeOptions"
           :placeholder="$t('table.search')" @change="onSelect" filter class="w-1/2">
@@ -143,7 +143,7 @@ const onSelect = async () => {
         </TreeSelect>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 w-1/2">
         <!-- Branch Switcher -->
         <Dropdown v-if="branches.length > 0" filter v-model="selectedBranch" :options="branches"
           :optionLabel="$i18n.locale === 'ar' ? 'nameAr' : 'nameEn'" :placeholder="$t('Select Branches')"
@@ -153,10 +153,6 @@ const onSelect = async () => {
           <VsxIcon iconName="Translate" :size="24" type="linear" />
         </button>
 
-        <!-- <button class="p-2 text-gray-500 cursor-pointer bg-[#FAFBFB] rounded-full relative">
-          <VsxIcon iconName="Notification" :size="24" type="linear" />
-          <span v-if="hasNotification" class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#FC9D0F] rounded-full"></span>
-        </button> -->
         <Notification />
 
         <div class="flex items-center gap-2 cursor-pointer" @click="toggleMenu" aria-haspopup="true"
@@ -167,7 +163,7 @@ const onSelect = async () => {
             " shape="circle" />
 
           <span v-if="!collapsed" class="hidden sm:inline text-gray-500">
-            <span class="font-semibold">
+            <span class="font-semibold w-30 truncate">
               {{ userProfile?.fullName || "Admin" }}
             </span>
             <br />
