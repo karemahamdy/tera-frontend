@@ -28,7 +28,7 @@ function navigate() {
   if (props.item.code) {
     const routeCodePath = routesCode[props.item.code as keyof typeof routesCode];
     if (routeCodePath) router.push(routeCodePath);
-    else router.push(props.item.code);
+    else router.push(`/${props.item.code}`);
   }
 }
 
