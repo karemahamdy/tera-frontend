@@ -233,6 +233,7 @@ const onSubmit = handleSubmit(async (values) => {
               <BaseButton
                 :label="isEditMode ? 'Update' : 'Assign'"
                 variant="primary"
+                type="submit"
                 block
                 :disabled="isSubmitting"
                 :loading="isSubmitting"
