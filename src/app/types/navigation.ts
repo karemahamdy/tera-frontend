@@ -6,9 +6,16 @@ export interface NavItem {
   badge?: string | number
 }
 
+export interface QuickAccessItem {
+  code: string;
+  name: string;
+  children: QuickAccessItem[];
+}
+
 export interface ModulesItem {
   code: string;
   name: string;
-  screens: ModulesItem[];
-  sections: ModulesItem[];
+  screens?: ModulesItem[];
+  sections?: ModulesItem[];
 }
+
