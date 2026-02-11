@@ -887,5 +887,25 @@
     "totalQuantity": "• إجمالي الكمية: ",
     "locations": "• المواقع: ",
     "transactions": "• المعاملات: "
+  },
+  "itemHold": {
+    "createItemHold": "إنشاء حجز صنف",
+    "createItemHoldDescription": "إدارة حجز المخزون للفحص الجودة والحجوزات والتلف",
+    "item": "الصنف",
+    "itemPlaceholder": "اختر الصنف...",
+    "holdType": "نوع الحجز",
+    "holdTypePlaceholder": "اختر نوع الحجز",
+    "holdDate": "تاريخ الحجز",
+    "holdDatePlaceholder": "أدخل تاريخ الحجز",
+    "add": "إضافة",
+    "quantity": "الكمية",
+    "quantityPlaceholder": "أدخل الكمية",
+    "notes": "السبب / ملاحظات",
+    "notesPlaceholder": "سبب تفصيلي للحجز...",
+    "holdProcess": "آلية الحجز",
+    "holdProcess1": "• أضف الأصناف المطلوب حجزها",
+    "holdProcess2": "• اختر نوع الحجز والسبب",
+    "holdProcess3": "• للأصناف ذات الأرقام التسلسلية: اختر أرقام تسلسلية محددة",
+    "holdProcess4": "• يتم منع الأصناف من إجراء أي معاملات"
   }
 }
