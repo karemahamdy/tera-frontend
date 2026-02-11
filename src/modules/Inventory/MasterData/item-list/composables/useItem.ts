@@ -2,12 +2,13 @@ import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { itemListService } from "../services/itemList.service";
-import type { itemList, statistics } from "../types/itemList";
+import type { ItemCards, itemList, statistics } from "../types/itemList";
 import { FileService } from "@/app/services/file.service";
 
 const loading = ref(false);
 const apiItem = ref<itemList[]>([]);
 const statistics = ref<statistics>({} as statistics);
+const itemCards = ref<ItemCards>({} as ItemCards)
 
 const pageIndex = ref(1);
 const pageSize = ref(10);
@@ -197,13 +198,76 @@ export function useItem() {
     }
   };
 
+  const fetchItemTransactions = async (id: string, page = 1) => {
+    loading.value = true;
+    try {
+      const resp = await itemListService.getItemTransactions(id, {
+        pageIndex: page,
+        pageSize: pageSize.value,
+      });
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchItemStock = async (id: string) => {
+    loading.value = true;
+    try {
+      const resp = await itemListService.getItemStock(id);
+
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchItemPricing = async (id: string) => {
+    loading.value = true;
+    try {
+      const resp = await itemListService.getItemPricing(id);
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchItemCards = async (id: string) => {
+    loading.value = true;
+    try {
+      const resp: any = await itemListService.getItemCards(id);
+      itemCards.value = resp || {};
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+
   return {
     loading,
     apiItem,
     statistics,
+    itemCards,
     fetchItem,
     fetchItemById,
     fetchItemOverview,
+    fetchItemTransactions,
+    fetchItemStock,
+    fetchItemPricing,
+    fetchItemCards,
     createItem,
     updateItem,
     deleteItem,

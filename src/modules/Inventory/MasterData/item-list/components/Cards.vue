@@ -1,4 +1,14 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useItem } from '../composables/useItem';
+
+const props = defineProps<{ id: string }>();
+
+const { itemCards, fetchItemCards } = useItem();
+
+onMounted(() => {
+  fetchItemCards(props.id);
+});
 
 </script>
 <template>
@@ -12,7 +22,7 @@
                 <span class="text-[#475467] font-bold text-lg">{{ $t('itemList.cards.totalOnHand') }}</span>
             </div>
             <div>
-                <div class="text-[32px] font-bold text-[#101828] mb-1">47</div>
+                <div class="text-[32px] font-bold text-[#101828] mb-1">{{ itemCards.totalOnHand}}</div>
                 <div class="text-[#475467] text-md">{{ $t('itemList.cards.allWarehouses') }}</div>
             </div>
             <!-- Sparkline -->
@@ -42,7 +52,8 @@
                 <span class="text-[#475467] font-bold text-sm">{{ $t('itemList.cards.availableItems') }}</span>
             </div>
             <div>
-                <div class="text-[32px] font-bold text-[#101828] mb-1">18</div>
+                <div class="text-[32px] font-bold text-[#101828] mb-1">{{ itemCards.available }}
+</div>
                 <div class="text-[#475467] text-md">{{ $t('itemList.cards.readyToIssue') }}</div>
             </div>
             <!-- Sparkline -->
@@ -73,7 +84,7 @@
                 <span class="text-[#475467] font-bold text-lg">{{ $t('itemList.cards.holdItems') }}</span>
             </div>
             <div>
-                <div class="text-[32px] font-bold text-[#101828] mb-1">19</div>
+                <div class="text-[32px] font-bold text-[#101828] mb-1">{{ itemCards.holdItem }}</div>
                 <div class="text-[#475467] text-md">{{ $t('itemList.cards.holdingItems') }}</div>
             </div>
             <!-- Sparkline -->
