@@ -309,6 +309,7 @@ const changePermissionStatus = () => {
               />
               <BaseButton
                 :label="editMode ? 'button.save' : 'roles.createRole'"
+                type="submit"
                 variant="primary"
                 block
               />

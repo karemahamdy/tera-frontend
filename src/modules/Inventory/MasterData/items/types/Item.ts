@@ -1,0 +1,92 @@
+export interface Item {
+  nameEn: string;
+  nameAr: string;
+  code: string;
+  description: string;
+  accessScope: string;
+  branchId: string;
+  productionName: string;
+  productionCode: string;
+  hsCode: string;
+  wareHouseId: string;
+  itemGroupId1: string;
+  itemGroupId2: string;
+  itemGroupId3: string;
+  itemGroupId4: string;
+  categoryId: string;
+  itemType: string;
+  manufacturerId: string;
+  barcode: string;
+  manufacturerPartNumber: string;
+  tracked: boolean;
+  autoGenerateSerial: boolean;
+  initialSerial: string;
+  reorderPoint: number;
+  reorderQuantity: number;
+  maximumStockLevel: number;
+  leadTime: number;
+  shelfLife: number;
+  standardCost: number;
+  salesPrice: number;
+  lastPurchasePrice: number;
+  lastMovingPrice: number;
+  multipleCurrency: boolean;
+  defaultCurrencyId: string;
+  taxId: string;
+  ldcId: string;
+  baseUnitId: string;
+  costCenterId: string;
+  formFiles?: File[];
+  files?: File[];
+  deletedFileIds?: string[];
+  newFiles?: File[];
+  itemUnitConversions: unknown[];
+}
+
+export interface ItemByIdResponse {
+  nameEn: string;
+  nameAr: string;
+  code: string;
+  description: string;
+  accessScope: string;
+  branchId: string;
+  productionName: string;
+  productionCode: string;
+  hsCode: string;
+  wareHouseId: string;
+  group1Id: string;
+  group2Id: string;
+  group3Id: string;
+  group4Id: string;
+  categoryId: string;
+  itemType: string;
+  manufacturerId: string;
+  barcode: string;
+  manufacturerPartNumber: string;
+  tracked: boolean;
+  autoGenerateSerial: boolean;
+  initialSerial: string;
+  reorderPoint: number;
+  reorderQuantity: number;
+  maximumStockLevel: number;
+  leadTime: number;
+  shelfLife: number;
+  standardCost: number;
+  salesPrice: number;
+  lastPurchasePrice: number;
+  lastMovingPrice: number;
+  multipleCurrency: boolean;
+  defaultCurrencyId: string;
+  taxId: string;
+  ldcId: string;
+  baseUnitId: string;
+  costCenterId: string;
+  files: ItemFiles[];
+  itemUnitConversions: unknown[];
+}
+
+export interface ItemFiles {
+  id: string;
+  fileName: string;
+  url: string;
+}

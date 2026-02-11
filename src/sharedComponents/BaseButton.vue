@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -14,6 +14,7 @@ const props = defineProps({
     block: { type: Boolean, default: false },
     items: { type: Array, default: () => [] },
     hasMenu: { type: Boolean, default: false },
+    type: { type: String, default: "button" },
 })
 
 const router = useRouter()
@@ -28,11 +29,24 @@ function handleClick(event) {
     if (props.onClick) return props.onClick();
 }
 
+const color = computed(() => {
+    switch (props.variant) {
+        case "primary":
+        case "danger":
+            return "#FFFFFF";
+        case "ghost":
+            return "#6B7280";
+        case "outline-primary":
+            return "#3F5FAC";
+        default:
+            return "#FFFFFF";
+    }
+});
 </script>
 
 <template>
     <Button v-slot="slotProps" asChild aria-haspopup="true" aria-controls="overlay_menu">
-        <button @click="handleClick" :class="[
+        <button :type=" to ? 'button' : type" @click="handleClick" :class="[
             'rounded-lg p-4  cursor-pointer flex items-center justify-center gap-2 h-12 whitespace-nowrap',
             block ? 'w-full' : '',
             variant === 'primary' && 'bg-primary-500 hover:bg-primary-600 text-[#FFFFFF] border-none px-8',

@@ -11,8 +11,24 @@ import { branchesRoutes } from "@/modules/branch-management/routes";
 import { reportsRoutes } from "@/modules/reports/routes";
 import { useUserStore } from "@/app/store/useUserStore";
 import { LicenseRoutes } from "@/modules/license-info/routes";
-const defaultTitle = "Tera ERP";
+import { LDCRoutes } from "@/modules/Inventory/MasterData/LDC/routes";
+import { InventoryRoutes } from "@/modules/Inventory/MasterData/warehouses/routes";
+import { itemManagementRoutes } from "@/modules/Inventory/MasterData/items/routes";
+import { ItemGroupsRoutes } from "@/modules/Inventory/MasterData/Item-groups/routes";
+import { ItemListRoutes } from "@/modules/Inventory/MasterData/item-list/routes";
+import { PurchaseWaybillRoutes } from "@/modules/Inventory/Transactions/purchase-waybill/routes";
+import { ItemTransactionsRoutes } from "@/modules/Inventory/Operations/item-transactions/routes";
+import { SalesWaybillRoutes } from "@/modules/Inventory/Transactions/sales-waybill/routes";
+import { SalesReturnRoutes } from "@/modules/Inventory/Transactions/sales-return/routes";
+import { PurchaseReturnRoutes } from "@/modules/Inventory/Transactions/purchase-return/routes";
+import { ItemHoldRoutes } from "@/modules/Inventory/Operations/item-hold/routes";
+import { InventoryRequestRoutes } from "@/modules/Inventory/Transactions/inventory-request/routes";
+import { WarehouseTransactionRoutes } from "@/modules/Inventory/Transactions/warehouse-transaction/routes";
+import { PhysicalCountRoutes } from "@/modules/Inventory/Operations/physical-count/routes";
+import { InventoryAdjustmentRoutes } from "@/modules/Inventory/Operations/inventory-adjustment/routes";
+import { OpeningBalanceRoutes } from "@/modules/Inventory/Operations/opening-balance/routes";
 
+const defaultTitle = "Tera ERP";
 const routes = [
   ...authRoutes,
   {
@@ -31,6 +47,22 @@ const routes = [
       ...activeSessionsRoutes,
       ...reportsRoutes,
       ...LicenseRoutes,
+      ...ItemGroupsRoutes,
+      ...InventoryRoutes,
+      ...LDCRoutes,
+      ...itemManagementRoutes,
+      ...ItemListRoutes,
+      ...PurchaseWaybillRoutes,
+      ...ItemTransactionsRoutes,
+      ...SalesWaybillRoutes,
+      ...SalesReturnRoutes,
+      ...PurchaseReturnRoutes,
+      ...ItemHoldRoutes,
+      ...InventoryRequestRoutes,
+      ...WarehouseTransactionRoutes,
+      ...PhysicalCountRoutes,
+      ...InventoryAdjustmentRoutes,
+      ...OpeningBalanceRoutes,
       {
         path: "",
         component: () => import("@/sharedComponents/HelloWorld.vue"),

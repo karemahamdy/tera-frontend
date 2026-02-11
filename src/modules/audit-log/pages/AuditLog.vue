@@ -19,12 +19,13 @@ const {
   loading,
   fromDate,
   toDate,
+  exportAuditLogs,
 } = useAudit();
 
 const {
   branchesLookups,
   screensLookups,
-  modulesLookups,
+  CodeLookups,
   usersLookups,
   getBranchLookups,
   getIPLookups,
@@ -35,7 +36,7 @@ const {
 
 const filtersOperation = computed(() => [
   { placeholder: "auditLog.user", value: null, field: "auditLog.user", options: [...usersLookups.value] },
-  { placeholder: "auditLog.module", value: null, field: "auditLog.module", options: [...modulesLookups.value] },
+  { placeholder: "auditLog.module", value: null, field: "auditLog.module", options: [...CodeLookups.value] },
   { placeholder: "auditLog.screen", value: null, field: "screen", options: [...screensLookups.value] },
   { placeholder: "activeSessions.allBranches", value: null, field: "allBranches", options: [...branchesLookups.value] },
 ]);
@@ -62,6 +63,7 @@ onMounted(() => {
   getScreenLookups();
   getUsersLookups();
 });
+
 </script>
 
 <template>
@@ -71,15 +73,14 @@ onMounted(() => {
       <template #title>
         <PageHeader title="auditLog.title" subtitle="auditLog.subtitle" :showExport="true" :showMultiFilter="true"
           @filter-change="onFilterChange" :filters="filtersOperation" searchPlaceholder="auditLog.searchPlaceholder"
-          @search="onSearch" :hasMenu="false" templateFileUrl="/audit-logs/export" dataFileUrl="/audit-logs/export"
-          templateFileName="auditLog-template.csv" dataFileName="auditLog-data.csv" />
+          @search="onSearch" :hasMenu="false" :onExport="exportAuditLogs" />
         <div class="flex gap-4 mt-2">
           <div class="w-[50%]"> 
-            <label class="block text-gray-600 text-lg ">{{ t("fromDate") }}</label>
+            <label class="block text-gray-600 text-lg ">{{ t("form.fromDate") }}</label>
            <DatePicker v-model="fromDate" showIcon fluid iconDisplay="input" />
           </div>
           <div class="w-[50%]">
-            <label class="block text-gray-600 text-lg ">{{ t("toDate") }}</label>
+            <label class="block text-gray-600 text-lg ">{{ t("form.toDate") }}</label>
             <DatePicker v-model="toDate" showIcon fluid iconDisplay="input" />
           </div>
         </div>

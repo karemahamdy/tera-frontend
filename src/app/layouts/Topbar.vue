@@ -9,6 +9,9 @@ import routesCode from '@/app/constant/routes-code.json';
 import { useRouter } from "vue-router";
 const router = useRouter();
 
+import { useRouter } from "vue-router";
+const router = useRouter();
+
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
@@ -47,6 +50,7 @@ const userProfile = computed(() => userStore.userProfile?.profile);
 // Change language via store so it persists and updates document attributes
 function switchLanguage() {
   userStore.toggleLang();
+  // router.go(0);
 }
 
 onMounted(async () => {
@@ -68,7 +72,7 @@ const menuItems = computed(() => {
       label: t("profile"),
       icon: "ProfileCircle",
       command: () => {
-        console.log("Go to profile");
+        router.push({ name: "UserManagementEdit", params: { id: userStore.userProfile?.profile.id } });
       },
     },
     {

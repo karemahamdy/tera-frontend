@@ -21,4 +21,25 @@ export const AuditService = {
     );
     return resp;
   },
+
+  async exportLogs(
+    params: Record<string, any>
+  ) {
+    const resp = await axiosWrapper.get<any>("/audit-logs/export", {
+      params,
+      responseType: "blob",
+      paramsSerializer: (params) => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+          if (Array.isArray(value)) {
+            value.forEach((item) => queryParams.append(key, item));
+          } else if (value !== undefined && value !== null) {
+            queryParams.append(key, value as string);
+          }
+        });
+        return queryParams.toString();
+      },
+    });
+    return resp;
+  },
 };

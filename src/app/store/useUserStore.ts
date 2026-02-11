@@ -96,6 +96,7 @@ export const useUserStore = defineStore("user", {
       } catch (e) {
         // ignore
       }
+       window.location.reload();
     },
 
     toggleLang() {
@@ -211,6 +212,7 @@ export const useUserStore = defineStore("user", {
           }
         }
         this.setAccessToken(response.data.newToken);
+        window.location.reload();
       } catch (error) {
         console.error("Failed to switch branch:", error);
       }

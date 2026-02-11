@@ -7,6 +7,7 @@ import IdleTimer from "@/sharedComponents/IdleTimer.vue";
 import ResetPassword from "@/sharedComponents/ResetPassword.vue";
 import { useUserStore } from '@/app/store/useUserStore';
 const userStore = useUserStore();
+
 const sidebarCollapsed = ref<boolean>(
   localStorage.getItem("sidebar-collapsed") === "true"
 );
@@ -14,6 +15,20 @@ function toggleSidebar() {
   sidebarCollapsed.value = !sidebarCollapsed.value;
   localStorage.setItem("sidebar-collapsed", String(sidebarCollapsed.value));
 }
+
+// const handlePageHide = () => {
+//   userStore.closeSession();
+// };
+
+// onMounted(() => {
+//   window.addEventListener('pagehide', handlePageHide)
+// })
+
+// onBeforeUnmount(() => {
+//   window.removeEventListener('pagehide', handlePageHide)
+// })
+
+
 </script>
 <template>
   <div class="layout flex">

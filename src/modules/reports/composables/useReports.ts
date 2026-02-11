@@ -19,6 +19,7 @@ export function useReports() {
   const pageSize = 10;
 
   const filtersBody = ref<UserFilterBody>({ pageIndex: 1, pageSize });
+  const permissionFiltersBody = ref<any>({ pageIndex: 1, pageSize });
 
   const fetchUsers = async (reset = false) => {
     try {
@@ -55,10 +56,10 @@ export function useReports() {
         filtersBody.value
       )) as GroupResponse;
       // const items = response.data.items || [];
-         const items = (response.data.items || []).map((item: any) => ({
-      ...item,
-      isActive: item.status, 
-    }));
+      const items = (response.data.items || []).map((item: any) => ({
+        ...item,
+        isActive: item.status,
+      }));
       data.value = reset ? items : [...data.value, ...items];
       totalRecords.value = response.data.totalCount;
     } finally {
@@ -73,17 +74,23 @@ export function useReports() {
         pageIndex.value = 1;
         data.value = [];
       }
-      filtersBody.value.pageIndex = pageIndex.value;
-      filtersBody.value.pageSize = pageSize;
+      permissionFiltersBody.value.pageIndex = pageIndex.value;
+      permissionFiltersBody.value.pageSize = pageSize;
+
       const response = (await PermissionService.getPermission(
-        filtersBody.value
-      )) as GroupResponse;
+        permissionFiltersBody.value
+      )) as any;
       const items = response.data.items || [];
       data.value = reset ? items : [...data.value, ...items];
       totalRecords.value = response.data.totalCount;
     } finally {
       loading.value = false;
     }
+  };
+
+  const clearPermissionData = () => {
+    data.value = [];
+    totalRecords.value = 0;
   };
 
   const setFilters = (filters: any) => {
@@ -98,15 +105,31 @@ export function useReports() {
     fetchUsers(false);
   };
 
+  const setGroupPage = (page: number) => {
+    if (page === pageIndex.value) return;
+
+    pageIndex.value = page;
+    fetchGroups(false);
+  };
+
   const setFilter = (filters: any) => {
     filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
     fetchGroups(true);
   };
 
-  const setPermission = (filters: any) => {
-    filtersBody.value = { ...filtersBody.value, ...filters, pageIndex: 1 };
+  const setPermissionFilter = (filters: any) => {
+    permissionFiltersBody.value = { ...permissionFiltersBody.value, ...filters, pageIndex: 1 };
     fetchPermission(true);
   };
+
+  const setPermissionPage = (page: number) => {
+    if (page === pageIndex.value) return;
+
+    pageIndex.value = page;
+    fetchPermission(false);
+  };
+
+
 
   return {
     data,
@@ -117,9 +140,12 @@ export function useReports() {
     fetchUsers,
     fetchGroups,
     fetchPermission,
-    setPermission,
+    clearPermissionData,
     setFilters,
     setFilter,
     setUsersPage,
+    setGroupPage,
+    setPermissionFilter,
+    setPermissionPage
   };
 }

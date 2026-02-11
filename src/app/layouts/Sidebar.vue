@@ -3,32 +3,6 @@ import SidebarItem from "./SidebarItem.vue";
 import logoImg from "@/assets/Header.svg";
 import { useUserStore } from "@/app/store/useUserStore";
 
-import type { ModulesItem, QuickAccessItem } from "@/app/types/navigation";
-import { computed } from "vue";
-
-function normalizeModules(items: ModulesItem[]): QuickAccessItem[] {
-  return items.map((item) => {
-    const children = [
-      ...(item.screens ?? []),
-      ...(item.sections ?? []),
-    ];
-    return {
-      code: item.code,
-      name: item.name,
-      children: normalizeModules(children),
-    };
-  });
-}
-
-
-const modulesItems = computed<QuickAccessItem[] | undefined>(()=>{
-  if(userStore.userProfile?.modules){
-    let data = normalizeModules(userStore.userProfile?.modules);
-    return data
-  }
-  return;
-})
-
 defineProps<{
   collapsed: boolean;
 }>();
@@ -216,6 +190,7 @@ aside {
   border-radius: 4px;
   background-color: var(--color-primary-500);
 }
+
 .active-link-ar::before {
   content: "";
   position: absolute;
@@ -226,6 +201,7 @@ aside {
   border-radius: 4px;
   background-color: var(--color-primary-500);
 }
+
 button {
   cursor: pointer;
 }

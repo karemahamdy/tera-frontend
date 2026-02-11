@@ -33,7 +33,7 @@ export const GroupService = {
       pageIndex,
       pageSize,
       status: status !== undefined ? status : status,
-      isGlobal: isGlobal || undefined, // Only include if truthy, or handled by null cleanup
+      isGlobal: isGlobal || undefined,
     };
     if (isGlobal !== undefined) params.isGlobal = isGlobal;
 
@@ -56,9 +56,21 @@ export const GroupService = {
 
 export const PermissionService = {
   async getPermission(body: any): Promise<any> {
-    return await axiosWrapper.post("/Reports/user-permission-matrix", body);
+    const { pageIndex, pageSize, ...payload } = body;
+    const params: any = {
+      pageIndex,
+      pageSize,
+    };
+    Object.keys(params).forEach(key => (params[key] === undefined || params[key] === null) && delete params[key]);
+    return await axiosWrapper.post("/Reports/user-permission-matrix", payload, { params });
   },
   async getPermissionExport(body: any): Promise<any> {
-    return await axiosWrapper.post("/Reports/user-permission-matrix/export", body, { responseType: 'blob' });
+    const { pageIndex, pageSize, ...payload } = body;
+    const params: any = {
+      pageIndex,
+      pageSize,
+    };
+    Object.keys(params).forEach(key => (params[key] === undefined || params[key] === null) && delete params[key]);
+    return await axiosWrapper.post("/Reports/user-permission-matrix/export", payload, { params, responseType: 'blob' });
   }
 };

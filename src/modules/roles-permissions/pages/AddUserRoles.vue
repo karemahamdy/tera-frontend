@@ -112,7 +112,7 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">
                 {{ $t("roles.roles") }}
               </label>
-              <MultiSelect filter :disabled="isEditMode" v-model="roleIds" :options="rolesLookups" optionLabel="label"
+              <MultiSelect filter :maxSelectedLabels="3" :disabled="isEditMode" v-model="roleIds" :options="rolesLookups" optionLabel="label"
                 optionValue="value" class="w-full mt-1" :class="{ 'p-invalid': errors.role }"
                 :placeholder="$t('select roles')" />
               <small v-if="errors.role" class="text-danger-500">
@@ -153,7 +153,7 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-bold">{{
                 $t("roles.assignedBranch")
               }}</label>
-              <MultiSelect filter v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
+              <MultiSelect filter :maxSelectedLabels="3" v-model="branchIds" :options="branchesLookups" optionLabel="label" optionValue="value"
                 class="w-full mt-1 rounded-2xl" :class="{ 'p-invalid': errors.branchIds }"
                 :placeholder="$t('branch.selectbranches')" />
               <small v-if="errors.branchIds" class="text-danger-500">{{
@@ -162,7 +162,7 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
             <div class="flex justify-between gap-4 mb-4 container px-20">
               <BaseButton label="cancel" variant="ghost" block :to="{ name: 'UserManagement' }" />
-              <BaseButton :label="isEditMode ? 'Update' : 'Assign'" variant="primary" block :disabled="isSubmitting"
+              <BaseButton type="submit" :label="isEditMode ? 'Update' : 'Assign'" variant="primary" block :disabled="isSubmitting"
                 :loading="isSubmitting" />
             </div>
           </form>

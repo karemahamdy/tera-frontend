@@ -5,6 +5,7 @@ defineProps<{
   type?: string;
   invalid?: boolean;
   error?: string;
+  disabled?: boolean;
    placeholder?: string;
 }>();
 
@@ -20,6 +21,7 @@ defineEmits(["update:modelValue"]);
       :modelValue="modelValue"
        :invalid="!!invalid"
        :placeholder="placeholder"
+       :disabled="disabled"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
@@ -28,3 +30,11 @@ defineEmits(["update:modelValue"]);
     </small>
   </div>
 </template>
+<style scoped>
+::v-deep(.p-inputtext) {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-gray-300);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+</style>
