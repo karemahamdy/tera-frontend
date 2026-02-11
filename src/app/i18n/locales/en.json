@@ -526,7 +526,8 @@
       "lastCost": "Last Cost",
       "standardCost": "Standard Cost",
       "totalValue": "Total Value",
-      "itemAttachment": "Item Attachment"
+      "itemAttachment": "Item Attachment",
+      "noAttachments": "No Attachments"
     }
   },
   "LDC": {
