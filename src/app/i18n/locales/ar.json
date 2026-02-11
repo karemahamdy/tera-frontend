@@ -916,5 +916,41 @@
     "totalQuantity": "• إجمالي الكمية: ",
     "locations": "• المواقع: ",
     "transactions": "• المعاملات: "
+  }, 
+  "payment": {
+  "paymentFinanceInfo": "معلومات الدفع والمالية",
+  "paymentType": "نوع الدفع",
+  "payViaInvoice": "الدفع بالفاتورة",
+  "immediatePayment": "دفع فوري",
+  "paymentTerms": "شروط الدفع",
+  "importType": "نوع الاستيراد / المحلي",
+  "incoterms": "شروط الشحن",
+  "selectTerms": "اختر الشروط",
+  "selectType": "اختر النوع",
+  "selectIncoterms": "اختر الشروط",
+  "notesComments": "ملاحظات وتعليقات",
+  "commentPlaceholder": "ملاحظات إضافية...",
+  "comment1": "تعليق 1",
+  "comment2": "تعليق 2",
+  "comment3": "تعليق 3",
+  "comment4": "تعليق 4",
+  "comment5": "تعليق 5",
+  "payable": "آجل",
+  "cash": "نقدي",
+  "net30": "30 يوم",
+  "immediate": "فوري",
+  "import": "استيراد",
+  "local": "محلي"
+},
+  "summary": {
+    "title": "الملخص",
+    "subTotalUSD": "الإجمالي الفرعي ($)",
+    "subTotal": "الإجمالي الفرعي",
+    "totalTaxUSD": "إجمالي الضريبة ($)",
+    "totalTax": "إجمالي الضريبة",
+    "globalDiscount": "الخصم العام",
+    "grandTotal": "الإجمالي الكلي",
+    "includeAllTaxes": "يشمل جميع الضرائب والرسوم"
   }
+
 }

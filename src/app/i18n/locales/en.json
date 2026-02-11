@@ -923,5 +923,41 @@
     "totalQuantity": "• Total Quantity: ",
     "locations": "• Locations: ",
     "transactions": "• Transactions: "
+  },
+  "payment": {
+  "paymentFinanceInfo": "Payment & Finance Info",
+  "paymentType": "Payment Type",
+  "paymentTerms": "Payment Terms",
+  "importType": "Import / Local Type",
+  "incoterms": "Incoterms",
+  "selectTerms": "Select Terms",
+  "selectType": "Select Type",
+  "selectIncoterms": "Select Incoterms",
+  "notesComments": "Notes & Comments",
+  "commentPlaceholder": "Additional Notes or Comments..",
+  "comment1": "Comment 1",
+  "comment2": "Comment 2",
+  "comment3": "Comment 3",
+  "comment4": "Comment 4",
+  "comment5": "Comment 5",
+  "net30": "Net 30 Days",
+  "immediate": "Immediate",
+  "import": "Import",
+  "local": "Local",
+  "payable": "Payable",
+  "payViaInvoice": "Pay via invoice",
+  "cash": "Cash",
+  "immediatePayment": "Immediate Payment"
+},
+  "summary": {
+    "title": "Summary",
+    "subTotalUSD": "Sub total ($)",
+    "subTotal": "Sub total",
+    "totalTaxUSD": "Total Tax ($)",
+    "totalTax": "Total Tax",
+    "globalDiscount": "Global Discount",
+    "grandTotal": "Grand Total",
+    "includeAllTaxes": "Include all taxes and fees"
   }
+
 }
