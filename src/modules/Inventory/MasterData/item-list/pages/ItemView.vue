@@ -47,7 +47,7 @@ const handleEdit = () => {
             </template>
 
               <template #subtitle>
-           <Cards/>
+           <Cards :id="route.params.id as string"/>
             </template>
 
          <template #content>
