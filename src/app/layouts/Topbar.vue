@@ -9,9 +9,6 @@ import routesCode from '@/app/constant/routes-code.json';
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-import { useRouter } from "vue-router";
-const router = useRouter();
-
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
@@ -27,9 +24,6 @@ defineProps<{
 const emit = defineEmits<{
   (e: "toggle"): void;
 }>();
-
-// State
-const q = ref("");
 
 // Computed properties for User Profile & Branches
 const branches = computed(() => {
