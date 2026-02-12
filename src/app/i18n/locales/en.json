@@ -1004,6 +1004,7 @@
   "itemsList": {
     "title": "Line Items",
     "description": "Add items to your purchase waybill. Tracked items require serial/batch assignment.",
+    "desc": "Identify items to return from selected original waybill.",
     "addItem": "Add Item",
     "add": "Add",
     "itemCode": "Item Code",
@@ -1016,7 +1017,9 @@
     "tax": "Tax %",
     "total": "Total",
     "subtotal": "Subtotal",
-    "items": "Items"
+    "items": "Items",
+    "selected": "selected",
+    "Showing":"Showing"
   },
   "itemDialog": {
     "selectItem": "Select Item",
@@ -1025,6 +1028,28 @@
     "itemName": "Item Name",
     "unit": "Unit",
     "add": "Add"
+  },
+  "RequestInformation": {
+    "RequestInformation": "Request Information",
+    "InventoryRequestNumber": "Inventory Request Number",
+    "InventoryRequestNumberPlaceholder": "Enter inventory request number",
+    "RequestedBy": "Requested By",
+    "RequestedByPlaceholder": "Enter requester name",
+    "RequestDate": "Request Date",
+    "RequestDatePlaceholder": "Select request date",
+    "type": "Request Type",
+    "typePlaceholder": "Select request type",
+    "SourceWarehouse": "Source Warehouse",
+    "SourceWarehousePlaceholder": "Select source warehouse",
+    "TargetWarehouse": "Target Warehouse",
+    "TargetWarehousePlaceholder": "Select target warehouse",
+    "Reason": "Reference / Reason",
+    "ReasonPlaceholder": "Enter reason",
+      "ReviewSummary": "Review Summary",
+    "RequestorDepartment": "Requestor & Department",
+    "WarehouseDetails": "Warehouse Details",
+    "RequestBy": "Request By",
+    "Type": "Type"
   }
 
 }

@@ -998,6 +998,7 @@
   "itemsList": {
     "title": "عناصر الفاتورة",
     "description": "أضف العناصر إلى إذن الشراء. العناصر المتتبعة تحتاج إلى تحديد سيريال أو باتش.",
+    "desc": "حدد العناصر المراد إرجاعها من بوليصة الشحن الأصلية المختارة.",
     "addItem": "إضافة عنصر",
     "add": "إضافة",
     "itemCode": "كود الصنف",
@@ -1010,7 +1011,9 @@
     "tax": "الضريبة %",
     "total": "الإجمالي",
     "subtotal": "الإجمالي الفرعي",
-    "items": "عنصر"
+    "items": "عنصر", 
+    "Showing": "عرض",
+    "selected": "محدد"
   },
   "itemDialog": {
     "selectItem": "اختيار صنف",
@@ -1019,6 +1022,27 @@
     "itemName": "اسم الصنف",
     "unit": "الوحدة",
     "add": "إضافة"
+  },
+  "RequestInformation": {
+    "RequestInformation": "معلومات الطلب",
+    "InventoryRequestNumber": "رقم طلب المخزون",
+    "InventoryRequestNumberPlaceholder": "أدخل رقم طلب المخزون",
+    "RequestedBy": "مقدم الطلب",
+    "RequestedByPlaceholder": "أدخل اسم مقدم الطلب",
+    "RequestDate": "تاريخ الطلب",
+    "RequestDatePlaceholder": "اختر تاريخ الطلب",
+    "type": "نوع الطلب",
+    "typePlaceholder": "اختر نوع الطلب",
+    "SourceWarehouse": "المخزن المصدر",
+    "SourceWarehousePlaceholder": "اختر المخزن المصدر",
+    "TargetWarehouse": "المخزن المستهدف",
+    "TargetWarehousePlaceholder": "اختر المخزن المستهدف",
+    "Reason": "السبب",
+    "ReasonPlaceholder": "أدخل السبب",
+     "ReviewSummary": "ملخص المراجعة",
+    "RequestorDepartment": "مقدم الطلب والقسم",
+    "WarehouseDetails": "تفاصيل المخزن",
+    "RequestBy": "مقدم الطلب",
+    "Type": "النوع"
   }
-
 }
