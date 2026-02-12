@@ -63,4 +63,29 @@ export const itemListService = {
     const data = await axiosWrapper.get<any>(`/item/Item-Overview/${id}`);
     return data.data;
   },
+
+  async getItemTransactions(id: string, params: Pagination) {
+    const resp = await axiosWrapper.get<any>(`/item/Item-Transaction?id=${id}`, {
+      params,
+    });
+    return resp.data;
+  },
+
+  async getItemStock(id: string) {
+    const data = await axiosWrapper.get<any>(`/item/Item-Stock?id=${id}`);
+    return data.data;
+  },
+
+  async getItemCards(id: string) {
+    const data = await axiosWrapper.get<any>(`/item/Item-Cards?id=${id}`);
+    return data.data;
+  },
+
+  async getItemPricing(id: string) {
+    const data = await axiosWrapper.get<any>(`/item/Item-Pricing?id=${id}`);
+    return data.data;
+  },
+
+
+
 };

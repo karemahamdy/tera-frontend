@@ -46,7 +46,7 @@ const color = computed(() => {
 
 <template>
     <Button v-slot="slotProps" asChild aria-haspopup="true" aria-controls="overlay_menu">
-        <button :type="type" @click="handleClick" :class="[
+        <button :type=" to ? 'button' : type" @click="handleClick" :class="[
             'rounded-lg p-4  cursor-pointer flex items-center justify-center gap-2 h-12 whitespace-nowrap',
             block ? 'w-full' : '',
             variant === 'primary' && 'bg-primary-500 hover:bg-primary-600 text-[#FFFFFF] border-none px-8',
