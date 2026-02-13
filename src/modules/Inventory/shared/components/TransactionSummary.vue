@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import InputText from 'primevue/inputtext';
 
 const props = defineProps({

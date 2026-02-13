@@ -37,10 +37,6 @@ const columns = computed(() => [
   { field: 'quantity', header: t('itemsList.quantity') },
 ])
 
-// ترجمة للعرض فقط — بدون تغيير القيمة الأصلية
-const translatedType = computed(() => {
-  return t(`RequestInformation.types.${props.type}`)
-})
 </script>
 
 <template>
