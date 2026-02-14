@@ -32,7 +32,7 @@ function logout() {
 
     <!-- CONTENT -->
     <div class="scroll-container overflow-y-auto overflow-x-hidden">
-      <div class="px-3 py-4 text-gray-500" v-if="!collapsed">Quick Access</div>
+      <div class="px-3 py-4 text-gray-500" v-if="!collapsed">{{ $t("quickAccess") }}</div>
 
       <!-- NAV -->
       <nav class="p-2 text-gray-500">
@@ -49,7 +49,7 @@ function logout() {
               "
             >
               <VsxIcon iconName="Element4" :size="24" type="linear" />
-              <span v-if="!collapsed">{{ $t("Dashboard") }}</span>
+              <span v-if="!collapsed">{{ $t("dashboard") }}</span>
             </router-link>
           </li>
 
