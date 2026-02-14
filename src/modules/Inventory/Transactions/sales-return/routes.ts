@@ -9,5 +9,14 @@ export const SalesReturnRoutes = [
       permission: null
     },
   },
-  
+   {
+    path: "/sales-return/create",
+    component: () => import("@/modules/Inventory/Transactions/sales-return/pages/SalesReturnForm.vue"),
+    name: "SalesReturnCreate",
+    meta: {
+      hide: true,
+      localizedTitle: "Sales Return",
+      permission: null
+    },
+  },
 ];

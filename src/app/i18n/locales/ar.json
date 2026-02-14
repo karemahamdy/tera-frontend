@@ -558,6 +558,7 @@
     "LDCCreatedSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
     "LDCUpdatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
     "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
+  
   },
   "items": {
     "title": "العناصر",
@@ -743,7 +744,7 @@
     "PurchaseOrder": "أمر الشراء",
     "SalesOrderPlaceholder": "اختر أمر الشراء"
   },
-  "salesReturn": {
+  "SalesReturn": {
     "salesReturn": "مرتجع المبيعات",
     "subtitle": "معالجة عوائد العملاء والإيصالات الواردة من المبيعات",
     "addNew": "إضافة مرتجع جديد",
@@ -756,7 +757,24 @@
     "date": "التاريخ",
     "items": "العناصر",
     "originalWaybill": "إذن البيع الأصلي",
-    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العنصر؟"
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+     "ReturnInformation": "بيانات مرتجع البيع",
+    "SalesReturnNumber": "رقم مرتجع البيع",
+    "SalesReturnNumberPlaceholder": "أدخل رقم مرتجع البيع",
+    "OriginalSalesWaybill": "فاتورة البيع الأصلية",
+    "OriginalSalesWaybillPlaceholder": "اختر فاتورة البيع الأصلية",
+    "ReturnDate": "تاريخ المرتجع",
+  "ReturnDatePlaceholder": "اختر تاريخ المرتجع",
+    "Customer": "العميل",
+    "CustomerPlaceholder": "اختر العميل",
+    "ReturnReason": "سبب المرتجع",
+    "ReturnReasonPlaceholder": "اختر سبب المرتجع",
+    "ReceivingWarehouse": "المخزن المستلم",
+    "ReceivingWarehousePlaceholder": "اختر المخزن المستلم",
+    "Zone": "المنطقة",
+    "ZonePlaceholder": "اختر المنطقة",
+    "CustomerNotes": "ملاحظات العميل",
+    "CustomerNotesPlaceholder": "أدخل ملاحظات العميل"
   },
   "purchaseReturn": {
     "purchaseReturn": "مرتجع مشتريات",
