@@ -11,7 +11,7 @@
     "AD_LI": "/license-info",
     "INV_WH": "/warehouses",
     "INV_IG": "/item-groups",
-    "INV_IL": "/item-list",
+    "INV_IT": "/item-list",
     "INV_LDC": "/LDC",
     "INV_PW": "/purchase-waybill",
     "INV_SW": "/sales-waybill",
