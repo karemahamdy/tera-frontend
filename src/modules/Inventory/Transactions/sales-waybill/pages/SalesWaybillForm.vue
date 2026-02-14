@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import ReturnDetails from '../components/ReturnDetails.vue';
-
+import SalesDetails from '../components/SalesDetails.vue';
+import WarehouseDetails from '../components/WarehouseDetails.vue';
 import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
 import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import LineItems from '../components/LineItems.vue';
-import QualityInspection from '../components/QualityInspection.vue';
+import Payment from '../components/Payment.vue';
 
 const activeStep = ref(0);
 const nextTab = () => {
@@ -21,9 +21,10 @@ const submit = () => {
 };
 
 const steps = [
-  { label: "Return Information" },
-  { label: "Return Items" },
-  { label: "Review" }
+  { label: "Sales Details" },
+  { label: "Warehouse Details" },
+  { label: "Line Items" },
+  { label: "Payment" }
 ];
 </script>
 
@@ -33,9 +34,10 @@ const steps = [
     <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
-          <ReturnDetails v-if="activeStep === 0" />
-          <LineItems v-else-if="activeStep === 1" @next="nextTab" @prev="previousTab" />
-          <QualityInspection v-else-if="activeStep === 2" @prev="previousTab" @submit="submit" />
+          <SalesDetails v-if="activeStep === 0" />
+          <WarehouseDetails v-else-if="activeStep === 1" />
+          <LineItems v-else-if="activeStep === 2" @next="nextTab" @prev="previousTab" />
+          <Payment v-else-if="activeStep === 3" @prev="previousTab" @submit="submit" />
         </template>
       </Card>
       <StepperActions :current="activeStep" :total="steps.length" nextText="Next" prevText="Back" finishText="Create"
