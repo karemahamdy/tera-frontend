@@ -56,13 +56,12 @@ const subtotal = computed(() => items.value.reduce((sum: number, item: any) => s
 const columns = computed(() => [
     { field: 'code', header: t('itemsList.itemCode') },
     { field: 'name', header: t('itemsList.itemName') },
-    { field: 'quantity', header: t('itemsList.quantity') },
+    { field: 'Waybill', header: t('ReturnItems.Waybill') },
     { field: 'uom', header: t('itemsList.uom') },
-    { field: 'warehouse', header: t('itemsList.warehouse') },
+    { field: 'Shipped', header: t('ReturnItems.Shipped') },
+    { field: 'ReturnQTY', header: t('ReturnItems.ReturnQTY') },
+    { field: 'warehouse', header: t('ReturnItems.warehouse') },
     { field: 'zone', header: t('itemsList.zone') },
-    { field: 'unitPrice', header: t('itemsList.unitPrice') },
-    { field: 'tax', header: t('itemsList.tax') },
-    { field: 'total', header: t('itemsList.total') },
     { field: 'action', header: '' }
 ]);
 
@@ -125,9 +124,9 @@ const removeItem = (data: any) => {
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h2 class="text-xl font-bold text-gray-900">{{ t('itemsList.title') }}</h2>
+                <h2 class="text-xl font-bold text-gray-900">{{ t('ReturnItems.title') }}</h2>
                 <p class="text-gray-500 text-sm">
-                    {{ t('itemsList.description') }}
+                    {{ t('ReturnItems.description') }}
                 </p>
             </div>
             <BaseButton :label="t('itemsList.addItem')" icon="pi pi-plus"
@@ -155,25 +154,25 @@ const removeItem = (data: any) => {
                     <span class="text-gray-600">{{ data.name }}</span>
                 </template>
 
-                <template #col-quantity="{ data }">
+                <template #col-ReturnQTY="{ data }">
                     <div class="flex items-center gap-2">
                         <BaseButton :label="t('itemsList.add')" variant="outline-primary"
                             @click="openQtyDialog(data)" />
-                        <span class="text-gray-500">({{ data.quantity }})</span>
+                        <span class="text-gray-500">({{ data.ReturnQTY }})</span>
                     </div>
                 </template>
 
                 <template #col-uom="{ data }">
-                    <Select v-model="data.uom" :options="['PCS', 'KG', 'LTR']" class="w-20 p-inputtext-sm text-sm" />
+                    <FormDropdown v-model="data.uom" :options="['PCS', 'KG', 'LTR']" class="w-20 p-inputtext-sm text-sm" />
                 </template>
 
                 <template #col-warehouse="{ data }">
-                    <Select v-model="data.warehouse" :options="['WH-011', 'WH-012']" class="w-24 p-inputtext-sm text-sm"
+                    <FormDropdown v-model="data.warehouse" :options="['WH-011', 'WH-012']" class="w-24 p-inputtext-sm text-sm"
                         :placeholder="t('items.warehouse')" />
                 </template>
 
                 <template #col-zone="{ data }">
-                    <Select v-model="data.zone" :options="['Zone A', 'Zone B']" class="w-24 p-inputtext-sm text-sm"
+                    <FormDropdown v-model="data.zone" :options="['Zone A', 'Zone B']" class="w-24 p-inputtext-sm text-sm"
                         :placeholder="t('items.zone')" />
                 </template>
 

@@ -1089,6 +1089,13 @@
     "holdProcess2": "• Select hold type and reason",
     "holdProcess3": "• For serial items: select specific serial numbers",
     "holdProcess4": "• Items blocked from transactions"
+  },
+"ReturnItems": {
+    "title": "Return Items",
+    "description": "Identify items to return from selected original waybill.",
+    "Waybill": "Waybill",
+    "Shipped": "Shipped",
+    "ReturnQTY": "Return Quantity",
+    "warehouse": "Warehouse"
   }
-
 }
