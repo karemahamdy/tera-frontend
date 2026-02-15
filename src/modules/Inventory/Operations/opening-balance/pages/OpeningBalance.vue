@@ -44,7 +44,7 @@ const props = defineProps({
 const filtersOperation = computed(() => {
     return [
         {
-            placeholder: "oitems.uom",
+            placeholder: "items.uom",
             value: null,
             field: "status",
             options: [
