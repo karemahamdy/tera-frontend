@@ -123,7 +123,7 @@ export function useAudit() {
       });
 
       const response = await AuditService.exportLogs(params);
-      FileService.downloadBlob(response, "audit-logs.csv");
+      FileService.downloadBlobCSV(response, "audit-logs.csv");
     } catch (err: any) {
       toastService.error(err?.message || "Error exporting audit logs");
     }

@@ -778,7 +778,16 @@
     "Zone": "Zone / locatione",
     "ZonePlaceholder": "Select Zone / location",
     "CustomerNotes": "Customer Notes",
-    "CustomerNotesPlaceholder": "Customer's description of issue..."
+    "CustomerNotesPlaceholder": "Customer's description of issue...",
+       "QualityInspection": "Quality Inspection",
+    "Inspector": "Inspector",
+    "InspectorPlaceholder": "Select inspector",
+    "InspectionDate": "Inspection Date",
+    "InspectionDatePlaceholder": "Select inspection date",
+    "InspectionResult": "Inspection Result",
+    "InspectionResultPlaceholder": "Select inspection result",
+    "InspectionNotes": "Inspection Notes",
+    "InspectionNotesPlaceholder": "Enter inspection notes"
   },
   "purchaseReturn": {
     "purchaseReturn": "Purchase Return ",

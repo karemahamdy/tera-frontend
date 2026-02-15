@@ -557,7 +557,16 @@
     "select": "اختر",
     "LDCCreatedSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
     "LDCUpdatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
-    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
+    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح",
+     "QualityInspection": "فحص الجودة",
+    "Inspector": "المفتش",
+    "InspectorPlaceholder": "اختر المفتش",
+    "InspectionDate": "تاريخ الفحص",
+    "InspectionDatePlaceholder": "اختر تاريخ الفحص",
+    "InspectionResult": "نتيجة الفحص",
+    "InspectionResultPlaceholder": "اختر نتيجة الفحص",
+    "InspectionNotes": "ملاحظات الفحص",
+    "InspectionNotesPlaceholder": "اكتب ملاحظات الفحص"
   
   },
   "items": {
