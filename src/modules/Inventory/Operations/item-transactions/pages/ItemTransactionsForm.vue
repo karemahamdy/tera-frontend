@@ -102,7 +102,7 @@ onMounted(() => {
                         <VsxIcon iconName="InfoCircle" type="linear" />
                         <strong>{{ $t("itemTransaction.irreversibleOperation") }}</strong>
                     </p>
-                    <div class="mt-3 text-sm px-5">
+                    <div class="mt-3 text-sm px-5">drr
                         <p>{{ $t("itemTransaction.irreversibleOperation1") }}</p>
                         <p>{{ $t("itemTransaction.irreversibleOperation2") }}</p>
                     </div>

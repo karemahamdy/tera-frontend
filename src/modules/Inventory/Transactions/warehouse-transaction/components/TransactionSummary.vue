@@ -1,3 +1,30 @@
+
+<script setup>
+defineProps({
+  data: {
+    type: Object,
+    required: true,
+    default: () => ({
+      waybillDate: '18 Jan 2026',
+      inventoryRequest: 'REQ-TRF-2026-014',
+      direction: 'Transfer',
+      warehouse: 'Finished Goods',
+      zone: 'Finished Goods Zone',
+      type: 'Internal Transfer',
+      costCenter: 'CC-FIN-001 – Finance',
+      source: {
+        warehouse: 'Main Warehouse',
+        zone: 'Raw Materials Zone'
+      },
+      destination: {
+        warehouse: 'Finished Goods',
+        zone: 'Finished Goods Zone'
+      }
+    })
+  }
+})
+</script>
+
 <template>
   <div class="p-6">
     <!-- Header -->
@@ -41,23 +68,48 @@
          <p class="text-base font-semibold text-gray-800">{{ data.costCenter }}</p>
       </div>
     </div>
+
+    <!-- Transfer Movement Details -->
+    <div v-if="data.direction === 'Transfer'" class="mt-8 pt-6 border-t border-gray-100">
+      <h3 class="text-sm font-semibold text-gray-800 mb-4">Transfer Movement Details</h3>
+      
+      <div class="flex flex-col md:flex-row items-center gap-4">
+        <!-- Source -->
+        <div class="flex-1 w-full bg-primary-50 rounded-xl p-4 border border-primary-100">
+           <p class="text-primary-700 font-bold mb-3 text-sm">Source (From)</p>
+           <div class="grid grid-cols-2 gap-4">
+              <div>
+                  <p class="text-xs text-gray-500 mb-1">Warehouse</p>
+                  <p class="text-sm font-semibold text-gray-800">{{ data.source?.warehouse || '-' }}</p>
+              </div>
+               <div>
+                  <p class="text-xs text-gray-500 mb-1">Zone</p>
+                  <p class="text-sm font-semibold text-gray-800">{{ data.source?.zone || '-' }}</p>
+              </div>
+           </div>
+        </div>
+
+        <!-- Arrow -->
+         <div class="flex-shrink-0 text-primary-500">
+            <VsxIcon iconName="ArrowRight" type="linear" :size="24" />
+         </div>
+
+        <!-- Destination -->
+        <div class="flex-1 w-full bg-primary-50 rounded-xl p-4 border border-primary-100">
+           <p class="text-primary-700 font-bold mb-3 text-sm">Destination (To)</p>
+           <div class="grid grid-cols-2 gap-4">
+              <div>
+                  <p class="text-xs text-gray-500 mb-1">Warehouse</p>
+                  <p class="text-sm font-semibold text-gray-800">{{ data.destination?.warehouse || '-' }}</p>
+              </div>
+               <div>
+                  <p class="text-xs text-gray-500 mb-1">Zone</p>
+                  <p class="text-sm font-semibold text-gray-800">{{ data.destination?.zone || '-' }}</p>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup>
-defineProps({
-  data: {
-    type: Object,
-    required: true,
-    default: () => ({
-      waybillDate: '18 Jan 2026',
-      inventoryRequest: 'REQ-TRF-2026-014',
-      direction: 'Inbound',
-      warehouse: 'Finished Goods',
-      zone: 'Finished Goods Zone',
-      type: 'Internal Transfer',
-      costCenter: 'CC-FIN-001 – Finance'
-    })
-  }
-})
-</script>

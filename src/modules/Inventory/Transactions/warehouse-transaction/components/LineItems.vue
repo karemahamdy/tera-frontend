@@ -3,9 +3,13 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
+import SalesQuantitySerialDialog from '@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue';
 
 const { t } = useI18n();
 const emit = defineEmits(['next', 'prev']);
+const props = defineProps<{
+  transactionType: string
+}>()
 
 // --- State ---
 const items = ref([
@@ -104,6 +108,9 @@ const openQtyDialog = (item: any) => {
     currentItem.value = item;
     showQtyDialog.value = true;
 };
+
+const isSalesTransaction = computed(() => props.transactionType === 'Transfer');
+
 
 const handleSaveSerials = (payload: any) => {
     if (currentItem.value) {
@@ -209,14 +216,18 @@ const removeItem = (data: any) => {
 
         <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
 
-        <QuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
+        <QuantitySerialDialog v-if="currentItem  && isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
             :initialSerials="currentItem.serials" @save="handleSaveSerials" />
+
+              <SalesQuantitySerialDialog v-if="currentItem  && !isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
+            :initialSerials="currentItem.serials" @save="handleSaveSerials" />
+
 
     </div>
 </template>
 
 <style scoped>
-/* Custom Table Styles override if needed, using tailwind classes mostly */
+
 :deep(.p-select) {
     border-color: #f3f4f6;
     background-color: #f9fafb;

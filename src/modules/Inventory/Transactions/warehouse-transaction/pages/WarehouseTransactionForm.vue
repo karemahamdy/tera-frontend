@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import WarehouseTransaction from '../components/WarehouseTransaction.vue';
 import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
 import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
@@ -7,6 +7,25 @@ import LineItems from '../components/LineItems.vue';
 import TransactionSummary from '../components/TransactionSummary.vue';
 
 const activeStep = ref(0);
+
+const formData = reactive({
+  waybillDate: '',
+  inventoryRequest: '',
+  direction: 'Transfer', 
+  warehouse: '', 
+  zone: '',
+  type: '',
+  costCenter: '',
+  source: {
+    warehouse: '',
+    zone: ''
+  },
+  destination: {
+    warehouse: '',
+    zone: ''
+  }
+});
+
 const nextTab = () => {
   if (activeStep.value < steps.length - 1) activeStep.value++;
 };
@@ -16,7 +35,7 @@ const previousTab = () => {
 };
 
 const submit = () => {
-  console.log("finish wizard");
+  console.log("finish wizard", formData);
 };
 
 const steps = [
@@ -32,10 +51,10 @@ const steps = [
     <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
-          <WarehouseTransaction v-if="activeStep === 0" />
-          <LineItems v-else-if="activeStep === 1" @next="nextTab" @prev="previousTab" />
+          <WarehouseTransaction v-if="activeStep === 0" v-model="formData" />
+          <LineItems v-else-if="activeStep === 1" :transactionType="formData.direction" @next="nextTab" @prev="previousTab" />
           <div v-else-if="activeStep === 2">
-             <TransactionSummary />
+             <TransactionSummary :data="formData" />
              <div class="flex justify-end mt-4">
                <!-- Navigation buttons for the review step if needed, though StepperActions handles finish -->
              </div>
