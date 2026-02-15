@@ -779,7 +779,7 @@
     "ReturnReasonPlaceholder": "Select return reason",
     "ReceivingWarehouse": "Receiving Warehouse",
     "ReceivingWarehousePlaceholder": "Select receiving warehouse",
-    "Zone": "Zone / locatione",
+    "Zone": "Zone / location",
     "ZonePlaceholder": "Select Zone / location",
     "CustomerNotes": "Customer Notes",
     "CustomerNotesPlaceholder": "Customer's description of issue..."
@@ -965,7 +965,9 @@
     "searchPlaceholder": "Search returns...",
     "allDirections": "All Directions",
     "allWarehouse": "All Warehouse",
-    "allStatus": "All Status"
+    "allStatus": "All Status",
+    "title": "New Transaction",
+    "desc": "Manage and track all inbound, outbound, and internal stock movement"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",
