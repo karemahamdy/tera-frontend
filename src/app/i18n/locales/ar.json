@@ -828,7 +828,16 @@
     "Zone": "المنطقة",
     "ZonePlaceholder": "اختر المنطقة",
     "ReturnNotes": "ملاحظات المرتجع",
-    "ReturnNotesPlaceholder": "أدخل ملاحظات المرتجع"
+    "ReturnNotesPlaceholder": "أدخل ملاحظات المرتجع",
+    "ReviewSummary": "ملخص المراجعة",
+    "ReturnNumber": "رقم المرتجع",
+    "OriginalWaybill": "رقم إذن الاستلام الأصلي",
+    "ReceivingWarehouse": "المخزن المستلم",
+    "ZoneLocation": "الموقع / المنطقة",
+    "LineItem": "أصناف المرتجع",
+    "serial": "السيريال",
+    "unitPrice": "سعر الوحدة",
+    "tax": "الضريبة %"
   },
   "purchaseRules": {
     "ruleHeader": "خطوات عملية مرتجع المشتريات:",

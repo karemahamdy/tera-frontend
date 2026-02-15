@@ -833,7 +833,17 @@
     "Zone": "Zone",
     "ZonePlaceholder": "Select zone",
     "ReturnNotes": "Return Notes",
-    "ReturnNotesPlaceholder": "Enter return notes"
+    "ReturnNotesPlaceholder": "Enter return notes",
+     "ReviewSummary": "Review Summary",
+    "ReturnNumber": "Return Number",
+    "OriginalWaybill": "Original Waybill",
+    "ReceivingWarehouse": "Receiving Warehouse",
+    "ZoneLocation": "Zone Location",
+    "LineItem": "Line Items",
+    "serial": "Serial",
+    "unitPrice": "Unit Price",
+    "tax": "Tax %"
+   
   },
   "rules": {
     "ruleHeader": "Sales Waybill Business Rules:",
