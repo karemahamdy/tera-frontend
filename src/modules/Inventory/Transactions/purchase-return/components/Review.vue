@@ -25,7 +25,7 @@ const data = ref({
       unitPrice: "450",
       tax: "5",
       total: 450.00,
-      serials: 58
+      serials: ""
     },
     {
       id: 2,
@@ -38,7 +38,7 @@ const data = ref({
       unitPrice: "85",
       tax: "11",
       total: 85.00,
-      serials: 5
+      serials: ""
     }
   ]
 });
@@ -138,6 +138,7 @@ const columns = computed(() => [
         </template>
         <template  v-slot:["col-serial"]="{ data }">
           <VsxIcon iconName="Eye" :size="20" type="linear" color="#3F5FAC" class="cursor-pointer" />
+          <span class="text-gray-600">{{ data.serials }}</span>
         </template>
       </DynamicTable>
     </div>
