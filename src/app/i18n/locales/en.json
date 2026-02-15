@@ -387,7 +387,9 @@
     "allowNegativeBalanceNote": "Note : By enabling this system will permit sales/transfers even if stock level iz zero or less",
     "allowNegativeStockBalance": "Allow Negative Stock Balance",
     "ProfessionalWarehouse": "Professional Warehouse",
-    "ProfessionalNote": " You can configure zones, rows, columns, and racks in the \"Zones & Locations\" tab after entering basic information."
+    "ProfessionalNote": " You can configure zones, rows, columns, and racks in the \"Zones & Locations\" tab after entering basic information.",
+    "locationLimitError": "The number of areas must be less than 6000"
+
   },
   "itemGroup": {
     "title": "Item Group",
@@ -1006,7 +1008,7 @@
     "totalQuantity": "• Total Quantity: ",
     "locations": "• Locations: ",
     "transactions": "• Transactions: "
-  },
+    },
   "payment": {
   "paymentFinanceInfo": "Payment & Finance Info",
   "paymentType": "Payment Type",

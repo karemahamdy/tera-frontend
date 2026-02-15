@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useForm } from "vee-validate";
+import { useI18n } from "vue-i18n";
 import type { Zone, LocationRequest } from "../types/warehouse";
+import { toastService } from "@/app/services/toastService";
+
+const { t } = useI18n();
 
 const props = defineProps<{
   modelValue?: Zone[];
@@ -80,6 +84,18 @@ const addZone = () => {
   const rows_num = Number(rows.value);
   const cols_num = Number(columns.value);
   const racks_num = Number(racks.value);
+
+  const totalCurrentLocations = (props.modelValue || []).reduce(
+    (acc, zone) => acc + zone.locationRequest.length,
+    0
+  );
+
+  const newZoneLocations = rows_num * cols_num * racks_num;
+
+  if (totalCurrentLocations + newZoneLocations > 6000) {
+    toastService.error(t("warehouses.locationLimitError"))
+    return;
+  }
 
   const locationRequest = generateLocations(code.value, rows_num, cols_num, racks_num);
 
