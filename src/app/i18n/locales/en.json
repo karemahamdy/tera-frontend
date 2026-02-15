@@ -20,6 +20,8 @@
   "Name/Module/Screen": "Name/Module/Screen",
   "records": "Records",
   "profile": "Profile",
+  "quickAccess": "Quick Access",
+  "dashboard": "Dashboard",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },

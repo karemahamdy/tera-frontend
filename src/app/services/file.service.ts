@@ -44,5 +44,29 @@ export const FileService = {
   document.body.removeChild(link);
   window.URL.revokeObjectURL(link.href);
 },
+downloadBlobCSV(data: Blob, fileName: string) {
+  const isCSV = fileName.toLowerCase().endsWith(".csv");
+  if (isCSV) {
+    const BOM = "\uFEFF";
+    data.text().then(text => {
+      const blob = new Blob([BOM + text], {
+        type: "text/csv;charset=utf-8;"
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+    return;
+  }
+  const url = window.URL.createObjectURL(data);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
 
 };

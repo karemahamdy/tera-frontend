@@ -20,6 +20,8 @@
   "Name/Module/Screen": "الاسم / الوحدة / الشاشة",
   "records": "العناصر",
   "profile": "الملف الشخصي",
+  "quickAccess": "الوصول السريع",
+  "dashboard": "لوحة التحكم",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
