@@ -1,58 +1,48 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
 
 const { t } = useI18n();
 
-const props = defineProps({
-  formData: {
-    type: Object,
-    default: () => ({
-      returnNumber: "PR-012",
-      originalWaybill: "PW-2024-05",
-      returnDate: "2025-01-01",
-      returnReason: "Quality Issues",
-      receivingWarehouse: "WH-001",
-      zoneLocation: "Zone A",
-      items: [
-        {
-          id: 1,
-          code: "ITM-001",
-          name: "Hydraulic Pump Model A",
-          uom: "PCS",
-          warehouse: "WH-044",
-          zone: "Zone A",
-          purchased: 50,
-          returnedQty: 9,
-          serial: "view",
-        },
-        {
-          id: 2,
-          code: "ITM-045",
-          name: "Industrial Bearing 6205",
-          uom: "PCS",
-          warehouse: "WH-021",
-          zone: "Zone B",
-          purchased: 45,
-          returnedQty: 10,
-          serial: "view",
-        },
-        {
-          id: 3,
-          code: "ITM-049",
-          name: "Global Traders",
-          uom: "PCS",
-          warehouse: "WH-011",
-          zone: "Zone C",
-          purchased: 32,
-          returnedQty: 11,
-          serial: "view",
-        },
-      ],
-    }),
-  },
+const data = ref({
+  returnNumber: "PR-012",
+  originalWaybill: "PW-2024-05",
+  returnDate: "2025-01-01",
+  returnReason: "Quality Issues",
+  receivingWarehouse: "WH-001",
+  zoneLocation: "Zone A",
+
+  items: [
+    {
+      id: 1,
+      code: 'ITM-001',
+      name: 'Hydraulic Pump',
+      quantity: 0,
+      uom: 'PCS',
+      warehouse: 'WH-011',
+      zone: 'Zone A',
+      unitPrice: "450",
+      tax: "5",
+      total: 450.00,
+      serials: 58
+    },
+    {
+      id: 2,
+      code: 'ITM-045',
+      name: 'Industrial 6205',
+      quantity: 0,
+      uom: 'PCS',
+      warehouse: 'WH-011',
+      zone: 'Zone A',
+      unitPrice: "85",
+      tax: "11",
+      total: 85.00,
+      serials: 5
+    }
+  ]
 });
+
 
 const columns = computed(() => [
   { field: "code", header: t("itemsList.itemCode") },
@@ -79,7 +69,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ReturnNumber") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ props.formData.returnNumber }}
+            {{ data.returnNumber }}
           </p>
         </div>
         <div>
@@ -87,7 +77,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.OriginalWaybill") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ props.formData.originalWaybill }}
+            {{ data.originalWaybill }}
           </p>
         </div>
         <div>
@@ -95,7 +85,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ReturnDate") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ props.formData.returnDate }}
+            {{ data.returnDate }}
           </p>
         </div>
         <div>
@@ -103,23 +93,23 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ReturnReason") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ props.formData.returnReason }}
+            {{ data.returnReason }}
           </p>
         </div>
-       <div>
+        <div>
           <p class="text-sm font-medium text-gray-400 mb-1">
             {{ t("purchaseReturn.ReceivingWarehouse") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ props.formData.receivingWarehouse }}
+            {{ data.receivingWarehouse }}
           </p>
         </div>
-         <div>
+        <div>
           <p class="text-sm font-medium text-gray-400 mb-1">
             {{ t("purchaseReturn.ZoneLocation") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ props.formData.zoneLocation }}
+            {{ data.zoneLocation }}
           </p>
         </div>
       </div>
@@ -130,24 +120,24 @@ const columns = computed(() => [
       <h3 class="text-lg font-bold text-gray-800 mb-4">
         {{ t("purchaseReturn.LineItem") }}
       </h3>
-      <DynamicTable
-        :columns="columns"
-        :data="props.formData.items"
-        :paginator="false"
-        :showView="false"
-        :showEdit="false"
-        :showDelete="false"
-      >
-        <template #col-code="{ data }">
-          <div class="flex items-center gap-2">
-            <Badge severity="success" class="circle-badge-sm">
-                <VsxIcon iconName="Airdrop" :size="20" type="linear" />
+      <DynamicTable :columns="columns"  :data="data.items" :paginator="false" :showView="false"
+        :showEdit="false" :showDelete="false">
+        <template  v-slot:["col-code"]="{ data }">
+          <div class="flex items-center gap-2 rounded">
+            <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
+              <VsxIcon iconName="Airdrop" :size="20" type="linear" />
             </Badge>
-             <span class="font-medium text-gray-700">{{ data.code }}</span>
+            <Badge v-else severity="transparent" class="circle-badge">
+              <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
+            </Badge>
+            <div class="text-base text-gray-700">{{ data.code }}</div>
           </div>
         </template>
-        <template #col-serial>
-             <VsxIcon iconName="Eye" :size="20" type="linear" color="#3F5FAC" class="cursor-pointer" />
+        <template  v-slot:["col-name"]="{ data }">
+          <span class="text-gray-600">{{ data.name }}</span>
+        </template>
+        <template  v-slot:["col-serial"]="{ data }">
+          <VsxIcon iconName="Eye" :size="20" type="linear" color="#3F5FAC" class="cursor-pointer" />
         </template>
       </DynamicTable>
     </div>
@@ -164,5 +154,24 @@ const columns = computed(() => [
   justify-content: center;
   background-color: #d1fae5;
   color: #10b981;
+}
+
+.circle-badge-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.circle-badge {
+  background-color: transparent;
+}
+
+.icon-transparent {
+  color: transparent;
 }
 </style>
