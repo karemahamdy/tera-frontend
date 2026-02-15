@@ -23,7 +23,7 @@ const submit = () => {
 const steps = [
   { label: "Return Information" },
   { label: "Return Items" },
-  { label: "Review" }
+  { label: "Quality Inspection" }
 ];
 </script>
 

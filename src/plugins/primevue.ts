@@ -31,7 +31,8 @@ import { FileUpload } from "primevue";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 import MultiSelect from "primevue/multiselect";
-import DatePicker from "primevue/datepicker";
+import DatePicker from 'primevue/datepicker';
+import TreeSelect from 'primevue/treeselect';
 import TabMenu from "primevue/tabmenu";
 import Tabs from "primevue/tabs";
 import TabPanel from "primevue/tabpanel";
@@ -89,6 +90,7 @@ export function setupPrimeVue(app: App) {
   app.component("Toast", Toast);
   app.component("MultiSelect", MultiSelect);
   app.component("DatePicker", DatePicker);
+  app.component("TreeSelect", TreeSelect);
   app.component("TabMenu", TabMenu);
   app.component("Tabs", Tabs);
   app.component("TabList", TabList);

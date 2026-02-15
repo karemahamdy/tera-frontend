@@ -96,7 +96,11 @@ export function useWarehouse() {
     try {
       await warehousesService.delete(id);
       toastService.success((t("warehouses.warehouseDeletedSuccessfully")));
-      apiWarehouse.value = apiWarehouse.value.filter((b) => b.id !== id);
+      if(apiWarehouse.value.length === 1 && pageIndex.value != 1){
+        await fetchWarehouse(pageIndex.value - 1);
+      } else {
+        await fetchWarehouse(pageIndex.value);
+      }
     } catch (err: any) {
       toastService.error(err);
       throw err;

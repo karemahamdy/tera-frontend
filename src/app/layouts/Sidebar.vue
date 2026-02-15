@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { NavItem } from "@/app/types/navigation";
 import SidebarItem from "./SidebarItem.vue";
 import logoImg from "@/assets/Header.svg";
 import { useUserStore } from "@/app/store/useUserStore";
@@ -10,71 +9,6 @@ defineProps<{
 
 const userStore = useUserStore();
 const logo = logoImg;
-
-const navItems: NavItem[] = [
-  {
-    label: "Acces Control",
-    icon: "SecurityUser",
-    children: [
-      { label: "Users Management", route: "/user-management" },
-      { label: "User Groups", route: "/user-group" },
-      { label: "Branch Management", route: "/branch-management" },
-      { label: "Roles Management", route: "/roles-permissions" },
-      { label: "Active Sessions", route: "/active-sessions" },
-      { label: "Audit Log", route: "/audit-log" },
-      {
-        label: "Reports",
-        children: [
-          { label: "User Report", route: "/reports/user" },
-          { label: "User Group Report", route: "/reports/user-group" },
-          { label: "Permission Report", route: "/reports/permission-report" },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Adminstration",
-    icon: "KeySquare",
-    children: [{ label: "License Info", route: "/license-info" }],
-  },
-  {
-    label: "Inventory",
-    icon: "SecurityUser",
-
-    children: [
-      {
-        label: "Master Data",
-        children: [
-          { label: "Warehouses", route: "/warehouses" },
-          { label: "Item Groups", route: "/item-groups" },
-          { label: "Item List", route: "/item-list" },
-          { label: "LDC", route: "/LDC" },
-        ],
-      },
-      {
-        label: "Transaction",
-        children: [
-          { label: "Purchase Waybill", route: "/purchase-waybill" },
-          { label: "Sales Waybill", route: "/sales-waybill" },
-          { label: "Sales Return", route: "/sales-return" },
-          { label: "Purchase Return", route: "/purchase-return" },
-          { label: "Warehouse Transaction", route: "/warehouse-transaction" },
-          { label: "Inventory Request", route: "/inventory-request" },
-        ],
-      },
-      {
-        label: "Operations",
-        children: [
-          { label: "Item Transactions", route: "/item-transactions" },
-          { label: "Item Hold", route: "/item-hold" },
-          { label: "Physical Count", route: "/physical-count" },
-          { label: "Adjustment", route: "/inventory-adjustment" },
-          { label: "Opening Balance", route: "/opening-balance" },
-        ],
-      },
-    ],
-  },
-];
 
 function logout() {
   userStore.logout();
@@ -98,7 +32,7 @@ function logout() {
 
     <!-- CONTENT -->
     <div class="scroll-container overflow-y-auto overflow-x-hidden">
-      <div class="px-3 py-4 text-gray-500" v-if="!collapsed">Quick Access</div>
+      <div class="px-3 py-4 text-gray-500" v-if="!collapsed">{{ $t("quickAccess") }}</div>
 
       <!-- NAV -->
       <nav class="p-2 text-gray-500">
@@ -115,16 +49,17 @@ function logout() {
               "
             >
               <VsxIcon iconName="Element4" :size="24" type="linear" />
-              <span v-if="!collapsed">{{ $t("Dashboard") }}</span>
+              <span v-if="!collapsed">{{ $t("dashboard") }}</span>
             </router-link>
           </li>
 
           <!-- Dynamic Items -->
           <SidebarItem
-            v-for="item in navItems"
-            :key="item.label"
+            v-for="item in userStore.modules"
+            :key="item.code"
             :item="item"
             :collapsed="collapsed"
+            icon="SecurityUser"
             :activeClass="
               $i18n.locale === 'ar'
                 ? 'active active-link-ar'
