@@ -128,7 +128,7 @@ const handleDeleteConfirm = async () => {
 };
 
 const addPurchaseWaybill = () => {
-    router.push({name: 'PurchaseWaybillCreate' });
+    router.push({name: 'InventoryAdjustmentCreate' });
 };
 const getStatusBadge = (status: any) => {
   return status === "Posted" ? "status-active" : "status-inactive";

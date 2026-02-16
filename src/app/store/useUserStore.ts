@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axiosWrapper from "@/app/http/axiosWrapper";
 import i18n from "@/app/i18n/index";
 import type { ModulesItem, QuickAccessItem } from "@/app/types/navigation";
+import { useLoadingStore } from "@/app/store/useLoadingStore";
 
 import type {
   User,
@@ -96,10 +97,12 @@ export const useUserStore = defineStore("user", {
       } catch (e) {
         // ignore
       }
-       window.location.reload();
+      window.location.reload();
     },
 
     toggleLang() {
+      const loadingStore = useLoadingStore();
+      loadingStore.start();
       this.setLang(this.lang === "en" ? "ar" : "en");
     },
 
@@ -199,6 +202,8 @@ export const useUserStore = defineStore("user", {
     // ------------------------------------
     async switchBranch(branchId: string) {
       try {
+        const loadingStore = useLoadingStore();
+        loadingStore.start();
         const response = await axiosWrapper.post<SwitchBranch>(
           `/user-profile/switch-branch?BranchId=${branchId}`,
         );
@@ -212,6 +217,7 @@ export const useUserStore = defineStore("user", {
           }
         }
         this.setAccessToken(response.data.newToken);
+        loadingStore.start();
         window.location.reload();
       } catch (error) {
         console.error("Failed to switch branch:", error);
@@ -246,7 +252,7 @@ export const useUserStore = defineStore("user", {
           "/user-profile",
         );
         this.userProfile = response.data;
-        this.modules = this.normalizeModules(response.data.modules)
+        this.modules = this.normalizeModules(response.data.modules);
         return this.userProfile;
       } catch (error) {
         console.error("Failed to fetch user profile:", error);

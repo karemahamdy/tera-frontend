@@ -75,14 +75,14 @@ function logout() {
           class="w-full p-2 rounded hover:bg-white/5 text-gray-500 flex items-center gap-3"
         >
           <VsxIcon iconName="Setting2" :size="24" type="linear" />
-          <span v-if="!collapsed">Settings</span>
+          <span v-if="!collapsed">{{ $t("settings") }}</span>
         </button>
 
         <button
           class="w-full p-2 rounded hover:bg-white/5 text-success-500 flex items-center gap-3"
         >
           <VsxIcon iconName="Headphone" :size="24" type="linear" />
-          <span v-if="!collapsed">Help</span>
+          <span v-if="!collapsed">{{ $t("help") }}</span>
         </button>
 
         <button
@@ -90,7 +90,7 @@ function logout() {
           @click="logout"
         >
           <VsxIcon iconName="LogoutCurve" :size="24" type="linear" />
-          <span v-if="!collapsed">Logout</span>
+          <span v-if="!collapsed">{{ $t("logout") }}</span>
         </button>
       </div>
     </div>

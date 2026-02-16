@@ -22,6 +22,8 @@
   "profile": "Profile",
   "quickAccess": "Quick Access",
   "dashboard": "Dashboard",
+  "settings": "Settings",
+  "help": "Help",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
@@ -924,7 +926,7 @@
     "deleteConfirm": "Are you sure you want to delete this item?"
   },
   "InventoryAdjustment": {
-    "InventoryAdjustment": "Inventory Adjustment",
+    "InventoryAdjustment": "Adjustment",
     "subtitle": "Adjust quantity or cost for variance reconciliation",
     "addNew": "New Adjustment",
     "searchPlaceholder": "Search...",
