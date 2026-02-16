@@ -9,5 +9,18 @@ export const InventoryAdjustmentRoutes = [
       permission: null
     },
   },
-  
+  {
+    path: "/inventory-adjustment/create",
+    name: "InventoryAdjustmentCreate",
+    component: () => import("@/modules/Inventory/Operations/inventory-adjustment/pages/InventoryAdjustmentForm.vue"),
+    meta: { permission: null },
+    props: { mode: "create" },
+  },
+  {
+    path: "/branch-management/view/:id",
+    name: "InventoryAdjustmentView",
+    component: () => import("@/modules/Inventory/Operations/inventory-adjustment/pages/InventoryAdjustmentForm.vue"),
+    props: { mode: "view" },
+    meta: { permission: null },
+  },
 ];
