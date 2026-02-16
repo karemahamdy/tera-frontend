@@ -936,7 +936,16 @@
     "items": "Items",
     "zone": "Zone",
     "warehouse": "Warehouse",
-    "deleteConfirm": "Are you sure you want to delete this item?"
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "countID": "Count ID",
+    "item": "Item",
+    "availableBalance": "Available Balance",
+    "counted": "Counted",
+    "variance": "Variance",
+    "createNewAdjustment": "Create New Adjustment",
+    "selectItemToAdjustment": "Select ItemToAdjustment",
+    "adjustmentNumber": "Adjustment Number",
+    "createAdjustment": "Create Adjustment"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",
