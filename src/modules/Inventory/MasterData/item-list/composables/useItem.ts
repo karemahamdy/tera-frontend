@@ -146,7 +146,10 @@ export function useItem() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        StatusFilter: StatusFilter.value,
+        WarehouseIds: WarehouseIds.value,
+        ItemGroupIds: ItemGroupIds.value
+
       });
       FileService.downloadBlob(response, "item-data.csv");
     } catch (err: any) {
