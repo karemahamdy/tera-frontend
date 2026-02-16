@@ -177,6 +177,7 @@ onMounted(() => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormDropdown
           class="w-full"
+          v-if="accessScope != 'Global'"
           :label="$t('items.warehouse')"
           :options="warehouseLookup"
           v-model="warehouseID"
@@ -186,6 +187,7 @@ onMounted(() => {
         />
         <FormDropdown
           class="w-full"
+          :class="{ 'col-span-2': accessScope == 'Global' }"
           :label="$t('items.category')"
           :options="categoryLookups"
           v-model="categoryID"

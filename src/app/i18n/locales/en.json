@@ -22,6 +22,8 @@
   "profile": "Profile",
   "quickAccess": "Quick Access",
   "dashboard": "Dashboard",
+  "settings": "Settings",
+  "help": "Help",
   "layout": {
     "copyRight": "COPYRIGHT © {year} TERA ERP, All rights Reserved"
   },
