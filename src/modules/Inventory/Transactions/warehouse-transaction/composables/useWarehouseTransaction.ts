@@ -32,7 +32,9 @@ export function useWarehouseTransaction() {
         orderDirection: orderDirection.value,
         StatusFilter: StatusFilter.value
       });
-      const payload = response && response.data ? response.data : response;
+      const payload = response;
+      console.log(payload);
+
       apiWarehouseTransaction.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
@@ -93,20 +95,6 @@ export function useWarehouseTransaction() {
     try {
       await WarehouseTransactionService.delete(id);
       toastService.success((t("WarehouseTransaction.WarehouseTransactionDeletedSuccessfully")));
-      apiWarehouseTransaction.value = apiWarehouseTransaction.value.filter((b) => b.id !== id);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await WarehouseTransactionService.toggleActive(id, isActive);
-      toastService.success((t("WarehouseTransaction.WarehouseTransactionUpdatedSuccessfully")));
       await fetchWarehouseTransaction(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -148,7 +136,6 @@ export function useWarehouseTransaction() {
     createWarehouseTransaction,
     updateWarehouseTransaction,
     deleteWarehouseTransaction,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,

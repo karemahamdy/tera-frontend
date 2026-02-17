@@ -1,48 +1,36 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, WarehouseTransactionResponse,  } from "../types/WarehouseTransaction";
+import type { Pagination, WarehouseTransactionResponse } from "../types/WarehouseTransaction";
 
 
 export const WarehouseTransactionService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<WarehouseTransactionResponse>(
-      `/purchase-waybill`, { params }
+      `/warehouse-transactions`, { params }
     );
-    return resp.data;
+    return resp;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/purchase-waybill/${id}`);
+    const data = await axiosWrapper.get<any>(`/warehouse-transactions/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
+    const data = await axiosWrapper.post<any>(`/warehouse-transactions`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/purchase-waybill/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/warehouse-transactions/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/purchase-waybill/${id}`);
+    await axiosWrapper.delete(`/warehouse-transactions/${id}`);
   },
-
-  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(
-      `/purchase-waybill/Status/${id}`,
-      null,
-      {
-        params: { isActive }
-      }
-    );
-    return data.data;
-  },
-
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/purchase-waybill/export-LDCs`,
+      `/warehouse-transactions/export-LDCs`,
       {
         params: payload,
         responseType: "blob",
