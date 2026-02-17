@@ -75,11 +75,11 @@ const filtersOperation = computed(() => {
             ],
         },
          {
-            placeholder: "salesReturn.reason",
+            placeholder: "SalesReturn.allreason",
             value: null,
             field: "status",
             options: [
-                { label: t("salesReturn.reason"), value: null },
+                { label: t("SalesReturn.allreason"), value: null },
                 { label: t("button.Posted"), value: "IsActive" },
                 { label: t("button.Pending"), value: "InActive" },
             ],
@@ -89,14 +89,14 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'WaybillId', header: t('salesReturn.returnId'), sortable: true },
-        { field: 'invioceId', header: t('salesReturn.customer'), sortable: true },
-        { field: 'WaybillId', header: t('salesReturn.invoiceID'), sortable: true },
-        { field: 'WaybillId', header: t('salesReturn.originalWaybill'), sortable: true },
-        { field: 'supplier', header: t('salesReturn.items'), type: 'slot', sortable: true },
-        { field: 'date', header: t('salesReturn.date'), type: 'date', sortable: true },
-        { field: 'purchaseOrder', header: t('salesReturn.total'), sortable: true },
-        { field: 'reason', header: t('salesReturn.reason'), type: 'slot', sortable: true },
+        { field: 'returnId', header: t('SalesReturn.returnId'), sortable: true },
+        { field: 'invioceId', header: t('SalesReturn.customer'), sortable: true },
+        { field: 'WaybillId', header: t('SalesReturn.invoiceID'), sortable: true },
+        { field: 'originalWaybill', header: t('SalesReturn.originalWaybill'), sortable: true },
+        { field: 'supplier', header: t('SalesReturn.items'), type: 'slot', sortable: true },
+        { field: 'date', header: t('SalesReturn.date'), type: 'date', sortable: true },
+        { field: 'purchaseOrder', header: t('SalesReturn.total'), sortable: true },
+        { field: 'reason', header: t('SalesReturn.reason'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -163,14 +163,14 @@ const getStatusText = (status: any) => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory" subtitle="masterData" actionName="salesReturn.salesReturn" />
+        <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="SalesReturn.salesReturn" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="salesReturn.salesReturn" subtitle="salesReturn.subtitle" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="salesReturn.addNew" :showFilter="true"
+                <PageHeader title="SalesReturn.salesReturn" subtitle="SalesReturn.subtitle" :showExport="false"
+                    :showImport="false" :mainBtn="true" mainBtnText="SalesReturn.addNew" :showFilter="true"
                     :filters="filtersOperation" @filter-change="onFilterChange"
-                    searchPlaceholder="salesReturn.searchPlaceholder" @search="onSearch"
+                    searchPlaceholder="SalesReturn.searchPlaceholder" @search="onSearch"
                     :onMainBtnClick="addPurchaseWaybill" />
             </template>
             <!-- DynamicTable component -->
@@ -188,6 +188,12 @@ const getStatusText = (status: any) => {
                             </span>
                         </div>
                     </template>
+                      <template  v-slot:["col-returnId"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.returnId }}</span>
+                    </template>
+                      <template  v-slot:["col-originalWaybill"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.originalWaybill }}</span>
+                    </template>
                 </DynamicTable>
             </template>
             <template #footer>
@@ -195,7 +201,7 @@ const getStatusText = (status: any) => {
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('salesReturn.deleteConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('SalesReturn.deleteConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },

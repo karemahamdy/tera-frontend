@@ -22,6 +22,8 @@
   "profile": "الملف الشخصي",
   "quickAccess": "الوصول السريع",
   "dashboard": "لوحة التحكم",
+  "settings": "الإعدادات",
+  "help": "مساعدة",
   "layout": {
     "copyRight": "حقوق النشر © {year} تيرا إي آر بي، جميع الحقوق محفوظة"
   },
@@ -730,7 +732,7 @@
     "deleteConfirm": "هل أنت متأكد أنك تريد حذف عملية البيع هذه؟",
     "CustomerDetails": "تفاصيل العميل",
     "WaybillNumber": "رقم بوليصة الشحن",
-    "WaybillNumberPlaceholder": "أدخل رقم بوليصة الشحن",
+    "salesWaybillPlaceholder": "أدخل رقم بوليصة الشحن",
     "Customer": "العميل",
     "CustomerPlaceholder": "اختر العميل",
     "SalesOrderReference": "رقم طلب البيع",
@@ -756,6 +758,7 @@
     "customer": "العميل",
     "total": "الإجمالي",
     "reason": "السبب",
+    "allreason": "كل الاسباب",
     "date": "التاريخ",
     "items": "العناصر",
     "originalWaybill": "إذن البيع الأصلي",
@@ -796,7 +799,7 @@
     "Balance": "الرصيد",
     "QualityInspection": "فحص الجودة",
     "Inspector": "المفتش",
-    "InspectorPlaceholder": "اختر المفتش",
+    "InspectorPlaceholder": "ادخل رقم المفتش",
     "InspectionDate": "تاريخ الفحص",
     "InspectionDatePlaceholder": "اختر تاريخ الفحص",
     "InspectionResult": "نتيجة الفحص",
@@ -819,7 +822,16 @@
     "Zone": "المنطقة",
     "ZonePlaceholder": "اختر المنطقة",
     "ReturnNotes": "ملاحظات المرتجع",
-    "ReturnNotesPlaceholder": "أدخل ملاحظات المرتجع"
+    "ReturnNotesPlaceholder": "وصف تفصيلي لمتطلبات الإصدار والإرجاع...",
+    "ReviewSummary": "ملخص المراجعة",
+    "ReturnNumber": "رقم المرتجع",
+    "OriginalWaybill": "رقم إذن الاستلام الأصلي",
+    "ReceivingWarehouse": "المخزن المستلم",
+    "ZoneLocation": "الموقع / المنطقة",
+    "LineItem": "أصناف المرتجع",
+    "serial": "السيريال",
+    "unitPrice": "سعر الوحدة",
+    "tax": "الضريبة %"
   },
   "purchaseRules": {
     "ruleHeader": "خطوات عملية مرتجع المشتريات:",
@@ -846,6 +858,11 @@
     "shippingStock": "بناءً على الفحص: إرجاع للمخزون، التخلص، أو الإرجاع للمورد",
     "carrierIntegration": "معالجة إشعار الائتمان إذا تمت الموافقة",
     "serialIntegration": "تتبع الأرقام التسلسلية/دفعات خلال عملية المرتجع"
+  },
+  "RequestRules": {
+   "department": "القسم يقدّم طلب صرف للمواد المطلوبة",
+  "items": "يتم التحقق من الأصناف مقابل المخزون المتاح والحجوزات",
+  "serialLot": "الأصناف التي تتبع السيريال/اللوط تتطلب تعيين رقم"
   },
   "operation": {
     "title": "العمليات",
@@ -1091,7 +1108,7 @@
     "TargetWarehousePlaceholder": "اختر المخزن المستهدف",
     "Reason": "السبب",
     "ReasonPlaceholder": "أدخل السبب",
-    "ReviewSummary": "ملخص المراجعة",
+     "ReviewSummary": "ملخص المراجعة",
     "RequestorDepartment": "مقدم الطلب والقسم",
     "WarehouseDetails": "تفاصيل المخزن",
     "RequestBy": "مقدم الطلب",

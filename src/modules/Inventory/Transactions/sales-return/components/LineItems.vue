@@ -188,6 +188,10 @@ const removeItem = (data: any) => {
                     <span class="font-medium text-gray-900">{{ data.total.toFixed(2) }}</span>
                 </template>
 
+                 <template #col-Waybill="{ data }">
+                    <span class="font-medium text-primary-600">{{ data.Waybill }}</span>
+                </template>
+
                 <template #col-action="{ data }">
                     <button class="text-red-400 hover:text-red-600" @click="removeItem(data)">
                         <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />

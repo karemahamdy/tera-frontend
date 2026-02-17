@@ -165,16 +165,16 @@ const removeItem = (data: any) => {
                 </template>
 
                 <template #col-uom="{ data }">
-                    <Select v-model="data.uom" :options="['PCS', 'KG', 'LTR']" class="w-20 p-inputtext-sm text-sm" />
+                    <FormDropdown v-model="data.uom" :options="['PCS', 'KG', 'LTR']" class="w-20 p-inputtext-sm text-sm" />
                 </template>
 
                 <template #col-warehouse="{ data }">
-                    <Select v-model="data.warehouse" :options="['WH-011', 'WH-012']" class="w-24 p-inputtext-sm text-sm"
+                    <FormDropdown v-model="data.warehouse" :options="['WH-011', 'WH-012']" class="w-24 p-inputtext-sm text-sm"
                         :placeholder="t('items.warehouse')" />
                 </template>
 
                 <template #col-zone="{ data }">
-                    <Select v-model="data.zone" :options="['Zone A', 'Zone B']" class="w-24 p-inputtext-sm text-sm"
+                    <FormDropdown v-model="data.zone" :options="['Zone A', 'Zone B']" class="w-24 p-inputtext-sm text-sm"
                         :placeholder="t('items.zone')" />
                 </template>
 

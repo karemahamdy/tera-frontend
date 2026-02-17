@@ -5,7 +5,7 @@ import ReturnDetails from '../components/ReturnDetails.vue';
 import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
 import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import LineItems from '../components/LineItems.vue';
-import QualityInspection from '../components/QualityInspection.vue';
+import Review from '../components/Review.vue';
 
 const activeStep = ref(0);
 const nextTab = () => {
@@ -29,13 +29,13 @@ const steps = [
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader title="inventory" subtitle="masterData" actionName="purchaseWaybill.purchaseWaybill" />
+    <ScreenHeader title="inventory" subtitle="operation.transactions" actionName="purchaseWaybill.purchaseWaybill" />
     <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
           <ReturnDetails v-if="activeStep === 0" />
           <LineItems v-else-if="activeStep === 1" @next="nextTab" @prev="previousTab" />
-          <QualityInspection v-else-if="activeStep === 2" @prev="previousTab" @submit="submit" />
+          <Review v-else-if="activeStep === 2" @prev="previousTab" @submit="submit" />
         </template>
       </Card>
       <StepperActions :current="activeStep" :total="steps.length" nextText="Next" prevText="Back" finishText="Create"

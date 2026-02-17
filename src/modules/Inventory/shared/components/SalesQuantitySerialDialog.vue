@@ -178,7 +178,7 @@ watch(localVisible, (newVal) => emit('update:visible', newVal));
                     </div>
 
                     <div class="flex gap-3">
-                        <BaseButton :label="t('common.cancel')" variant="outline"
+                        <BaseButton :label="t('common.cancel')" variant="ghost"
                             class="w-24 border-gray-300 text-gray-700 hover:bg-gray-50 bg-white" @click="close" />
 
                         <BaseButton :label="t('serial.finalizeSave')"
