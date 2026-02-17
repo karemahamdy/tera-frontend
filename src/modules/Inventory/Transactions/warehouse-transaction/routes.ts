@@ -9,4 +9,14 @@ export const WarehouseTransactionRoutes = [
       permission: null
     },
   },
+  {
+    path: "/warehouse-transaction/create",
+    component: () => import("@/modules/Inventory/Transactions/warehouse-transaction/pages/WarehouseTransactionForm.vue"),
+    name: "WarehouseTransactionCreate",
+    meta: {
+      hide: true,
+      localizedTitle: "Warehouse Transaction",
+      permission: null
+    },
+  },
 ];

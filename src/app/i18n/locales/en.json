@@ -595,6 +595,7 @@
     "selectLedgerDetailCard": "Select Ledger Detail Card",
     "selectDefaultCostCenter": "Select Default Cost Center",
     "costCenter": "Cost Center",
+    "costCenterPlaceholder" : "Select Cost Center",
     "basicInformation": "Basic Information",
     "code": "Item Code",
     "codePlaceholder": "Enter Item Code",
@@ -783,7 +784,7 @@
     "ReturnReasonPlaceholder": "Select return reason",
     "ReceivingWarehouse": "Receiving Warehouse",
     "ReceivingWarehousePlaceholder": "Select receiving warehouse",
-    "Zone": "Zone / locatione",
+    "Zone": "Zone / location",
     "ZonePlaceholder": "Select Zone / location",
     "CustomerNotes": "Customer Notes",
     "CustomerNotesPlaceholder": "Customer's description of issue...",
@@ -983,12 +984,17 @@
     "ledgerStatus": "Ledger Status",
     "action": "Action",
     "warehouseTransaction": "Warehouse Transactions",
+    "InventoryRequestPlaceholder": "Select Request Reference",
     "description": "Manage and track all inbound, outbound, and internal stock movement",
     "newTransaction": "New Transaction",
     "searchPlaceholder": "Search returns...",
     "allDirections": "All Directions",
     "allWarehouse": "All Warehouse",
-    "allStatus": "All Status"
+    "allStatus": "All Status",
+    "title": "New Transaction",
+    "desc": "Manage and track all inbound, outbound, and internal stock movement",
+    "warehousePlaceholder": "Select  Source Warehouse",
+    "ZonePlaceholder": "Select Source Zone"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",
@@ -997,7 +1003,7 @@
     "selectTransactionType": "Select Transaction Type",
     "notes": "Notes",
     "notesPlaceholder": "Add any relevant notes...",
-    "sourceTargetItems": "Source and Target Items",
+    "sourceTargetItems": "Transfer Movement Details",
     "sourceItem": "Source Item",
     "sourceItemFrom": "Source Item (Form)",
     "sourceItemSelect": "Select Source Item",
@@ -1011,7 +1017,9 @@
     "targetItemDetails": "Target Item Details:",
     "totalQuantity": "• Total Quantity: ",
     "locations": "• Locations: ",
-    "transactions": "• Transactions: "
+    "transactions": "• Transactions: ",
+    "sourceFrom": "Source (Form)",
+    "targetTo": "Destination (To)"
     },
   "payment": {
   "paymentFinanceInfo": "Payment & Finance Info",
@@ -1158,5 +1166,24 @@
     "Shipped": "Shipped",
     "ReturnQTY": "Return Quantity",
     "warehouse": "Warehouse"
+  },
+  "transaction": {
+    "details": "Transaction Details",
+    "reviewDescription": "Reviewing all inbound, outbound, and internal stock movement",
+    "waybillDate": "Waybill Date",
+    "inventoryRequest": "Inventory Request",
+    "direction": "Transaction Direction",
+    "warehouse": "Warehouse",
+    "zone": "Zone",
+    "type": "Type",
+    "costCenter": "Cost Center",
+    "transferDetails": "Transfer Movement Details",
+    "source": "Source (From)",
+    "destination": "Destination (To)"
+  },
+"direction": {
+    "transfer": "Transfer",
+    "inbound": "Inbound",
+    "outbound": "Outbound"
   }
 }
