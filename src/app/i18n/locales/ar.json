@@ -1107,7 +1107,7 @@
     "TargetWarehouse": "المخزن المستهدف",
     "TargetWarehousePlaceholder": "اختر المخزن المستهدف",
     "Reason": "السبب",
-    "ReasonPlaceholder": "أدخل السبب",
+    "ReasonPlaceholder": "وصف تفصيلي لمتطلبات الإصدار والإرجاع...",
      "ReviewSummary": "ملخص المراجعة",
     "RequestorDepartment": "مقدم الطلب والقسم",
     "WarehouseDetails": "تفاصيل المخزن",
