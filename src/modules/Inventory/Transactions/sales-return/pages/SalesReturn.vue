@@ -75,11 +75,11 @@ const filtersOperation = computed(() => {
             ],
         },
          {
-            placeholder: "SalesReturn.reason",
+            placeholder: "SalesReturn.allreason",
             value: null,
             field: "status",
             options: [
-                { label: t("SalesReturn.reason"), value: null },
+                { label: t("SalesReturn.allreason"), value: null },
                 { label: t("button.Posted"), value: "IsActive" },
                 { label: t("button.Pending"), value: "InActive" },
             ],
@@ -89,10 +89,10 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'WaybillId', header: t('SalesReturn.returnId'), sortable: true },
+        { field: 'returnId', header: t('SalesReturn.returnId'), sortable: true },
         { field: 'invioceId', header: t('SalesReturn.customer'), sortable: true },
         { field: 'WaybillId', header: t('SalesReturn.invoiceID'), sortable: true },
-        { field: 'WaybillId', header: t('SalesReturn.originalWaybill'), sortable: true },
+        { field: 'originalWaybill', header: t('SalesReturn.originalWaybill'), sortable: true },
         { field: 'supplier', header: t('SalesReturn.items'), type: 'slot', sortable: true },
         { field: 'date', header: t('SalesReturn.date'), type: 'date', sortable: true },
         { field: 'purchaseOrder', header: t('SalesReturn.total'), sortable: true },
@@ -163,7 +163,7 @@ const getStatusText = (status: any) => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory" subtitle="masterData" actionName="SalesReturn.salesReturn" />
+        <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="SalesReturn.salesReturn" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
@@ -187,6 +187,12 @@ const getStatusText = (status: any) => {
                                 {{ data.status }}
                             </span>
                         </div>
+                    </template>
+                      <template  v-slot:["col-returnId"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.returnId }}</span>
+                    </template>
+                      <template  v-slot:["col-originalWaybill"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.originalWaybill }}</span>
                     </template>
                 </DynamicTable>
             </template>

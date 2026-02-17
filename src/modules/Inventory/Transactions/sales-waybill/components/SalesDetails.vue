@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n"
 
 const { t } = useI18n()
 
-const WaybillNumber = ref("")
+const salesWaybill = ref("")
 const Customer = ref(null)
 const TrackingNumber = ref("")
 const SalesOrderReference = ref("")
@@ -15,7 +15,7 @@ const expectedDelivery = ref()
 const id = ref(null)
 
 const errors = reactive({
-  WaybillNumber: "",
+  salesWaybill: "",
   Customer: "",
   ShippingAddress: "",
   TrackingNumber: "",
@@ -33,8 +33,8 @@ const errors = reactive({
       {{ t("salesWaybill.CustomerDetails") }}
     </p>
 
-    <FormInput :label="t('salesWaybill.WaybillNumber')" v-model="WaybillNumber" :error="errors.WaybillNumber"
-      :placeholder="t('salesWaybill.WaybillNumberPlaceholder')" :invalid="!!errors.WaybillNumber" :disabled="!!id" />
+    <FormInput :label="t('salesWaybill.salesWaybill')" v-model="salesWaybill" :error="errors.salesWaybill"
+      :placeholder="t('salesWaybill.salesWaybillPlaceholder')" :invalid="!!errors.salesWaybill" :disabled="!!id" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
