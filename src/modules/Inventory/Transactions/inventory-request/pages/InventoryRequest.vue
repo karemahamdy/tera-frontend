@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useInventoryRequest } from "../composables/useInventoryRequest";
+import RulesCard from "@/sharedComponents/RulesCard.vue";
 
 
 const { t } = useI18n();
@@ -10,6 +11,12 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange } = useInventoryRequest();
+
+const rules = [
+  "RequestRules.department",    
+  "RequestRules.items",          
+  "RequestRules.serialLot",         
+];
 
 const props = defineProps({
   data: {
@@ -161,6 +168,7 @@ const addInventoryRequest = () => {
                         <span class="text-primary-500 cursor-pointer underline" @click="handleActionMenu({ action: 'view', data })">{{ data.requestId }}</span>
                     </template>
                     </DynamicTable>
+                <RulesCard title="RequestRules.ruleHeader" :items="rules" color="primary" />
               
             </template>
         </card>

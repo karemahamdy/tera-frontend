@@ -65,11 +65,11 @@ onMounted(() => {
 const filtersOperation = computed(() => {
     return [
           {
-            placeholder: "purchaseReturn.allsupplier",
+            placeholder: "purchaseWaybill.allsupplier",
             value: null,
             field: "supplier",
             options: [
-                { label: t("purchaseReturn.supplier"), value: null },
+                { label: t("purchaseWaybill.allsupplier"), value: null },
                 { label: t("button.Completed"), value: "IsActive" },
                 { label: t("button.Pending"), value: "InActive" },
             ],
@@ -89,9 +89,9 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'WaybillId', header: t('purchaseReturn.returnId'), sortable: true },
+        { field: 'returnId', header: t('purchaseReturn.returnId'), sortable: true },
         { field: 'invioceId', header: t('purchaseReturn.supplier'), sortable: true },
-        { field: 'WaybillId', header: t('purchaseReturn.originalPW'), sortable: true },
+        { field: 'originalPW', header: t('purchaseReturn.originalPW'), sortable: true },
         { field: 'date', header: t('purchaseReturn.date'), type: 'date', sortable: true },
         { field: 'supplier', header: t('purchaseReturn.items'), type: 'slot', sortable: true },
         { field: 'purchaseOrder', header: t('purchaseReturn.total'), sortable: true },
@@ -162,7 +162,7 @@ const getStatusText = (status: any) => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory" subtitle="masterData" actionName="purchaseReturn.purchaseReturn" />
+        <ScreenHeader title="inventory" subtitle="operation.transactions" actionName="purchaseReturn.purchaseReturn" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
@@ -187,6 +187,12 @@ const getStatusText = (status: any) => {
                             </span>
                         </div>
                     </template>
+                     <template #col-originalPW="{ data }">
+                    <span class="text-primary-500 cursor-pointer underline">{{ data.originalPW }}</span>
+                </template>
+                 <template #col-returnId="{ data }">
+                    <span class="text-primary-500 cursor-pointer underline">{{ data.returnId }}</span>
+                </template>
                 </DynamicTable>
             </template>
             <template #footer>

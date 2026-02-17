@@ -141,7 +141,7 @@ const getStatusText = (status: any) => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory" subtitle="masterData" actionName="purchaseWaybill.purchaseWaybill" />
+        <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="purchaseWaybill.purchaseWaybill" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>

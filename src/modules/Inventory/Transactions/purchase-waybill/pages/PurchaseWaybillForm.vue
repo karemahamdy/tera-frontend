@@ -30,7 +30,7 @@ const steps = [
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader title="inventory" subtitle="masterData" actionName="purchaseWaybill.purchaseWaybill" />
+    <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="purchaseWaybill.purchaseWaybill" />
     <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
