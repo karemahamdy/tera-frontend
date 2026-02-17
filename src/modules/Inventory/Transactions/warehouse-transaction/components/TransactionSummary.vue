@@ -1,5 +1,8 @@
-
 <script setup>
+import { useI18n } from "vue-i18n"
+
+const { t } = useI18n()
+
 defineProps({
   data: {
     type: Object,
@@ -29,87 +32,98 @@ defineProps({
   <div class="p-6">
     <!-- Header -->
     <div class="mb-6 border-b border-gray-100 pb-4">
-      <h2 class="text-lg font-bold text-gray-800">Transaction Details</h2>
+      <h2 class="text-lg font-bold text-gray-800">
+        {{ t('transaction.details') }}
+      </h2>
       <p class="text-sm text-gray-500 mt-1">
-        Reviewing all inbound, outbound, and internal stock movement
+        {{ t('transaction.reviewDescription') }}
       </p>
     </div>
 
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-y-8 gap-x-12">
       <div>
-        <p class="text-sm font-medium text-gray-400 mb-1">Waybill Date</p>
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.waybillDate') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.waybillDate }}</p>
       </div>
+
       <div>
-        <p class="text-sm font-medium text-gray-400 mb-1">Inventory Request</p>
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.inventoryRequest') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.inventoryRequest }}</p>
       </div>
+
       <div>
-        <p class="text-sm font-medium text-gray-400 mb-1">Transaction Direction</p>
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.direction') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.direction }}</p>
       </div>
 
       <div>
-        <p class="text-sm font-medium text-gray-400 mb-1">Warehouse</p>
-         <p class="text-base font-semibold text-gray-800">{{ data.warehouse }}</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-400 mb-1">Zone</p>
-         <p class="text-base font-semibold text-gray-800">{{ data.zone }}</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-400 mb-1">Type</p>
-         <p class="text-base font-semibold text-gray-800">{{ data.type }}</p>
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.warehouse') }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.warehouse }}</p>
       </div>
 
-       <div class="md:col-span-3">
-        <p class="text-sm font-medium text-gray-400 mb-1">Cost Center</p>
-         <p class="text-base font-semibold text-gray-800">{{ data.costCenter }}</p>
+      <div>
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.zone') }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.zone }}</p>
+      </div>
+
+      <div>
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.type') }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.type }}</p>
+      </div>
+
+      <div class="md:col-span-3">
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.costCenter') }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.costCenter }}</p>
       </div>
     </div>
 
-    <!-- Transfer Movement Details -->
+
     <div v-if="data.direction === 'Transfer'" class="mt-8 pt-6 border-t border-gray-100">
-      <h3 class="text-sm font-semibold text-gray-800 mb-4">Transfer Movement Details</h3>
-      
+      <h3 class="text-sm font-semibold text-gray-800 mb-4">
+        {{ t('transaction.transferDetails') }}
+      </h3>
+
       <div class="flex flex-col md:flex-row items-center gap-4">
-        <!-- Source -->
+        
         <div class="flex-1 w-full bg-primary-50 rounded-xl p-4 border border-primary-100">
-           <p class="text-primary-700 font-bold mb-3 text-sm">Source (From)</p>
-           <div class="grid grid-cols-2 gap-4">
-              <div>
-                  <p class="text-xs text-gray-500 mb-1">Warehouse</p>
-                  <p class="text-sm font-semibold text-gray-800">{{ data.source?.warehouse || '-' }}</p>
-              </div>
-               <div>
-                  <p class="text-xs text-gray-500 mb-1">Zone</p>
-                  <p class="text-sm font-semibold text-gray-800">{{ data.source?.zone || '-' }}</p>
-              </div>
-           </div>
+          <p class="text-primary-700 font-bold mb-3 text-sm">
+            {{ t('transaction.source') }}
+          </p>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-gray-500 mb-1">{{ t('transaction.warehouse') }}</p>
+              <p class="text-sm font-semibold text-gray-800">{{ data.source?.warehouse || '-' }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 mb-1">{{ t('transaction.zone') }}</p>
+              <p class="text-sm font-semibold text-gray-800">{{ data.source?.zone || '-' }}</p>
+            </div>
+          </div>
         </div>
 
-        <!-- Arrow -->
-         <div class="flex-shrink-0 text-primary-500">
-            <VsxIcon iconName="ArrowRight" type="linear" :size="24" />
-         </div>
+        <div class="flex-shrink-0 text-primary-500">
+          <VsxIcon iconName="ArrowRight" type="linear" :size="24" />
+        </div>
 
-        <!-- Destination -->
         <div class="flex-1 w-full bg-primary-50 rounded-xl p-4 border border-primary-100">
-           <p class="text-primary-700 font-bold mb-3 text-sm">Destination (To)</p>
-           <div class="grid grid-cols-2 gap-4">
-              <div>
-                  <p class="text-xs text-gray-500 mb-1">Warehouse</p>
-                  <p class="text-sm font-semibold text-gray-800">{{ data.destination?.warehouse || '-' }}</p>
-              </div>
-               <div>
-                  <p class="text-xs text-gray-500 mb-1">Zone</p>
-                  <p class="text-sm font-semibold text-gray-800">{{ data.destination?.zone || '-' }}</p>
-              </div>
-           </div>
+          <p class="text-primary-700 font-bold mb-3 text-sm">
+            {{ t('transaction.destination') }}
+          </p>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-gray-500 mb-1">{{ t('transaction.warehouse') }}</p>
+              <p class="text-sm font-semibold text-gray-800">{{ data.destination?.warehouse || '-' }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 mb-1">{{ t('transaction.zone') }}</p>
+              <p class="text-sm font-semibold text-gray-800">{{ data.destination?.zone || '-' }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-

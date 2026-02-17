@@ -55,9 +55,7 @@ const steps = [
           <LineItems v-else-if="activeStep === 1" :transactionType="formData.direction" @next="nextTab" @prev="previousTab" />
           <div v-else-if="activeStep === 2">
              <TransactionSummary :data="formData" />
-             <div class="flex justify-end mt-4">
-               <!-- Navigation buttons for the review step if needed, though StepperActions handles finish -->
-             </div>
+             
           </div>
         </template>
       </Card>
