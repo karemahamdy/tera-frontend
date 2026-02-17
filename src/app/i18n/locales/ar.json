@@ -718,7 +718,8 @@
     "ReceivingWarehouse": "مخزن الاستلام",
     "ReceivingWarehousePlaceholder": "اختر المخزن",
     "zone": "المنطقة",
-    "zonePlaceholder": "اختر المنطقة"
+    "zonePlaceholder": "اختر المنطقة",
+    "PurchaseWaybillDeletedSuccessfully":"تم الحذف بنجاح"
   },
   "salesWaybill": {
     "salesWaybill": "إذن صرف مبيعات",

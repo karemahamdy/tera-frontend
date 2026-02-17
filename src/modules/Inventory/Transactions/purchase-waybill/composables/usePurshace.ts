@@ -4,7 +4,8 @@ import { useI18n } from "vue-i18n";
 import type { PurchaseWaybill } from "../types/PurchaseWaybill";
 import { PurchaseWaybillService } from "../services/PurchaseWaybill.service";
 
-const loading = ref(false);
+export function usePurchaseWaybill() {
+  const loading = ref(false);
 const apiPurchaseWaybill = ref<PurchaseWaybill[]>([]);
 const tableData = ref<any[]>([]);
 
@@ -18,7 +19,6 @@ const orderBy = ref('');
 const StatusFilter = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-export function usePurchaseWaybill() {
   const { t } = useI18n();
 
   const fetchPurchaseWaybill = async (page = 1) => {
@@ -62,7 +62,7 @@ export function usePurchaseWaybill() {
     loading.value = true;
     try {
       const response = await PurchaseWaybillService.create(payload);
-      toastService.success(t("PurchaseWaybill.PurchaseWaybillCreatedSuccessfully"));
+      toastService.success(t("purchaseWaybill.PurchaseWaybillCreatedSuccessfully"));
       await fetchPurchaseWaybill(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -77,7 +77,7 @@ export function usePurchaseWaybill() {
     loading.value = true;
     try {
       const response = await PurchaseWaybillService.update(id, payload);
-      toastService.success(t("PurchaseWaybill.PurchaseWaybillUpdatedSuccessfully"));
+      toastService.success(t("purchaseWaybill.PurchaseWaybillUpdatedSuccessfully"));
       await fetchPurchaseWaybill(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -92,21 +92,7 @@ export function usePurchaseWaybill() {
     loading.value = true;
     try {
       await PurchaseWaybillService.delete(id);
-      toastService.success((t("PurchaseWaybill.PurchaseWaybillDeletedSuccessfully")));
-      apiPurchaseWaybill.value = apiPurchaseWaybill.value.filter((b) => b.id !== id);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await PurchaseWaybillService.toggleActive(id, isActive);
-      toastService.success((t("PurchaseWaybill.PurchaseWaybillUpdatedSuccessfully")));
+      toastService.success((t("purchaseWaybill.PurchaseWaybillDeletedSuccessfully")));
       await fetchPurchaseWaybill(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -148,7 +134,6 @@ export function usePurchaseWaybill() {
     createPurchaseWaybill,
     updatePurchaseWaybill,
     deletePurchaseWaybill,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,
