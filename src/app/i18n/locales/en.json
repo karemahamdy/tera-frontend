@@ -945,7 +945,9 @@
     "createNewAdjustment": "Create New Adjustment",
     "selectItemToAdjustment": "Select ItemToAdjustment",
     "adjustmentNumber": "Adjustment Number",
-    "createAdjustment": "Create Adjustment"
+    "createAdjustment": "Create Adjustment",
+    "newAdjustment": "New Adjustment",
+    "itemToAdjustment": "Item To Adjustment"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",

@@ -937,7 +937,10 @@
     "createNewAdjustment": "إنشاء تسوية جديدة",
     "selectItemToAdjustment": "اختر صنف للتسوية",
     "adjustmentNumber": "رقم التسوية",
-    "createAdjustment": "إنشاء تسوية"
+    "createAdjustment": "إنشاء تسوية",
+    "newAdjustment": "تسوية جديدة",
+    "itemToAdjustment": "اصناف التسوية"
+
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",
