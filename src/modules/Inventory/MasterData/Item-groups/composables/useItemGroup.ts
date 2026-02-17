@@ -5,6 +5,8 @@ import { itemGroupsService } from "../services/itemGroup.service";
 import type { AddItemGroup, ItemGroup } from "../types/itemGroup";
 import { FileService } from "@/app/services/file.service";
 
+export function useItemGroup() {
+  
 const loading = ref(false);
 const apiItemGroups = ref<ItemGroup[]>([]);
 const tableData = ref<any[]>([]);
@@ -22,7 +24,6 @@ const currentLevel = ref<string>("Category");
 const lastError = ref<string | null>(null);
 const validationErrors = ref<Record<string, string[]>>({});
 
-export function useItemGroup() {
   const { t } = useI18n();
 
   const fetchItemGroups = async (page = 1, level?: Number) => {

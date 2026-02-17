@@ -4,7 +4,8 @@ import { useI18n } from "vue-i18n";
 import { LDCService } from "../services/LDC.service";
 import type { LDC } from "../types/LDC";
 
-const loading = ref(false);
+export function useLDC() {
+  const loading = ref(false);
 const apiLDC = ref<LDC[]>([]);
 const tableData = ref<any[]>([]);
 
@@ -18,7 +19,6 @@ const orderBy = ref('');
 const StatusFilter = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-export function useLDC() {
   const { t } = useI18n();
 
   const fetchLDC = async (page = 1) => {
@@ -94,6 +94,7 @@ export function useLDC() {
       await LDCService.delete(id);
       toastService.success((t("LDC.LDCDeletedSuccessfully")));
       apiLDC.value = apiLDC.value.filter((b) => b.id !== id);
+      fetchLDC(pageIndex.value)
     } catch (err: any) {
       toastService.error(err);
       throw err;
