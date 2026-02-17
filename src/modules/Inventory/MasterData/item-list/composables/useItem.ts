@@ -5,7 +5,8 @@ import { itemListService } from "../services/itemList.service";
 import type { ItemCards, itemList, statistics } from "../types/itemList";
 import { FileService } from "@/app/services/file.service";
 
-const loading = ref(false);
+export function useItem() {
+ const loading = ref(false);
 const apiItem = ref<itemList[]>([]);
 const statistics = ref<statistics>({} as statistics);
 const itemCards = ref<ItemCards>({} as ItemCards)
@@ -21,8 +22,6 @@ const StatusFilter = ref("");
 const ItemGroupIds = ref<string[]>([]);
 const WarehouseIds = ref<string[]>([]);
 const orderDirection = ref<"asc" | "desc">("desc");
-
-export function useItem() {
   const { t } = useI18n();
 
   const fetchItem = async (page = 1) => {

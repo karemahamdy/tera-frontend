@@ -6,7 +6,8 @@ import { FileService } from "@/app/services/file.service";
 import { warehousesService } from "../services/warehouse.service";
 import type { warehouses } from "../types/warehouse";
 
-const loading = ref(false);
+export function useWarehouse() {
+  const loading = ref(false);
 const apiWarehouse = ref<warehouses[]>([]);
 
 const pageIndex = ref(1);
@@ -20,7 +21,6 @@ const WarehouseType = ref('');
 const IsActive = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-export function useWarehouse() {
   const { t } = useI18n();
 
   const fetchWarehouse = async (page = 1) => {
