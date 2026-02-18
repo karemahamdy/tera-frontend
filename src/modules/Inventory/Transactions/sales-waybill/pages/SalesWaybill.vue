@@ -151,7 +151,7 @@ const getStatusText = (status: any) => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory" subtitle="masterData" actionName="salesWaybill.salesWaybill" />
+        <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="salesWaybill.salesWaybill" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
@@ -175,6 +175,9 @@ const getStatusText = (status: any) => {
                                 {{ data.status }}
                             </span>
                         </div>
+                    </template>
+                      <template  v-slot:["col-WaybillId"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.WaybillId }}</span>
                     </template>
                 </DynamicTable>
             </template>

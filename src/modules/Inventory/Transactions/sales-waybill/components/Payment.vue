@@ -99,7 +99,7 @@ const importOptions = [
                     </div>
 
                     <div class="md:col-span-2">
-                        <FormDropdown :label="t('payment.importType')" v-model="importType" :options="importOptions"
+                        <FormDropdown :label="t('payment.ExportType')" v-model="importType" :options="importOptions"
                             :placeholder="t('payment.selectType')" />
                     </div>
 

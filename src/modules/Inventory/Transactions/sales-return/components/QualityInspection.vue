@@ -24,31 +24,31 @@ const errors = reactive({
   <div>
 
     <p class="font-bold mb-5 text-lg">
-      {{ t("SalesReturn.QualityInspection") }}
+      {{ t("purchaseReturn.QualityInspection") }}
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-      <FormDropdown :label="t('SalesReturn.Inspector')" v-model="Inspector" :error="errors.Inspector"
-        :placeholder="t('SalesReturn.InspectorPlaceholder')" :invalid="!!errors.Inspector" />
+      <FormInput :label="t('purchaseReturn.Inspector')" v-model="Inspector" :error="errors.Inspector"
+        :placeholder="t('purchaseReturn.InspectorPlaceholder')" :invalid="!!errors.Inspector" />
 
       <div>
         <label class="block text-gray-600 text-lg">
-          {{ t("SalesReturn.InspectionDate") }}
+          {{ t("purchaseReturn.InspectionDate") }}
         </label>
         <DatePicker v-model="InspectionDate" showIcon fluid iconDisplay="input"
-          :placeholder="t('SalesReturn.InspectionDatePlaceholder')" />
+          :placeholder="t('purchaseReturn.InspectionDatePlaceholder')" />
       </div>
-<FormDropdown :label="t('SalesReturn.InspectionResult')" v-model="InspectionResult"
-      :error="errors.InspectionResult" :placeholder="t('SalesReturn.InspectionResultPlaceholder')"
+<FormDropdown :label="t('purchaseReturn.InspectionResult')" v-model="InspectionResult"
+      :error="errors.InspectionResult" :placeholder="t('purchaseReturn.InspectionResultPlaceholder')"
       :invalid="!!errors.InspectionResult" :disabled="!!id" class="md:col-span-2"/>
 
       <div class="md:col-span-2">
         <label class="text-gray-700 font-medium mb-2 block">
-          {{ $t("SalesReturn.InspectionNotes") }}
+          {{ $t("purchaseReturn.InspectionNotes") }}
         </label>
 
-        <Textarea v-model="InspectionNotes" :placeholder="$t('SalesReturn.InspectionNotesPlaceholder')"
+        <Textarea v-model="InspectionNotes" :placeholder="$t('purchaseReturn.InspectionNotesPlaceholder')"
           class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.InspectionNotes }" />
 
         <small v-if="errors.InspectionNotes" class="text-danger-500">

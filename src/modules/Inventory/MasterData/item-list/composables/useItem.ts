@@ -5,7 +5,8 @@ import { itemListService } from "../services/itemList.service";
 import type { ItemCards, itemList, statistics } from "../types/itemList";
 import { FileService } from "@/app/services/file.service";
 
-const loading = ref(false);
+export function useItem() {
+ const loading = ref(false);
 const apiItem = ref<itemList[]>([]);
 const statistics = ref<statistics>({} as statistics);
 const itemCards = ref<ItemCards>({} as ItemCards)
@@ -21,8 +22,6 @@ const StatusFilter = ref("");
 const ItemGroupIds = ref<string[]>([]);
 const WarehouseIds = ref<string[]>([]);
 const orderDirection = ref<"asc" | "desc">("desc");
-
-export function useItem() {
   const { t } = useI18n();
 
   const fetchItem = async (page = 1) => {
@@ -101,7 +100,9 @@ export function useItem() {
     try {
       await itemListService.delete(id);
       toastService.success(t("itemList.ItemDeletedSuccessfully"));
-      apiItem.value = apiItem.value.filter((b) => b.id !== id);
+      // apiItem.value = apiItem.value.filter((b) => b.id !== id);
+      // if(apiItem.value.length === 1 && pageIndex.value != 1){
+        await fetchItem(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -146,7 +147,10 @@ export function useItem() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        StatusFilter: StatusFilter.value,
+        WarehouseIds: WarehouseIds.value,
+        ItemGroupIds: ItemGroupIds.value
+
       });
       FileService.downloadBlob(response, "item-data.csv");
     } catch (err: any) {

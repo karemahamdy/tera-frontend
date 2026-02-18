@@ -432,6 +432,7 @@
     "addWarehouse": "إضافة صنف",
     "searchPlaceholder": "البحث عن الاسم او الرمز...",
     "itemName": "اسم الصنف",
+    "warehousePlaceholder": "اختر المستودع",
     "itemCode": "رمز الصنف",
     "itemGroup": "مجموعة الصنف",
     "UOM": "وحدة القياس",
@@ -598,6 +599,7 @@
     "selectDefaultCostCenter": "اختر مركز التكلفة الافتراضي",
     "costCenter": "مركز التكلفة",
     "basicInformation": "المعلومات الأساسية",
+    "costCenterPlaceholder": "اختر مركز التكلفة",
     "code": "رمز الصنف",
     "codePlaceholder": "أدخل رمز الصنف",
     "name": "اسم الصنف 1",
@@ -741,7 +743,7 @@
     "deleteConfirm": "هل أنت متأكد أنك تريد حذف عملية البيع هذه؟",
     "CustomerDetails": "تفاصيل العميل",
     "WaybillNumber": "رقم بوليصة الشحن",
-    "WaybillNumberPlaceholder": "أدخل رقم بوليصة الشحن",
+    "salesWaybillPlaceholder": "أدخل رقم بوليصة الشحن",
     "Customer": "العميل",
     "CustomerPlaceholder": "اختر العميل",
     "SalesOrderReference": "رقم طلب البيع",
@@ -767,6 +769,7 @@
     "customer": "العميل",
     "total": "الإجمالي",
     "reason": "السبب",
+    "allreason": "كل الاسباب",
     "date": "التاريخ",
     "items": "العناصر",
     "originalWaybill": "إذن البيع الأصلي",
@@ -807,7 +810,7 @@
     "Balance": "الرصيد",
     "QualityInspection": "فحص الجودة",
     "Inspector": "المفتش",
-    "InspectorPlaceholder": "اختر المفتش",
+    "InspectorPlaceholder": "ادخل رقم المفتش",
     "InspectionDate": "تاريخ الفحص",
     "InspectionDatePlaceholder": "اختر تاريخ الفحص",
     "InspectionResult": "نتيجة الفحص",
@@ -830,7 +833,7 @@
     "Zone": "المنطقة",
     "ZonePlaceholder": "اختر المنطقة",
     "ReturnNotes": "ملاحظات المرتجع",
-    "ReturnNotesPlaceholder": "أدخل ملاحظات المرتجع",
+    "ReturnNotesPlaceholder": "وصف تفصيلي لمتطلبات الإصدار والإرجاع...",
     "ReviewSummary": "ملخص المراجعة",
     "ReturnNumber": "رقم المرتجع",
     "OriginalWaybill": "رقم إذن الاستلام الأصلي",
@@ -866,6 +869,11 @@
     "shippingStock": "بناءً على الفحص: إرجاع للمخزون، التخلص، أو الإرجاع للمورد",
     "carrierIntegration": "معالجة إشعار الائتمان إذا تمت الموافقة",
     "serialIntegration": "تتبع الأرقام التسلسلية/دفعات خلال عملية المرتجع"
+  },
+  "RequestRules": {
+   "department": "القسم يقدّم طلب صرف للمواد المطلوبة",
+  "items": "يتم التحقق من الأصناف مقابل المخزون المتاح والحجوزات",
+  "serialLot": "الأصناف التي تتبع السيريال/اللوط تتطلب تعيين رقم"
   },
   "operation": {
     "title": "العمليات",
@@ -985,12 +993,20 @@
     "ledgerStatus": "حالة الدفتر",
     "action": "الإجراء",
     "warehouseTransaction": "معاملات المستودع",
+    "InventoryRequestPlaceholder": "حدد مرجع الطلب",
     "description": "إدارة وتتبع جميع حركات المخزون الواردة والصادرة والداخلية",
     "newTransaction": "معاملة جديدة",
     "searchPlaceholder": "ابحث عن المرتجعات...",
     "allDirections": "جميع الاتجاهات",
     "allWarehouse": "جميع المستودعات",
-    "allStatus": "جميع الحالات"
+    "allStatus": "جميع الحالات",
+      "title": "حركة مخزنية",
+    "desc": "إنشاء وتعديل حركة مخزنية",
+    "costCenter": "مركز التكلفة",
+    "costCenterPlaceholder": "اختر مركز التكلفة",
+    "warehousePlaceholder": "اختر المخزن",
+    "Zone": "المنطقة",
+    "ZonePlaceholder": "اختر المنطقة"
   },
   "itemTransaction": {
     "createNewTransaction": "إنشاء معاملة جديدة",
@@ -999,7 +1015,7 @@
     "selectTransactionType": "اختر نوع المعاملة",
     "notes": "ملاحظات",
     "notesPlaceholder": "أضف أي ملاحظات ذات صلة...",
-    "sourceTargetItems": "الأصناف المصدر والمستهدفة",
+    "sourceTargetItems": "تفاصيل حركة النقل",
     "sourceItem": "الصنف المصدر",
     "sourceItemFrom": "الصنف المصدر (من)",
     "sourceItemSelect": "اختر الصنف المصدر",
@@ -1013,7 +1029,10 @@
     "targetItemDetails": "تفاصيل الصنف المستهدف:",
     "totalQuantity": "• إجمالي الكمية: ",
     "locations": "• المواقع: ",
-    "transactions": "• المعاملات: "
+    "transactions": "• المعاملات: ",
+    "sourceFrom": "من",
+    "targetTo": "إلى"
+  
   },
   "payment": {
     "paymentFinanceInfo": "معلومات الدفع والمالية",
@@ -1120,7 +1139,7 @@
     "TargetWarehouse": "المخزن المستهدف",
     "TargetWarehousePlaceholder": "اختر المخزن المستهدف",
     "Reason": "السبب",
-    "ReasonPlaceholder": "أدخل السبب",
+    "ReasonPlaceholder": "وصف تفصيلي لمتطلبات الإصدار والإرجاع...",
     "ReviewSummary": "ملخص المراجعة",
     "RequestorDepartment": "مقدم الطلب والقسم",
     "WarehouseDetails": "تفاصيل المخزن",
@@ -1154,5 +1173,24 @@
     "Shipped": "الكمية المشحونة",
     "ReturnQTY": "كمية المرتجع",
     "warehouse": "المخزن"
+  },
+  "transaction": {
+    "details": "تفاصيل العملية",
+    "reviewDescription": "مراجعة جميع حركات المخزون الواردة والصادرة والداخلية",
+    "waybillDate": "تاريخ الإذن",
+    "inventoryRequest": "طلب المخزون",
+    "direction": "اتجاه العملية",
+    "warehouse": "المخزن",
+    "zone": "المنطقة",
+    "type": "النوع",
+    "costCenter": "مركز التكلفة",
+    "transferDetails": "تفاصيل حركة التحويل",
+    "source": "المصدر (من)",
+    "destination": "الوجهة (إلى)"
+  },
+"direction": {
+    "transfer": "تحويل",
+    "inbound": "وارد",
+    "outbound": "صادر"
   }
 }

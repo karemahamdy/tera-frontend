@@ -51,9 +51,26 @@ export const itemListService = {
   },
 
   async exportData(payload: any) {
-    const data = await axiosWrapper.get<Blob>(`/item/exportItems`, {
+
+    const data = await axiosWrapper.get<Blob>(`/item/ExportItems`, {
       params: payload,
       responseType: "blob",
+
+      paramsSerializer: (params) => {
+        const searchParams = new URLSearchParams();
+
+        for (const key in params) {
+          const value = params[key];
+
+          if (Array.isArray(value)) {
+            value.forEach(v => searchParams.append(key, v));
+          } else if (value !== undefined && value !== null) {
+            searchParams.append(key, value);
+          }
+        }
+
+        return searchParams.toString();
+      },
     });
 
     return data;
