@@ -6,7 +6,7 @@ export const ItemTransactionsService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<ItemTransactionsResponse>(
-      `/purchase-waybill`, { params }
+      `/MergeOrTransferTransactions`, { params }
     );
     return resp.data;
   },

@@ -1,9 +1,10 @@
 export interface ItemTransactions {
-  id: string;
-  code: string;
-  name: string;
-  isActive: boolean;
-  createAt: string;
+  operationType: string;
+  sourceItemCode: string;
+  targetItemCode: string;
+  transactionDate: string;
+  transactionsCount: number;
+  warehouseCode: string;
 }
 
 export interface ItemTransactionsResponse {
@@ -23,10 +24,10 @@ export interface ItemTransactionsResponse {
 }
 
 export interface Pagination {
+  typeFilter?: string;
   pageIndex: number;
-  pageSize?: number;
+  pageSize: number;
   searchingWord?: string;
   orderBy?: string;
   orderDirection?: "asc" | "desc";
-  StatusFilter?: string;
 }

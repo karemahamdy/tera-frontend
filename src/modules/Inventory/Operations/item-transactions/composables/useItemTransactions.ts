@@ -4,22 +4,22 @@ import { useI18n } from "vue-i18n";
 import type { ItemTransactions } from "../types/ItemTransactions";
 import { ItemTransactionsService } from "../services/ItemTransactions.service";
 
-const loading = ref(false);
-const apiItemTransactions = ref<ItemTransactions[]>([]);
-const tableData = ref<any[]>([]);
-
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
-
-const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref('');
-const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function useItemTransactions() {
   const { t } = useI18n();
+  const loading = ref(false);
+  const apiItemTransactions = ref<ItemTransactions[]>([]);
+  const tableData = ref<any[]>([]);
+  
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
+  
+  const searchTerm = ref('');
+  const orderBy = ref('');
+  const typeFilter = ref('');
+  const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const fetchItemTransactions = async (page = 1) => {
     loading.value = true;
@@ -30,7 +30,7 @@ export function useItemTransactions() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        typeFilter: typeFilter.value
       });
       const payload = response && response.data ? response.data : response;
       apiItemTransactions.value = payload.items ?? [];
@@ -88,33 +88,6 @@ export function useItemTransactions() {
     }
   };
 
-  const deleteItemTransactions = async (id: string) => {
-    loading.value = true;
-    try {
-      await ItemTransactionsService.delete(id);
-      toastService.success((t("ItemTransactions.ItemTransactionsDeletedSuccessfully")));
-      apiItemTransactions.value = apiItemTransactions.value.filter((b) => b.id !== id);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await ItemTransactionsService.toggleActive(id, isActive);
-      toastService.success((t("ItemTransactions.ItemTransactionsUpdatedSuccessfully")));
-      await fetchItemTransactions(pageIndex.value);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
 
   const onFilterChange = (filter: {
     filter: { field: string };
@@ -122,8 +95,8 @@ export function useItemTransactions() {
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
-      StatusFilter.value = value;
+    if (field === "typeFilter") {
+      typeFilter.value = value;
     }
     fetchItemTransactions(1);
   };
@@ -147,8 +120,6 @@ export function useItemTransactions() {
     fetchItemTransactionsById,
     createItemTransactions,
     updateItemTransactions,
-    deleteItemTransactions,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,

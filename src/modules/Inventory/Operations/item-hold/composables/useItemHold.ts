@@ -15,7 +15,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const StatusFilter = ref('');
+const StatusFilter = ref<string | null>(null);
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function useItemHold() {
@@ -30,7 +30,7 @@ export function useItemHold() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        itemTypeHoldFilter: StatusFilter.value
       });
       const payload = response && response.data ? response.data : response;
       apiItemHold.value = payload.items ?? [];
@@ -122,7 +122,7 @@ export function useItemHold() {
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
+    if (field === "type") {
       StatusFilter.value = value;
     }
     fetchItemHold(1);

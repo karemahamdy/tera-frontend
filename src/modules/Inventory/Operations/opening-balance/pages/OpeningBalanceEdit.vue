@@ -3,11 +3,11 @@
 
 <template>
   <div>
-    <ScreenHeader title="inventory" subtitle="operation.title" actionName="Edit Opening Balance" />
+    <ScreenHeader title="inventory" subtitle="operation.title" actionName="OpeningBalance.editOpeningBalance" />
     <card class="bg-white rounded-[10px]">
       <!-- PageHeader component -->
       <template #title>
-        <PageHeader title="Edit Opening Balance" subtitle="Capture existing stock at system go-live"
+        <PageHeader title="OpeningBalance.editOpeningBalance" subtitle="OpeningBalance.createOpeningBalanceInfo"
           :showSearch="false" />
       </template>
       <!-- DynamicTable component -->
@@ -21,14 +21,14 @@
           <FormDropdown class="w-full mt-5" :label="$t('items.warehouse')" :options="[]" optionValue="value"
             :placeholder="$t('items.warehousePlaceholder')" />
 
-          <FormDropdown class="w-full mt-5" :label="$t('zone')" :options="[]" optionValue="value"
-            :placeholder="$t('zone')" />
+          <FormDropdown class="w-full mt-5" :label="$t('OpeningBalance.zone')" :options="[]" optionValue="value"
+            :placeholder="$t('OpeningBalance.zone')" />
 
-          <FormInput :label="$t('Date')" type="date" class="mt-5" :placeholder="$t('Date')" />
-          <FormDropdown class="w-full mt-5" :label="$t('Unit Of Measure')" :options="[]" optionValue="value"
-            :placeholder="$t('UOM')" />
+          <FormInput :label="$t('OpeningBalance.date')" type="date" class="mt-5" :placeholder="$t('Date')" />
+          <FormDropdown class="w-full mt-5" :label="$t('OpeningBalance.uom')" :options="[]" optionValue="value"
+            :placeholder="$t('OpeningBalance.Uom')" />
 
-          <FormInput :label="$t('Unit Cost')" class="mt-5" :placeholder="$t('Unit Cost')" />
+          <FormInput :label="$t('OpeningBalance.UnitCost')" class="mt-5" :placeholder="$t('OpeningBalance.UnitCost')" />
 
           <FormInput :label="$t('itemHold.quantity')" class="mt-5" :placeholder="$t('itemHold.quantityPlaceholder')" />
         </div>
