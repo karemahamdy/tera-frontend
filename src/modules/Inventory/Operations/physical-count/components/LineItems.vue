@@ -19,14 +19,14 @@ const data = ref([
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'itemCode', header: t('Item Code') },
-        { field: 'itemName', header: t('Item Name') },
+        { field: 'itemCode', header: t('PhysicalCount.ItemCode') },
+        { field: 'itemName', header: t('PhysicalCount.ItemName') },
         { field: 'warehouse', header: t('PhysicalCount.warehouse') },
         { field: 'zone', header: t('PhysicalCount.zone') },
-        { field: 'systemBalance', header: t('System Balance') },
-        { field: 'countedQTY', header: t('Counted QTY') },
+        { field: 'systemBalance', header: t('PhysicalCount.SystemBalance') },
+        { field: 'countedQTY', header: t('PhysicalCount.CountedQTY') },
         { field: 'variances', header: t('PhysicalCount.Variances') },
-        { field: 'serial', header: t('Serial') },
+        { field: 'serial', header: t('serial.serial') },
         { field: 'delete', header: t('action') }
     ];
     return Columns;
@@ -47,8 +47,8 @@ const deleteItem = (id: string) => {
 
 <template>
     <div>
-        <PageHeader title="Line Items"
-            subtitle="Add items to your purchase waybill. Tracked items require serial/batch assignment."
+        <PageHeader title="PhysicalCount.LineItems"
+            subtitle="PhysicalCount.LineItemsInfo"
             :showSearch="false" :mainBtn="true" mainBtnText="Add Item" :onMainBtnClick="addItem" />
 
         <DynamicTable :columns="columns" :data="data" :paginator="false">

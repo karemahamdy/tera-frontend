@@ -872,9 +872,9 @@
     "serialIntegration": "تتبع الأرقام التسلسلية/دفعات خلال عملية المرتجع"
   },
   "RequestRules": {
-   "department": "القسم يقدّم طلب صرف للمواد المطلوبة",
-  "items": "يتم التحقق من الأصناف مقابل المخزون المتاح والحجوزات",
-  "serialLot": "الأصناف التي تتبع السيريال/اللوط تتطلب تعيين رقم"
+    "department": "القسم يقدّم طلب صرف للمواد المطلوبة",
+    "items": "يتم التحقق من الأصناف مقابل المخزون المتاح والحجوزات",
+    "serialLot": "الأصناف التي تتبع السيريال/اللوط تتطلب تعيين رقم"
   },
   "operation": {
     "title": "العمليات",
@@ -924,7 +924,24 @@
     "items": "الأصناف",
     "zone": "المنطقة",
     "warehouse": "المخزن",
-    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "CountInformation": "معلومات الجرد",
+    "Line Items": "بيان الأصناف",
+    "Review": "مراجعة",
+    "NewCount": "جرد جديد",
+    "CountNumber": "رقم الجرد",
+    "ScheduledDate": "التاريخ المجدول",
+    "StartNewPhysicalCount": "بدء جرد فعلي جديد",
+    "CompareSystemStockWithActualPhysicalCount": "مقارنة رصيد النظام مع الجرد الفعلي الفعلي",
+    "ItemCode": "كود الصنف",
+    "ItemName": "اسم الصنف",
+    "SystemBalance": "رصيد النظام",
+    "CountedQTY": "الكمية المجرودة",
+    "LineItems": "الاصناف",
+    "LineItemsInfo": "أضف الأصناف إلى جردك الفعلي. الأصناف المتتبعة تتطلب تعيين سيريال أو دفعة.",
+    "Descrption": "الوصف",
+    "ReviewOpeningBalance": "مراجعة الجرد الفعلي",
+    "CreateOpeningBalance": "إنشاء جرد فعلي"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",
@@ -949,7 +966,6 @@
     "createAdjustment": "إنشاء تسوية",
     "newAdjustment": "تسوية جديدة",
     "itemToAdjustment": "اصناف التسوية"
-
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",
@@ -1009,7 +1025,7 @@
     "allDirections": "جميع الاتجاهات",
     "allWarehouse": "جميع المستودعات",
     "allStatus": "جميع الحالات",
-      "title": "حركة مخزنية",
+    "title": "حركة مخزنية",
     "desc": "إنشاء وتعديل حركة مخزنية",
     "costCenter": "مركز التكلفة",
     "costCenterPlaceholder": "اختر مركز التكلفة",
@@ -1041,7 +1057,6 @@
     "transactions": "• المعاملات: ",
     "sourceFrom": "من",
     "targetTo": "إلى"
-  
   },
   "payment": {
     "paymentFinanceInfo": "معلومات الدفع والمالية",
@@ -1197,7 +1212,7 @@
     "source": "المصدر (من)",
     "destination": "الوجهة (إلى)"
   },
-"direction": {
+  "direction": {
     "transfer": "تحويل",
     "inbound": "وارد",
     "outbound": "صادر"

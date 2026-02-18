@@ -9,13 +9,13 @@ const date = ref<string>("")
 <template>
     <div>
         <div>
-            <PageHeader title="Start New Physical Count" subtitle="Compare system stock with actual physical count"
+            <PageHeader title="PhysicalCount.StartNewPhysicalCount" subtitle="PhysicalCount.CompareSystemStockWithActualPhysicalCount"
                 :showSearch="false" />
             <div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-2">
-                    <FormInput :label="$t('Count Number')" v-model="date" class="mt-5" :placeholder="$t('EX: C-001')" />
-                    <FormInput :label="$t('Scheduled Date')" v-model="date" type="date" class="mt-5" :placeholder="$t('Scheduled Date')" />
+                    <FormInput :label="$t('PhysicalCount.CountNumber')" v-model="date" class="mt-5" :placeholder="$t('EX: C-001')" />
+                    <FormInput :label="$t('PhysicalCount.ScheduledDate')" v-model="date" type="date" class="mt-5" :placeholder="$t('PhysicalCount.ScheduledDate')" />
                 </div>
 
                 <div class="mt-5">

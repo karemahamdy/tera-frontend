@@ -17,10 +17,10 @@ const data = ref([
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'itemCode', header: t('Item Code') },
-        { field: 'descrption', header: t('Descrption') },
-        { field: 'systemBalance', header: t('System Balance') },
-        { field: 'countedQTY', header: t('Counted QTY') },
+        { field: 'itemCode', header: t('PhysicalCount.ItemCode') },
+        { field: 'descrption', header: t('PhysicalCount.Descrption') },
+        { field: 'systemBalance', header: t('PhysicalCount.SystemBalance') },
+        { field: 'countedQTY', header: t('PhysicalCount.CountedQTY') },
         { field: 'variances', header: t('PhysicalCount.Variances') },
     ];
     return Columns;
@@ -29,10 +29,10 @@ const columns = computed(() => {
 
 <template>
     <div>
-        <PageHeader title="Review Opening Balance" :showSearch="false" />
+        <PageHeader title="PhysicalCount.ReviewOpeningBalance" :showSearch="false" />
         <div class="grid grid-cols-2 justify-between">
             <div class="mb-5">
-                <p class="text-gray-500">{{ $t("Date") }}</p>
+                <p class="text-gray-500">{{ $t("PhysicalCount.date") }}</p>
                 <p>2025-01-01</p>
             </div>
             <div class="mb-5">
@@ -41,7 +41,7 @@ const columns = computed(() => {
             </div>
         </div>
         <div>
-            <p><strong>{{ $t("Line Items") }}</strong></p>
+            <p><strong>{{ $t("PhysicalCount.LineItems") }}</strong></p>
             <DynamicTable :columns="columns" :data="data" :paginator="false">
                 <template v-slot:["col-variances"]="{ data }">
                     <span class="text-danger-500">{{ data.variances }}</span>
