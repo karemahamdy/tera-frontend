@@ -63,7 +63,8 @@
     "all": "All",
     "Pending": "Pending",
     "Posted": "Posted",
-    "Shipped": "Shipped"
+    "Shipped": "Shipped",
+    "step": "Step {index} of {total}"
   },
   "table": {
     "description": "Description",
@@ -966,7 +967,14 @@
     "Quantity": "Quantity",
     "warehouse": "Warehouse",
     "zone": "Zone",
-    "deleteConfirm": "Are you sure you want to delete this item?"
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "createOpeningBalance": "Create Opening Balance",
+    "uom": "Unit Of Measure",
+    "createOpeningBalanceInfo": "Capture existing stock at system go-live",
+    "openingBalanceInfo": "Opening Balance info",
+    "review": "Review",
+    "reviewOpeningBalance": "Review Opening Balance",
+    "item": "Item"
   },
   "inventoryRequest": {
     "allTypes": "All Types",

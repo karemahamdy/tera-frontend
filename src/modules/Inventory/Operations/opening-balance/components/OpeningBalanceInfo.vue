@@ -26,7 +26,7 @@ onMounted(() => {
 <template>
     <div>
         <div>
-            <PageHeader title="Create Opening Balance" subtitle="Capture existing stock at system go-live"
+            <PageHeader title="OpeningBalance.createOpeningBalance" subtitle="OpeningBalance.createOpeningBalanceInfo"
                 :showSearch="false" />
             <div>
 
@@ -43,14 +43,14 @@ onMounted(() => {
                     <FormDropdown class="w-full mt-5" :label="$t('items.warehouse')" :options="warehouseLookup"
                         v-model="warehouseID" optionValue="value" :placeholder="$t('items.warehousePlaceholder')" />
 
-                    <FormDropdown class="w-full mt-5" :label="$t('zone')" :options="[]" v-model="holdType"
-                        optionValue="value" :placeholder="$t('zone')" />
+                    <FormDropdown class="w-full mt-5" :label="$t('OpeningBalance.zone')" :options="[]" v-model="holdType"
+                        optionValue="value" :placeholder="$t('OpeningBalance.zone')" />
 
-                    <FormInput :label="$t('Date')" v-model="date" type="date" class="mt-5" :placeholder="$t('Date')" />
-                    <FormDropdown class="w-full mt-5" :label="$t('Unit Of Measure')" :options="[]" v-model="holdType"
-                        optionValue="value" :placeholder="$t('UOM')" />
+                    <FormInput :label="$t('OpeningBalance.date')" v-model="date" type="date" class="mt-5" :placeholder="$t('OpeningBalance.date')" />
+                    <FormDropdown class="w-full mt-5" :label="$t('OpeningBalance.uom')" :options="[]" v-model="holdType"
+                        optionValue="value" :placeholder="$t('OpeningBalance.uom')" />
 
-                    <FormInput :label="$t('Unit Cost')" v-model="date" class="mt-5" :placeholder="$t('Unit Cost')" />
+                    <FormInput :label="$t('OpeningBalance.UnitCost')" v-model="date" class="mt-5" :placeholder="$t('OpeningBalance.UnitCost')" />
 
                     <div class="flex justify-center items-end gap-2 w-full mt-5">
                         <FormInput :label="$t('itemHold.quantity')" v-model="quantity" class="w-4/5"

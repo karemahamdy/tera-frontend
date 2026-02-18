@@ -69,7 +69,8 @@
     "all": "الكل",
     "Posted": "ترحيل",
     "Pending": "معلق",
-    "Shipped": "تم الشحن"
+    "Shipped": "تم الشحن",
+    "step": "الخطوة {index} من {total}"
   },
   "table": {
     "description": "الوصف",
@@ -964,7 +965,14 @@
     "Quantity": "الكمية",
     "warehouse": "المخزن",
     "zone": "المنطقة",
-    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "createOpeningBalance": "إنشاء رصيد افتتاحي",
+    "uom": "وحدة القياس",
+    "createOpeningBalanceInfo": "تسجيل المخزون الحالي عند بدء تشغيل النظام",
+    "openingBalanceInfo": "معلومات الرصيد الافتتاحي",
+    "review": "مراجعة",
+    "reviewOpeningBalance": "مراجعة الرصيد الافتتاحي",
+    "item": "الصنف"
   },
   "inventoryRequest": {
     "allTypes": "جميع الأنواع",
