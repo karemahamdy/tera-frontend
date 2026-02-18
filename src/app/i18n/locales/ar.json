@@ -972,7 +972,8 @@
     "openingBalanceInfo": "معلومات الرصيد الافتتاحي",
     "review": "مراجعة",
     "reviewOpeningBalance": "مراجعة الرصيد الافتتاحي",
-    "item": "الصنف"
+    "item": "الصنف",
+    "editOpeningBalance": "تعديل رصيد افتتاحي"
   },
   "inventoryRequest": {
     "allTypes": "جميع الأنواع",

@@ -974,7 +974,8 @@
     "openingBalanceInfo": "Opening Balance info",
     "review": "Review",
     "reviewOpeningBalance": "Review Opening Balance",
-    "item": "Item"
+    "item": "Item",
+    "editOpeningBalance": "Edit Opening Balance"
   },
   "inventoryRequest": {
     "allTypes": "All Types",
