@@ -94,6 +94,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
       await PurchaseWaybillService.delete(id);
       toastService.success((t("purchaseWaybill.PurchaseWaybillDeletedSuccessfully")));
       await fetchPurchaseWaybill(pageIndex.value);
+
     } catch (err: any) {
       toastService.error(err);
       throw err;

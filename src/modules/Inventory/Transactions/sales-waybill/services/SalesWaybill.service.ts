@@ -6,43 +6,32 @@ export const SalesWaybillService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<SalesWaybillResponse>(
-      `/purchase-waybill`, { params }
+      `/SalesWaybills`, { params }
     );
     return resp.data;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/purchase-waybill/${id}`);
+    const data = await axiosWrapper.get<any>(`/SalesWaybills/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
+    const data = await axiosWrapper.post<any>(`/SalesWaybills`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/purchase-waybill/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/SalesWaybills/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/purchase-waybill/${id}`);
-  },
-
-  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(
-      `/purchase-waybill/Status/${id}`,
-      null,
-      {
-        params: { isActive }
-      }
-    );
-    return data.data;
+    await axiosWrapper.delete(`/SalesWaybills/${id}`);
   },
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/purchase-waybill/export-LDCs`,
+      `/SalesWaybills/export-LDCs`,
       {
         params: payload,
         responseType: "blob",

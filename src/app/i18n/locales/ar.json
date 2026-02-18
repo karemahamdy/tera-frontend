@@ -749,7 +749,10 @@
     "ShippingAddress": "عنوان الشحن",
     "ShippingAddressPlaceholder": "أدخل عنوان الشحن",
     "PurchaseOrder": "أمر الشراء",
-    "SalesOrderPlaceholder": "اختر أمر الشراء"
+    "SalesOrderPlaceholder": "اختر أمر الشراء",
+    "SalesWaybillDeletedSuccessfully": "تم حذف العنصر بنجاح",
+    "SalesWaybillCreatedSuccessfully": "تم انشاء العنصر بمجاح",
+    "SalesWaybillUpdatedSuccessfully": "تم التحديث بنجاح"
   },
   "SalesReturn": {
     "salesReturn": "مرتجع المبيعات",
@@ -973,6 +976,8 @@
     "ledgerStatus": "حالة الدفتر",
     "action": "الإجراء",
     "warehouseTransaction": "معاملات المستودع",
+    "deleteItemConfirm": "هل أنت متأكد أنك تريد حذف هذة المعاملة؟ ",
+    "WarehouseTransactionDeletedSuccessfully": "تم حذف هذه المعاملة بنجاح",
     "InventoryRequestPlaceholder": "حدد مرجع الطلب",
     "description": "إدارة وتتبع جميع حركات المخزون الواردة والصادرة والداخلية",
     "newTransaction": "معاملة جديدة",

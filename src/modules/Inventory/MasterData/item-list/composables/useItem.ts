@@ -100,8 +100,6 @@ const orderDirection = ref<"asc" | "desc">("desc");
     try {
       await itemListService.delete(id);
       toastService.success(t("itemList.ItemDeletedSuccessfully"));
-      // apiItem.value = apiItem.value.filter((b) => b.id !== id);
-      // if(apiItem.value.length === 1 && pageIndex.value != 1){
         await fetchItem(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);

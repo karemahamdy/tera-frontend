@@ -6,8 +6,24 @@ export const WarehouseTransactionService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<WarehouseTransactionResponse>(
-      `/warehouse-transactions`, { params }
+      `/warehouse-transactions`, 
+          {
+        params,
+        paramsSerializer: (params) => {
+          const searchParams = new URLSearchParams();
+          for (const key in params) {
+            const value = (params as any)[key];
+            if (Array.isArray(value)) {
+              value.forEach(v => searchParams.append(key, v));
+            } else if (value !== undefined && value !== null && value !== "") {
+              searchParams.append(key, value);
+            }
+          }
+          return searchParams.toString();
+        }
+      }
     );
+     
     return resp;
   },
 

@@ -3,13 +3,16 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useWarehouseTransaction } from "../composables/useWarehouseTransaction";
-
+import { useLookups } from "@/composables/useLookups";
+import alertIcon from '@/assets/images/alert.png';
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
+const isDeleting = ref(false);
 const rowToDelete = ref<any | null>(null);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, apiWarehouseTransaction, fetchWarehouseTransaction } = useWarehouseTransaction();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, apiWarehouseTransaction, fetchWarehouseTransaction, deleteWarehouseTransaction } = useWarehouseTransaction();
+const { warehouseLookup, getWarehouseLookups } = useLookups();  
 
 const customItems = [
    
@@ -22,35 +25,41 @@ const customItems = [
     },
 ];
 onMounted(() => {
-    fetchWarehouseTransaction();
+     Promise.all([
+        getWarehouseLookups(), 
+        fetchWarehouseTransaction()
+    ]);
 });
 const filtersOperation = computed(() => {
     return [
         {
             placeholder: "warehouseTransaction.allDirections",
             value: null,
-            field: "type",
+            field: "TransactionDirection",
             options: [
                 { label: t("warehouseTransaction.allDirections"), value: null },
-                { label: t("warehouseTransaction.inbound"), value: "inbound" },
-                { label: t("warehouseTransaction.outbound"), value: "outbound" },
-                { label: t("warehouseTransaction.transfer"), value: "transfer" },
+                { label: t("warehouseTransaction.inbound"), value: "In" },
+                { label: t("warehouseTransaction.outbound"), value: "Out" },
+                { label: t("warehouseTransaction.transfer"), value: "Transfer" },
             ],
         },
         {
-            placeholder: "warehouseTransaction.allWarehouse",
+            placeholder: "warehouses.title",
             value: null,
-            field: "warehouse",
+            field: "Warehouse",
             options: [
-                { label: t("warehouseTransaction.allWarehouse"), value: null },
+                ...warehouseLookup.value
             ],
         },
         {
             placeholder: "warehouseTransaction.allStatus",
             value: null,
-            field: "status",
+            field: "TransactionStatus",
+           isSingle: true,
             options: [
-                { label: t("warehouseTransaction.allStatus"), value: null },
+                { label: t("usersManagement.allStatus"), value: null },
+                  { label: t("button.Pending"), value: "Pending" },
+                { label: t("button.Posted"), value: "Posted" },
             ],
         }
     ]
@@ -105,6 +114,15 @@ const handleActionMenu = async (payload: any) => {
         confirmDelete(data);
     }
 };
+const handleDeleteConfirm = async () => {
+    if (!rowToDelete.value) return;
+    isDeleting.value = true;
+    await deleteWarehouseTransaction(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
+};
 
 const addWarehouseTransaction = () => {
     router.push({name: 'WarehouseTransactionCreate' });
@@ -118,7 +136,7 @@ const addWarehouseTransaction = () => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="warehouseTransaction.warehouseTransaction" subtitle="warehouseTransaction.description" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="warehouseTransaction.newTransaction" :showFilter="true"
+                    :showImport="false" :mainBtn="true" mainBtnText="warehouseTransaction.newTransaction" :showMultiFilter="true"
                :filters="filtersOperation" @filter-change="onFilterChange"
                     searchPlaceholder="warehouseTransaction.searchPlaceholder" @search="onSearch" :onMainBtnClick="addWarehouseTransaction" 
                     />
@@ -158,6 +176,11 @@ const addWarehouseTransaction = () => {
               
             </template>
         </card>
+     <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('warehouseTransaction.deleteItemConfirm')"
+            :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
+            ]" @confirm="handleDeleteConfirm" />
 
     </div>
 </template>
