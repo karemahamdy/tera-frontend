@@ -101,16 +101,10 @@ const confirmDelete = (row: any) => {
 const handleActionMenu = async (payload: any) => {
     const action = payload.action || payload;
     const data = payload.data || payload.row || payload;
-    if (action === 'edit') {
-        router.push({
-            name: "PurchaseWaybillFormEdit",
-            params: { id: data.id },
-        });
-    }
     if (action === 'view') {
         router.push({
-            name: "PurchaseWaybillFormView",
-            params: { id: data.id },
+            name: "PhysicalCountView",
+            params: { id: 10 },
         });
     }
     if (action === 'delete') {
@@ -129,7 +123,7 @@ const handleDeleteConfirm = async () => {
 };
 
 const addPurchaseWaybill = () => {
-    router.push({name: 'PurchaseWaybillCreate' });
+    router.push({name: 'PhysicalCountCreate' });
 };
 const getStatusBadge = (status: any) => {
   return status === "Posted" ? "status-active" : "status-inactive";
