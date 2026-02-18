@@ -563,7 +563,16 @@
     "select": "اختر",
     "LDCCreatedSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
     "LDCUpdatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
-    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
+    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح",
+    "QualityInspection": "فحص الجودة",
+    "Inspector": "المفتش",
+    "InspectorPlaceholder": "اختر المفتش",
+    "InspectionDate": "تاريخ الفحص",
+    "InspectionDatePlaceholder": "اختر تاريخ الفحص",
+    "InspectionResult": "نتيجة الفحص",
+    "InspectionResultPlaceholder": "اختر نتيجة الفحص",
+    "InspectionNotes": "ملاحظات الفحص",
+    "InspectionNotesPlaceholder": "اكتب ملاحظات الفحص"
   },
   "items": {
     "title": "العناصر",
@@ -927,7 +936,19 @@
     "items": "الأصناف",
     "zone": "المنطقة",
     "warehouse": "المخزن",
-    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "countID": "رقم الجرد",
+    "item": "الصنف",
+    "availableBalance": "الرصيد المتاح",
+    "counted": "المجرود",
+    "variance": "الفرق",
+    "createNewAdjustment": "إنشاء تسوية جديدة",
+    "selectItemToAdjustment": "اختر صنف للتسوية",
+    "adjustmentNumber": "رقم التسوية",
+    "createAdjustment": "إنشاء تسوية",
+    "newAdjustment": "تسوية جديدة",
+    "itemToAdjustment": "اصناف التسوية"
+
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",
@@ -1119,7 +1140,7 @@
     "TargetWarehousePlaceholder": "اختر المخزن المستهدف",
     "Reason": "السبب",
     "ReasonPlaceholder": "وصف تفصيلي لمتطلبات الإصدار والإرجاع...",
-     "ReviewSummary": "ملخص المراجعة",
+    "ReviewSummary": "ملخص المراجعة",
     "RequestorDepartment": "مقدم الطلب والقسم",
     "WarehouseDetails": "تفاصيل المخزن",
     "RequestBy": "مقدم الطلب",

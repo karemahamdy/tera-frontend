@@ -108,8 +108,8 @@ const handleActionMenu = async (payload: any) => {
     }
     if (action === 'view') {
         router.push({
-            name: "PurchaseWaybillFormView",
-            params: { id: data.id },
+            name: "InventoryAdjustmentView",
+            params: { id: 10 },
         });
     }
     if (action === 'delete') {

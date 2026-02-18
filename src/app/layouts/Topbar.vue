@@ -141,7 +141,7 @@ const onSelect = async () => {
         </TreeSelect>
       </div>
 
-      <div class="flex items-center gap-3 w-1/2">
+      <div class="flex items-center justify-end gap-3 w-1/2">
         <!-- Branch Switcher -->
         <Dropdown v-if="branches.length > 0" filter v-model="selectedBranch" :options="branches"
           :optionLabel="$i18n.locale === 'ar' ? 'nameAr' : 'nameEn'" :placeholder="$t('Select Branches')"
