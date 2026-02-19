@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue"
+import { ref, reactive, onMounted } from "vue"
 import { useI18n } from "vue-i18n"
+import { usePurchaseWaybill } from "../composables/usePurshace";
 
 const { t } = useI18n()
+const { fetchNextNumber } = usePurchaseWaybill();
 
-const WaybillNumber = ref("")
+const documentNumber = ref("")
 const Supplier = ref(null)
 const SupplierSalesOrder = ref("")
 const PurchaseOrder = ref(null)
@@ -17,15 +19,14 @@ const exchangeDate = ref()
 const selectedCurrency = ref(null)
 const exchangeValue = ref(null)
 
-const id = ref(null)
+// const id = ref(null)
 const currencyOptions = [
   { label: "USD", value: "USD" },
   { label: "EGP", value: "EGP" },
 ]
 
-
 const errors = reactive({
-  WaybillNumber: "",
+  documentNumber: "",
   Supplier: "",
   SupplierSalesOrder: "",
   PurchaseOrder: "",
@@ -33,6 +34,15 @@ const errors = reactive({
   Currency: "",
   ExchangeValue: "",
 })
+
+onMounted(async () => {
+  const result = await fetchNextNumber();
+
+  if (result?.documentNumber) {
+    documentNumber.value = result.documentNumber;
+  }
+});
+
 </script>
 
 <template>
@@ -42,8 +52,8 @@ const errors = reactive({
       {{ t("purchaseWaybill.SupplierDetails") }}
     </p>
 
-    <FormInput :label="t('purchaseWaybill.WaybillNumber')" v-model="WaybillNumber" :error="errors.WaybillNumber"
-      :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')" :invalid="!!errors.WaybillNumber" :disabled="!!id" />
+    <FormInput :label="t('purchaseWaybill.WaybillNumber')" v-model="documentNumber" :error="errors.documentNumber"
+      :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')" :invalid="!!errors.documentNumber" disabled />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 

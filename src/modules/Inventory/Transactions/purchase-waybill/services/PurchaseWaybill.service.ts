@@ -4,7 +4,6 @@ import type { Pagination, PurchaseWaybillResponse,  } from "../types/PurchaseWay
 
 export const PurchaseWaybillService = {
   async getAll(params: Pagination) {
-
     const resp = await axiosWrapper.get<PurchaseWaybillResponse>(
       `/PurchaseWaybills`, { 
         params ,
@@ -51,9 +50,10 @@ export const PurchaseWaybillService = {
         responseType: "blob",
       }
     );
-
     return data;
-    ;
-  }
-
+  },
+ async getNextNumber() {
+    const data = await axiosWrapper.get<any>(`/PurchaseWaybills/next-number`);
+    return data.data;
+  },
 };

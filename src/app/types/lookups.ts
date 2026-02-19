@@ -19,3 +19,19 @@ export interface reasonsLookups {
   name: string;
   value: string;
 }
+
+export interface InventoryLookups {
+code: string;
+name: string;
+id?: string;
+}
+
+export interface ApiResponse<T> {
+  data: T;
+  succeeded: boolean;
+  message: string;
+  statusCode: number;
+  errorCode?: string | null;
+  errors?: any;
+  id?: any;
+}

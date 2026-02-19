@@ -686,6 +686,7 @@
   },
   "purchaseWaybill": {
     "purchaseWaybill": "Purchase Waybill",
+    "addpurchaseWaybill": "New Purchase Waybill",
     "subtitle": "Manage inbound purchase receipts",
     "addNew": "New Purchase",
     "searchPlaceholder": "Search by ID, supplier, PO...",
