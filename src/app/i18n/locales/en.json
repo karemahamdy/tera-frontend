@@ -775,6 +775,7 @@
     "items": "Items",
     "originalWaybill": "Original Waybill",
     "deleteConfirm": "Are you sure you want to delete this item?",
+    "SalesReturnDeletedSuccessfully": "SalesReturn Deleted Successfully",
     "ReturnInformation": "Return Information",
     "SalesReturnNumber": "Sales Return Number",
     "SalesReturnNumberPlaceholder": "SR-112",
