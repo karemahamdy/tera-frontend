@@ -779,6 +779,7 @@
     "items": "العناصر",
     "originalWaybill": "إذن البيع الأصلي",
     "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+    "SalesReturnDeletedSuccessfully": "تم حذف هذا العنصر بنجاح",
     "ReturnInformation": "بيانات مرتجع البيع",
     "SalesReturnNumber": "رقم مرتجع البيع",
     "SalesReturnNumberPlaceholder": "أدخل رقم مرتجع البيع",
