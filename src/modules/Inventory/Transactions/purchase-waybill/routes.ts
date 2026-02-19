@@ -19,4 +19,26 @@ export const PurchaseWaybillRoutes = [
       permission: null
     },
   },
+  {
+    path: "/purchase-waybill/:id/view",
+    component: () => import("@/modules/Inventory/Transactions/purchase-waybill/pages/PurchaseWaybillForm.vue"),
+    name: "PurchaseWaybillView",
+    props: true,
+    meta: {
+      hide: true,
+      localizedTitle: "Purchase Waybill",
+      permission: null
+    },
+  },
+  {
+    path: "/purchase-waybill/:id/edit",
+    component: () => import("@/modules/Inventory/Transactions/purchase-waybill/pages/PurchaseWaybillForm.vue"),
+    name: "PurchaseWaybillEdit",
+    props: true,
+    meta: {
+      hide: true,
+      localizedTitle: "Purchase Waybill",
+      permission: null
+    },
+  },
 ];
