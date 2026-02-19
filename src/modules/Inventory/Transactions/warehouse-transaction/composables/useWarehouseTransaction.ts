@@ -67,7 +67,6 @@ const fetchWarehouseTransaction = async (page = 1) => {
   }
 };
 
-
   const fetchWarehouseTransactionById = async (id: string) => {
     loading.value = true;
     try {

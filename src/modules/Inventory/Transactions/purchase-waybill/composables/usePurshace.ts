@@ -6,32 +6,34 @@ import { PurchaseWaybillService } from "../services/PurchaseWaybill.service";
 
 export function usePurchaseWaybill() {
   const loading = ref(false);
-const apiPurchaseWaybill = ref<PurchaseWaybill[]>([]);
-const tableData = ref<any[]>([]);
+  const apiPurchaseWaybill = ref<PurchaseWaybill[]>([]);
+  const tableData = ref<any[]>([]);
 
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
 
-const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref('');
-const orderDirection = ref<'asc' | 'desc'>('desc');
+  const searchTerm = ref("");
+  const orderBy = ref("");
+  const StatusFilter = ref<any[]>([]);
+  const orderDirection = ref<"asc" | "desc">("desc");
 
   const { t } = useI18n();
 
   const fetchPurchaseWaybill = async (page = 1) => {
     loading.value = true;
     try {
-      const response: any = await PurchaseWaybillService.getAll({
+      const params: any = {
         pageIndex: page,
         pageSize: pageSize.value,
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
-      });
+      };
+      if (searchTerm.value) params.searchingWord = searchTerm.value;
+      if (orderBy.value) params.orderBy = orderBy.value;
+      if (orderDirection.value) params.orderDirection = orderDirection.value;
+      if (StatusFilter.value) params.StatusFilter = StatusFilter.value;
+
+      const response: any = await PurchaseWaybillService.getAll(params);
       const payload = response && response.data ? response.data : response;
       apiPurchaseWaybill.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
@@ -62,7 +64,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       const response = await PurchaseWaybillService.create(payload);
-      toastService.success(t("purchaseWaybill.PurchaseWaybillCreatedSuccessfully"));
+      toastService.success(
+        t("purchaseWaybill.PurchaseWaybillCreatedSuccessfully"),
+      );
       await fetchPurchaseWaybill(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -77,7 +81,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       const response = await PurchaseWaybillService.update(id, payload);
-      toastService.success(t("purchaseWaybill.PurchaseWaybillUpdatedSuccessfully"));
+      toastService.success(
+        t("purchaseWaybill.PurchaseWaybillUpdatedSuccessfully"),
+      );
       await fetchPurchaseWaybill(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -92,9 +98,10 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       await PurchaseWaybillService.delete(id);
-      toastService.success((t("purchaseWaybill.PurchaseWaybillDeletedSuccessfully")));
+      toastService.success(
+        t("purchaseWaybill.PurchaseWaybillDeletedSuccessfully"),
+      );
       await fetchPurchaseWaybill(pageIndex.value);
-
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -109,8 +116,13 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
+
     if (field === "status") {
-      StatusFilter.value = value;
+      if (value === null || value === undefined) {
+        StatusFilter.value = [];
+      } else {
+        StatusFilter.value = Array.isArray(value) ? value : [value];
+      }
     }
     fetchPurchaseWaybill(1);
   };
@@ -120,11 +132,11 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     fetchPurchaseWaybill(1);
   };
 
-  const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+  const onSort = (orderByField: string, direction: "asc" | "desc") => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
     fetchPurchaseWaybill(1);
-  }
+  };
 
   return {
     loading,
@@ -142,6 +154,6 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     setPage: (p: number) => fetchPurchaseWaybill(p),
     onSearch,
     onFilterChange,
-    onSort
+    onSort,
   };
 }
