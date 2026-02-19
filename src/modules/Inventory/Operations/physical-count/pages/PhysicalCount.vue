@@ -72,8 +72,8 @@ const columns = computed(() => {
         { field: 'supplier', header: t('PhysicalCount.warehouse'), type: 'slot', sortable: true },
         { field: 'date', header: t('PhysicalCount.zone'), type: 'date', sortable: true },
          { field: 'purchaseOrder', header: t('PhysicalCount.total'), sortable: true },
-        { field: 'totalValues', header: t('PhysicalCount.Counted'), type: 'slot', sortable: true },
-        { field: 'totalValues', header: t('PhysicalCount.Variances'), type: 'slot', sortable: true },
+        { field: 'total,Values', header: t('PhysicalCount.Counted'), type: 'slot', sortable: true },
+        { field: 'total,Values', header: t('PhysicalCount.Variances'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'totalValues', header: t('PhysicalCount.Adjustment'), type: 'slot', sortable: true },
         { field: 'action', header: t('action') }
@@ -159,6 +159,9 @@ const getStatusText = (status: any) => {
                         </span>
                         </div>
                     </template>
+                     <template #col-totalValues="{ data }">
+                    <span class="text-primary-500 cursor-pointer underline">{{ data.totalValues }}</span>
+                </template>
                     </DynamicTable>
               
             </template>
