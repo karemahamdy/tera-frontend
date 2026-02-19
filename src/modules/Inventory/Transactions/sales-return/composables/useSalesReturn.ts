@@ -4,6 +4,8 @@ import { useI18n } from "vue-i18n";
 import type { SalesReturn } from "../types/SalesReturn";
 import { SalesReturnService } from "../services/SalesReturn.service";
 
+export function useSalesReturn() {
+  
 const loading = ref(false);
 const apiSalesReturn = ref<SalesReturn[]>([]);
 const tableData = ref<any[]>([]);
@@ -16,22 +18,25 @@ const totalPages = ref(1);
 const searchTerm = ref('');
 const orderBy = ref('');
 const StatusFilter = ref('');
+const ReturnReason = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-export function useSalesReturn() {
   const { t } = useI18n();
 
   const fetchSalesReturn = async (page = 1) => {
     loading.value = true;
     try {
-      const response: any = await SalesReturnService.getAll({
+      const params: any = {
         pageIndex: page,
         pageSize: pageSize.value,
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
-      });
+      };
+      if (searchTerm.value) params.searchingWord = searchTerm.value;
+      if (orderBy.value) params.orderBy = orderBy.value;
+      if (orderDirection.value) params.orderDirection = orderDirection.value;
+      if (StatusFilter.value) params.StatusFilter = StatusFilter.value;
+      if (ReturnReason.value) params.ReturnReason = ReturnReason.value;
+
+      const response: any = await SalesReturnService.getAll(params);
       const payload = response && response.data ? response.data : response;
       apiSalesReturn.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
@@ -102,20 +107,6 @@ export function useSalesReturn() {
     }
   };
 
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await SalesReturnService.toggleActive(id, isActive);
-      toastService.success((t("SalesReturn.SalesReturnUpdatedSuccessfully")));
-      await fetchSalesReturn(pageIndex.value);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
   const onFilterChange = (filter: {
     filter: { field: string };
     value: string;
@@ -124,6 +115,9 @@ export function useSalesReturn() {
     const value = filter.value;
     if (field === "status") {
       StatusFilter.value = value;
+    }
+     if (field === "ReturnReason") {
+      ReturnReason.value = value;
     }
     fetchSalesReturn(1);
   };
@@ -148,7 +142,6 @@ export function useSalesReturn() {
     createSalesReturn,
     updateSalesReturn,
     deleteSalesReturn,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,

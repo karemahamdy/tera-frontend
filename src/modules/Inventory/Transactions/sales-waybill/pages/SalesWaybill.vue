@@ -7,7 +7,6 @@ import { useRouter } from "vue-router";
 import { useSalesWaybill } from "../composables/useSales";
 import RulesCard from "@/sharedComponents/RulesCard.vue";
 
-
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
