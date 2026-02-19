@@ -25,14 +25,16 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   const fetchSalesWaybill = async (page = 1) => {
     loading.value = true;
     try {
-      const response: any = await SalesWaybillService.getAll({
+       const params: any = {
         pageIndex: page,
         pageSize: pageSize.value,
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
-      });
+      };
+      if (searchTerm.value) params.searchingWord = searchTerm.value;
+      if (orderBy.value) params.orderBy = orderBy.value;
+      if (orderDirection.value) params.orderDirection = orderDirection.value;
+      if (StatusFilter.value) params.StatusFilter = StatusFilter.value;
+
+      const response: any = await SalesWaybillService.getAll(params);
       const payload = response && response.data ? response.data : response;
       apiSalesWaybill.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
