@@ -2,9 +2,11 @@
 import { ref, reactive, onMounted } from "vue"
 import { useI18n } from "vue-i18n"
 import { usePurchaseWaybill } from "../composables/usePurshace";
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const { t } = useI18n()
 const { fetchNextNumber } = usePurchaseWaybill();
+const { getSupplierLookups, getCurrenciesLookups, supplierLookups, CurrenciesLookups } = useInventoryLookups();  
 
 const documentNumber = ref("")
 const Supplier = ref(null)
@@ -36,6 +38,10 @@ const errors = reactive({
 })
 
 onMounted(async () => {
+   Promise.all([
+        getCurrenciesLookups(),
+        getSupplierLookups() 
+    ]);
   const result = await fetchNextNumber();
 
   if (result?.documentNumber) {
@@ -59,7 +65,7 @@ onMounted(async () => {
 
 
       <FormDropdown :label="t('purchaseWaybill.Supplier')" v-model="Supplier" :error="errors.Supplier"
-        :placeholder="t('purchaseWaybill.SupplierPlaceholder')" :invalid="!!errors.Supplier" />
+        :placeholder="t('purchaseWaybill.SupplierPlaceholder')" :invalid="!!errors.Supplier" :options="supplierLookups"/>
 
 
       <FormInput :label="t('purchaseWaybill.SupplierSalesOrder')" v-model="SupplierSalesOrder"
@@ -100,7 +106,7 @@ onMounted(async () => {
       {{ t("purchaseWaybill.CurrencyInfo") }}
     </p>
 
-    <FormDropdown class="w-full" :label="t('purchaseWaybill.Currency')" :options="currencyOptions" optionLabel="label"
+    <FormDropdown class="w-full" :label="t('purchaseWaybill.Currency')" :options="CurrenciesLookups" optionLabel="label"
       optionValue="value" v-model="selectedCurrency" :error="errors.Currency"
       :placeholder="t('purchaseWaybill.CurrencyPlaceholder')" />
 

@@ -17,11 +17,16 @@ export const InventoryLookupsService = {
       `/InventoryLookups/payment-terms`,
     );
   },
-  //  getImportTypeLookups() {
-  //   return axiosWrapperget<ApiResponse<InventoryLookups[]>>(
-  //     `/InventoryLookups/currencies`,
-  //   );
-  // },
+   getWarehouseLookups() {
+    return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
+      `/InventoryLookups/warehouses`,
+    );
+  },
+    getZonesLookups(warehouseId: string) {
+    return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
+      `/InventoryLookups/zones?warehouseId=${warehouseId}`,
+    );
+  },
    getIncotermsLookups() {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/incoterms`,
