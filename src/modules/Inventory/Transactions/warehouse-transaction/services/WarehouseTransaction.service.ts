@@ -1,14 +1,15 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, PurchaseWaybillResponse,  } from "../types/PurchaseWaybill";
+import type { Pagination, WarehouseTransactionResponse } from "../types/WarehouseTransaction";
 
 
-export const PurchaseWaybillService = {
+export const WarehouseTransactionService = {
   async getAll(params: Pagination) {
 
-    const resp = await axiosWrapper.get<PurchaseWaybillResponse>(
-      `/PurchaseWaybills`, { 
-        params ,
-      paramsSerializer: (params) => {
+    const resp = await axiosWrapper.get<WarehouseTransactionResponse>(
+      `/warehouse-transactions`, 
+          {
+        params,
+        paramsSerializer: (params) => {
           const searchParams = new URLSearchParams();
           for (const key in params) {
             const value = (params as any)[key];
@@ -22,30 +23,30 @@ export const PurchaseWaybillService = {
         }
       }
     );
-    return resp.data;
+     
+    return resp;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/PurchaseWaybills/${id}`);
+    const data = await axiosWrapper.get<any>(`/warehouse-transactions/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/PurchaseWaybills`, payload);
+    const data = await axiosWrapper.post<any>(`/warehouse-transactions`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/PurchaseWaybills/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/warehouse-transactions/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/PurchaseWaybills/${id}`);
+    await axiosWrapper.delete(`/warehouse-transactions/${id}`);
   },
-
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/PurchaseWaybills/export-LDCs`,
+      `/warehouse-transactions/export-LDCs`,
       {
         params: payload,
         responseType: "blob",

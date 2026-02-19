@@ -4,6 +4,8 @@ import { useI18n } from "vue-i18n";
 import type { SalesWaybill } from "../types/SalesWaybill";
 import { SalesWaybillService } from "../services/SalesWaybill.service";
 
+export function useSalesWaybill() {
+  
 const loading = ref(false);
 const apiSalesWaybill = ref<SalesWaybill[]>([]);
 const tableData = ref<any[]>([]);
@@ -18,20 +20,21 @@ const orderBy = ref('');
 const StatusFilter = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-export function useSalesWaybill() {
   const { t } = useI18n();
 
   const fetchSalesWaybill = async (page = 1) => {
     loading.value = true;
     try {
-      const response: any = await SalesWaybillService.getAll({
+       const params: any = {
         pageIndex: page,
         pageSize: pageSize.value,
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
-      });
+      };
+      if (searchTerm.value) params.searchingWord = searchTerm.value;
+      if (orderBy.value) params.orderBy = orderBy.value;
+      if (orderDirection.value) params.orderDirection = orderDirection.value;
+      if (StatusFilter.value) params.StatusFilter = StatusFilter.value;
+
+      const response: any = await SalesWaybillService.getAll(params);
       const payload = response && response.data ? response.data : response;
       apiSalesWaybill.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
@@ -62,7 +65,7 @@ export function useSalesWaybill() {
     loading.value = true;
     try {
       const response = await SalesWaybillService.create(payload);
-      toastService.success(t("SalesWaybill.SalesWaybillCreatedSuccessfully"));
+      toastService.success(t("salesWaybill.SalesWaybillCreatedSuccessfully"));
       await fetchSalesWaybill(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -77,7 +80,7 @@ export function useSalesWaybill() {
     loading.value = true;
     try {
       const response = await SalesWaybillService.update(id, payload);
-      toastService.success(t("SalesWaybill.SalesWaybillUpdatedSuccessfully"));
+      toastService.success(t("salesWaybill.SalesWaybillUpdatedSuccessfully"));
       await fetchSalesWaybill(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -92,21 +95,7 @@ export function useSalesWaybill() {
     loading.value = true;
     try {
       await SalesWaybillService.delete(id);
-      toastService.success((t("SalesWaybill.SalesWaybillDeletedSuccessfully")));
-      apiSalesWaybill.value = apiSalesWaybill.value.filter((b) => b.id !== id);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await SalesWaybillService.toggleActive(id, isActive);
-      toastService.success((t("SalesWaybill.SalesWaybillUpdatedSuccessfully")));
+      toastService.success((t("salesWaybill.SalesWaybillDeletedSuccessfully")));
       await fetchSalesWaybill(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -148,7 +137,6 @@ export function useSalesWaybill() {
     createSalesWaybill,
     updateSalesWaybill,
     deleteSalesWaybill,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,

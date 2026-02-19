@@ -12,33 +12,8 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deletePurchaseWaybill, onFilterChange } = usePurchaseWaybill();
+const {apiPurchaseWaybill, fetchPurchaseWaybill, loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deletePurchaseWaybill, onFilterChange } = usePurchaseWaybill();
 
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-      WaybillId: "PW-2026-001",
-      invioceId: "#001",
-      supplier: "ABC Industrial Supplies",
-      date: "Oct 11, 2025",
-      purchaseOrder: "PO-025",
-      totalValues: "$45,000",
-      status: "Posted"
-      },
-      {
-        WaybillId: "PW-2026-001",
-      invioceId: "#001",
-      supplier: "ABC Industrial Supplies",
-      date: "Oct 11, 2025",
-      purchaseOrder: "PO-025",
-      totalValues: "$45,000",
-      status: "Pending"
-      },
-    ],
-  },
-});
 const customItems = [
    
      {
@@ -50,7 +25,7 @@ const customItems = [
     },
 ];
 onMounted(() => {
-    // fetchPurchaseWaybill();
+    fetchPurchaseWaybill();
 });
 const filtersOperation = computed(() => {
     return [
@@ -60,8 +35,8 @@ const filtersOperation = computed(() => {
             field: "status",
             options: [
                   { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.Pending"), value: "IsActive" },
-                { label: t("button.Posted"), value: "InActive" },
+                { label: t("button.Pending"), value: 1 },
+                { label: t("button.Posted"), value: 2},
             ],
         }
     ]
@@ -69,12 +44,12 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'WaybillId', header: t('purchaseWaybill.WaybillId'), sortable: true },
-        { field: 'invioceId', header: t('purchaseWaybill.invioceId'), sortable: true },
-        { field: 'supplier', header: t('purchaseWaybill.supplier'), type: 'slot', sortable: true },
-        { field: 'date', header: t('purchaseWaybill.date'), type: 'date', sortable: true },
+        { field: 'documentNumber', header: t('purchaseWaybill.WaybillId'), sortable: true },
+        { field: 'invoiceId', header: t('purchaseWaybill.invioceId'), sortable: true },
+        { field: 'supplierName', header: t('purchaseWaybill.supplier'), type: 'slot', sortable: true },
+        { field: 'waybillDate', header: t('purchaseWaybill.date'), type: 'date', sortable: true },
          { field: 'purchaseOrder', header: t('purchaseWaybill.purchaseOrder'), sortable: true },
-        { field: 'totalValues', header: t('purchaseWaybill.totalValues'), type: 'slot', sortable: true },
+        { field: 'grandTotal', header: t('purchaseWaybill.totalValues'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -153,7 +128,7 @@ const getStatusText = (status: any) => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiPurchaseWaybill" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
                     <template  v-slot:["col-status"]="{ data }">

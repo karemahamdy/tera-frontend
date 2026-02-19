@@ -3,48 +3,17 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useWarehouseTransaction } from "../composables/useWarehouseTransaction";
-
+import { useLookups } from "@/composables/useLookups";
+import alertIcon from '@/assets/images/alert.png';
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
+const isDeleting = ref(false);
 const rowToDelete = ref<any | null>(null);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange } = useWarehouseTransaction();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, apiWarehouseTransaction, fetchWarehouseTransaction, deleteWarehouseTransaction } = useWarehouseTransaction();
+const { warehouseLookup, getWarehouseLookups } = useLookups();  
 
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-        waybillId: "PW-2026-001",
-        request: "#001",
-        reason: "ABC Industrial Supplies",
-        warehouse: "#001",
-        date: "Oct 11, 2025",
-        ledgerStatus: "Posted",
-        direction: "Transfer"
-      },
-      {
-        waybillId: "PW-2026-001",
-        request: "#001",
-        reason: "ABC Industrial Supplies",
-        warehouse: "#001",
-        date: "Oct 11, 2025",
-        ledgerStatus: "Posted",
-        direction: "Inbound"
-      },
-      {
-        waybillId: "PW-2026-001",
-        request: "#001",
-        reason: "ABC Industrial Supplies",
-        warehouse: "#001",
-        date: "Oct 11, 2025",
-        ledgerStatus: "Pending",
-        direction: "outbound"
-      },
-    ],
-  },
-});
 const customItems = [
    
      {
@@ -56,35 +25,40 @@ const customItems = [
     },
 ];
 onMounted(() => {
-    // fetchWarehouseTransaction();
+     Promise.all([
+        getWarehouseLookups(), 
+        fetchWarehouseTransaction()
+    ]);
 });
 const filtersOperation = computed(() => {
     return [
         {
             placeholder: "warehouseTransaction.allDirections",
             value: null,
-            field: "type",
+            field: "TransactionDirection",
             options: [
-                { label: t("warehouseTransaction.allDirections"), value: null },
-                { label: t("warehouseTransaction.inbound"), value: "inbound" },
-                { label: t("warehouseTransaction.outbound"), value: "outbound" },
-                { label: t("warehouseTransaction.transfer"), value: "transfer" },
+                { label: t("inventoryRequest.inbound"), value: "In" },
+                { label: t("inventoryRequest.outbound"), value: "Out" },
+                { label: t("inventoryRequest.transfer"), value: "Transfer" },
             ],
         },
         {
-            placeholder: "warehouseTransaction.allWarehouse",
+            placeholder: "warehouses.title",
             value: null,
-            field: "warehouse",
+            field: "Warehouse",
             options: [
-                { label: t("warehouseTransaction.allWarehouse"), value: null },
+                ...warehouseLookup.value
             ],
         },
         {
             placeholder: "warehouseTransaction.allStatus",
             value: null,
-            field: "status",
+            field: "TransactionStatus",
+           isSingle: true,
             options: [
-                { label: t("warehouseTransaction.allStatus"), value: null },
+                { label: t("usersManagement.allStatus"), value: null },
+                  { label: t("button.Pending"), value: "Pending" },
+                { label: t("button.Posted"), value: "Posted" },
             ],
         }
     ]
@@ -92,12 +66,12 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'waybillId', header: t('warehouseTransaction.waybillId'), sortable: true },
-        { field: 'date', header: t('warehouseTransaction.date'), type: 'date', sortable: true },
-        { field: 'direction', header: t('warehouseTransaction.direction'), type: 'slot', sortable: true },
-        { field: 'request', header: t('warehouseTransaction.request'), sortable: true },
-        { field: 'warehouse', header: t('warehouseTransaction.warehouse'), sortable: true },
-        { field: 'ledgerStatus', header: t('warehouseTransaction.ledgerStatus'), sortable: true },
+        { field: 'waybillNumber', header: t('warehouseTransaction.waybillId'), sortable: true },
+        { field: 'transactionDate', header: t('warehouseTransaction.date'), type: 'date', sortable: true },
+        { field: 'transactionDirection', header: t('warehouseTransaction.direction'), type: 'slot', sortable: true },
+        { field: 'requestReference', header: t('warehouseTransaction.request'), sortable: true },
+        { field: 'warehouse', header: t('warehouseTransaction.warehouse'), type: 'slot', sortable: true },
+        { field: 'status', header: t('warehouseTransaction.ledgerStatus'), sortable: true },
         { field: 'action', header: t('warehouseTransaction.action'), type: 'action', sortable: false },
     ];
 
@@ -139,6 +113,15 @@ const handleActionMenu = async (payload: any) => {
         confirmDelete(data);
     }
 };
+const handleDeleteConfirm = async () => {
+    if (!rowToDelete.value) return;
+    isDeleting.value = true;
+    await deleteWarehouseTransaction(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
+};
 
 const addWarehouseTransaction = () => {
     router.push({name: 'WarehouseTransactionCreate' });
@@ -152,43 +135,51 @@ const addWarehouseTransaction = () => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="warehouseTransaction.warehouseTransaction" subtitle="warehouseTransaction.description" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="warehouseTransaction.newTransaction" :showFilter="true"
+                    :showImport="false" :mainBtn="true" mainBtnText="warehouseTransaction.newTransaction" :showMultiFilter="true"
                :filters="filtersOperation" @filter-change="onFilterChange"
                     searchPlaceholder="warehouseTransaction.searchPlaceholder" @search="onSearch" :onMainBtnClick="addWarehouseTransaction" 
                     />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiWarehouseTransaction" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
-                    <template v-slot:["col-direction"]="{ data }">
-                        <div v-if="data.direction === 'Transfer'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
+                    <template v-slot:["col-transactionDirection"]="{ data }">
+                        <div v-if="data.transactionDirection === 'Transfer'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
                             <VsxIcon iconName="ArrowSwapHorizontal" type="linear" />
-                            <span>{{ data.direction }}</span>
+                            <span>{{ data.transactionDirection }}</span>
                         </div>
-                        <div v-else-if="data.direction === 'Inbound'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
+                        <div v-else-if="data.transactionDirection === 'In'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
                             <VsxIcon iconName="ArrowDown" type="linear" />
-                            <span>{{ data.direction }}</span>
+                            <span>{{ data.transactionDirection }}</span>
                         </div>
                         <div v-else class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
                             <VsxIcon iconName="ArrowUp" type="linear" />
-                            <span>{{ data.direction }}</span>
+                            <span>{{ data.transactionDirection }}</span>
                         </div>
                     </template>
-                    <template v-slot:["col-ledgerStatus"]="{ data }">
+                    <template v-slot:["col-status"]="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <Badge :class="data.ledgerStatus == 'Posted' ? 'status-active' : 'status-inactive'"
+                            <Badge :class="data.status == 'Posted' ? 'status-active' : 'status-inactive'"
                                 style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
-                            <span :class="data.ledgerStatus == 'Posted' ? 'status-text-active' : 'status-text-inactive'">
-                                {{ data.ledgerStatus }}
+                            <span :class="data.status == 'Posted' ? 'status-text-active' : 'status-text-inactive'">
+                                {{ data.status }}
                             </span>
                         </div>
+                    </template>
+                    <template v-slot:["col-warehouse"]="{ data }">
+                        <span>{{ data.warehouse?.name }}</span>
                     </template>
                     </DynamicTable>
               
             </template>
         </card>
+     <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('warehouseTransaction.deleteItemConfirm')"
+            :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
+            ]" @confirm="handleDeleteConfirm" />
 
     </div>
 </template>

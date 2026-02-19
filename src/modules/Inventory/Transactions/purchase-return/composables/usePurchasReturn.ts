@@ -5,7 +5,7 @@ import type { PurchaseReturn } from "../types/PurchaseReturn";
 import { PurchaseReturnService } from "../services/PurchaseReturn.service"
 
 const loading = ref(false);
-const apiSalesReturn = ref<PurchaseReturn[]>([]);
+const apiPurchaseReturn = ref<PurchaseReturn[]>([]);
 const tableData = ref<any[]>([]);
 
 const pageIndex = ref(1);
@@ -21,7 +21,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
 export function usePurchaseReturn() {
   const { t } = useI18n();
 
-  const fetchSalesReturn = async (page = 1) => {
+  const fetchPurchaseReturn = async (page = 1) => {
     loading.value = true;
     try {
       const response: any = await PurchaseReturnService.getAll({
@@ -33,7 +33,7 @@ export function usePurchaseReturn() {
         StatusFilter: StatusFilter.value
       });
       const payload = response && response.data ? response.data : response;
-      apiSalesReturn.value = payload.items ?? [];
+      apiPurchaseReturn.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
       totalCount.value = payload.totalCount ?? 0;
@@ -45,7 +45,7 @@ export function usePurchaseReturn() {
     }
   };
 
-  const fetchSalesReturnById = async (id: string) => {
+  const fetchPurchaseReturnById = async (id: string) => {
     loading.value = true;
     try {
       const resp = await PurchaseReturnService.getById(id);
@@ -63,7 +63,7 @@ export function usePurchaseReturn() {
     try {
       const response = await PurchaseReturnService.create(payload);
       toastService.success(t("SalesReturn.SalesReturnCreatedSuccessfully"));
-      await fetchSalesReturn(pageIndex.value);
+      await fetchPurchaseReturn(pageIndex.value);
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -78,7 +78,7 @@ export function usePurchaseReturn() {
     try {
       const response = await PurchaseReturnService.update(id, payload);
       toastService.success(t("SalesReturn.SalesReturnUpdatedSuccessfully"));
-      await fetchSalesReturn(pageIndex.value);
+      await fetchPurchaseReturn(pageIndex.value);
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -93,21 +93,7 @@ export function usePurchaseReturn() {
     try {
       await PurchaseReturnService.delete(id);
       toastService.success((t("SalesReturn.SalesReturnDeletedSuccessfully")));
-      apiSalesReturn.value = apiSalesReturn.value.filter((b) => b.id !== id);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await PurchaseReturnService.toggleActive(id, isActive);
-      toastService.success((t("SalesReturn.SalesReturnUpdatedSuccessfully")));
-      await fetchSalesReturn(pageIndex.value);
+      await fetchPurchaseReturn(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -125,35 +111,34 @@ export function usePurchaseReturn() {
     if (field === "status") {
       StatusFilter.value = value;
     }
-    fetchSalesReturn(1);
+    fetchPurchaseReturn(1);
   };
 
   const onSearch = (term: string) => {
     searchTerm.value = term;
-    fetchSalesReturn(1);
+    fetchPurchaseReturn(1);
   };
 
   const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
-    fetchSalesReturn(1);
+    fetchPurchaseReturn(1);
   }
 
   return {
     loading,
-    apiSalesReturn,
+    apiPurchaseReturn,
     tableData,
-    fetchSalesReturn,
-    fetchSalesReturnById,
+    fetchPurchaseReturn,
+    fetchPurchaseReturnById,
     createSalesReturn,
     updateSalesReturn,
     deleteSalesReturn,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,
     totalPages,
-    setPage: (p: number) => fetchSalesReturn(p),
+    setPage: (p: number) => fetchPurchaseReturn(p),
     onSearch,
     onFilterChange,
     onSort

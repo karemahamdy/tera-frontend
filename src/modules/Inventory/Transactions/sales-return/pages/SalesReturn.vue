@@ -6,14 +6,16 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useSalesReturn } from "../composables/useSalesReturn";
 import RulesCard from "@/sharedComponents/RulesCard.vue";
-
+import { useLookups } from "@/composables/useLookups";
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange } = useSalesReturn();
+
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange, fetchSalesReturn, apiSalesReturn } = useSalesReturn();
+const { reasonsLookups, getReasonLookups } = useLookups();  
 
 const rules = [
   "salesRules.stockAvailable",    
@@ -24,32 +26,6 @@ const rules = [
   "salesRules.serialIntegration" 
 ];
 
-
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                WaybillId: "PW-2026-001",
-                invioceId: "#001",
-                supplier: "ABC Industrial Supplies",
-                date: "Oct 11, 2025",
-                purchaseOrder: "PO-025",
-                totalValues: "$45,000",
-                status: "Posted"
-            },
-            {
-                WaybillId: "PW-2026-001",
-                invioceId: "#001",
-                supplier: "ABC Industrial Supplies",
-                date: "Oct 11, 2025",
-                purchaseOrder: "PO-025",
-                totalValues: "$45,000",
-                status: "Pending"
-            },
-        ],
-    },
-});
 const customItems = [
     {
         slot: true,
@@ -60,7 +36,10 @@ const customItems = [
     },
 ];
 onMounted(() => {
-    // fetchPurchaseWaybill();
+   Promise.all([
+        getReasonLookups(), 
+         fetchSalesReturn()
+    ]);
 });
 const filtersOperation = computed(() => {
     return [
@@ -68,20 +47,19 @@ const filtersOperation = computed(() => {
             placeholder: "activeSessions.allStatus",
             value: null,
             field: "status",
+            isSingle: true,
             options: [
                 { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.Posted"), value: "IsActive" },
-                { label: t("button.Pending"), value: "InActive" },
+                { label: t("button.Pending"), value: 1 },
+                { label: t("button.Posted"), value: 2 },
             ],
         },
          {
             placeholder: "SalesReturn.allreason",
             value: null,
-            field: "status",
+            field: "ReturnReason",
             options: [
-                { label: t("SalesReturn.allreason"), value: null },
-                { label: t("button.Posted"), value: "IsActive" },
-                { label: t("button.Pending"), value: "InActive" },
+                 ...reasonsLookups.value
             ],
         }
     ]
@@ -89,14 +67,14 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'returnId', header: t('SalesReturn.returnId'), sortable: true },
-        { field: 'invioceId', header: t('SalesReturn.customer'), sortable: true },
-        { field: 'WaybillId', header: t('SalesReturn.invoiceID'), sortable: true },
-        { field: 'originalWaybill', header: t('SalesReturn.originalWaybill'), sortable: true },
-        { field: 'supplier', header: t('SalesReturn.items'), type: 'slot', sortable: true },
-        { field: 'date', header: t('SalesReturn.date'), type: 'date', sortable: true },
-        { field: 'purchaseOrder', header: t('SalesReturn.total'), sortable: true },
-        { field: 'reason', header: t('SalesReturn.reason'), type: 'slot', sortable: true },
+        { field: 'documentNumber', header: t('SalesReturn.returnId'), sortable: true },
+        { field: 'customerName', header: t('SalesReturn.customer'), sortable: true },
+        { field: 'invoiceNumber', header: t('SalesReturn.invoiceID'), sortable: true },
+        { field: 'originalWaybillNumbers', header: t('SalesReturn.originalWaybill'), sortable: true },
+        { field: 'itemCount', header: t('SalesReturn.items'), type: 'slot', sortable: true },
+        { field: 'returnDate', header: t('SalesReturn.date'), type: 'date', sortable: true },
+        { field: 'grandTotal', header: t('SalesReturn.total'), sortable: true },
+        { field: 'returnReason', header: t('SalesReturn.reason'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -168,14 +146,14 @@ const getStatusText = (status: any) => {
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="SalesReturn.salesReturn" subtitle="SalesReturn.subtitle" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="SalesReturn.addNew" :showFilter="true"
+                :showImport="false" :mainBtn="true" mainBtnText="SalesReturn.addNew"  :showMultiFilter="true"
                     :filters="filtersOperation" @filter-change="onFilterChange"
                     searchPlaceholder="SalesReturn.searchPlaceholder" @search="onSearch"
                     :onMainBtnClick="addPurchaseWaybill" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiSalesReturn" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
@@ -188,11 +166,11 @@ const getStatusText = (status: any) => {
                             </span>
                         </div>
                     </template>
-                      <template  v-slot:["col-returnId"]="{ data }">
-                        <span class="text-primary-500 cursor-pointer underline">{{ data.returnId }}</span>
+                      <template  v-slot:["col-documentNumber"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.documentNumber }}</span>
                     </template>
-                      <template  v-slot:["col-originalWaybill"]="{ data }">
-                        <span class="text-primary-500 cursor-pointer underline">{{ data.originalWaybill }}</span>
+                      <template  v-slot:["col-originalWaybillNumbers"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.originalWaybillNumbers }}</span>
                     </template>
                 </DynamicTable>
             </template>

@@ -13,7 +13,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange } = usePurchaseReturn();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange, fetchPurchaseReturn, apiPurchaseReturn } = usePurchaseReturn();
 
 const rules = [
   "purchaseRules.stockAvailable",    
@@ -24,32 +24,6 @@ const rules = [
   "purchaseRules.serialIntegration" 
 ];
 
-
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => [
-            {
-                WaybillId: "PW-2026-001",
-                invioceId: "#001",
-                supplier: "ABC Industrial Supplies",
-                date: "Oct 11, 2025",
-                purchaseOrder: "PO-025",
-                totalValues: "$45,000",
-                status: "Completed"
-            },
-            {
-                WaybillId: "PW-2026-001",
-                invioceId: "#001",
-                supplier: "ABC Industrial Supplies",
-                date: "Oct 11, 2025",
-                purchaseOrder: "PO-025",
-                totalValues: "$45,000",
-                status: "Pending"
-            },
-        ],
-    },
-});
 const customItems = [
     {
         slot: true,
@@ -60,7 +34,7 @@ const customItems = [
     },
 ];
 onMounted(() => {
-    // fetchPurchaseWaybill();
+    fetchPurchaseReturn();
 });
 const filtersOperation = computed(() => {
     return [
@@ -174,7 +148,7 @@ const getStatusText = (status: any) => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiPurchaseReturn" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>

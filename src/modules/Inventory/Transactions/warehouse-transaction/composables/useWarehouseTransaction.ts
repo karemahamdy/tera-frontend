@@ -2,7 +2,7 @@ import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { WarehouseTransaction } from "../types/WarehouseTransaction";
-import { WarehouseTransactionService } from "../services/WarehouseTransaction";
+import { WarehouseTransactionService } from "../services/WarehouseTransaction.service";
 
 const loading = ref(false);
 const apiWarehouseTransaction = ref<WarehouseTransaction[]>([]);
@@ -14,36 +14,58 @@ const totalCount = ref(0);
 const totalPages = ref(1);
 
 const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref('');
+const TransactionStatus = ref<string | null>(null);
+const TransactionDirection = ref<string[]>([]);
+const WarehouseIds = ref<string[]>([]);
+const orderBy = ref<string | null>(null);
+
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function useWarehouseTransaction() {
   const { t } = useI18n();
 
-  const fetchWarehouseTransaction = async (page = 1) => {
-    loading.value = true;
-    try {
-      const response: any = await WarehouseTransactionService.getAll({
-        pageIndex: page,
-        pageSize: pageSize.value,
-        searchingWord: searchTerm.value,
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
-      });
-      const payload = response && response.data ? response.data : response;
-      apiWarehouseTransaction.value = payload.items ?? [];
-      pageIndex.value = payload.pageIndex ?? page;
-      pageSize.value = payload.pageSize ?? pageSize.value;
-      totalCount.value = payload.totalCount ?? 0;
-      totalPages.value = payload.totalPages ?? 1;
-    } catch (err: any) {
-      toastService.error(err);
-    } finally {
-      loading.value = false;
-    }
-  };
+const fetchWarehouseTransaction = async (page = 1) => {
+  loading.value = true;
+  try {
+
+    const params: any = {
+      pageIndex: page,
+      pageSize: pageSize.value,
+    };
+
+    if (searchTerm.value)
+      params.searchingWord = searchTerm.value;
+
+    if (orderBy.value)
+      params.orderBy = orderBy.value;
+
+    if (orderDirection.value)
+      params.orderDirection = orderDirection.value;
+
+    if (TransactionStatus.value)
+      params.TransactionStatus = TransactionStatus.value;
+
+    if (TransactionDirection.value)
+      params.TransactionDirection = TransactionDirection.value;
+
+    if (WarehouseIds.value)
+      params.WarehouseIds = WarehouseIds.value;
+
+    const response: any =
+      await WarehouseTransactionService.getAll(params);
+
+    apiWarehouseTransaction.value = response.items ?? [];
+    pageIndex.value = response.pageIndex ?? page;
+    pageSize.value = response.pageSize ?? pageSize.value;
+    totalCount.value = response.totalCount ?? 0;
+    totalPages.value = response.totalPages ?? 1;
+
+  } catch (err: any) {
+    toastService.error(err);
+  } finally {
+    loading.value = false;
+  }
+};
 
   const fetchWarehouseTransactionById = async (id: string) => {
     loading.value = true;
@@ -93,20 +115,6 @@ export function useWarehouseTransaction() {
     try {
       await WarehouseTransactionService.delete(id);
       toastService.success((t("WarehouseTransaction.WarehouseTransactionDeletedSuccessfully")));
-      apiWarehouseTransaction.value = apiWarehouseTransaction.value.filter((b) => b.id !== id);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await WarehouseTransactionService.toggleActive(id, isActive);
-      toastService.success((t("WarehouseTransaction.WarehouseTransactionUpdatedSuccessfully")));
       await fetchWarehouseTransaction(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -122,8 +130,14 @@ export function useWarehouseTransaction() {
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
-      StatusFilter.value = value;
+    if (field === "TransactionStatus") {
+      TransactionStatus.value = value;
+    }
+     if (field === "TransactionDirection") {
+      TransactionDirection.value = Array.isArray(value) ? value : [value]; 
+    }
+     if (field === "Warehouse") {
+    WarehouseIds.value = Array.isArray(value) ? value : [value];    
     }
     fetchWarehouseTransaction(1);
   };
@@ -148,7 +162,6 @@ export function useWarehouseTransaction() {
     createWarehouseTransaction,
     updateWarehouseTransaction,
     deleteWarehouseTransaction,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,

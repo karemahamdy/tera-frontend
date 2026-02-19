@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { IPLookups, Lookups, CodeLookups } from "../types/lookups";
+import type { IPLookups, Lookups, CodeLookups, reasonsLookups } from "../types/lookups";
 
 export const LookupsService = {
   getGroupLookups(isActive: boolean = true) {
@@ -98,6 +98,11 @@ export const LookupsService = {
   getItemGroupLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>(
       `/Lookups/ItemClassificationLookups/Category`,
+    );
+  },
+    getReasonLookups() {
+    return axiosWrapper.get<{ data: reasonsLookups[] }>(
+      `/InventoryLookups/return-reasons`,
     );
   },
 };

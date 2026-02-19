@@ -14,3 +14,8 @@ export interface LookupsOption {
   label: string;
   value: string;
 }
+
+export interface reasonsLookups {
+  name: string;
+  value: string;
+}
