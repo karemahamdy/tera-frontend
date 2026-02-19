@@ -69,7 +69,7 @@ const filtersOperation = computed(() => {
 const columns = computed(() => {
     const Columns = [ 
         { field: 'AdjustmentID', header: t('InventoryAdjustment.AdjustmentID'), type: 'slot', sortable: true },
-        { field: 'invioceId', header: t('InventoryAdjustment.items'), sortable: true },
+        { field: 'invioceId', header: t('itemGroup.itemsCount'), sortable: true },
         { field: 'supplier', header: t('InventoryAdjustment.warehouse'), type: 'slot', sortable: true },
         { field: 'date', header: t('InventoryAdjustment.zone'), type: 'date', sortable: true },
         { field: 'WaybillId', header: t('InventoryAdjustment.reason'), sortable: true },
