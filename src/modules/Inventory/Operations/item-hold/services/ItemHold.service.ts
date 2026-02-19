@@ -6,7 +6,7 @@ export const ItemHoldService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<ItemHoldResponse>(
-      `/purchase-waybill`, { params }
+      `/item-hold`, { params }
     );
     return resp.data;
   },

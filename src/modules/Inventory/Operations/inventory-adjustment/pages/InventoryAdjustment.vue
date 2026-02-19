@@ -20,7 +20,7 @@ const props = defineProps({
     type: Array,
     default: () => [
       {
-      WaybillId: "PW-2026-001",
+      AdjustmentID: "PW-2026-001",
       invioceId: "#001",
       supplier: "ABC Industrial Supplies",
       date: "Oct 11, 2025",
@@ -29,7 +29,7 @@ const props = defineProps({
       status: "Posted"
       },
       {
-        WaybillId: "PW-2026-001",
+        AdjustmentID: "PW-2026-001",
       invioceId: "#001",
       supplier: "ABC Industrial Supplies",
       date: "Oct 11, 2025",
@@ -54,11 +54,11 @@ const customItems = [
 const filtersOperation = computed(() => {
     return [
         {
-            placeholder: "salesReturn.reason",
+            placeholder: "SalesReturn.allreason",
             value: null,
             field: "status",
             options: [
-                { label: t("salesReturn.reason"), value: null },
+                { label: t("SalesReturn.allreason"), value: null },
                 { label: t("button.Posted"), value: "IsActive" },
                 { label: t("button.Pending"), value: "InActive" },
             ],
@@ -68,8 +68,8 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'totalValues', header: t('InventoryAdjustment.AdjustmentID'), type: 'slot', sortable: true },
-        { field: 'invioceId', header: t('InventoryAdjustment.items'), sortable: true },
+        { field: 'AdjustmentID', header: t('InventoryAdjustment.AdjustmentID'), type: 'slot', sortable: true },
+        { field: 'invioceId', header: t('itemGroup.itemsCount'), sortable: true },
         { field: 'supplier', header: t('InventoryAdjustment.warehouse'), type: 'slot', sortable: true },
         { field: 'date', header: t('InventoryAdjustment.zone'), type: 'date', sortable: true },
         { field: 'WaybillId', header: t('InventoryAdjustment.reason'), sortable: true },
@@ -108,8 +108,8 @@ const handleActionMenu = async (payload: any) => {
     }
     if (action === 'view') {
         router.push({
-            name: "PurchaseWaybillFormView",
-            params: { id: data.id },
+            name: "InventoryAdjustmentView",
+            params: { id: 10 },
         });
     }
     if (action === 'delete') {
@@ -156,7 +156,7 @@ const getStatusText = (status: any) => {
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" :showEdit="false" lazy >
                     <template  v-slot:["col-status"]="{ data }">
-            <div class="flex  align-items-center gap-2">
+                    <div class="flex  align-items-center gap-2">
                         <Badge :class="getStatusBadge(data.status)"
                         style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
                         <span :class="getStatusText(data.status)">
@@ -164,6 +164,9 @@ const getStatusText = (status: any) => {
                         </span>
                         </div>
                     </template>
+                     <template #col-AdjustmentID="{ data }">
+                    <span class="text-primary-500 cursor-pointer">{{ data.AdjustmentID }}</span>
+                </template>
                     </DynamicTable>
               
             </template>

@@ -63,7 +63,8 @@
     "all": "All",
     "Pending": "Pending",
     "Posted": "Posted",
-    "Shipped": "Shipped"
+    "Shipped": "Shipped",
+    "step": "Step {index} of {total}"
   },
   "table": {
     "description": "Description",
@@ -928,7 +929,24 @@
     "items": "Items",
     "zone": "Zone",
     "warehouse": "Warehouse",
-    "deleteConfirm": "Are you sure you want to delete this item?"
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "CountInformation": "Count Information",
+    "Line Items": "Line Items",
+    "Review": "Review",
+    "NewCount": "NewCount",
+    "CountNumber": "CountNumber",
+    "ScheduledDate": "Scheduled Date",
+    "StartNewPhysicalCount": "Start New Physical Count",
+    "CompareSystemStockWithActualPhysicalCount": "Compare system stock with actual physical count",
+    "ItemCode": "Item Code",
+    "ItemName": "Item Name",
+    "SystemBalance": "System Balance",
+    "CountedQTY": "Counted QTY",
+    "LineItems": "Line Items",
+    "LineItemsInfo": "Add items to your purchase waybill. Tracked items require serial/batch assignment.",
+    "Descrption": "Descrption",
+    "ReviewOpeningBalance": "Review Opening Balance",
+    "CreateOpeningBalance": "Create Opening Balance"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",
@@ -941,7 +959,18 @@
     "items": "Items",
     "zone": "Zone",
     "warehouse": "Warehouse",
-    "deleteConfirm": "Are you sure you want to delete this item?"
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "countID": "Count ID",
+    "item": "Item",
+    "availableBalance": "Available Balance",
+    "counted": "Counted",
+    "variance": "Variance",
+    "createNewAdjustment": "Create New Adjustment",
+    "selectItemToAdjustment": "Select ItemToAdjustment",
+    "adjustmentNumber": "Adjustment Number",
+    "createAdjustment": "Create Adjustment",
+    "newAdjustment": "New Adjustment",
+    "itemToAdjustment": "Item To Adjustment"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",
@@ -957,7 +986,15 @@
     "Quantity": "Quantity",
     "warehouse": "Warehouse",
     "zone": "Zone",
-    "deleteConfirm": "Are you sure you want to delete this item?"
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "createOpeningBalance": "Create Opening Balance",
+    "uom": "Unit Of Measure",
+    "createOpeningBalanceInfo": "Capture existing stock at system go-live",
+    "openingBalanceInfo": "Opening Balance info",
+    "review": "Review",
+    "reviewOpeningBalance": "Review Opening Balance",
+    "item": "Item",
+    "editOpeningBalance": "Edit Opening Balance"
   },
   "inventoryRequest": {
     "allTypes": "All Types",
@@ -1161,7 +1198,23 @@
     "holdProcess1": "• Add items Want to be hold",
     "holdProcess2": "• Select hold type and reason",
     "holdProcess3": "• For serial items: select specific serial numbers",
-    "holdProcess4": "• Items blocked from transactions"
+    "holdProcess4": "• Items blocked from transactions",
+    "holdTypesTitle": "Hold Types:",
+    "qcHoldLabel": "QC Hold:",
+    "qcHoldDescription": "Items pending quality inspection",
+    "reservationLabel": "Reservation:",
+    "reservationDescription": "Items reserved for specific orders",
+    "damageHoldLabel": "Damage Hold:",
+    "damageHoldDescription": "Items under inquiry or audit",
+    "investigationLabel": "Investigation:",
+    "investigationDescription": "Items damaged, pending disposition",
+    "importantNotesTitle": "Important Notes:",
+    "note1": "Held items cannot be issued or sold",
+    "note2": "Professional mode: holds are zone/location specific",
+    "note3": "Serial/lot tracked items: holds by specific numbers",
+    "DamageHold": "Damage Hold",
+    "Investigation": "Investigation",
+    "qcHold": "QC Hold"
   },
   "ReturnItems": {
     "title": "Return Items",

@@ -104,14 +104,8 @@ const handleActionMenu = async (payload: any) => {
     const data = payload.data || payload.row || payload;
     if (action === 'edit') {
         router.push({
-            name: "PurchaseWaybillFormEdit",
-            params: { id: data.id },
-        });
-    }
-    if (action === 'view') {
-        router.push({
-            name: "PurchaseWaybillFormView",
-            params: { id: data.id },
+            name: "OpeningBalanceEdit",
+            params: { id: 10 },
         });
     }
     if (action === 'delete') {
@@ -130,7 +124,7 @@ const handleDeleteConfirm = async () => {
 };
 
 const addPurchaseWaybill = () => {
-    router.push({name: 'PurchaseWaybillCreate' });
+    router.push({name: 'OpeningBalanceCreate' });
 };
 
 </script>
@@ -138,7 +132,7 @@ const addPurchaseWaybill = () => {
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
         <ScreenHeader t title="inventory" subtitle="operation.title" actionName="OpeningBalance.OpeningBalance" />
-        <card class="bg-[#ffffff] rounded-[10px]">
+        <card class="bg-white rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="OpeningBalance.OpeningBalance" subtitle="OpeningBalance.subtitle" :showExport="false"

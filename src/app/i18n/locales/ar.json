@@ -69,7 +69,8 @@
     "all": "الكل",
     "Posted": "ترحيل",
     "Pending": "معلق",
-    "Shipped": "تم الشحن"
+    "Shipped": "تم الشحن",
+    "step": "الخطوة {index} من {total}"
   },
   "table": {
     "description": "الوصف",
@@ -563,7 +564,16 @@
     "select": "اختر",
     "LDCCreatedSuccessfully": "تم إنشاء دفتر الحسابات بنجاح",
     "LDCUpdatedSuccessfully": "تم تحديث دفتر الحسابات بنجاح",
-    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح"
+    "LDCDeletedSuccessfully": "تم حذف دفتر الحسابات بنجاح",
+    "QualityInspection": "فحص الجودة",
+    "Inspector": "المفتش",
+    "InspectorPlaceholder": "اختر المفتش",
+    "InspectionDate": "تاريخ الفحص",
+    "InspectionDatePlaceholder": "اختر تاريخ الفحص",
+    "InspectionResult": "نتيجة الفحص",
+    "InspectionResultPlaceholder": "اختر نتيجة الفحص",
+    "InspectionNotes": "ملاحظات الفحص",
+    "InspectionNotesPlaceholder": "اكتب ملاحظات الفحص"
   },
   "items": {
     "title": "العناصر",
@@ -866,9 +876,9 @@
     "serialIntegration": "تتبع الأرقام التسلسلية/دفعات خلال عملية المرتجع"
   },
   "RequestRules": {
-   "department": "القسم يقدّم طلب صرف للمواد المطلوبة",
-  "items": "يتم التحقق من الأصناف مقابل المخزون المتاح والحجوزات",
-  "serialLot": "الأصناف التي تتبع السيريال/اللوط تتطلب تعيين رقم"
+    "department": "القسم يقدّم طلب صرف للمواد المطلوبة",
+    "items": "يتم التحقق من الأصناف مقابل المخزون المتاح والحجوزات",
+    "serialLot": "الأصناف التي تتبع السيريال/اللوط تتطلب تعيين رقم"
   },
   "operation": {
     "title": "العمليات",
@@ -918,7 +928,24 @@
     "items": "الأصناف",
     "zone": "المنطقة",
     "warehouse": "المخزن",
-    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "CountInformation": "معلومات الجرد",
+    "Line Items": "بيان الأصناف",
+    "Review": "مراجعة",
+    "NewCount": "جرد جديد",
+    "CountNumber": "رقم الجرد",
+    "ScheduledDate": "التاريخ المجدول",
+    "StartNewPhysicalCount": "بدء جرد فعلي جديد",
+    "CompareSystemStockWithActualPhysicalCount": "مقارنة رصيد النظام مع الجرد الفعلي الفعلي",
+    "ItemCode": "كود الصنف",
+    "ItemName": "اسم الصنف",
+    "SystemBalance": "رصيد النظام",
+    "CountedQTY": "الكمية المجرودة",
+    "LineItems": "الاصناف",
+    "LineItemsInfo": "أضف الأصناف إلى جردك الفعلي. الأصناف المتتبعة تتطلب تعيين سيريال أو دفعة.",
+    "Descrption": "الوصف",
+    "ReviewOpeningBalance": "مراجعة الجرد الفعلي",
+    "CreateOpeningBalance": "إنشاء جرد فعلي"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",
@@ -931,7 +958,18 @@
     "items": "الأصناف",
     "zone": "المنطقة",
     "warehouse": "المخزن",
-    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "countID": "رقم الجرد",
+    "item": "الصنف",
+    "availableBalance": "الرصيد المتاح",
+    "counted": "المجرود",
+    "variance": "الفرق",
+    "createNewAdjustment": "إنشاء تسوية جديدة",
+    "selectItemToAdjustment": "اختر صنف للتسوية",
+    "adjustmentNumber": "رقم التسوية",
+    "createAdjustment": "إنشاء تسوية",
+    "newAdjustment": "تسوية جديدة",
+    "itemToAdjustment": "اصناف التسوية"
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",
@@ -947,7 +985,15 @@
     "Quantity": "الكمية",
     "warehouse": "المخزن",
     "zone": "المنطقة",
-    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟"
+    "deleteConfirm": "هل أنت متأكد من حذف هذا العنصر؟",
+    "createOpeningBalance": "إنشاء رصيد افتتاحي",
+    "uom": "وحدة القياس",
+    "createOpeningBalanceInfo": "تسجيل المخزون الحالي عند بدء تشغيل النظام",
+    "openingBalanceInfo": "معلومات الرصيد الافتتاحي",
+    "review": "مراجعة",
+    "reviewOpeningBalance": "مراجعة الرصيد الافتتاحي",
+    "item": "الصنف",
+    "editOpeningBalance": "تعديل رصيد افتتاحي"
   },
   "inventoryRequest": {
     "allTypes": "جميع الأنواع",
@@ -985,7 +1031,7 @@
     "allDirections": "جميع الاتجاهات",
     "allWarehouse": "جميع المستودعات",
     "allStatus": "جميع الحالات",
-      "title": "حركة مخزنية",
+    "title": "حركة مخزنية",
     "desc": "إنشاء وتعديل حركة مخزنية",
     "costCenter": "مركز التكلفة",
     "costCenterPlaceholder": "اختر مركز التكلفة",
@@ -1017,7 +1063,6 @@
     "transactions": "• المعاملات: ",
     "sourceFrom": "من",
     "targetTo": "إلى"
-  
   },
   "payment": {
     "paymentFinanceInfo": "معلومات الدفع والمالية",
@@ -1125,7 +1170,7 @@
     "TargetWarehousePlaceholder": "اختر المخزن المستهدف",
     "Reason": "السبب",
     "ReasonPlaceholder": "وصف تفصيلي لمتطلبات الإصدار والإرجاع...",
-     "ReviewSummary": "ملخص المراجعة",
+    "ReviewSummary": "ملخص المراجعة",
     "RequestorDepartment": "مقدم الطلب والقسم",
     "WarehouseDetails": "تفاصيل المخزن",
     "RequestBy": "مقدم الطلب",
@@ -1149,7 +1194,23 @@
     "holdProcess1": "• أضف الأصناف المطلوب حجزها",
     "holdProcess2": "• اختر نوع الحجز والسبب",
     "holdProcess3": "• للأصناف ذات الأرقام التسلسلية: اختر أرقام تسلسلية محددة",
-    "holdProcess4": "• يتم منع الأصناف من إجراء أي معاملات"
+    "holdProcess4": "• يتم منع الأصناف من إجراء أي معاملات",
+    "holdTypesTitle": "أنواع الحجز:",
+    "qcHoldLabel": "حجز فحص الجودة:",
+    "qcHoldDescription": "عناصر قيد فحص الجودة",
+    "reservationLabel": "حجز:",
+    "reservationDescription": "عناصر محجوزة لطلبات محددة",
+    "damageHoldLabel": "حجز تلف:",
+    "damageHoldDescription": "عناصر قيد المراجعة أو التحقيق",
+    "investigationLabel": "تحقيق:",
+    "investigationDescription": "عناصر تالفة بانتظار الإجراء النهائي",
+    "importantNotesTitle": "ملاحظات هامة:",
+    "note1": "لا يمكن صرف أو بيع العناصر المحجوزة",
+    "note2": "في الوضع الاحترافي: يكون الحجز مرتبطًا بمنطقة أو موقع محدد",
+    "note3": "العناصر المتتبعة بالرقم التسلسلي أو رقم التشغيلة: يتم الحجز بأرقام محددة",
+    "DamageHold": "حجز تلف",
+    "Investigation": "تحقيق",
+    "qcHold": "حجز فحص الجودة"
   },
   "ReturnItems": {
     "title": "أصناف المرتجع",
@@ -1173,7 +1234,7 @@
     "source": "المصدر (من)",
     "destination": "الوجهة (إلى)"
   },
-"direction": {
+  "direction": {
     "transfer": "تحويل",
     "inbound": "وارد",
     "outbound": "صادر"
