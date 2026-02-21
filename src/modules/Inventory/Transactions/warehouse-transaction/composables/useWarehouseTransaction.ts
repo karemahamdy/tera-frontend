@@ -84,7 +84,7 @@ const fetchWarehouseTransaction = async (page = 1) => {
     loading.value = true;
     try {
       const response = await WarehouseTransactionService.create(payload);
-      toastService.success(t("WarehouseTransaction.WarehouseTransactionCreatedSuccessfully"));
+      toastService.success(t("warehouseTransaction.WarehouseTransactionCreatedSuccessfully"));
       await fetchWarehouseTransaction(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -99,7 +99,7 @@ const fetchWarehouseTransaction = async (page = 1) => {
     loading.value = true;
     try {
       const response = await WarehouseTransactionService.update(id, payload);
-      toastService.success(t("WarehouseTransaction.WarehouseTransactionUpdatedSuccessfully"));
+      toastService.success(t("warehouseTransaction.WarehouseTransactionUpdatedSuccessfully"));
       await fetchWarehouseTransaction(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -114,7 +114,7 @@ const fetchWarehouseTransaction = async (page = 1) => {
     loading.value = true;
     try {
       await WarehouseTransactionService.delete(id);
-      toastService.success((t("WarehouseTransaction.WarehouseTransactionDeletedSuccessfully")));
+      toastService.success((t("warehouseTransaction.WarehouseTransactionDeletedSuccessfully")));
       await fetchWarehouseTransaction(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
