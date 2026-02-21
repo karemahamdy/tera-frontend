@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useInventoryAdjustment } from "../composables/useInventoryAdjustment";
@@ -13,33 +13,9 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, deleteInventoryAdjustment } = useInventoryAdjustment();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, deleteInventoryAdjustment, apiInventoryAdjustment, fetchInventoryAdjustment } = useInventoryAdjustment();
 
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-      AdjustmentID: "PW-2026-001",
-      invioceId: "#001",
-      supplier: "ABC Industrial Supplies",
-      date: "Oct 11, 2025",
-      purchaseOrder: "PO-025",
-      totalValues: "$45,000",
-      status: "Posted"
-      },
-      {
-        AdjustmentID: "PW-2026-001",
-      invioceId: "#001",
-      supplier: "ABC Industrial Supplies",
-      date: "Oct 11, 2025",
-      purchaseOrder: "PO-025",
-      totalValues: "$45,000",
-      status: "Pending"
-      },
-    ],
-  },
-});
+
 const customItems = [
    
      {
@@ -59,8 +35,9 @@ const filtersOperation = computed(() => {
             field: "status",
             options: [
                 { label: t("SalesReturn.allreason"), value: null },
-                { label: t("button.Posted"), value: "IsActive" },
-                { label: t("button.Pending"), value: "InActive" },
+                { label: t("InventoryAdjustment.DamagedItem"), value: "DamagedItem" },
+                { label: t("InventoryAdjustment.ExpiredItem"), value: "ExpiredItem" },
+                { label: t("InventoryAdjustment.CountVariance"), value: "CountVariance" },
             ],
         }
     ]
@@ -68,12 +45,12 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'AdjustmentID', header: t('InventoryAdjustment.AdjustmentID'), type: 'slot', sortable: true },
-        { field: 'invioceId', header: t('itemGroup.itemsCount'), sortable: true },
-        { field: 'supplier', header: t('InventoryAdjustment.warehouse'), type: 'slot', sortable: true },
-        { field: 'date', header: t('InventoryAdjustment.zone'), type: 'date', sortable: true },
-        { field: 'WaybillId', header: t('InventoryAdjustment.reason'), sortable: true },
-        { field: 'date', header: t('InventoryAdjustment.date'), type: 'date', sortable: true },
+        { field: 'documentNumber', header: t('InventoryAdjustment.AdjustmentID'), type: 'slot', sortable: true },
+        { field: 'itemCounts', header: t('itemGroup.itemsCount'), sortable: true },
+        { field: 'warehouseCode', header: t('InventoryAdjustment.warehouse'), type: 'slot', sortable: true },
+        { field: 'zone', header: t('InventoryAdjustment.zone'), sortable: true },
+        { field: 'adjustmentReason', header: t('InventoryAdjustment.reason'), sortable: true },
+        { field: 'transactionDate', header: t('InventoryAdjustment.date'), type: 'date', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -136,12 +113,16 @@ const getStatusBadge = (status: any) => {
 const getStatusText = (status: any) => {
   return status === "Posted" ? "status-text-active" : "status-text-inactive";
 }
+
+onMounted(() => {
+    fetchInventoryAdjustment()
+})
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
         <ScreenHeader t title="inventory" subtitle="operation.title" actionName="InventoryAdjustment.InventoryAdjustment" />
-        <card class="bg-[#ffffff] rounded-[10px]">
+        <card class="bg-white rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="InventoryAdjustment.InventoryAdjustment" subtitle="InventoryAdjustment.subtitle" :showExport="false"
@@ -152,7 +133,7 @@ const getStatusText = (status: any) => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiInventoryAdjustment" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" :showEdit="false" lazy >
                     <template  v-slot:["col-status"]="{ data }">

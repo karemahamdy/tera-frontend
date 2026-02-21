@@ -30,7 +30,7 @@ export function useInventoryAdjustment() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        ReasonFilter: StatusFilter.value
       });
       const payload = response && response.data ? response.data : response;
       apiInventoryAdjustment.value = payload.items ?? [];
