@@ -47,8 +47,8 @@ const columns = computed(() => {
     const Columns = [ 
         { field: 'documentNumber', header: t('InventoryAdjustment.AdjustmentID'), type: 'slot', sortable: true },
         { field: 'itemCounts', header: t('itemGroup.itemsCount'), sortable: true },
-        { field: 'warehouseCode', header: t('InventoryAdjustment.warehouse'), type: 'slot', sortable: true },
-        { field: 'zone', header: t('InventoryAdjustment.zone'), sortable: true },
+        { field: 'warehouseName', header: t('InventoryAdjustment.warehouse'), type: 'slot', sortable: true },
+        { field: 'zoneName', header: t('InventoryAdjustment.zone'), sortable: true },
         { field: 'adjustmentReason', header: t('InventoryAdjustment.reason'), sortable: true },
         { field: 'transactionDate', header: t('InventoryAdjustment.date'), type: 'date', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
