@@ -1,35 +1,40 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type {  ApiResponse, InventoryLookups } from "../types/lookups";
+import type { ApiResponse, InventoryLookups, ItemLookup } from "../types/lookups";
 
 export const InventoryLookupsService = {
-    getCurrenciesLookups() {
+  getCurrenciesLookups() {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/currencies`,
     );
   },
-   getSupplierLookups() {
+  getSupplierLookups() {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/suppliers`,
     );
   },
-   getPaymentTermsLookups() {
+  getPaymentTermsLookups() {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/payment-terms`,
     );
   },
-   getWarehouseLookups() {
+  getWarehouseLookups() {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/warehouses`,
     );
   },
-    getZonesLookups(warehouseId: string) {
+  getZonesLookups(warehouseId: string) {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/zones?warehouseId=${warehouseId}`,
     );
   },
-   getIncotermsLookups() {
+  getIncotermsLookups() {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/incoterms`,
+    );
+  },
+  getItemsLookups(trackedOnly: boolean = false) {
+    return axiosWrapper.get<ApiResponse<ItemLookup[]>>(
+      `/InventoryLookups/items?trackedOnly=${trackedOnly}`,
     );
   },
 };

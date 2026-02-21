@@ -31,7 +31,7 @@ const columns = computed(() => {
     return [
         { field: 'code', header: t('itemDialog.itemCode'), sortable: true },
         { field: 'name', header: t('itemDialog.itemName'), sortable: true },
-        { field: 'unit', header: t('itemDialog.unit'), sortable: true },
+        { field: 'baseUnitName', header: t('itemDialog.unit'), sortable: true },
         { field: 'action', header: '' }
     ];
 });

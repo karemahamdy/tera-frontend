@@ -1,7 +1,8 @@
 import { ref } from "vue";
-import type { LookupsOption } from "../app/types/lookups";
+import type { LookupsOption, ItemLookup } from "../app/types/lookups";
 import { toastService } from "@/app/services/toastService";
 import { InventoryLookupsService } from "@/app/services/Inventorylookups.service";
+import { LookupsService } from "@/app/services/lookups.service";
 
 
 export function useInventoryLookups() {
@@ -11,6 +12,8 @@ export function useInventoryLookups() {
   const WarehouseLookups = ref<LookupsOption[]>([]);
   const PaymentTerms = ref<LookupsOption[]>([]);
   const ZonesLookups = ref<LookupsOption[]>([]);
+  const itemsLookups = ref<ItemLookup[]>([]);
+  const UnitsLookups = ref<LookupsOption[]>([]);
 
   const getSupplierLookups = async () => {
     try {
@@ -79,6 +82,26 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
+  const getItemsLookups = async (trackedOnly: boolean = false) => {
+    try {
+      const res = await InventoryLookupsService.getItemsLookups(trackedOnly);
+      itemsLookups.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+  const getUnitsLookups = async () => {
+    try {
+      const res = await LookupsService.getUnitsLookups();
+      UnitsLookups.value = res.data.map((u: any) => ({
+        label: u.name,
+        value: u.name,
+        type: u.id
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   return {
     getSupplierLookups,
     getCurrenciesLookups,
@@ -86,11 +109,15 @@ export function useInventoryLookups() {
     getPaymentTermsLookups,
     getWarehouseLookups,
     getZonesLookups,
+    getItemsLookups,
+    getUnitsLookups,
     ZonesLookups,
     supplierLookups,
     CurrenciesLookups,
     IncotermsLookups,
     PaymentTerms,
-    WarehouseLookups
+    WarehouseLookups,
+    itemsLookups,
+    UnitsLookups
   };
 }

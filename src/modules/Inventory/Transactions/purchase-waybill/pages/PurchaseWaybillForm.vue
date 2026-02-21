@@ -11,7 +11,7 @@ import { usePurchaseWaybill } from '../composables/usePurshace';
 import type { PurchaseWaybillDetail } from '../types/PurchaseWaybill';
 
 const route = useRoute();
-const { fetchPurchaseWaybillById, createPurchaseWaybill, updatePurchaseWaybill } = usePurchaseWaybill();
+const { fetchPurchaseWaybillById } = usePurchaseWaybill();
 
 // Route params
 const id = computed(() => route.params.id as string | undefined);

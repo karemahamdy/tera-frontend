@@ -28,6 +28,26 @@ export interface InventoryLookups {
   type?: string;
 }
 
+export interface ItemLookupUnit {
+  unitId: string;
+  unitCode: string;
+  unitName: string;
+  conversionFactor: number;
+  isBaseUnit: boolean;
+}
+
+export interface ItemLookup {
+  id: string;
+  code: string;
+  name: string;
+  barcode: string | null;
+  itemType: string;
+  trackingType: string;
+  baseUnitId: string;
+  baseUnitName: string;
+  units: ItemLookupUnit[];
+}
+
 export interface ApiResponse<T> {
   data: T;
   succeeded: boolean;
