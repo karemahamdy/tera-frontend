@@ -1038,7 +1038,9 @@
     "costCenterPlaceholder": "اختر مركز التكلفة",
     "warehousePlaceholder": "اختر المخزن",
     "Zone": "المنطقة",
-    "ZonePlaceholder": "اختر المنطقة"
+    "ZonePlaceholder": "اختر المنطقة",
+    "WarehouseTransactionUpdatedSuccessfully": "تم التعديل بنجاح",
+    "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح"
   },
   "itemTransaction": {
     "createNewTransaction": "إنشاء معاملة جديدة",
