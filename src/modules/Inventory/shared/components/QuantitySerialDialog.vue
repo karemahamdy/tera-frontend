@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { ItemService } from '@/modules/Inventory/MasterData/items/services/item.service';
+import { LookupsService } from '@/app/services/lookups.service';
+import { FileService } from '@/app/services/file.service';
+import { toastService } from '@/app/services/toastService';
 
 const { t } = useI18n();
 
@@ -19,6 +23,8 @@ const qtyInput = ref<string>("");
 const batchInput = ref('');
 const expireDateInput = ref();
 const commentInput = ref('');
+const fileInput = ref<HTMLInputElement | null>(null);
+const isProcessing = ref(false);
 
 const serialList = ref<any[]>(props.initialSerials ? [...props.initialSerials] : []);
 
@@ -60,6 +66,49 @@ const removeSerial = (data: any) => {
     }
 };
 
+const triggerImport = () => {
+    fileInput.value?.click();
+};
+
+const handleFileUpload = async (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (!target.files?.length) return;
+
+    const file = target.files[0];
+    isProcessing.value = true;
+    try {
+        const response = await LookupsService.parseSerials(file);
+        if (response.succeeded && Array.isArray(response.data)) {
+            // Map incoming data to our serial format if needed
+            const newSerials = response.data.map(s => ({
+                serial: s.mainSerial || s.serial || '',
+                qty: s.quantity || s.qty || 1,
+                batch: s.batchNumber || s.batch || '',
+                expire: s.expireDate || s.expire || null,
+                comment: s.note || s.comment || ''
+            }));
+            serialList.value = [...serialList.value, ...newSerials];
+            toastService.success(t('serial.importSuccess') || 'Serials imported successfully');
+        } else {
+            toastService.error(response.message || 'Failed to parse serials');
+        }
+    } catch (error) {
+        toastService.error(error as string);
+    } finally {
+        isProcessing.value = false;
+        target.value = ''; // Reset input
+    }
+};
+
+const exportTemplate = async () => {
+    try {
+        const blob = await ItemService.downloadImportTemplate();
+        FileService.downloadBlob(blob, 'SerialImportTemplate.xlsx');
+    } catch (error) {
+        toastService.error(error as string);
+    }
+};
+
 const save = () => {
     emit('save', { serials: serialList.value, totalQty: totalQty.value });
     localVisible.value = false;
@@ -92,8 +141,32 @@ watch(localVisible, (newVal) => emit('update:visible', newVal));
                         {{ t('serial.selectQuantity') }}
                     </h3>
 
-                    <BaseButton :label="t('common.import')" icon="DocumentUpload" size="small" variant="outline-primary"
-                        class="px-2 py-1 text-xs" />
+                </div>
+                <div class="flex justify-between items-center">
+                    <input 
+                        type="file" 
+                        ref="fileInput" 
+                        style="display: none" 
+                        accept=".xlsx,.xls,.csv" 
+                        @change="handleFileUpload"
+                    />
+                    <BaseButton 
+                        :label="t('import')" 
+                        icon="DocumentUpload" 
+                        size="small" 
+                        variant="outline-primary"
+                        class="px-2 py-1 text-xs" 
+                        :loading="isProcessing"
+                        @click="triggerImport"
+                    />
+                    <BaseButton 
+                        :label="t('export')" 
+                        icon="DocumentDownload" 
+                        size="small" 
+                        variant="outline-primary"
+                        class="px-2 py-1 text-xs" 
+                        @click="exportTemplate"
+                    />
                 </div>
 
                 <div class="flex flex-col gap-4">

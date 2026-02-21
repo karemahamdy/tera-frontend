@@ -57,3 +57,4 @@ export interface ApiResponse<T> {
   errors?: any;
   id?: any;
 }
+

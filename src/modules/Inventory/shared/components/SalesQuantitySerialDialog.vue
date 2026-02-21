@@ -93,7 +93,9 @@ watch(localVisible, (newVal) => emit('update:visible', newVal));
                         {{ t('serial.selectQuantity') }}
                     </h3>
 
-                    <BaseButton :label="t('common.import')" icon="DocumentUpload" size="small" variant="outline-primary"
+                    <BaseButton :label="t('import')" icon="DocumentUpload" size="small" variant="outline-primary"
+                        class="px-2 py-1 text-xs" />
+                         <BaseButton :label="t('export')" icon="DocumentUpload" size="small" variant="outline-primary"
                         class="px-2 py-1 text-xs" />
                 </div>
 

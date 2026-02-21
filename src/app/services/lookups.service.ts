@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { IPLookups, Lookups, CodeLookups, reasonsLookups } from "../types/lookups";
+import type { IPLookups, Lookups, CodeLookups, reasonsLookups, ApiResponse } from "../types/lookups";
 
 export const LookupsService = {
   getGroupLookups(isActive: boolean = true) {
@@ -100,9 +100,17 @@ export const LookupsService = {
       `/Lookups/ItemClassificationLookups/Category`,
     );
   },
-    getReasonLookups() {
+  getReasonLookups() {
     return axiosWrapper.get<{ data: reasonsLookups[] }>(
       `/InventoryLookups/return-reasons`,
+    );
+  },
+  parseSerials(file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return axiosWrapper.post<ApiResponse<any[]>>(
+      `/InventoryLookups/parse-serials`,
+      formData,
     );
   },
 };
