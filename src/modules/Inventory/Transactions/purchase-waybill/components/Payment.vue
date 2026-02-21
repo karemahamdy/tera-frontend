@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive, watchEffect } from "vue"
+import { ref, reactive, watchEffect, onMounted } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
 import type { PaymentInfoData, NotesData } from '../types/PurchaseWaybill';
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
+
+const {PaymentTerms, IncotermsLookups, getIncotermsLookups, getPaymentTermsLookups } = useInventoryLookups();
 
 const props = withDefaults(defineProps<{
   paymentInfo?: PaymentInfoData | null;
@@ -59,11 +62,12 @@ watchEffect(() => {
     comments.comment5 = props.notes.comment5 ?? "";
   }
 });
-
-const paymentTermsOptions = [
-  { label: t("payment.net30"), value: "Net 30 Days" },
-  { label: t("payment.immediate"), value: "Immediate" },
-]
+onMounted(async () => {
+  Promise.all([
+    getIncotermsLookups(),
+    getPaymentTermsLookups()
+  ]);
+})
 
 const importOptions = [
   { label: t("payment.import"), value: "Import" },
@@ -124,7 +128,7 @@ const importOptions = [
             <FormDropdown
               :label="t('payment.paymentTerms')"
               v-model="paymentTerms"
-              :options="paymentTermsOptions"
+              :options="PaymentTerms"
               :placeholder="t('payment.selectTerms')"
               :disabled="disabled"
             />
@@ -144,7 +148,7 @@ const importOptions = [
             <FormDropdown
               :label="t('payment.incoterms')"
               v-model="incoterms"
-              :options="importOptions"
+              :options="IncotermsLookups"
               :placeholder="t('payment.selectIncoterms')"
               :disabled="disabled"
             />
