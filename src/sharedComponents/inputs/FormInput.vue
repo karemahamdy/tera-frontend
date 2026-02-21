@@ -1,12 +1,12 @@
 <script setup lang="ts">
 defineProps<{
   label: string;
-  modelValue: string;
+  modelValue: string | Date;
   type?: string;
   invalid?: boolean;
   error?: string;
   disabled?: boolean;
-   placeholder?: string;
+  placeholder?: string;
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -14,15 +14,30 @@ defineEmits(["update:modelValue"]);
 
 <template>
   <div>
-    <label class="block mb-1 font-medium"><strong>{{ label }}</strong></label>
+    <label class="block mb-1 font-medium"
+      ><strong>{{ label }}</strong></label
+    >
     <InputText
       :type="type ?? 'text'"
+      v-if="type != 'date'"
       class="w-full p-3 border rounded-lg bg-gray-50 border-gray-300"
-      :modelValue="modelValue"
-       :invalid="!!invalid"
-       :placeholder="placeholder"
-       :disabled="disabled"
+      :invalid="!!invalid"
+      :placeholder="placeholder"
+      :disabled="disabled"
       @update:modelValue="$emit('update:modelValue', $event)"
+      :modelValue="modelValue as string"
+    />
+
+    <DatePicker
+      v-else
+      showIcon
+      fluid
+      iconDisplay="input"
+      :invalid="!!invalid"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      @update:modelValue="$emit('update:modelValue', $event)"
+      :modelValue="modelValue as Date"
     />
 
     <small v-if="error" class="text-danger-500">

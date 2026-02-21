@@ -970,7 +970,10 @@
     "adjustmentNumber": "رقم التسوية",
     "createAdjustment": "إنشاء تسوية",
     "newAdjustment": "تسوية جديدة",
-    "itemToAdjustment": "اصناف التسوية"
+    "itemToAdjustment": "اصناف التسوية",
+    "DamagedItem": "عنصر تالف",
+    "ExpiredItem": "عنصر منتهي الصلاحية",
+    "CountVariance": "فرق في الجرد"
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",

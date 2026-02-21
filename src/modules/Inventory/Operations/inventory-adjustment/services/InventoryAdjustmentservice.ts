@@ -6,7 +6,7 @@ export const InventoryAdjustmentService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<InventoryAdjustmentResponse>(
-      `/purchase-waybill`, { params }
+      `/physicalcount/adjustment/GetAll`, { params }
     );
     return resp.data;
   },

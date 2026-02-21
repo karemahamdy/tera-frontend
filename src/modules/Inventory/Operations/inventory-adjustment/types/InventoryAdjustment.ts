@@ -29,4 +29,5 @@ export interface Pagination {
   orderBy?: string;
   orderDirection?: "asc" | "desc";
   StatusFilter?: string;
+  ReasonFilter?: string;
 }

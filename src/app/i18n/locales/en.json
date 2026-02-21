@@ -971,7 +971,10 @@
     "adjustmentNumber": "Adjustment Number",
     "createAdjustment": "Create Adjustment",
     "newAdjustment": "New Adjustment",
-    "itemToAdjustment": "Item To Adjustment"
+    "itemToAdjustment": "Item To Adjustment",
+    "DamagedItem": "Damaged Item", 
+    "ExpiredItem": "Expired Item", 
+    "CountVariance": "Count Variance"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",
