@@ -947,7 +947,8 @@
     "LineItemsInfo": "Add items to your purchase waybill. Tracked items require serial/batch assignment.",
     "Descrption": "Descrption",
     "ReviewOpeningBalance": "Review Opening Balance",
-    "CreateOpeningBalance": "Create Opening Balance"
+    "CreateOpeningBalance": "Create Opening Balance",
+    "Adjusted": "Adjusted"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",

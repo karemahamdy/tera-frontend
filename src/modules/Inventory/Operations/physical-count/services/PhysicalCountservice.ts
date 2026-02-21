@@ -6,7 +6,7 @@ export const PhysicalCountService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<PhysicalCountResponse>(
-      `/purchase-waybill`, { params }
+      `/physicalcount/GetAll`, { params }
     );
     return resp.data;
   },

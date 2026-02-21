@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { usePhysicalCount } from "../composables/usePhysicalCount";
@@ -12,33 +12,9 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, deletePhysicalCount } = usePhysicalCount();
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, deletePhysicalCount, fetchPhysicalCount, apiPhysicalCount } = usePhysicalCount();
 
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-      WaybillId: "PW-2026-001",
-      invioceId: "#001",
-      supplier: "ABC Industrial Supplies",
-      date: "Oct 11, 2025",
-      purchaseOrder: "PO-025",
-      totalValues: "$45,000",
-      status: "Posted"
-      },
-      {
-        WaybillId: "PW-2026-001",
-      invioceId: "#001",
-      supplier: "ABC Industrial Supplies",
-      date: "Oct 11, 2025",
-      purchaseOrder: "PO-025",
-      totalValues: "$45,000",
-      status: "Pending"
-      },
-    ],
-  },
-});
+
 const customItems = [
    
      {
@@ -57,9 +33,10 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-                  { label: t("button.all"), value: null },
-                { label: t("button.Pending"), value: "IsActive" },
-                { label: t("button.Posted"), value: "InActive" },
+                { label: t("button.all"), value: null },
+                { label: t("button.Pending"), value: "Pending" },
+                { label: t("button.Posted"), value: "Posted" },
+                { label: t("PhysicalCount.Adjusted"), value: "Adjusted" },
             ],
         }
     ]
@@ -67,15 +44,15 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'WaybillId', header: t('PhysicalCount.CountID'), sortable: true },
-        { field: 'invioceId', header: t('PhysicalCount.CountDate'), sortable: true },
-        { field: 'supplier', header: t('PhysicalCount.warehouse'), type: 'slot', sortable: true },
-        { field: 'date', header: t('PhysicalCount.zone'), type: 'date', sortable: true },
-         { field: 'purchaseOrder', header: t('PhysicalCount.total'), sortable: true },
-        { field: 'total,Values', header: t('PhysicalCount.Counted'), type: 'slot', sortable: true },
-        { field: 'total,Values', header: t('PhysicalCount.Variances'), type: 'slot', sortable: true },
+        { field: 'code', header: t('PhysicalCount.CountID'), sortable: true },
+        { field: 'countDate', header: t('PhysicalCount.CountDate'), type: 'date', sortable: true },
+        { field: 'warehouseName', header: t('PhysicalCount.warehouse'), type: 'slot', sortable: true },
+        { field: 'zoneName', header: t('PhysicalCount.zone'), type: 'date', sortable: true },
+        { field: 'totalItems', header: t('PhysicalCount.total'), sortable: true },
+        { field: 'countedItems', header: t('PhysicalCount.Counted'), type: 'slot', sortable: true },
+        { field: 'totalVariance', header: t('PhysicalCount.Variances'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
-        { field: 'totalValues', header: t('PhysicalCount.Adjustment'), type: 'slot', sortable: true },
+        { field: 'adjustmentDocumentNumber', header: t('PhysicalCount.Adjustment'), type: 'slot', sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -126,17 +103,33 @@ const addPurchaseWaybill = () => {
     router.push({name: 'PhysicalCountCreate' });
 };
 const getStatusBadge = (status: any) => {
-  return status === "Posted" ? "status-active" : "status-inactive";
+    if(status === "Posted") {
+        return "status-active"
+    } else if(status === "Pending") {
+        return  "status-inactive"
+    } else {
+        return "status-primary"
+    }
 }
 const getStatusText = (status: any) => {
-  return status === "Posted" ? "status-text-active" : "status-text-inactive";
+    if(status === "Posted") {
+        return "status-text-active"
+    } else if(status === "Pending") {
+        return  "status-text-inactive"
+    } else {
+        return "status-text-primary"
+    }
 }
+
+onMounted(() => {
+    fetchPhysicalCount()
+})
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
         <ScreenHeader t title="inventory" subtitle="operation.title" actionName="PhysicalCount.PhysicalCount" />
-        <card class="bg-[#ffffff] rounded-[10px]">
+        <card class="bg-white rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="PhysicalCount.PhysicalCount" subtitle="PhysicalCount.subtitle" :showExport="false"
@@ -147,20 +140,25 @@ const getStatusText = (status: any) => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiPhysicalCount" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" :showEdit="false" lazy >
                     <template  v-slot:["col-status"]="{ data }">
-            <div class="flex  align-items-center gap-2">
-                        <Badge :class="getStatusBadge(data.status)"
-                        style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
-                        <span :class="getStatusText(data.status)">
-                            {{ data.status }}
-                        </span>
+                        <div class="flex  align-items-center gap-2">
+                            <Badge :class="getStatusBadge(data.status)"
+                            style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
+                            <span :class="getStatusText(data.status)">
+                                <span v-if="data.status == 'Pending'">{{ $t("button.Pending") }}</span>
+                                <span v-else-if="data.status == 'Posted'">{{ $t("button.Posted") }}</span>
+                                <span v-else>{{ $t("PhysicalCount.Adjusted") }}</span>
+                            </span>
                         </div>
                     </template>
-                     <template #col-totalValues="{ data }">
-                    <span class="text-primary-500 cursor-pointer underline">{{ data.totalValues }}</span>
+                     <template  v-slot:["col-adjustmentDocumentNumber"]="{ data }">
+                         <router-link v-if="data.adjustmentId" :to="`/inventory-adjustment/view/${data.adjustmentId}`" class="text-primary-500 cursor-pointer underline">
+                            {{ data.adjustmentDocumentNumber }}
+                        </router-link>
+                        <span v-else>--</span>
                 </template>
                     </DynamicTable>
               
@@ -205,5 +203,15 @@ const getStatusText = (status: any) => {
 
 .status-text-inactive {
   color: var(--color-warning-500);
+}
+
+
+.status-primary {
+  background: var(--color-primary-500);
+  outline: 1px solid var(--color-primary-500);
+}
+
+.status-text-primary {
+  color: var(--color-primary-500);
 }
 </style>

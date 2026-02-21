@@ -946,7 +946,8 @@
     "LineItemsInfo": "أضف الأصناف إلى جردك الفعلي. الأصناف المتتبعة تتطلب تعيين سيريال أو دفعة.",
     "Descrption": "الوصف",
     "ReviewOpeningBalance": "مراجعة الجرد الفعلي",
-    "CreateOpeningBalance": "إنشاء جرد فعلي"
+    "CreateOpeningBalance": "إنشاء جرد فعلي",
+    "Adjusted": "تم التعديل"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",
