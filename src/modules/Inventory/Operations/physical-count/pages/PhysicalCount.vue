@@ -148,7 +148,9 @@ onMounted(() => {
                             <Badge :class="getStatusBadge(data.status)"
                             style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
                             <span :class="getStatusText(data.status)">
-                                {{ data.status }}
+                                <span v-if="data.status == 'Pending'">{{ $t("button.Pending") }}</span>
+                                <span v-else-if="data.status == 'Posted'">{{ $t("button.Posted") }}</span>
+                                <span v-else>{{ $t("PhysicalCount.Adjusted") }}</span>
                             </span>
                         </div>
                     </template>
