@@ -32,9 +32,9 @@ const filtersOperation = computed(() => {
             options: [
                 { label: t("operation.allTypes"), value: null },
                 { label: t("operation.reservation"), value: "Reservations" },
-                { label: t("operation.qcHold"), value: "QCHold" },
-                { label: t("operation.DamageHold"), value: "DamageHold" },
-                { label: t("operation.Investigation"), value: "Investigation" },
+                { label: t("itemHold.qcHold"), value: "QCHold" },
+                { label: t("itemHold.DamageHold"), value: "DamageHold" },
+                { label: t("itemHold.Investigation"), value: "Investigation" },
             ],
         }
     ]
