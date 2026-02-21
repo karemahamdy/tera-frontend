@@ -17,7 +17,7 @@ export const InventoryAdjustmentRoutes = [
     props: { mode: "create" },
   },
   {
-    path: "/branch-management/view/:id",
+    path: "/inventory-adjustment/view/:id",
     name: "InventoryAdjustmentView",
     component: () => import("@/modules/Inventory/Operations/inventory-adjustment/pages/InventoryAdjustmentView.vue"),
     props: { mode: "view" },

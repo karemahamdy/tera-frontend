@@ -6,7 +6,7 @@ export const OpeningBalanceService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<OpeningBalanceResponse>(
-      `/purchase-waybill`, { params }
+      `/OpeningBalances`, { params }
     );
     return resp.data;
   },

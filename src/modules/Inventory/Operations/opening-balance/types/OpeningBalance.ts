@@ -28,5 +28,6 @@ export interface Pagination {
   searchingWord?: string;
   orderBy?: string;
   orderDirection?: "asc" | "desc";
-  StatusFilter?: string;
+  WarehouseFilter?: string | null;
+  UoM?: string | null;
 }
