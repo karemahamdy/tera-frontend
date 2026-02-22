@@ -8,7 +8,7 @@ import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import LineItems from '../components/LineItems.vue';
 import Payment from '../components/Payment.vue';
 import { usePurchaseWaybill } from '../composables/usePurshace';
-import type { PurchaseWaybillDetail } from '../types/PurchaseWaybill';
+
 
 const route = useRoute();
 const router = useRouter();
@@ -22,6 +22,9 @@ const mode = computed(() => {
 });
 
 const isDisabled = computed(() => mode.value === 'view');
+
+// Children only mount when data is ready — enables watch-free prop initialization in children
+const dataReady = computed(() => !id.value || !!formData.value.supplierDetails);
 const formData = ref<any>({
   supplierDetails: null,
   paymentTerms: null,
@@ -140,41 +143,47 @@ onMounted(async () => {
     >
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
-          <div v-show="activeStep === 0">
-            <SupplierDetails
-              :supplierDetails="formData?.supplierDetails"
-              :paymentTerms="formData?.paymentTerms"
-              :disabled="isDisabled"
-              @update="updateSupplierData"
-            />
+          <!-- Loading state while API data loads (edit/view mode) -->
+          <div v-if="!dataReady" class="flex justify-center items-center py-20">
+            <ProgressSpinner />
           </div>
-          <div v-show="activeStep === 1">
-            <WarehouseDetails
-              :warehouseDetails="formData?.warehouseDetails"
-              :disabled="isDisabled"
-              @update="updateWarehouseData"
-            />
-          </div>
-          <div v-show="activeStep === 2">
-            <LineItems
-              :lineItems="formData?.lineItems"
-              :disabled="isDisabled"
-              @update="updateLineItemsData"
-              @next="nextTab"
-              @prev="previousTab"
-            />
-          </div>
-          <div v-show="activeStep === 3">
-            <Payment
-              :paymentInfo="formData?.paymentInfo"
-              :paymentTerms="formData?.paymentTerms"
-              :notes="formData?.notes"
-              :disabled="isDisabled"
-              @update="updatePaymentData"
-              @prev="previousTab"
-              @submit="submit"
-            />
-          </div>
+          <template v-else>
+            <div v-show="activeStep === 0">
+              <SupplierDetails
+                :supplierDetails="formData?.supplierDetails"
+                :paymentTerms="formData?.paymentTerms"
+                :disabled="isDisabled"
+                @update="updateSupplierData"
+              />
+            </div>
+            <div v-show="activeStep === 1">
+              <WarehouseDetails
+                :warehouseDetails="formData?.warehouseDetails"
+                :disabled="isDisabled"
+                @update="updateWarehouseData"
+              />
+            </div>
+            <div v-show="activeStep === 2">
+              <LineItems
+                :lineItems="formData?.lineItems"
+                :disabled="isDisabled"
+                @update="updateLineItemsData"
+                @next="nextTab"
+                @prev="previousTab"
+              />
+            </div>
+            <div v-show="activeStep === 3">
+              <Payment
+                :paymentInfo="formData?.paymentInfo"
+                :paymentTerms="formData?.paymentTerms"
+                :notes="formData?.notes"
+                :disabled="isDisabled"
+                @update="updatePaymentData"
+                @prev="previousTab"
+                @submit="submit"
+              />
+            </div>
+          </template>
         </template>
       </Card>
       <StepperActions
