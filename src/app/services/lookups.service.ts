@@ -113,4 +113,9 @@ export const LookupsService = {
       formData,
     );
   },
+  getAdjustmentReasonLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/AdjustmentReasonLookups`,
+    );
+  },
 };

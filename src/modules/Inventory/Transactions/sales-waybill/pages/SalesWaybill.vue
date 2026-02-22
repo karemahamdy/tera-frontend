@@ -115,10 +115,10 @@ const addPurchaseWaybill = () => {
     router.push({ name: 'SalesWaybillCreate' });
 };
 const getStatusBadge = (status: any) => {
-    return status === "Shipped" ? "status-active" : "status-inactive";
+    return status === "Posted" ? "status-active" : "status-inactive";
 }
 const getStatusText = (status: any) => {
-    return status === "Shipped" ? "status-text-active" : "status-text-inactive";
+    return status === "Posted" ? "status-text-active" : "status-text-inactive";
 }
 </script>
 

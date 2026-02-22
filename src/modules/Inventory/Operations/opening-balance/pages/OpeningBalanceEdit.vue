@@ -31,6 +31,18 @@
           <FormInput :label="$t('OpeningBalance.UnitCost')" class="mt-5" :placeholder="$t('OpeningBalance.UnitCost')" />
 
           <FormInput :label="$t('itemHold.quantity')" class="mt-5" :placeholder="$t('itemHold.quantityPlaceholder')" />
+
+          <div class="w-full mt-5 col-span-2">
+          <label class="text-gray-700 font-medium mb-2 block">
+            {{ $t("itemTransaction.notes") }}
+          </label>
+
+          <Textarea
+            :placeholder="$t('itemTransaction.notesPlaceholder')"
+            class="mt-1 w-full p-3 border rounded-lg"
+            rows="3"
+          />
+        </div>
         </div>
       </template>
     </card>

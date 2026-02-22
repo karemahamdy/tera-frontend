@@ -32,9 +32,9 @@ const filtersOperation = computed(() => {
             options: [
                 { label: t("operation.allTypes"), value: null },
                 { label: t("operation.reservation"), value: "Reservations" },
-                { label: t("operation.qcHold"), value: "QCHold" },
-                { label: t("operation.DamageHold"), value: "DamageHold" },
-                { label: t("operation.Investigation"), value: "Investigation" },
+                { label: t("itemHold.qcHold"), value: "QCHold" },
+                { label: t("itemHold.DamageHold"), value: "DamageHold" },
+                { label: t("itemHold.Investigation"), value: "Investigation" },
             ],
         }
     ]
@@ -119,7 +119,10 @@ const addItemHold = () => {
                     <template v-slot:["col-type"]="{ data }">
                         <div
                             class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
-                            <span>{{ data.type }}</span>
+                            <span v-if="data.type == 'Reservations'">{{ $t("operation.reservation") }}</span>
+                            <span v-else-if="data.type == 'QCHold'">{{ $t("operation.qcHold") }}</span>
+                            <span v-else-if="data.type == 'DamageHold'">{{ $t("itemHold.DamageHold") }}</span>
+                            <span v-else-if="data.type == 'Investigation'">{{ $t("itemHold.Investigation") }}</span>
                         </div>
                     </template>
                     <template v-slot:["col-serial"]="{ data }">

@@ -760,6 +760,7 @@
     "ShippingAddressPlaceholder": "Enter Shipping Address",
     "PurchaseOrder": "Purchase Order",
     "SalesOrderPlaceholder": "Select Sales Order",
+    "SalesOrder": "Sales Order",
     "SalesWaybillDeletedSuccessfully": "SalesWaybil lDeleted Successfully",
     "SalesWaybillUpdatedSuccessfully": "SalesWaybill Updated Successfully",
     "SalesWaybillCreatedSuccessfully": "SalesWaybill Created Successfully"
@@ -939,7 +940,7 @@
     "Line Items": "Line Items",
     "Review": "Review",
     "NewCount": "NewCount",
-    "CountNumber": "CountNumber",
+    "CountNumber": "Count Number",
     "ScheduledDate": "Scheduled Date",
     "StartNewPhysicalCount": "Start New Physical Count",
     "CompareSystemStockWithActualPhysicalCount": "Compare system stock with actual physical count",
@@ -951,7 +952,12 @@
     "LineItemsInfo": "Add items to your purchase waybill. Tracked items require serial/batch assignment.",
     "Descrption": "Descrption",
     "ReviewOpeningBalance": "Review Opening Balance",
-    "CreateOpeningBalance": "Create Opening Balance"
+    "CreateOpeningBalance": "Create Opening Balance",
+    "Adjusted": "Adjusted",
+    "PhysicalCountDeletedSuccessfully": "Physical Count Deleted Successfully",
+    "serialItemSelection": "Serial Item Selection",
+    "viewPhysicalCount": "View Physical Count",
+    "newPhysicalCount": "New Physical Count"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",
@@ -975,7 +981,11 @@
     "adjustmentNumber": "Adjustment Number",
     "createAdjustment": "Create Adjustment",
     "newAdjustment": "New Adjustment",
-    "itemToAdjustment": "Item To Adjustment"
+    "itemToAdjustment": "Item To Adjustment",
+    "DamagedItem": "Damaged Item", 
+    "ExpiredItem": "Expired Item", 
+    "CountVariance": "Count Variance",
+    "InventoryAdjustmentDeletedSuccessfully": "Inventory Adjustment Deleted Successfully"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",
@@ -1029,7 +1039,7 @@
     "action": "Action",
     "warehouseTransaction": "Warehouse Transactions",
     "deleteItemConfirm": "Are you sure you want to delete this Transaction ?",
-    "WarehouseTransactionDeletedSuccessfully": "Warehouse Transaction Deleted Successfully",
+    "WarehouseTransactionDeletedSuccessfully": "WarehouseTransaction Deleted Successfully",
     "InventoryRequestPlaceholder": "Select Request Reference",
     "description": "Manage and track all inbound, outbound, and internal stock movement",
     "newTransaction": "New Transaction",
@@ -1040,7 +1050,9 @@
     "title": "New Transaction",
     "desc": "Manage and track all inbound, outbound, and internal stock movement",
     "warehousePlaceholder": "Select  Source Warehouse",
-    "ZonePlaceholder": "Select Source Zone"
+    "ZonePlaceholder": "Select Source Zone",
+    "WarehouseTransactionCreatedSuccessfully": "WarehouseTransaction Created Successfully",
+    "WarehouseTransactionUpdatedSuccessfully": "WarehouseTransaction Updated Successfully"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",

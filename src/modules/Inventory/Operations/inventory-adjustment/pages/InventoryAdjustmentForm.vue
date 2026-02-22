@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useLookups } from "@/composables/useLookups";
+const { adjustmentReasonLookups, getAdjustmentReasonLookups } = useLookups();
 const { t } = useI18n();
 const props = defineProps<{
   mode: "view" | "create";
@@ -33,6 +35,10 @@ const data = ref([
   },
 ]);
 const selectedRows = ref([]);
+
+onMounted(() => {
+  getAdjustmentReasonLookups();
+});
 </script>
 
 <template>
@@ -54,17 +60,15 @@ const selectedRows = ref([]);
       <!-- DynamicTable component -->
       <template #content>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormDropdown
+          <FormInput
             class="w-full"
             :label="$t('InventoryAdjustment.adjustmentNumber')"
-            :options="[]"
-            optionValue="value"
             :placeholder="$t('InventoryAdjustment.adjustmentNumber')"
           />
           <FormDropdown
             class="w-full"
             :label="$t('InventoryAdjustment.reason')"
-            :options="[]"
+            :options="adjustmentReasonLookups"
             optionValue="value"
             :placeholder="$t('InventoryAdjustment.reason')"
           />
@@ -100,15 +104,20 @@ const selectedRows = ref([]);
       </template>
     </card>
     <div class="w-full flex justify-end">
-        <div class="flex gap-4 mt-5 w-1/2">
-          <BaseButton
-            label="button.cancel"
-            variant="ghost"
-            block
-            :to="{ name: 'BranchManagement' }"
-          />
-          <BaseButton type="submit" label="InventoryAdjustment.createAdjustment" variant="primary" block />
-        </div>
+      <div class="flex gap-4 mt-5 w-1/2">
+        <BaseButton
+          label="button.cancel"
+          variant="ghost"
+          block
+          :to="{ name: 'BranchManagement' }"
+        />
+        <BaseButton
+          type="submit"
+          label="InventoryAdjustment.createAdjustment"
+          variant="primary"
+          block
+        />
+      </div>
     </div>
   </div>
 </template>
