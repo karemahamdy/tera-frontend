@@ -13,7 +13,6 @@ import type { PurchaseWaybillDetail } from '../types/PurchaseWaybill';
 const route = useRoute();
 const { fetchPurchaseWaybillById } = usePurchaseWaybill();
 
-// Route params
 const id = computed(() => route.params.id as string | undefined);
 const mode = computed(() => {
   if (route.name === 'PurchaseWaybillView') return 'view';
@@ -22,8 +21,6 @@ const mode = computed(() => {
 });
 
 const isDisabled = computed(() => mode.value === 'view');
-
-// Fetched record (null when creating)
 const formData = ref<PurchaseWaybillDetail | null>(null);
 
 const activeStep = ref(0);
@@ -37,7 +34,6 @@ const previousTab = () => {
 };
 
 const submit = async () => {
-  // submit/update logic is handled by the consuming page / parent
   console.log('finish wizard');
 };
 
@@ -63,7 +59,7 @@ onMounted(async () => {
     <ScreenHeader
       title="inventory"
       subtitle="operation.transactions"
-      :actionName="mode === 'create' ? 'purchaseWaybill.addpurchaseWaybill' : ''"
+      :actionName="mode === 'create' ? 'purchaseWaybill.addpurchaseWaybill' : 'purchaseWaybill.viewpurchaseWaybill'"
     />
     <BaseStepper
       v-model="activeStep"
@@ -93,6 +89,7 @@ onMounted(async () => {
           <Payment
             v-else-if="activeStep === 3"
             :paymentInfo="formData?.paymentInfo"
+            :paymentTerms="formData?.paymentTerms"
             :notes="formData?.notes"
             :disabled="isDisabled"
             @prev="previousTab"

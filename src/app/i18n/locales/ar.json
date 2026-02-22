@@ -691,6 +691,7 @@
   "purchaseWaybill": {
     "purchaseWaybill": "إذن استلام مشتريات",
     "addpurchaseWaybill": "إذن استلام مشتريات جديد ",
+    "viewpurchaseWaybill":  "إذن استلام مشتريات ",
     "subtitle": "إدارة استلامات المشتريات الواردة",
     "addNew": "إضافة عملية شراء جديدة",
     "searchPlaceholder": "ابحث برقم الإذن أو المورد أو أمر الشراء...",
