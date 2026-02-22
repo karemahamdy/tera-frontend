@@ -756,6 +756,7 @@
     "ShippingAddressPlaceholder": "Enter Shipping Address",
     "PurchaseOrder": "Purchase Order",
     "SalesOrderPlaceholder": "Select Sales Order",
+    "SalesOrder": "Sales Order",
     "SalesWaybillDeletedSuccessfully": "SalesWaybil lDeleted Successfully",
     "SalesWaybillUpdatedSuccessfully": "SalesWaybill Updated Successfully",
     "SalesWaybillCreatedSuccessfully": "SalesWaybill Created Successfully"

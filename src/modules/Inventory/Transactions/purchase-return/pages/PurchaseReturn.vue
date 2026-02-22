@@ -127,10 +127,10 @@ const addPurchaseReturn = () => {
     router.push({ name: 'PurchaseReturnCreate' });
 };
 const getStatusBadge = (status: any) => {
-    return status === "Completed" ? "status-active" : "status-inactive";
+    return status === "Posted" ? "status-active" : "status-inactive";
 }
 const getStatusText = (status: any) => {
-    return status === "Completed" ? "status-text-active" : "status-text-inactive";
+    return status === "Posted" ? "status-text-active" : "status-text-inactive";
 }
 </script>
 

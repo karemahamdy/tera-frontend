@@ -29,6 +29,6 @@ export interface Pagination {
   orderBy?: string;
   orderDirection?: "asc" | "desc";
   TransactionStatus?: string;
-  TransactionDirection?: string;
+  TransactionType?: string;
   WarehouseIds?: string;
 }
