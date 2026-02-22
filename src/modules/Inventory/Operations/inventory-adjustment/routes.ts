@@ -5,7 +5,7 @@ export const InventoryAdjustmentRoutes = [
     name: "InventoryAdjustment",
     meta: {
       hide: true,
-      localizedTitle: "Purchase Waybill",
+      localizedTitle: "Inventory Adjustment",
       permission: null
     },
   },

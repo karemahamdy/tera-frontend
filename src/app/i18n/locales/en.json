@@ -936,7 +936,7 @@
     "Line Items": "Line Items",
     "Review": "Review",
     "NewCount": "NewCount",
-    "CountNumber": "CountNumber",
+    "CountNumber": "Count Number",
     "ScheduledDate": "Scheduled Date",
     "StartNewPhysicalCount": "Start New Physical Count",
     "CompareSystemStockWithActualPhysicalCount": "Compare system stock with actual physical count",
@@ -949,7 +949,11 @@
     "Descrption": "Descrption",
     "ReviewOpeningBalance": "Review Opening Balance",
     "CreateOpeningBalance": "Create Opening Balance",
-    "Adjusted": "Adjusted"
+    "Adjusted": "Adjusted",
+    "PhysicalCountDeletedSuccessfully": "Physical Count Deleted Successfully",
+    "serialItemSelection": "Serial Item Selection",
+    "viewPhysicalCount": "View Physical Count",
+    "newPhysicalCount": "New Physical Count"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",
@@ -976,7 +980,8 @@
     "itemToAdjustment": "Item To Adjustment",
     "DamagedItem": "Damaged Item", 
     "ExpiredItem": "Expired Item", 
-    "CountVariance": "Count Variance"
+    "CountVariance": "Count Variance",
+    "InventoryAdjustmentDeletedSuccessfully": "Inventory Adjustment Deleted Successfully"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",

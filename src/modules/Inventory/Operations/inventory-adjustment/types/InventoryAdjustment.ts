@@ -31,3 +31,35 @@ export interface Pagination {
   StatusFilter?: string;
   ReasonFilter?: string;
 }
+
+
+
+export interface AdjustmentLine {
+  id: string;
+  lineNumber: number;
+  itemId: string;
+  itemName: string;
+  itemCode: string;
+  unitName: string;
+  quantity: number;
+  quantityBase: number;
+  warehouseName: string;
+  zoneName: string | null;
+  locationCode: string | null;
+  serials: string[]; // assuming serials are strings
+}
+
+export type AdjustmentStatus = "Pending" | "Approved" | "Rejected";
+export type AdjustmentDirection = "In" | "Out";
+
+export interface InventoryAdjustmentById {
+  id: string;
+  documentNumber: string;
+  transactionDate: string; // or Date if you parse it
+  warehouseName: string;
+  zoneName: string | null;
+  adjustmentReason: string; // can also be union if you have fixed reasons
+  status: AdjustmentStatus;
+  direction: AdjustmentDirection;
+  lines: AdjustmentLine[];
+}

@@ -5,7 +5,7 @@ export const PhysicalCountRoutes = [
     name: "PhysicalCount",
     meta: {
       hide: true,
-      localizedTitle: "Purchase Waybill",
+      localizedTitle: "Physical Count",
       permission: null
     },
   },

@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, InventoryAdjustmentResponse  } from "../types/InventoryAdjustment";
+import type { Pagination, InventoryAdjustmentResponse, InventoryAdjustmentById  } from "../types/InventoryAdjustment";
 
 
 export const InventoryAdjustmentService = {
@@ -11,8 +11,8 @@ export const InventoryAdjustmentService = {
     return resp.data;
   },
 
-  async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/purchase-waybill/${id}`);
+  async getById(id: string): Promise<InventoryAdjustmentById> {
+    const data = await axiosWrapper.get<{ data: InventoryAdjustmentById }>(`/physicalcount/adjustment/${id}`);
     return data.data;
   },
 
@@ -26,7 +26,7 @@ export const InventoryAdjustmentService = {
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/purchase-waybill/${id}`);
+    await axiosWrapper.delete(`/physicalcount/adjustment/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {

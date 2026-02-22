@@ -948,7 +948,11 @@
     "Descrption": "الوصف",
     "ReviewOpeningBalance": "مراجعة الجرد الفعلي",
     "CreateOpeningBalance": "إنشاء جرد فعلي",
-    "Adjusted": "تم التعديل"
+    "Adjusted": "تم التعديل",
+    "PhysicalCountDeletedSuccessfully": "تم حذف الجرد بنجاح",
+    "serialItemSelection": "اختيار العنصر التسلسلي",
+    "viewPhysicalCount": "عرض الجرد الفعلي",
+    "newPhysicalCount": "جرد فعلي جديد"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",
@@ -975,7 +979,8 @@
     "itemToAdjustment": "اصناف التسوية",
     "DamagedItem": "عنصر تالف",
     "ExpiredItem": "عنصر منتهي الصلاحية",
-    "CountVariance": "فرق في الجرد"
+    "CountVariance": "فرق في الجرد",
+    "InventoryAdjustmentDeletedSuccessfully": "تم حذف التسوية بنجاح"
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",
