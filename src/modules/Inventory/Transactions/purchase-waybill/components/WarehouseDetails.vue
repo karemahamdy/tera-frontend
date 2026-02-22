@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref, onMounted, watch } from "vue";
+import { reactive, ref, onMounted, watch, computed } from "vue";
 import { useI18n } from "vue-i18n"
 import { useInventoryLookups } from "@/composables/useInventoryLookups"
 import type { WarehouseDetailsData } from "../types/PurchaseWaybill";
@@ -56,6 +56,16 @@ watch(() => ReceivingWarehouse.value, async (newVal) => {
   }
 })
 
+const isProf = computed(()=> {
+  let warehouseId = props.warehouseDetails?.warehouseId ?? "";
+  const selectedWarehouse = WarehouseLookups.value.find(w => w.value === warehouseId)
+  if (selectedWarehouse?.type === 'Professional'){
+    return true
+  } else {
+    return false
+  }
+})
+
 onMounted(() => {
   getWarehouseLookups()
 })
@@ -68,6 +78,7 @@ onMounted(() => {
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
     <FormDropdown
+      v-if="!disabled"
       :label="t('purchaseWaybill.ReceivingWarehouse')"
       v-model="ReceivingWarehouse"
       :error="errors.ReceivingWarehouse"
@@ -76,9 +87,15 @@ onMounted(() => {
       :options="WarehouseLookups"
       :disabled="disabled"
     />
+    <FormInput
+      v-else
+      :label="t('purchaseWaybill.ReceivingWarehouse')"
+      :modelValue="props.warehouseDetails?.warehouseName ?? ''"
+      disabled
+    />
 
     <FormDropdown
-      v-if="showZone"
+      v-if="isProf && !disabled"
       :label="t('purchaseWaybill.zone')"
       v-model="zone"
       :error="errors.zone"
@@ -86,6 +103,12 @@ onMounted(() => {
       :invalid="!!errors.zone"
       :options="ZonesLookups"
       :disabled="disabled"
+    />
+    <FormInput
+      v-else-if="isProf && disabled"
+      :label="t('purchaseWaybill.zone')"
+      :modelValue="props.warehouseDetails?.zoneName ?? '—'"
+      disabled
     />
   </div>
 </template>

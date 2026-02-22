@@ -21,23 +21,20 @@ const emit = defineEmits(['next', 'prev']);
 const items = ref<any[]>([]);
 const { getItemsLookups, itemsLookups, getUnitsLookups, UnitsLookups } = useInventoryLookups();
 
-// Store unit options per row (keyed by row id), since DynamicTable may strip extra props
 const unitOptionsMap = ref<Record<number | string, any[]>>({});
 
-// Map API line items to table-friendly shape
 function mapApiItem(item: LineItem) {
-  // Store unit options in the separate map
   unitOptionsMap.value[item.id] = [{ label: item.unitName, value: item.unitName, unitId: item.unitId, conversionFactor: 1 }];
 
   return {
     id: item.id,
     lineNumber: item.lineNumber,
     itemId: item.itemId,
-    code: item.itemId,       // no code field in API — use itemId as fallback
+    code: item.itemId,
     name: item.itemName,
     quantity: item.quantity,
     uom: item.unitName,
-    barcode: '', // LineItem doesn't have barcode in current API response, using empty
+    barcode: '',
     itemType: '',
     warehouse: item.warehouseName,
     warehouseId: item.warehouseId,
@@ -46,13 +43,18 @@ function mapApiItem(item: LineItem) {
     unitPrice: String(item.unitPrice),
     tax: String(item.unitTaxPercent),
     total: item.lineTotal,
-    serials: item.serials ?? [],
+    serials: (item.serials ?? []).map((s: any) => ({
+      id: s.id,
+      serial: s.mainSerial,
+      qty: s.quantity,
+      batch: s.batchNumber,
+      expire: s.expireDate
+    })),
     isBlocked: item.isBlocked,
-    tracked: item.serials && item.serials.length > 0,
+    tracked: (item.serials && item.serials.length > 0) || item.quantity > 0,
   };
 }
 
-// Populate table from props
 watchEffect(() => {
   if (props.lineItems && props.lineItems.length > 0) {
     items.value = props.lineItems.map(mapApiItem);
@@ -60,26 +62,24 @@ watchEffect(() => {
 });
 
 onMounted(async () => {
-    await getUnitsLookups();
+  await getUnitsLookups();
 });
 
-// Update unit options map when global units are loaded
 watchEffect(() => {
-    if (UnitsLookups.value.length > 0 && items.value.length > 0) {
-        items.value.forEach(item => {
-            if (!unitOptionsMap.value[item.id] || unitOptionsMap.value[item.id].length <= 1) {
-                unitOptionsMap.value[item.id] = UnitsLookups.value.map(u => ({
-                    label: u.label, // These already have name from useInventoryLookups
-                    value: u.value,
-                    unitId: u.type,
-                    conversionFactor: 1
-                }));
-            }
-        });
-    }
+  if (UnitsLookups.value.length > 0 && items.value.length > 0) {
+    items.value.forEach(item => {
+      if (!unitOptionsMap.value[item.id] || unitOptionsMap.value[item.id].length <= 1) {
+        unitOptionsMap.value[item.id] = UnitsLookups.value.map(u => ({
+          label: u.label, // These already have name from useInventoryLookups
+          value: u.value,
+          unitId: u.type,
+          conversionFactor: 1
+        }));
+      }
+    });
+  }
 });
 
-// --- Computed ---
 const subtotal = computed(() => items.value.reduce((sum: number, item: any) => sum + item.total, 0));
 
 const columns = computed(() => [
@@ -95,7 +95,6 @@ const columns = computed(() => [
   ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
-// --- Item Selection Dialog ---
 const showItemDialog = ref(false);
 const availableItems = computed(() => itemsLookups.value.map(item => ({
   ...item,
@@ -109,13 +108,11 @@ const openItemDialog = async () => {
 };
 
 const handleSelectItem = (selectedItem: any) => {
-  // Look up the original item from API data to ensure units array is available
   const originalItem = itemsLookups.value.find(i => i.id === selectedItem.id);
   const units = originalItem?.units || selectedItem.units || [];
   const baseUnit = units.find((u: any) => u.isBaseUnit);
   const rowId = Date.now();
 
-  // Store unit options in separate map (DynamicTable strips extra row props)
   unitOptionsMap.value[rowId] = units.map((u: any) => ({
     label: u.unitCode ? `${u.unitName} (${u.unitCode})` : u.unitName,
     value: u.unitName,
@@ -145,7 +142,6 @@ const handleSelectItem = (selectedItem: any) => {
   });
 };
 
-// --- Quantity/Serial Dialog ---
 const showQtyDialog = ref(false);
 const currentItem = ref<any>(null);
 
@@ -169,18 +165,17 @@ const removeItem = (data: any) => {
   }
 };
 
-// --- Watchers for calculations ---
 watchEffect(() => {
   items.value.forEach(item => {
     const qty = Number(item.quantity) || 0;
     const price = Number(item.unitPrice) || 0;
     const taxPercent = Number(item.tax) || 0;
-    
+
     const subtotal = qty * price;
     const taxAmount = (subtotal * taxPercent) / 100;
     item.total = subtotal + taxAmount;
   });
-}, { deep: true }); // Watch items deeply to react to quantity changes inside the array
+}, { deep: true }); 
 </script>
 
 <template>
@@ -193,17 +188,15 @@ watchEffect(() => {
           {{ t('itemsList.description') }}
         </p>
       </div>
-      <BaseButton
-        v-if="!disabled"
-        :label="t('itemsList.addItem')"
+      <BaseButton v-if="!disabled" :label="t('itemsList.addItem')"
         class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-        @click="openItemDialog"
-      />
+        @click="openItemDialog" />
     </div>
 
     <!-- Table -->
     <div class="overflow-x-auto">
-      <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false" :showDelete="false">
+      <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
+        :showDelete="false">
         <template #col-code="{ data }">
           <div class="flex items-center gap-2 rounded">
             <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
@@ -229,12 +222,8 @@ watchEffect(() => {
         <template #col-quantity="{ data }">
           <div class="flex items-center gap-2">
             <template v-if="data.tracked">
-              <BaseButton
-                v-if="!disabled"
-                :label="t('itemsList.add')"
-                variant="outline-primary"
-                @click="openQtyDialog(data)"
-              />
+              <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
+                @click="openQtyDialog(data)" />
               <span class="text-gray-500">({{ data.quantity }})</span>
             </template>
             <template v-else>
@@ -244,12 +233,10 @@ watchEffect(() => {
         </template>
 
         <template #col-uom="{ data }">
-          <span v-if="disabled || !unitOptionsMap[data.id] || unitOptionsMap[data.id].length <= 1" class="text-gray-700">{{ data.uom }}</span>
-          <select
-            v-else
-            v-model="data.uom"
-            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
-          >
+          <span v-if="disabled || !unitOptionsMap[data.id] || unitOptionsMap[data.id].length <= 1"
+            class="text-gray-700">{{ data.uom }}</span>
+          <select v-else v-model="data.uom"
+            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none">
             <option v-for="opt in unitOptionsMap[data.id]" :key="opt.unitId" :value="opt.value">
               {{ opt.label }}
             </option>
@@ -258,11 +245,8 @@ watchEffect(() => {
 
         <template #col-warehouse="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.warehouse }}</span>
-          <select
-            v-else
-            v-model="data.warehouse"
-            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
-          >
+          <select v-else v-model="data.warehouse"
+            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none">
             <option value="">{{ t('items.warehouse') }}</option>
             <option value="WH-011">WH-011</option>
             <option value="WH-012">WH-012</option>
@@ -271,11 +255,8 @@ watchEffect(() => {
 
         <template #col-zone="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.zone || '—' }}</span>
-          <select
-            v-else
-            v-model="data.zone"
-            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
-          >
+          <select v-else v-model="data.zone"
+            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none">
             <option value="">{{ t('items.zone') }}</option>
             <option value="Zone A">Zone A</option>
             <option value="Zone B">Zone B</option>
@@ -316,13 +297,8 @@ watchEffect(() => {
 
     <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
 
-    <QuantitySerialDialog
-      v-if="currentItem"
-      v-model:visible="showQtyDialog"
-      :item="currentItem"
-      :initialSerials="currentItem.serials"
-      @save="handleSaveSerials"
-    />
+    <QuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
+      :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
   </div>
 </template>
 

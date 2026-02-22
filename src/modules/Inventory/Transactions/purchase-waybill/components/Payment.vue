@@ -2,17 +2,19 @@
 import { ref, reactive, watchEffect, onMounted } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
-import type { PaymentInfoData, NotesData } from '../types/PurchaseWaybill';
+import type { PaymentInfoData, NotesData, PaymentTermsData } from '../types/PurchaseWaybill';
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const {PaymentTerms, IncotermsLookups, getIncotermsLookups, getPaymentTermsLookups } = useInventoryLookups();
 
 const props = withDefaults(defineProps<{
   paymentInfo?: PaymentInfoData | null;
+  paymentTerms?: PaymentTermsData | null;
   notes?: NotesData | null;
   disabled?: boolean;
 }>(), {
   paymentInfo: null,
+  paymentTerms: null,
   notes: null,
   disabled: false,
 });
@@ -126,31 +128,52 @@ const importOptions = [
         <div class="grid grid-cols-2 gap-4">
           <div class="md:col-span-2">
             <FormDropdown
+              v-if="!disabled"
               :label="t('payment.paymentTerms')"
               v-model="paymentTerms"
               :options="PaymentTerms"
               :placeholder="t('payment.selectTerms')"
               :disabled="disabled"
             />
+            <FormInput
+              v-else
+              :label="t('payment.paymentTerms')"
+              :modelValue="props.paymentInfo?.paymentTermName ?? ''"
+              disabled
+            />
           </div>
 
           <div class="md:col-span-2">
             <FormDropdown
+              v-if="!disabled"
               :label="t('payment.importType')"
               v-model="importType"
               :options="importOptions"
               :placeholder="t('payment.selectType')"
               :disabled="disabled"
             />
+            <FormInput
+              v-else
+              :label="t('payment.importType')"
+              :modelValue="props.paymentInfo?.purchaseType ?? ''"
+              disabled
+            />
           </div>
 
           <div class="md:col-span-2">
             <FormDropdown
+              v-if="!disabled"
               :label="t('payment.incoterms')"
               v-model="incoterms"
               :options="IncotermsLookups"
               :placeholder="t('payment.selectIncoterms')"
               :disabled="disabled"
+            />
+            <FormInput
+              v-else
+              :label="t('payment.incoterms')"
+              :modelValue="props.paymentInfo?.incoterm ?? '—'"
+              disabled
             />
           </div>
         </div>
@@ -162,6 +185,9 @@ const importOptions = [
           :taxTotal="taxTotal"
           :grandTotal="grandTotal"
           v-model:globalDiscount="globalDiscount"
+          :currency="props.paymentTerms?.currencyCode"
+          :exchangeRate="props.paymentTerms?.exchangeRate"
+          :baseCurrency="props.paymentTerms?.baseCurrencyCode"
         />
       </div>
     </div>
