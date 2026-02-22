@@ -6,7 +6,7 @@ export const OpeningBalanceService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<OpeningBalanceResponse>(
-      `/purchase-waybill`, { params }
+      `/OpeningBalances`, { params }
     );
     return resp.data;
   },
@@ -26,7 +26,7 @@ export const OpeningBalanceService = {
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/purchase-waybill/${id}`);
+    await axiosWrapper.delete(`/OpeningBalances/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {

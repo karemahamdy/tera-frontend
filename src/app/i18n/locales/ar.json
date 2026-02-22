@@ -764,6 +764,7 @@
     "ShippingAddressPlaceholder": "أدخل عنوان الشحن",
     "PurchaseOrder": "أمر الشراء",
     "SalesOrderPlaceholder": "اختر أمر الشراء",
+    "SalesOrder": " أمر الشراء",
     "SalesWaybillDeletedSuccessfully": "تم حذف العنصر بنجاح",
     "SalesWaybillCreatedSuccessfully": "تم انشاء العنصر بمجاح",
     "SalesWaybillUpdatedSuccessfully": "تم التحديث بنجاح"
@@ -950,7 +951,12 @@
     "LineItemsInfo": "أضف الأصناف إلى جردك الفعلي. الأصناف المتتبعة تتطلب تعيين سيريال أو دفعة.",
     "Descrption": "الوصف",
     "ReviewOpeningBalance": "مراجعة الجرد الفعلي",
-    "CreateOpeningBalance": "إنشاء جرد فعلي"
+    "CreateOpeningBalance": "إنشاء جرد فعلي",
+    "Adjusted": "تم التعديل",
+    "PhysicalCountDeletedSuccessfully": "تم حذف الجرد بنجاح",
+    "serialItemSelection": "اختيار العنصر التسلسلي",
+    "viewPhysicalCount": "عرض الجرد الفعلي",
+    "newPhysicalCount": "جرد فعلي جديد"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",
@@ -974,7 +980,11 @@
     "adjustmentNumber": "رقم التسوية",
     "createAdjustment": "إنشاء تسوية",
     "newAdjustment": "تسوية جديدة",
-    "itemToAdjustment": "اصناف التسوية"
+    "itemToAdjustment": "اصناف التسوية",
+    "DamagedItem": "عنصر تالف",
+    "ExpiredItem": "عنصر منتهي الصلاحية",
+    "CountVariance": "فرق في الجرد",
+    "InventoryAdjustmentDeletedSuccessfully": "تم حذف التسوية بنجاح"
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",
@@ -1042,7 +1052,9 @@
     "costCenterPlaceholder": "اختر مركز التكلفة",
     "warehousePlaceholder": "اختر المخزن",
     "Zone": "المنطقة",
-    "ZonePlaceholder": "اختر المنطقة"
+    "ZonePlaceholder": "اختر المنطقة",
+    "WarehouseTransactionUpdatedSuccessfully": "تم التعديل بنجاح",
+    "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح"
   },
   "itemTransaction": {
     "createNewTransaction": "إنشاء معاملة جديدة",

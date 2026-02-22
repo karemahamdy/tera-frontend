@@ -31,6 +31,19 @@ export function useLookups() {
   const accountLookups = ref<LookupsOption[]>([]);
   const warehouseLookup = ref<LookupsOption[]>([]);
   const itemGroupLookups = ref<LookupsOption[]>([]);
+  const adjustmentReasonLookups = ref<LookupsOption[]>([]);
+
+  const getAdjustmentReasonLookups = async () => {
+    try {
+      const res = await LookupsService.getAdjustmentReasonLookups();
+      adjustmentReasonLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
 
   const getGroupLookups = async (isActive: boolean = true) => {
     try {
@@ -309,7 +322,7 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
- const getReasonLookups = async () => {
+  const getReasonLookups = async () => {
     try {
       const res = await LookupsService.getReasonLookups();
       reasonsLookups.value = res.data.map((group) => ({
@@ -347,6 +360,8 @@ export function useLookups() {
     accountLookups,
     warehouseLookup,
     itemGroupLookups,
+    adjustmentReasonLookups,
+    getAdjustmentReasonLookups,
     getIPLookups,
     getReasonLookups,
     getGroupLookups,

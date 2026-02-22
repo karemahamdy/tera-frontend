@@ -90,27 +90,32 @@ getCostcenterLookups(isActive: boolean = true) {
   );
 },
 
-getAccountsLookups(isActive: boolean = true) {
-  return axiosWrapper.get<{ data: Lookups[] }>(
-    `/Lookups/ChartOfAccountLookups?isActive=${isActive}`,
-  );
-},
-getItemGroupLookups() {
-  return axiosWrapper.get<{ data: Lookups[] }>(
-    `/Lookups/ItemClassificationLookups/Category`,
-  );
-},
-getReasonLookups() {
-  return axiosWrapper.get<{ data: reasonsLookups[] }>(
-    `/InventoryLookups/return-reasons`,
-  );
-},
-parseSerials(file: File) {
-  const formData = new FormData();
-  formData.append("file", file);
-  return axiosWrapper.post<ApiResponse<any[]>>(
-    `/InventoryLookups/parse-serials`,
-    formData,
-  );
-},
+  getAccountsLookups(isActive: boolean = true) {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/ChartOfAccountLookups?isActive=${isActive}`,
+    );
+  },
+  getItemGroupLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/ItemClassificationLookups/Category`,
+    );
+  },
+  getReasonLookups() {
+    return axiosWrapper.get<{ data: reasonsLookups[] }>(
+      `/InventoryLookups/return-reasons`,
+    );
+  },
+  parseSerials(file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return axiosWrapper.post<ApiResponse<any[]>>(
+      `/InventoryLookups/parse-serials`,
+      formData,
+    );
+  },
+  getAdjustmentReasonLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/AdjustmentReasonLookups`,
+    );
+  },
 };

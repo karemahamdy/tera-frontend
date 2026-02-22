@@ -35,11 +35,11 @@ const filtersOperation = computed(() => {
         {
             placeholder: "warehouseTransaction.allDirections",
             value: null,
-            field: "TransactionDirection",
+            field: "TransactionType",
             options: [
-                { label: t("inventoryRequest.inbound"), value: "In" },
-                { label: t("inventoryRequest.outbound"), value: "Out" },
-                { label: t("inventoryRequest.transfer"), value: "Transfer" },
+                { label: t("inventoryRequest.inbound"), value: "Inbound" },
+                { label: t("inventoryRequest.outbound"), value: "Outbound" },
+                { label: t("inventoryRequest.transfer"), value: "Transfare" },
             ],
         },
         {

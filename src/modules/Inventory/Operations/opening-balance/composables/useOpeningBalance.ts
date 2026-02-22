@@ -13,10 +13,11 @@ const pageSize = ref(10);
 const totalCount = ref(0);
 const totalPages = ref(1);
 
-const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref('');
-const orderDirection = ref<'asc' | 'desc'>('desc');
+const searchTerm = ref("");
+const orderBy = ref("");
+const WarehouseFilter = ref<string | null>(null);
+const UoM = ref<string | null>(null);
+const orderDirection = ref<"asc" | "desc">("desc");
 
 export function useOpeningBalance() {
   const { t } = useI18n();
@@ -30,7 +31,8 @@ export function useOpeningBalance() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        WarehouseFilter: WarehouseFilter.value,
+        UoM: UoM.value,
       });
       const payload = response && response.data ? response.data : response;
       apiOpeningBalance.value = payload.items ?? [];
@@ -62,7 +64,9 @@ export function useOpeningBalance() {
     loading.value = true;
     try {
       const response = await OpeningBalanceService.create(payload);
-      toastService.success(t("OpeningBalance.OpeningBalanceCreatedSuccessfully"));
+      toastService.success(
+        t("OpeningBalance.OpeningBalanceCreatedSuccessfully"),
+      );
       await fetchOpeningBalance(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -77,7 +81,9 @@ export function useOpeningBalance() {
     loading.value = true;
     try {
       const response = await OpeningBalanceService.update(id, payload);
-      toastService.success(t("OpeningBalance.OpeningBalanceUpdatedSuccessfully"));
+      toastService.success(
+        t("OpeningBalance.OpeningBalanceUpdatedSuccessfully"),
+      );
       await fetchOpeningBalance(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -92,8 +98,14 @@ export function useOpeningBalance() {
     loading.value = true;
     try {
       await OpeningBalanceService.delete(id);
-      toastService.success((t("OpeningBalance.OpeningBalanceDeletedSuccessfully")));
-      apiOpeningBalance.value = apiOpeningBalance.value.filter((b) => b.id !== id);
+      toastService.success(
+        t("OpeningBalance.OpeningBalanceDeletedSuccessfully"),
+      );
+      if (apiOpeningBalance.value.length === 1 && pageIndex.value > 1) {
+        await fetchOpeningBalance(pageIndex.value - 1);
+      } else {
+        await fetchOpeningBalance(pageIndex.value);
+      }
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -106,7 +118,9 @@ export function useOpeningBalance() {
     loading.value = true;
     try {
       await OpeningBalanceService.toggleActive(id, isActive);
-      toastService.success((t("OpeningBalance.OpeningBalanceUpdatedSuccessfully")));
+      toastService.success(
+        t("OpeningBalance.OpeningBalanceUpdatedSuccessfully"),
+      );
       await fetchOpeningBalance(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -122,8 +136,10 @@ export function useOpeningBalance() {
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
-      StatusFilter.value = value;
+    if (field === "WarehouseFilter") {
+      WarehouseFilter.value = value;
+    } else if (field === "UoM") {
+      UoM.value = value;
     }
     fetchOpeningBalance(1);
   };
@@ -133,11 +149,11 @@ export function useOpeningBalance() {
     fetchOpeningBalance(1);
   };
 
-  const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+  const onSort = (orderByField: string, direction: "asc" | "desc") => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
     fetchOpeningBalance(1);
-  }
+  };
 
   return {
     loading,
@@ -156,6 +172,6 @@ export function useOpeningBalance() {
     setPage: (p: number) => fetchOpeningBalance(p),
     onSearch,
     onFilterChange,
-    onSort
+    onSort,
   };
 }
