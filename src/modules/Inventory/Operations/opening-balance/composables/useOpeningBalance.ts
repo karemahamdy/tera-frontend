@@ -101,9 +101,11 @@ export function useOpeningBalance() {
       toastService.success(
         t("OpeningBalance.OpeningBalanceDeletedSuccessfully"),
       );
-      apiOpeningBalance.value = apiOpeningBalance.value.filter(
-        (b) => b.id !== id,
-      );
+      if (apiOpeningBalance.value.length === 1 && pageIndex.value > 1) {
+        await fetchOpeningBalance(pageIndex.value - 1);
+      } else {
+        await fetchOpeningBalance(pageIndex.value);
+      }
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -136,8 +138,7 @@ export function useOpeningBalance() {
     const value = filter.value;
     if (field === "WarehouseFilter") {
       WarehouseFilter.value = value;
-    }
-    else if (field === "UoM") {
+    } else if (field === "UoM") {
       UoM.value = value;
     }
     fetchOpeningBalance(1);
