@@ -15,7 +15,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const TransactionStatus = ref<string | null>(null);
-const TransactionDirection = ref<string[]>([]);
+const TransactionType = ref<string[]>([]);
 const WarehouseIds = ref<string[]>([]);
 const orderBy = ref<string | null>(null);
 
@@ -45,8 +45,8 @@ const fetchWarehouseTransaction = async (page = 1) => {
     if (TransactionStatus.value)
       params.TransactionStatus = TransactionStatus.value;
 
-    if (TransactionDirection.value)
-      params.TransactionDirection = TransactionDirection.value;
+    if (TransactionType.value)
+      params.TransactionType = TransactionType.value;
 
     if (WarehouseIds.value)
       params.WarehouseIds = WarehouseIds.value;
@@ -133,8 +133,8 @@ const fetchWarehouseTransaction = async (page = 1) => {
     if (field === "TransactionStatus") {
       TransactionStatus.value = value;
     }
-     if (field === "TransactionDirection") {
-      TransactionDirection.value = Array.isArray(value) ? value : [value]; 
+     if (field === "TransactionType") {
+      TransactionType.value = Array.isArray(value) ? value : [value]; 
     }
      if (field === "Warehouse") {
     WarehouseIds.value = Array.isArray(value) ? value : [value];    

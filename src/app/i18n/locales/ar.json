@@ -760,6 +760,7 @@
     "ShippingAddressPlaceholder": "أدخل عنوان الشحن",
     "PurchaseOrder": "أمر الشراء",
     "SalesOrderPlaceholder": "اختر أمر الشراء",
+    "SalesOrder": " أمر الشراء",
     "SalesWaybillDeletedSuccessfully": "تم حذف العنصر بنجاح",
     "SalesWaybillCreatedSuccessfully": "تم انشاء العنصر بمجاح",
     "SalesWaybillUpdatedSuccessfully": "تم التحديث بنجاح"

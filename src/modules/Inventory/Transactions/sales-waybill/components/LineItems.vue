@@ -61,6 +61,7 @@ const columns = computed(() => [
     { field: 'uom', header: t('itemsList.uom') },
     { field: 'warehouse', header: t('itemsList.warehouse') },
     { field: 'zone', header: t('itemsList.zone') },
+    { field: 'balance', header: t('itemList.balance') },
     { field: 'unitPrice', header: t('itemsList.unitPrice') },
     { field: 'tax', header: t('itemsList.tax') },
     { field: 'total', header: t('itemsList.total') },
