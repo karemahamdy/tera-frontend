@@ -1,24 +1,31 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { PhysicalCount } from "../types/PhysicalCount";
+import type { PhysicalCount, PhysicalCountById, PhysicalCountSerial } from "../types/PhysicalCount";
 import { PhysicalCountService } from "../services/PhysicalCountservice";
-
-const loading = ref(false);
-const apiPhysicalCount = ref<PhysicalCount[]>([]);
-const tableData = ref<any[]>([]);
-
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
-
-const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref('');
-const orderDirection = ref<'asc' | 'desc'>('desc');
+import { useRoute } from "vue-router";
+import router from "@/app/router";
 
 export function usePhysicalCount() {
+  const loading = ref(false);
+  const apiPhysicalCount = ref<PhysicalCount[]>([]);
+  const PhysicalCountSerials = ref<PhysicalCountSerial[]>([]);
+  const physicalCount = ref<PhysicalCountById | null>(null);
+
+  const tableData = ref<any[]>([]);
+
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
+
+  const searchTerm = ref("");
+  const orderBy = ref("");
+  const StatusFilter = ref("");
+  const orderDirection = ref<"asc" | "desc">("desc");
+
+  const route = useRoute();
+  const id = route.params.id ? String(route.params.id) : null;
   const { t } = useI18n();
 
   const fetchPhysicalCount = async (page = 1) => {
@@ -30,7 +37,7 @@ export function usePhysicalCount() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        StatusFilter: StatusFilter.value,
       });
       const payload = response && response.data ? response.data : response;
       apiPhysicalCount.value = payload.items ?? [];
@@ -45,16 +52,31 @@ export function usePhysicalCount() {
     }
   };
 
-  const fetchPhysicalCountById = async (id: string) => {
-    loading.value = true;
-    try {
-      const resp = await PhysicalCountService.getById(id);
-      return resp;
-    } catch (err: any) {
-      toastService.error(err);
-      return null;
-    } finally {
-      loading.value = false;
+  const fetchPhysicalCountById = async () => {
+    if (id) {
+      loading.value = true;
+      try {
+        const resp = await PhysicalCountService.getById(id);
+        physicalCount.value = resp;
+      } catch (err: any) {
+        toastService.error(err);
+      } finally {
+        loading.value = false;
+      }
+    }
+  };
+
+  const fetchPhysicalCountSerials = async (headerId: string, lineId?: string ) => {
+    if (id) {
+      loading.value = true;
+      try {
+        const resp = await PhysicalCountService.getPhysicalCountSerials(headerId, lineId );
+        PhysicalCountSerials.value = resp;
+      } catch (err: any) {
+        toastService.error(err);
+      } finally {
+        loading.value = false;
+      }
     }
   };
 
@@ -92,14 +114,16 @@ export function usePhysicalCount() {
     loading.value = true;
     try {
       await PhysicalCountService.delete(id);
-      if(getList) {
-        if(apiPhysicalCount.value.length === 1 && pageIndex.value > 1) {
-          await fetchPhysicalCount(pageIndex.value - 1)
+      toastService.success(t("PhysicalCount.PhysicalCountDeletedSuccessfully"));
+      if (getList) {
+        if (apiPhysicalCount.value.length === 1 && pageIndex.value > 1) {
+          await fetchPhysicalCount(pageIndex.value - 1);
         } else {
-          await fetchPhysicalCount(pageIndex.value)
+          await fetchPhysicalCount(pageIndex.value);
         }
+      } else {
+        router.replace({ name: "PhysicalCount" });
       }
-      toastService.success((t("PhysicalCount.PhysicalCountDeletedSuccessfully")));
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -112,7 +136,7 @@ export function usePhysicalCount() {
     loading.value = true;
     try {
       await PhysicalCountService.toggleActive(id, isActive);
-      toastService.success((t("PhysicalCount.PhysicalCountUpdatedSuccessfully")));
+      toastService.success(t("PhysicalCount.PhysicalCountUpdatedSuccessfully"));
       await fetchPhysicalCount(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -139,21 +163,24 @@ export function usePhysicalCount() {
     fetchPhysicalCount(1);
   };
 
-  const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+  const onSort = (orderByField: string, direction: "asc" | "desc") => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
     fetchPhysicalCount(1);
-  }
+  };
 
   return {
     loading,
     apiPhysicalCount,
     tableData,
+    physicalCount,
+    PhysicalCountSerials,
     fetchPhysicalCount,
     fetchPhysicalCountById,
     createPhysicalCount,
     updatePhysicalCount,
     deletePhysicalCount,
+    fetchPhysicalCountSerials,
     toggleActive,
     pageIndex,
     pageSize,
@@ -162,6 +189,6 @@ export function usePhysicalCount() {
     setPage: (p: number) => fetchPhysicalCount(p),
     onSearch,
     onFilterChange,
-    onSort
+    onSort,
   };
 }

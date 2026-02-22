@@ -948,7 +948,10 @@
     "ReviewOpeningBalance": "مراجعة الجرد الفعلي",
     "CreateOpeningBalance": "إنشاء جرد فعلي",
     "Adjusted": "تم التعديل",
-    "PhysicalCountDeletedSuccessfully": "تم حذف الجرد بنجاح"
+    "PhysicalCountDeletedSuccessfully": "تم حذف الجرد بنجاح",
+    "serialItemSelection": "اختيار العنصر التسلسلي",
+    "viewPhysicalCount": "عرض الجرد الفعلي",
+    "newPhysicalCount": "جرد فعلي جديد"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",
