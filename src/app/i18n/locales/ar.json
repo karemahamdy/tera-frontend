@@ -1243,5 +1243,11 @@
     "transfer": "تحويل",
     "inbound": "وارد",
     "outbound": "صادر"
+  },
+"steps": {
+    "commercialDetails": "البيانات التجارية",
+    "warehouseDetails": "بيانات المخازن",
+    "lineItems": "بنود الفاتورة",
+    "payment": "الدفع"
   }
 }

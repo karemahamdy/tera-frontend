@@ -1247,5 +1247,11 @@
     "transfer": "Transfer",
     "inbound": "Inbound",
     "outbound": "Outbound"
+  },
+  "steps": {
+    "commercialDetails": "Commercial Details",
+    "warehouseDetails": "Warehouse Details",
+    "lineItems": "Line Items",
+    "payment": "Payment"
   }
 }

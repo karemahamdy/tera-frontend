@@ -9,7 +9,9 @@ import LineItems from '../components/LineItems.vue';
 import Payment from '../components/Payment.vue';
 import { usePurchaseWaybill } from '../composables/usePurshace';
 
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const { fetchPurchaseWaybillById, createPurchaseWaybill, updatePurchaseWaybill } = usePurchaseWaybill();
@@ -104,10 +106,10 @@ const submit = async () => {
 };
 
 const steps = [
-  { label: "Commercial Details" },
-  { label: "Warehouse Details" },
-  { label: "Line Items" },
-  { label: "Payment" }
+  { label: t("steps.commercialDetails") },
+  { label: t("steps.warehouseDetails") },
+  { label: t("steps.lineItems") },
+  { label: t("steps.payment") }
 ];
 
 onMounted(async () => {
