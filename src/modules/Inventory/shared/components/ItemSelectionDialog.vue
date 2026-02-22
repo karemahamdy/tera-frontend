@@ -11,20 +11,16 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:visible', 'select']);
 
-const localVisible = ref(props.visible);
 const searchQuery = ref('');
 
-watch(() => props.visible, (newVal) => {
-  localVisible.value = newVal;
-});
-
-watch(localVisible, (newVal) => {
-  emit('update:visible', newVal);
+const isVisible = computed({
+  get: () => props.visible,
+  set: (value) => emit('update:visible', value)
 });
 
 const selectItem = (item: any) => {
+  isVisible.value = false;
   emit('select', item);
-  localVisible.value = false;
 };
 
 const columns = computed(() => {
@@ -48,7 +44,7 @@ const filteredItems = computed(() => {
 
 <template>
     <Dialog 
-      v-model:visible="localVisible" 
+      v-model:visible="isVisible" 
       modal 
       :header="t('itemDialog.selectItem')" 
       :style="{ width: '60vw' }" 

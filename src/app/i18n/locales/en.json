@@ -727,7 +727,9 @@
     "ReceivingWarehousePlaceholder": "Select Receiving Warehouse",
     "zone": "Zone / Location",
     "zonePlaceholder": "Select Zone or Location",
-    "PurchaseWaybillDeletedSuccessfully": "Purchase Deleted successfully"
+    "PurchaseWaybillDeletedSuccessfully": "Purchase Deleted successfully",
+    "PurchaseWaybillUpdatedSuccessfully": "PurchaseWaybill Updated Successfully",
+    "PurchaseWaybillCreatedSuccessfully": "PurchaseWaybill Created Successfully"
   },
   "salesWaybill": {
     "salesWaybill": "Sales Waybill",

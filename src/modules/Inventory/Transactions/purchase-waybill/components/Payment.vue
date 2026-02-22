@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, watchEffect, onMounted } from "vue"
+import { ref, reactive, watch, onMounted } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
 import type { PaymentInfoData, NotesData, PaymentTermsData } from '../types/PurchaseWaybill';
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
 });
 
 const { t } = useI18n()
-const emit = defineEmits(['prev', 'submit'])
+const emit = defineEmits(['prev', 'submit', 'update'])
 
 const paymentType = ref("Payable")
 const paymentTerms = ref<string | null>(null)
@@ -40,32 +40,58 @@ const taxTotal = ref(0)
 const globalDiscount = ref<number>(0)
 const grandTotal = ref(0)
 
-// Populate from props whenever paymentInfo changes
-watchEffect(() => {
-  if (props.paymentInfo) {
-    paymentType.value = props.paymentInfo.paymentType ?? "Payable";
-    paymentTerms.value = props.paymentInfo.paymentTermId ?? null;
-    importType.value = props.paymentInfo.purchaseType ?? null;
-    incoterms.value = props.paymentInfo.incoterm ?? null;
-    subTotal.value = props.paymentInfo.subTotal ?? 0;
-    taxTotal.value = props.paymentInfo.totalTax ?? 0;
-    globalDiscount.value = props.paymentInfo.globalDiscount ?? 0;
-    grandTotal.value = props.paymentInfo.grandTotal ?? 0;
-  }
-});
+// Tracks whether we've already hydrated local state from props (edit/view mode)
+const paymentLoaded = ref(false)
+const notesLoaded = ref(false)
 
-// Populate notes/comments from props
-watchEffect(() => {
-  if (props.notes) {
-    comments.comment1 = props.notes.comment1 ?? "";
-    comments.comment2 = props.notes.comment2 ?? "";
-    comments.comment3 = props.notes.comment3 ?? "";
-    comments.comment4 = props.notes.comment4 ?? "";
-    comments.comment5 = props.notes.comment5 ?? "";
+// Populate from props when paymentInfo first arrives (edit/view mode)
+watch(() => props.paymentInfo, (info) => {
+  if (info && !paymentLoaded.value) {
+    paymentLoaded.value = true;
+    paymentType.value = info.paymentType ?? "Payable";
+    paymentTerms.value = info.paymentTermId ?? null;
+    importType.value = info.purchaseType ?? null;
+    incoterms.value = info.incoterm ?? null;
+    subTotal.value = info.subTotal ?? 0;
+    taxTotal.value = info.totalTax ?? 0;
+    globalDiscount.value = info.globalDiscount ?? 0;
+    grandTotal.value = info.grandTotal ?? 0;
   }
-});
+}, { immediate: true });
+
+// Populate notes/comments when notes first arrives (edit/view mode)
+watch(() => props.notes, (notes) => {
+  if (notes && !notesLoaded.value) {
+    notesLoaded.value = true;
+    comments.comment1 = notes.comment1 ?? "";
+    comments.comment2 = notes.comment2 ?? "";
+    comments.comment3 = notes.comment3 ?? "";
+    comments.comment4 = notes.comment4 ?? "";
+    comments.comment5 = notes.comment5 ?? "";
+  }
+}, { immediate: true });
+
+// Emit updated payment data to parent (skip in view mode)
+watch([paymentType, paymentTerms, importType, incoterms, comments, globalDiscount], () => {
+  if (props.disabled) return;
+  const selectedTerm = PaymentTerms.value.find(t => t.value === paymentTerms.value);
+  emit("update", {
+    paymentInfo: {
+      paymentType: paymentType.value,
+      paymentTermId: paymentTerms.value,
+      paymentTermName: selectedTerm?.label ?? "",
+      purchaseType: importType.value,
+      incoterm: incoterms.value,
+      subTotal: subTotal.value,
+      totalTax: taxTotal.value,
+      globalDiscount: globalDiscount.value,
+      grandTotal: grandTotal.value,
+    },
+    notes: { ...comments }
+  });
+}, { deep: true });
 onMounted(async () => {
-  Promise.all([
+  await Promise.all([
     getIncotermsLookups(),
     getPaymentTermsLookups()
   ]);

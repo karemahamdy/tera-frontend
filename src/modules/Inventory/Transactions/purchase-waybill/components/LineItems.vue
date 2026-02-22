@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
@@ -15,10 +15,11 @@ const props = withDefaults(defineProps<{
 });
 
 const { t } = useI18n();
-const emit = defineEmits(['next', 'prev']);
+const emit = defineEmits(['next', 'prev', 'update']);
 
 // --- State ---
 const items = ref<any[]>([]);
+
 const { getItemsLookups, itemsLookups, getUnitsLookups, UnitsLookups } = useInventoryLookups();
 
 const unitOptionsMap = ref<Record<number | string, any[]>>({});
@@ -34,14 +35,15 @@ function mapApiItem(item: LineItem) {
     name: item.itemName,
     quantity: item.quantity,
     uom: item.unitName,
+    unitId: item.unitId,
     barcode: '',
     itemType: '',
     warehouse: item.warehouseName,
     warehouseId: item.warehouseId,
     zone: item.zoneName ?? '',
     zoneId: item.zoneId ?? null,
-    unitPrice: String(item.unitPrice),
-    tax: String(item.unitTaxPercent),
+    unitPrice: Number(item.unitPrice) || 0,
+    tax: Number(item.unitTaxPercent) || 0,
     total: item.lineTotal,
     serials: (item.serials ?? []).map((s: any) => ({
       id: s.id,
@@ -55,32 +57,37 @@ function mapApiItem(item: LineItem) {
   };
 }
 
-watchEffect(() => {
-  if (props.lineItems && props.lineItems.length > 0) {
-    items.value = props.lineItems.map(mapApiItem);
+// Sync from props when editing an existing record (only once on first load)
+watch(() => props.lineItems, (newItems) => {
+  if (newItems && newItems.length > 0 && items.value.length === 0) {
+    items.value = newItems.map(mapApiItem);
   }
-});
+}, { immediate: true });
+
+// Emit items to parent on any change
+watch(items, (newVal) => {
+  emit('update', newVal);
+}, { deep: true });
+
+// NaN-safe total recalculation — runs whenever quantity/price/tax changes
+watch(items, (newVal) => {
+  newVal.forEach(item => {
+    const qty = Number(item.quantity) || 0;
+    const price = Number(item.unitPrice) || 0;
+    const taxPercent = Number(item.tax) || 0;
+    const sub = qty * price;
+    const calculatedTotal = sub + (sub * taxPercent) / 100;
+    if (!isNaN(calculatedTotal) && Math.abs((item.total || 0) - calculatedTotal) > 0.001) {
+      item.total = calculatedTotal;
+    }
+  });
+}, { deep: true });
+
+const subtotal = computed(() => items.value.reduce((sum: number, item: any) => sum + item.total, 0));
 
 onMounted(async () => {
   await getUnitsLookups();
 });
-
-watchEffect(() => {
-  if (UnitsLookups.value.length > 0 && items.value.length > 0) {
-    items.value.forEach(item => {
-      if (!unitOptionsMap.value[item.id] || unitOptionsMap.value[item.id].length <= 1) {
-        unitOptionsMap.value[item.id] = UnitsLookups.value.map(u => ({
-          label: u.label, // These already have name from useInventoryLookups
-          value: u.value,
-          unitId: u.type,
-          conversionFactor: 1
-        }));
-      }
-    });
-  }
-});
-
-const subtotal = computed(() => items.value.reduce((sum: number, item: any) => sum + item.total, 0));
 
 const columns = computed(() => [
   { field: 'code', header: t('itemsList.itemCode') },
@@ -108,6 +115,9 @@ const openItemDialog = async () => {
 };
 
 const handleSelectItem = (selectedItem: any) => {
+  // Close dialog immediately to ensure smooth UX
+  showItemDialog.value = false;
+
   const originalItem = itemsLookups.value.find(i => i.id === selectedItem.id);
   const units = originalItem?.units || selectedItem.units || [];
   const baseUnit = units.find((u: any) => u.isBaseUnit);
@@ -120,7 +130,7 @@ const handleSelectItem = (selectedItem: any) => {
     conversionFactor: u.conversionFactor
   }));
 
-  items.value.push({
+  const newItem = {
     id: rowId,
     itemId: selectedItem.id,
     code: selectedItem.code,
@@ -134,12 +144,21 @@ const handleSelectItem = (selectedItem: any) => {
     warehouseId: '',
     zone: '',
     zoneId: null,
-    unitPrice: "0",
-    tax: "0",
+    unitPrice: 0,
+    tax: 0,
     total: 0,
     serials: [],
     tracked: (originalItem?.trackingType || selectedItem.trackingType) !== 'None'
-  });
+  };
+
+  // Calculate initial total
+  const qty = Number(newItem.quantity) || 0;
+  const price = Number(newItem.unitPrice) || 0;
+  const taxPercent = Number(newItem.tax) || 0;
+  const sub = qty * price;
+  newItem.total = sub + (sub * taxPercent) / 100;
+
+  items.value.push(newItem);
 };
 
 const showQtyDialog = ref(false);
@@ -151,9 +170,16 @@ const openQtyDialog = (item: any) => {
 };
 
 const handleSaveSerials = (payload: any) => {
+  showQtyDialog.value = false;
   if (currentItem.value) {
     currentItem.value.serials = payload.serials;
     currentItem.value.quantity = payload.totalQty;
+    
+    // Recalculate total for this item
+    const price = Number(currentItem.value.unitPrice) || 0;
+    const taxPercent = Number(currentItem.value.tax) || 0;
+    const sub = payload.totalQty * price;
+    currentItem.value.total = sub + (sub * taxPercent) / 100;
   }
 };
 
@@ -165,17 +191,6 @@ const removeItem = (data: any) => {
   }
 };
 
-watchEffect(() => {
-  items.value.forEach(item => {
-    const qty = Number(item.quantity) || 0;
-    const price = Number(item.unitPrice) || 0;
-    const taxPercent = Number(item.tax) || 0;
-
-    const subtotal = qty * price;
-    const taxAmount = (subtotal * taxPercent) / 100;
-    item.total = subtotal + taxAmount;
-  });
-}, { deep: true }); 
 </script>
 
 <template>
@@ -236,7 +251,11 @@ watchEffect(() => {
           <span v-if="disabled || !unitOptionsMap[data.id] || unitOptionsMap[data.id].length <= 1"
             class="text-gray-700">{{ data.uom }}</span>
           <select v-else v-model="data.uom"
-            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none">
+            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
+            @change="() => {
+              const opt = (unitOptionsMap[data.id] || []).find((o: any) => o.value === data.uom);
+              if (opt) data.unitId = opt.unitId;
+            }">
             <option v-for="opt in unitOptionsMap[data.id]" :key="opt.unitId" :value="opt.value">
               {{ opt.label }}
             </option>
@@ -265,12 +284,16 @@ watchEffect(() => {
 
         <template #col-unitPrice="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.unitPrice }}</span>
-          <InputText v-else v-model.number="data.unitPrice" class="w-20 p-inputtext-sm" />
+          <InputText v-else :value="data.unitPrice"
+            @input="(e: any) => { const v = parseFloat(e.target.value); data.unitPrice = isNaN(v) ? 0 : v; }"
+            class="w-20 p-inputtext-sm" />
         </template>
 
         <template #col-tax="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.tax }}%</span>
-          <InputText v-else v-model.number="data.tax" class="w-16 p-inputtext-sm" prefix="%" />
+          <InputText v-else :value="data.tax"
+            @input="(e: any) => { const v = parseFloat(e.target.value); data.tax = isNaN(v) ? 0 : v; }"
+            class="w-16 p-inputtext-sm" />
         </template>
 
         <template #col-total="{ data }">
@@ -295,9 +318,9 @@ watchEffect(() => {
       </span>
     </div>
 
-    <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
+    <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
 
-    <QuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
+    <QuantitySerialDialog v-if="showQtyDialog && currentItem" v-model:visible="showQtyDialog" :item="currentItem"
       :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
   </div>
 </template>

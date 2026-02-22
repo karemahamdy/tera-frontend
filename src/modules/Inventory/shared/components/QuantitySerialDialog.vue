@@ -16,7 +16,10 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:visible', 'save']);
 
-const localVisible = ref(props.visible);
+const isVisible = computed({
+    get: () => props.visible,
+    set: (value) => emit('update:visible', value)
+});
 
 const serialInput = ref('');
 const qtyInput = ref<string>("");
@@ -110,27 +113,24 @@ const exportTemplate = async () => {
 };
 
 const save = () => {
+    isVisible.value = false;
     emit('save', { serials: serialList.value, totalQty: totalQty.value });
-    localVisible.value = false;
 };
 
 const close = () => {
-    localVisible.value = false;
+    isVisible.value = false;
 };
 
 watch(() => props.visible, (newVal) => {
-    localVisible.value = newVal;
     if (newVal && props.initialSerials) {
         serialList.value = [...props.initialSerials];
     }
 });
 
-watch(localVisible, (newVal) => emit('update:visible', newVal));
-
 </script>
 
 <template>
-    <Dialog v-model:visible="localVisible" modal :closable="false">
+    <Dialog v-model:visible="isVisible" modal :closable="false">
         <div class="flex flex-col md:flex-row h-[610px]">
 
             <!-- Left Form Panel -->

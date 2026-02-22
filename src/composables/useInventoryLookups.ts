@@ -53,7 +53,7 @@ export function useInventoryLookups() {
       const res = await InventoryLookupsService.getCurrenciesLookups();
       CurrenciesLookups.value = res.data.map((group) => ({
         label: group.name,
-        value: group.code,
+        value: group.id || "",
       }));
     } catch (error) {
       toastService.error(error as string);

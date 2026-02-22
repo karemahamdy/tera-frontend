@@ -731,7 +731,9 @@
     "ReceivingWarehousePlaceholder": "اختر المخزن",
     "zone": "المنطقة",
     "zonePlaceholder": "اختر المنطقة",
-    "PurchaseWaybillDeletedSuccessfully":"تم الحذف بنجاح"
+    "PurchaseWaybillDeletedSuccessfully":"تم الحذف بنجاح",
+    "PurchaseWaybillCreatedSuccessfully": "تم التعديل بنجاح",
+    "PurchaseWaybillUpdatedSuccessfully": "تم الانشاء بنجاح"
   },
   "salesWaybill": {
     "salesWaybill": "إذن صرف مبيعات",

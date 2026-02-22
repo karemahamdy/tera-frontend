@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<{
 });
 
 const { t } = useI18n()
+const emit = defineEmits(["update"])
 const { fetchNextNumber } = usePurchaseWaybill();
 const {
   getSupplierLookups,
@@ -51,6 +52,27 @@ const exchangeDate = ref<Date | null>(
     : null
 )
 
+// Watch for prop changes (Edit mode)
+watch(() => props.supplierDetails, (details) => {
+  if (details) {
+    documentNumber.value = details.waybillNumber ?? "";
+    Supplier.value = details.supplierId ?? null;
+    SupplierSalesOrder.value = details.supplierSalesOrder ?? "";
+    PurchaseOrder.value = details.purchaseOrderRef ?? null;
+    Reference.value = details.externalReference ?? "";
+    waybillDate.value = details.waybillDate ? new Date(details.waybillDate) : null;
+    expectedDelivery.value = details.expectedDeliveryDate ? new Date(details.expectedDeliveryDate) : null;
+  }
+}, { deep: true });
+
+watch(() => props.paymentTerms, (terms) => {
+  if (terms) {
+    selectedCurrency.value = terms.currencyId ?? null;
+    exchangeValue.value = terms.exchangeRate ?? null;
+    exchangeDate.value = terms.rateDate ? new Date(terms.rateDate) : null;
+  }
+}, { deep: true });
+
 const errors = reactive({
   documentNumber: "",
   Supplier: "",
@@ -61,8 +83,29 @@ const errors = reactive({
   ExchangeValue: "",
 })
 
-onMounted(async () => {
+import { watch } from "vue";
 
+watch([documentNumber, Supplier, SupplierSalesOrder, PurchaseOrder, Reference, waybillDate, expectedDelivery, selectedCurrency, exchangeValue, exchangeDate], () => {
+  if (props.disabled) return;
+  emit("update", {
+    supplierDetails: {
+      waybillNumber: documentNumber.value,
+      supplierId: Supplier.value,
+      supplierSalesOrder: SupplierSalesOrder.value,
+      purchaseOrderRef: PurchaseOrder.value,
+      externalReference: Reference.value,
+      waybillDate: waybillDate.value?.toISOString(),
+      expectedDeliveryDate: expectedDelivery.value?.toISOString(),
+    },
+    paymentTerms: {
+      currencyId: selectedCurrency.value,
+      exchangeRate: exchangeValue.value,
+      rateDate: exchangeDate.value?.toISOString(),
+    }
+  });
+}, { deep: true });
+
+onMounted(async () => {
   await Promise.all([
     getCurrenciesLookups(),
     getSupplierLookups()

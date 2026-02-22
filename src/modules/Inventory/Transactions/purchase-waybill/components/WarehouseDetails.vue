@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<{
 });
 
 const { t } = useI18n()
+const emit = defineEmits(["update"])
 const { WarehouseLookups, ZonesLookups, getZonesLookups, getWarehouseLookups } = useInventoryLookups()
 
 const ReceivingWarehouse = ref<string>("")
@@ -56,8 +57,21 @@ watch(() => ReceivingWarehouse.value, async (newVal) => {
   }
 })
 
+watch([ReceivingWarehouse, zone], () => {
+  if (props.disabled) return;
+  const selectedWarehouse = WarehouseLookups.value.find(w => w.value === ReceivingWarehouse.value);
+  const selectedZone = ZonesLookups.value.find(z => z.value === zone.value);
+
+  emit("update", {
+    warehouseId: ReceivingWarehouse.value,
+    warehouseName: selectedWarehouse?.label ?? "",
+    zoneId: zone.value,
+    zoneName: selectedZone?.label ?? ""
+  });
+}, { deep: true });
+
 const isProf = computed(()=> {
-  let warehouseId = props.warehouseDetails?.warehouseId ?? "";
+  let warehouseId = ReceivingWarehouse.value || props.warehouseDetails?.warehouseId || "";
   const selectedWarehouse = WarehouseLookups.value.find(w => w.value === warehouseId)
   if (selectedWarehouse?.type === 'Professional'){
     return true
