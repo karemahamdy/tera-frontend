@@ -81,7 +81,7 @@ const handleActionMenu = async (payload: any) => {
     if (action === 'view') {
         router.push({
             name: "PhysicalCountView",
-            params: { id: 10 },
+            params: { id: data.id },
         });
     }
     if (action === 'delete') {
@@ -92,9 +92,9 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
+    showDeleteDialog.value = false;
     await deletePhysicalCount(rowToDelete.value.id).finally(() => {
         isDeleting.value = false;
-        showDeleteDialog.value = false;
         rowToDelete.value = null;
     });
 };

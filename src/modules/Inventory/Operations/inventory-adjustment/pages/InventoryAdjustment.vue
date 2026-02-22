@@ -84,7 +84,7 @@ const handleActionMenu = async (payload: any) => {
     if (action === 'view') {
         router.push({
             name: "InventoryAdjustmentView",
-            params: { id: 10 },
+            params: { id: data.id },
         });
     }
     if (action === 'delete') {

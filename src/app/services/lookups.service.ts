@@ -1,5 +1,10 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { IPLookups, Lookups, CodeLookups, reasonsLookups } from "../types/lookups";
+import type {
+  IPLookups,
+  Lookups,
+  CodeLookups,
+  reasonsLookups,
+} from "../types/lookups";
 
 export const LookupsService = {
   getGroupLookups(isActive: boolean = true) {
@@ -100,9 +105,14 @@ export const LookupsService = {
       `/Lookups/ItemClassificationLookups/Category`,
     );
   },
-    getReasonLookups() {
+  getReasonLookups() {
     return axiosWrapper.get<{ data: reasonsLookups[] }>(
       `/InventoryLookups/return-reasons`,
+    );
+  },
+  getAdjustmentReasonLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/AdjustmentReasonLookups`,
     );
   },
 };

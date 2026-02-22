@@ -88,12 +88,18 @@ export function usePhysicalCount() {
     }
   };
 
-  const deletePhysicalCount = async (id: string) => {
+  const deletePhysicalCount = async (id: string, getList: boolean = true) => {
     loading.value = true;
     try {
       await PhysicalCountService.delete(id);
+      if(getList) {
+        if(apiPhysicalCount.value.length === 1 && pageIndex.value > 1) {
+          await fetchPhysicalCount(pageIndex.value - 1)
+        } else {
+          await fetchPhysicalCount(pageIndex.value)
+        }
+      }
       toastService.success((t("PhysicalCount.PhysicalCountDeletedSuccessfully")));
-      apiPhysicalCount.value = apiPhysicalCount.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);
       throw err;

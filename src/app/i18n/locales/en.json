@@ -948,7 +948,8 @@
     "Descrption": "Descrption",
     "ReviewOpeningBalance": "Review Opening Balance",
     "CreateOpeningBalance": "Create Opening Balance",
-    "Adjusted": "Adjusted"
+    "Adjusted": "Adjusted",
+    "PhysicalCountDeletedSuccessfully": "Physical Count Deleted Successfully"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",
