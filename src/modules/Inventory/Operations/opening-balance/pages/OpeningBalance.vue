@@ -23,6 +23,7 @@ const {
   onFilterChange,
   fetchOpeningBalance,
   apiOpeningBalance,
+  deleteOpeningBalance
 } = useOpeningBalance();
 const { warehouseLookup, unitsLookups, getUnitsLookups, getWarehouseLookups } =
   useLookups();
@@ -118,7 +119,7 @@ const handleActionMenu = async (payload: any) => {
   if (action === "edit") {
     router.push({
       name: "OpeningBalanceEdit",
-      params: { id: 10 },
+      params: { id: data.id },
     });
   }
   if (action === "delete") {
@@ -129,11 +130,11 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
   if (!rowToDelete.value) return;
   isDeleting.value = true;
-  // await deleteOpeningBalance(rowToDelete.value.id).finally(() => {
-  //     isDeleting.value = false;
-  //     showDeleteDialog.value = false;
-  //     rowToDelete.value = null;
-  // });
+  showDeleteDialog.value = false;
+  await deleteOpeningBalance(rowToDelete.value.id).finally(() => {
+      isDeleting.value = false;
+      rowToDelete.value = null;
+  });
 };
 
 const addPurchaseWaybill = () => {
