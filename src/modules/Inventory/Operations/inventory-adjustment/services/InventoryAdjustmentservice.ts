@@ -26,7 +26,7 @@ export const InventoryAdjustmentService = {
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/purchase-waybill/${id}`);
+    await axiosWrapper.delete(`/physicalcount/adjustment/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {

@@ -93,7 +93,11 @@ export function useInventoryAdjustment() {
     try {
       await InventoryAdjustmentService.delete(id);
       toastService.success((t("InventoryAdjustment.InventoryAdjustmentDeletedSuccessfully")));
-      apiInventoryAdjustment.value = apiInventoryAdjustment.value.filter((b) => b.id !== id);
+      if(apiInventoryAdjustment.value.length === 1 && pageIndex.value > 1) {
+        fetchInventoryAdjustment(pageIndex.value - 1)
+      } else {
+        fetchInventoryAdjustment(pageIndex.value)
+      }
     } catch (err: any) {
       toastService.error(err);
       throw err;

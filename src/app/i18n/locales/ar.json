@@ -974,7 +974,8 @@
     "itemToAdjustment": "اصناف التسوية",
     "DamagedItem": "عنصر تالف",
     "ExpiredItem": "عنصر منتهي الصلاحية",
-    "CountVariance": "فرق في الجرد"
+    "CountVariance": "فرق في الجرد",
+    "InventoryAdjustmentDeletedSuccessfully": "تم حذف التسوية بنجاح"
   },
   "OpeningBalance": {
     "OpeningBalance": "الرصيد الافتتاحي",

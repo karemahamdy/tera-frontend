@@ -95,9 +95,9 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
+    showDeleteDialog.value = false;
     await deleteInventoryAdjustment(rowToDelete.value.id).finally(() => {
         isDeleting.value = false;
-        showDeleteDialog.value = false;
         rowToDelete.value = null;
     });
 };

@@ -975,7 +975,8 @@
     "itemToAdjustment": "Item To Adjustment",
     "DamagedItem": "Damaged Item", 
     "ExpiredItem": "Expired Item", 
-    "CountVariance": "Count Variance"
+    "CountVariance": "Count Variance",
+    "InventoryAdjustmentDeletedSuccessfully": "Inventory Adjustment Deleted Successfully"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",
