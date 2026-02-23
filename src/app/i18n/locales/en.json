@@ -1131,7 +1131,8 @@
     "addedSerial": "Added Serial",
     "identifyItems": "Identify items to return from selected original waybill.",
     "totalQty": "Total QTY",
-    "finalizeSave": "Finalize & Save"
+    "finalizeSave": "Finalize & Save",
+    "serial23": "Serial 2/3"
   },
   "common": {
     "cancel": "Cancel",
@@ -1226,7 +1227,10 @@
     "note3": "Serial/lot tracked items: holds by specific numbers",
     "DamageHold": "Damage Hold",
     "Investigation": "Investigation",
-    "qcHold": "QC Hold"
+    "qcHold": "QC Hold",
+    "releaseItemConfirm": "Are you sure you want to release this item ?",
+    "releaseSerialConfirm": "Are you sure you want to release this serial ?",
+    "itemReleasedSuccessfully": "Item released successfully"
   },
   "ReturnItems": {
     "title": "Return Items",
