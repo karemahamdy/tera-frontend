@@ -1,25 +1,25 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { ItemHold } from "../types/ItemHold";
+import type { ItemHold, ReleaseItemPayload } from "../types/ItemHold";
 import { ItemHoldService } from "../services/ItemHold.service";
 
-const loading = ref(false);
-const apiItemHold = ref<ItemHold[]>([]);
-const tableData = ref<any[]>([]);
-
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
-
-const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref<string | null>(null);
-const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function useItemHold() {
   const { t } = useI18n();
+  const loading = ref(false);
+  const apiItemHold = ref<ItemHold[]>([]);
+  const tableData = ref<any[]>([]);
+  
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
+  
+  const searchTerm = ref('');
+  const orderBy = ref('');
+  const StatusFilter = ref<string | null>(null);
+  const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const fetchItemHold = async (page = 1) => {
     loading.value = true;
@@ -102,6 +102,24 @@ export function useItemHold() {
     }
   };
 
+  const releaseItem = async (data: ReleaseItemPayload) => {
+    loading.value = true;
+    try {
+      await ItemHoldService.releaseItem(data);
+      toastService.success((t("ItemHold.itemReleasedSuccessfully")));
+      if (apiItemHold.value.length === 1 && pageIndex.value > 1) {
+        await fetchItemHold(pageIndex.value - 1);
+      } else {
+        await fetchItemHold(pageIndex.value);
+      }
+    } catch (err: any) {
+      toastService.error(err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+  
   const toggleActive = async (id: string, isActive: boolean) => {
     loading.value = true;
     try {
@@ -156,6 +174,7 @@ export function useItemHold() {
     setPage: (p: number) => fetchItemHold(p),
     onSearch,
     onFilterChange,
-    onSort
+    onSort,
+    releaseItem,
   };
 }
