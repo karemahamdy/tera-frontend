@@ -58,6 +58,7 @@ const filtersOperation = computed(() => {
             placeholder: "SalesReturn.allreason",
             value: null,
             field: "ReturnReason",
+             isSingle: true,
             options: [
                  ...reasonsLookups.value
             ],
