@@ -60,6 +60,7 @@ const filtersOperation = computed(() => {
             field: "ReturnReason",
              isSingle: true,
             options: [
+                   { label: t("button.all"), value: null },
                  ...reasonsLookups.value
             ],
         }
