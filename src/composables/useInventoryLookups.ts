@@ -14,6 +14,7 @@ export function useInventoryLookups() {
   const ZonesLookups = ref<LookupsOption[]>([]);
   const itemsLookups = ref<ItemLookup[]>([]);
   const UnitsLookups = ref<LookupsOption[]>([]);
+  const costCenterLookups = ref<LookupsOption[]>([]);
 
   const getSupplierLookups = async () => {
     try {
@@ -102,6 +103,18 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
+    const getCostCenterLookups = async () => {
+    try {
+      const res = await LookupsService.getCostcenterLookups();
+      costCenterLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     getSupplierLookups,
     getCurrenciesLookups,
@@ -111,6 +124,7 @@ export function useInventoryLookups() {
     getZonesLookups,
     getItemsLookups,
     getUnitsLookups,
+     getCostCenterLookups,
     ZonesLookups,
     supplierLookups,
     CurrenciesLookups,
@@ -118,6 +132,7 @@ export function useInventoryLookups() {
     PaymentTerms,
     WarehouseLookups,
     itemsLookups,
-    UnitsLookups
+    UnitsLookups,
+     costCenterLookups,
   };
 }

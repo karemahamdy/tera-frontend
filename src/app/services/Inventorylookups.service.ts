@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { ApiResponse, InventoryLookups, ItemLookup } from "../types/lookups";
+import type { ApiResponse, InventoryLookups, ItemLookup, Lookups } from "../types/lookups";
 
 export const InventoryLookupsService = {
   getCurrenciesLookups() {
@@ -35,6 +35,11 @@ export const InventoryLookupsService = {
   getItemsLookups(trackedOnly: boolean = false) {
     return axiosWrapper.get<ApiResponse<ItemLookup[]>>(
       `/InventoryLookups/items?trackedOnly=${trackedOnly}`,
+    );
+  },
+  getCostCenterLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/CostcenterLookups?isActive=true`,
     );
   },
 };
