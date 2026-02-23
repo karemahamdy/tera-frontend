@@ -15,7 +15,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const StatusFilter = ref('');
+const StatusFilter = ref<string | null>(null);;
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function usePurchaseReturn() {
@@ -30,7 +30,7 @@ export function usePurchaseReturn() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        StatusFilter: StatusFilter.value 
       });
       const payload = response && response.data ? response.data : response;
       apiPurchaseReturn.value = payload.items ?? [];
