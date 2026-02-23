@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import InputText from 'primevue/inputtext';
+
 
 const props = defineProps({
     subTotal: { type: Number, default: 0 },
     taxTotal: { type: Number, default: 0 },
     grandTotal: { type: Number, default: 0 },
+    
     currency: { type: String, default: 'USD' },
     exchangeRate: { type: Number, default: 1 },
     baseCurrency: { type: String, default: 'USD' }
@@ -51,7 +52,7 @@ const discountBase = computed(() => (Number(globalDiscount.value) || 0) * props.
                 {{ $t('summary.globalDiscount') }}
             </label>
             <div class="flex items-center gap-2">
-                <InputText v-model.number="globalDiscount" prefix="-$" placeholder="0.00"
+                <InputNumber v-model.number="globalDiscount" prefix="-$" placeholder="0.00"
                     class="flex-1 bg-gray-50 border-none" />
                 <span class="text-success-500 text-sm font-bold" v-if="currency !== baseCurrency">-{{ baseCurrency }} {{ discountBase.toFixed(2) }}</span>
             </div>

@@ -112,7 +112,7 @@ const importOptions = [
             </div>
             <div class="w-full lg:w-1/3">
                 <TransactionSummary :subTotal="subTotal" :taxTotal="taxTotal" :grandTotal="grandTotal"
-                    v-model:globalDiscount="globalDiscount" />
+                    v-model.number="globalDiscount" />
             </div>
 
         </div>

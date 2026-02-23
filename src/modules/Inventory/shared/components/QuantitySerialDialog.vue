@@ -77,7 +77,7 @@ const handleFileUpload = async (event: Event) => {
     const target = event.target as HTMLInputElement;
     if (!target.files?.length) return;
 
-    const file = target.files[0];
+    const file = target.files[0]  as File;
     isProcessing.value = true;
     try {
         const response = await LookupsService.parseSerials(file);
