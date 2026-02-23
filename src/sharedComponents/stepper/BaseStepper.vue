@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-// import VsxIcon from "vue-iconsax";
 
-/* ================= Types ================= */
 interface StepItem {
   label: string;
 }
@@ -19,21 +17,18 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: number): void;
 }>();
 
-/* ================= State ================= */
+
 const current = computed(() => props.modelValue ?? 0);
 
-/* progress to center of active circle */
 const progressWidth = computed(() => {
   const count = props.steps.length;
   if (count <= 1) return "0%";
 
-  // if we're on the last step, fill the whole bar
   if (current.value >= count - 1) return "100%";
 
   return `${((current.value + 0.5) / count) * 100}%`;
 });
 
-/* detect RTL and build progress style accordingly */
 const isRtl = computed(() => {
   if (typeof document === "undefined") return false;
   const dir =
@@ -50,7 +45,6 @@ const progressStyle = computed(() => {
   } as Record<string, string>;
 });
 
-/* ================= Actions ================= */
 const goTo = (i: number) => {
   emit("update:modelValue", i);
 };

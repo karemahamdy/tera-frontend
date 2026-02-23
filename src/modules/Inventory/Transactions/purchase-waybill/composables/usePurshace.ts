@@ -110,6 +110,19 @@ export function usePurchaseWaybill() {
     }
   };
 
+   const fetchNextNumber = async () => {
+    loading.value = true;
+    try {
+      const resp = await PurchaseWaybillService.getNextNumber();
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const onFilterChange = (filter: {
     filter: { field: string };
     value: string;
@@ -147,6 +160,7 @@ export function usePurchaseWaybill() {
     createPurchaseWaybill,
     updatePurchaseWaybill,
     deletePurchaseWaybill,
+    fetchNextNumber,
     pageIndex,
     pageSize,
     totalCount,

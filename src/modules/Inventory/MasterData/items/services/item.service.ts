@@ -10,7 +10,7 @@ const setFormData = (payload: Item): FormData => {
           const element = value[i];
           if (typeof element === "object" && !(element instanceof File)) {
             console.log(element);
-            
+
             Object.entries(element).forEach(([objKey, objValue]) => {
               formData.append(
                 `${key}[${i}].${objKey}`,
@@ -47,5 +47,11 @@ export const ItemService = {
     formData.append("id", id);
     const data = await axiosWrapper.put<{ data: Item }>(`/item`, formData);
     return data.data;
+  },
+  async downloadImportTemplate(): Promise<Blob> {
+    const data = await axiosWrapper.get<Blob>(`/item/DownloadImportTemplate`, {
+      responseType: "blob",
+    });
+    return data;
   },
 };

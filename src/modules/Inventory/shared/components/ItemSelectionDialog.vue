@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -11,27 +11,23 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:visible', 'select']);
 
-const localVisible = ref(props.visible);
 const searchQuery = ref('');
 
-watch(() => props.visible, (newVal) => {
-  localVisible.value = newVal;
-});
-
-watch(localVisible, (newVal) => {
-  emit('update:visible', newVal);
+const isVisible = computed({
+  get: () => props.visible,
+  set: (value) => emit('update:visible', value)
 });
 
 const selectItem = (item: any) => {
+  isVisible.value = false;
   emit('select', item);
-  localVisible.value = false;
 };
 
 const columns = computed(() => {
     return [
         { field: 'code', header: t('itemDialog.itemCode'), sortable: true },
         { field: 'name', header: t('itemDialog.itemName'), sortable: true },
-        { field: 'unit', header: t('itemDialog.unit'), sortable: true },
+        { field: 'baseUnitName', header: t('itemDialog.unit'), sortable: true },
         { field: 'action', header: '' }
     ];
 });
@@ -48,7 +44,7 @@ const filteredItems = computed(() => {
 
 <template>
     <Dialog 
-      v-model:visible="localVisible" 
+      v-model:visible="isVisible" 
       modal 
       :header="t('itemDialog.selectItem')" 
       :style="{ width: '60vw' }" 
