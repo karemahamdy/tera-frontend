@@ -70,7 +70,9 @@
     "Posted": "ترحيل",
     "Pending": "معلق",
     "Shipped": "تم الشحن",
-    "step": "الخطوة {index} من {total}"
+    "step": "الخطوة {index} من {total}",
+    "free": "حر",
+    "production": "انتاج"
   },
   "table": {
     "description": "الوصف",

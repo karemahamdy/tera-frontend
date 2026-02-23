@@ -64,7 +64,9 @@
     "Pending": "Pending",
     "Posted": "Posted",
     "Shipped": "Shipped",
-    "step": "Step {index} of {total}"
+    "step": "Step {index} of {total}",
+    "free": "Free",
+    "production": "Production"
   },
   "table": {
     "description": "Description",

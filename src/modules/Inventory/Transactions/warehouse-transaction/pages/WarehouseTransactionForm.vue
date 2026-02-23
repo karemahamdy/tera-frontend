@@ -55,13 +55,11 @@ const steps = [
           <LineItems v-else-if="activeStep === 1" :transactionType="formData.direction" @next="nextTab" @prev="previousTab" />
           <div v-else-if="activeStep === 2">
              <TransactionSummary :data="formData" />
-             
           </div>
         </template>
       </Card>
       <StepperActions :current="activeStep" :total="steps.length" nextText="Next" prevText="Back" finishText="Create"
         @next="nextTab" @previous="previousTab" @finish="submit" />
-
     </BaseStepper>
   </div>
 </template>

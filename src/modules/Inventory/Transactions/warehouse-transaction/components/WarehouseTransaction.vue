@@ -1,34 +1,51 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue"
+import { onMounted, reactive, computed, ref } from "vue"
 import { useI18n } from "vue-i18n"
+import { useWarehouseTransaction } from "../composables/useWarehouseTransaction";
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const { t } = useI18n()
-
 const props = defineProps<{
   modelValue: any
 }>()
+const emit = defineEmits(['update:modelValue'])
+const { fetchNextNumber } = useWarehouseTransaction();
+const { getCostCenterLookups, costCenterLookups } = useInventoryLookups();
 
 const directions = [
   { value: 'Transfer', labelKey: 'direction.transfer' },
   { value: 'Inbound', labelKey: 'direction.inbound' },
   { value: 'Outbound', labelKey: 'direction.outbound' },
 ]
+const type = ref([
+  { label: t("button.free"), value: "Free" },
+  { label: t("button.production"), value: "Production" },
+])
 
-const WaybillNumber = ref("") 
-const id = ref(null)
+const modelValue = computed({
+  get: () => props.modelValue,
+  set: (val) => emit('update:modelValue', val)
+})
+
+const form = reactive({
+  waybillNumber: modelValue.value?.waybillNumber ?? "",
+})
 
 const errors = reactive({
-  WaybillNumber: "",
+  waybillNumber: "",
   InventoryRequest: "",
   warehouse: "",
   Zone: "",
   type: "",
-  Reference: "",
-  Currency: "",
-  ExchangeValue: "",
   costCenter: "",
-  ReceivingWarehouse: "",
-  CustomerNotes: ""
+})
+
+onMounted(async () => {
+  await Promise.all([getCostCenterLookups()]);
+  const nextNumber = await fetchNextNumber()
+  if (nextNumber) {
+    modelValue.value.waybillNumber = nextNumber
+  }
 })
 </script>
 
@@ -41,26 +58,20 @@ const errors = reactive({
       </p>
     </div>
 
-  <div class="flex gap-4 mt-6 border-b pt-4 border-t border-gray-200 justify-center">
-    <button
-      v-for="dir in directions"
-      :key="dir.value"
-      @click="modelValue.direction = dir.value"
-      :class="[
+    <div class="flex gap-4 mt-6 border-b pt-4 border-t border-gray-200 justify-center">
+      <button v-for="dir in directions" :key="dir.value" @click="modelValue.direction = dir.value" :class="[
         'pb-2 px-4 text-sm font-medium transition-colors border-b-2',
         modelValue.direction === dir.value
           ? 'border-primary-500 text-primary-600'
           : 'border-transparent text-gray-500 hover:text-gray-700'
-      ]"
-    >
-      {{ t(dir.labelKey) }}
-    </button>
-  </div>
+      ]">
+        {{ t(dir.labelKey) }}
+      </button>
+    </div>
 
 
-    <FormInput :label="t('purchaseWaybill.WaybillNumber')" v-model="WaybillNumber" :error="errors.WaybillNumber"
-      :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')" :invalid="!!errors.WaybillNumber" :disabled="!!id"
-      class="mt-6" />
+    <FormInput :label="t('purchaseWaybill.WaybillNumber')" v-model="form.waybillNumber" :error="errors.waybillNumber"
+      :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')" :invalid="!!errors.waybillNumber" disabled />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
@@ -79,7 +90,7 @@ const errors = reactive({
             :invalid="!!errors.InventoryRequest" />
         </div>
       </div>
-       <!--  Warehouse/Zone for Inbound/Outbound -->
+      <!--  Warehouse/Zone for Inbound/Outbound -->
       <template v-if="modelValue.direction !== 'Transfer'">
         <FormDropdown :label="t('warehouseTransaction.warehouse')" v-model="modelValue.warehouse"
           :error="errors.warehouse" :placeholder="t('itemList.warehousePlaceholder')" />
@@ -90,14 +101,14 @@ const errors = reactive({
 
 
       <template v-if="modelValue.direction !== 'Transfer'">
-        <FormDropdown :label="t('items.costCenter')" v-model="modelValue.costCenter"
-          :error="errors.costCenter" :placeholder="t('items.costCenterPlaceholder')" />
+        <FormDropdown :label="t('items.costCenter')" v-model="modelValue.costCenter" :error="errors.costCenter"
+          :placeholder="t('items.costCenterPlaceholder')" :options="costCenterLookups" />
 
         <FormDropdown :label="t('warehouses.type')" v-model="modelValue.type" :error="errors.type"
-          :placeholder="t('RequestInformation.typePlaceholder')" />
+          :placeholder="t('RequestInformation.typePlaceholder')" :options="type" />
       </template>
 
-     
+
       <!-- Transfer Source/Target Grid -->
       <div v-if="modelValue.direction === 'Transfer'" class="mt-5 md:col-span-2">
         <p><strong>{{ $t("itemTransaction.sourceTargetItems") }}</strong></p>

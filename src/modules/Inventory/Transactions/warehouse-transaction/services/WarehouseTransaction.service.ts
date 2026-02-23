@@ -56,7 +56,10 @@ export const WarehouseTransactionService = {
         responseType: "blob",
       },
     );
-
     return data;
+  },
+  async getNextNumber() {
+    const data = await axiosWrapper.get<any>(`/warehouse-transactions/next-number`);
+    return data.data;
   },
 };
