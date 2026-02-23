@@ -3,23 +3,21 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useItemHold } from "../composables/useItemHold";
-
-
+import ItemHoldInfo from "../components/ItemHoldInfo.vue";
+import alertIcon from "@/assets/images/alert.png";
+import ItemHoldSerial from "../components/ItemHoldSerial.vue";
+ 
 const { t } = useI18n();
 const router = useRouter();
-const showDeleteDialog = ref(false);
-const rowToDelete = ref<any | null>(null);
-const { apiItemHold, loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, fetchItemHold } = useItemHold();
+const showReleaseDialog = ref<boolean>(false);
+const rowToRelease = ref<any | null>(null);
+const ItemHoldSerialRef = ref<InstanceType<typeof ItemHoldSerial> | null>(null);
 
-const customItems = [
-    {
-        slot: true,
-        label: t("button.view"),
-        icon: "Eye",
-        color: "#3F5FAC",
-        action: 'view',
-    },
-];
+const confirmationTitle = computed(() => {
+    return t('itemHold.releaseItemConfirm');
+});
+const { apiItemHold, loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange, fetchItemHold, releaseItem } = useItemHold();
+
 onMounted(() => {
     fetchItemHold();
 });
@@ -68,34 +66,30 @@ const lastRecord = computed(() => {
     return Math.min(last, totalCount.value || last);
 });
 
-const confirmDelete = (row: any) => {
-    rowToDelete.value = row;
-    showDeleteDialog.value = true;
+const confirmRelease = (row: any) => {
+    rowToRelease.value = row;
+    showReleaseDialog.value = true;
 };
 
-const handleActionMenu = async (payload: any) => {
-    const action = payload.action || payload;
-    const data = payload.data || payload.row || payload;
-    if (action === 'edit') {
-        router.push({
-            name: "ItemHoldFormEdit",
-            params: { id: data.id },
-        });
-    }
-    if (action === 'view') {
-        router.push({
-            name: "ItemHoldFormView",
-            params: { id: data.id },
-        });
-    }
-    if (action === 'delete') {
-        confirmDelete(data);
+
+const getSerial = (row: any) => {
+    if(ItemHoldSerialRef.value) {
+        ItemHoldSerialRef.value.getSerailDialog(row)
+
     }
 };
 
 const addItemHold = () => {
     router.push({ name: 'ItemHoldCreate' });
 };
+
+const handleReleaseConfirm = async () => {
+    showReleaseDialog.value = false;
+    await releaseItem({
+        transactionLineId: rowToRelease.value.transactionLineId,
+        itemId: rowToRelease.value.itemId
+    })
+}
 </script>
 
 <template>
@@ -112,8 +106,8 @@ const addItemHold = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="apiItemHold" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
+                <DynamicTable :columns="columns" :data="apiItemHold" :loading="loading"
+                    @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
                     <template v-slot:["col-type"]="{ data }">
@@ -127,64 +121,33 @@ const addItemHold = () => {
                     </template>
                     <template v-slot:["col-serial"]="{ data }">
                         <div v-if="data.hasSerial" class="flex align-items-center justify-center">
-                            <VsxIcon iconName="Eye" type="linear" class="cursor-pointer" />
+                            <VsxIcon iconName="Eye" type="linear" class="cursor-pointer" @click="getSerial(data)" />
                         </div>
                     </template>
-                    <template v-slot:["col-release"]>
+                    <template v-slot:["col-release"]="{ data }">
                         <div
+                            @click="confirmRelease(data)"
                             class="cursor-pointer flex align-items-center justify-center rounded gap-1 p-1 text-sm text-success-500">
                             <VsxIcon iconName="Unlock" type="linear" />
                             <span>{{ $t('operation.release') }}</span>
                         </div>
                     </template>
                 </DynamicTable>
-
-                <div class="grid grid-cols-2 gap-3 mt-5">
-                    <div class="p-5 bg-primary-50 border border-primary-400 rounded-xl">
-                        <p>
-                            <strong>{{ $t("itemHold.holdTypesTitle") }}</strong>
-                        </p>
-
-                        <div class="px-5 text-sm mt-2 space-y-1">
-                            <p>
-                                <strong>{{ $t("itemHold.qcHoldLabel") }} </strong>
-                                {{ $t("itemHold.qcHoldDescription") }}
-                            </p>
-
-                            <p>
-                                <strong>{{ $t("itemHold.reservationLabel") }} </strong>
-                                {{ $t("itemHold.reservationDescription") }}
-                            </p>
-
-                            <p>
-                                <strong>{{ $t("itemHold.damageHoldLabel") }} </strong>
-                                {{ $t("itemHold.damageHoldDescription") }}
-                            </p>
-
-                            <p>
-                                <strong>{{ $t("itemHold.investigationLabel") }} </strong>
-                                {{ $t("itemHold.investigationDescription") }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="p-5 bg-warning-50 border border-warning-400 rounded-xl">
-                        <p>
-                            <strong>{{ $t("itemHold.importantNotesTitle") }}</strong>
-                        </p>
-
-                        <div class="px-5 text-sm mt-2 space-y-1">
-                            <p>• {{ $t("itemHold.note1") }}</p>
-                            <p>• {{ $t("itemHold.note2") }}</p>
-                            <p>• {{ $t("itemHold.note3") }}</p>
-                        </div>
-                    </div>
-                </div>
+                <ItemHoldInfo />
 
             </template>
         </card>
-
-
+        <StatusDialog
+            v-model:visible="showReleaseDialog"
+            :icon="alertIcon"
+            :title="confirmationTitle"
+            :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('operation.release'), variant: 'primary', action: 'confirm' },
+            ]"
+            @confirm="handleReleaseConfirm"
+            />
+        <ItemHoldSerial ref="ItemHoldSerialRef" :selectedItem="rowToRelease" />
     </div>
 </template>
 
