@@ -44,7 +44,7 @@ const filtersOperation = computed(() => {
             options: [
                 { label: t("usersManagement.allStatus"), value: null },
                 { label: t("button.Pending"), value: 1 },
-                { label: t("button.Shipped"), value: 2 },
+                { label: t("button.Posted"), value: 2 },
             ],
         }
     ]
