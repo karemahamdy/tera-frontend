@@ -686,6 +686,8 @@
   },
   "purchaseWaybill": {
     "purchaseWaybill": "Purchase Waybill",
+    "addpurchaseWaybill": "New Purchase Waybill",
+    "viewpurchaseWaybill": "View Purchase Waybill",
     "subtitle": "Manage inbound purchase receipts",
     "addNew": "New Purchase",
     "searchPlaceholder": "Search by ID, supplier, PO...",
@@ -725,7 +727,9 @@
     "ReceivingWarehousePlaceholder": "Select Receiving Warehouse",
     "zone": "Zone / Location",
     "zonePlaceholder": "Select Zone or Location",
-    "PurchaseWaybillDeletedSuccessfully": "Purchase Deleted successfully"
+    "PurchaseWaybillDeletedSuccessfully": "Purchase Deleted successfully",
+    "PurchaseWaybillUpdatedSuccessfully": "PurchaseWaybill Updated Successfully",
+    "PurchaseWaybillCreatedSuccessfully": "PurchaseWaybill Created Successfully"
   },
   "salesWaybill": {
     "salesWaybill": "Sales Waybill",
@@ -756,6 +760,7 @@
     "ShippingAddressPlaceholder": "Enter Shipping Address",
     "PurchaseOrder": "Purchase Order",
     "SalesOrderPlaceholder": "Select Sales Order",
+    "SalesOrder": "Sales Order",
     "SalesWaybillDeletedSuccessfully": "SalesWaybil lDeleted Successfully",
     "SalesWaybillUpdatedSuccessfully": "SalesWaybill Updated Successfully",
     "SalesWaybillCreatedSuccessfully": "SalesWaybill Created Successfully"
@@ -1258,5 +1263,11 @@
     "transfer": "Transfer",
     "inbound": "Inbound",
     "outbound": "Outbound"
+  },
+  "steps": {
+    "commercialDetails": "Commercial Details",
+    "warehouseDetails": "Warehouse Details",
+    "lineItems": "Line Items",
+    "payment": "Payment"
   }
 }

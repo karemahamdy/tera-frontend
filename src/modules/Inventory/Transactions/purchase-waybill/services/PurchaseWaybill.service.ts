@@ -1,33 +1,37 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, PurchaseWaybillResponse,  } from "../types/PurchaseWaybill";
+import type {
+  Pagination,
+  PurchaseWaybillResponse,
+  PurchaseWaybillByIdResponse,
+  PurchaseWaybillDetail,
+} from "../types/PurchaseWaybill";
 
 
 export const PurchaseWaybillService = {
   async getAll(params: Pagination) {
-
     const resp = await axiosWrapper.get<PurchaseWaybillResponse>(
-      `/PurchaseWaybills`, { 
-        params ,
+      `/PurchaseWaybills`, {
+      params,
       paramsSerializer: (params) => {
-          const searchParams = new URLSearchParams();
-          for (const key in params) {
-            const value = (params as any)[key];
-            if (Array.isArray(value)) {
-              value.forEach(v => searchParams.append(key, v));
-            } else if (value !== undefined && value !== null && value !== "") {
-              searchParams.append(key, value);
-            }
+        const searchParams = new URLSearchParams();
+        for (const key in params) {
+          const value = (params as any)[key];
+          if (Array.isArray(value)) {
+            value.forEach(v => searchParams.append(key, v));
+          } else if (value !== undefined && value !== null && value !== "") {
+            searchParams.append(key, value);
           }
-          return searchParams.toString();
         }
+        return searchParams.toString();
       }
+    }
     );
     return resp.data;
   },
 
-  async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/PurchaseWaybills/${id}`);
-    return data.data;
+  async getById(id: string): Promise<PurchaseWaybillDetail> {
+    const envelope = await axiosWrapper.get<PurchaseWaybillByIdResponse>(`/PurchaseWaybills/${id}`);
+    return envelope.data;
   },
 
   async create(payload: any) {
@@ -51,9 +55,10 @@ export const PurchaseWaybillService = {
         responseType: "blob",
       }
     );
-
     return data;
-    ;
-  }
-
+  },
+  async getNextNumber() {
+    const data = await axiosWrapper.get<any>(`/PurchaseWaybills/next-number`);
+    return data.data;
+  },
 };

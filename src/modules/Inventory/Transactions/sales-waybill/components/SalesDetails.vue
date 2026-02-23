@@ -79,8 +79,33 @@ const errors = reactive({
         </div>
       </div>
 
-      <FormDropdown :label="t('salesWaybill.PurchaseOrder')" v-model="SalesOrder" :error="errors.SalesOrder"
+      <FormDropdown :label="t('salesWaybill.SalesOrder')" v-model="SalesOrder" :error="errors.SalesOrder"
         :placeholder="t('salesWaybill.SalesOrderPlaceholder')" />
+
+    </div>
+
+     <!-- ================= Currency Info ================= -->
+    <p class="font-bold mb-5 mt-5 text-lg">
+      {{ t("purchaseWaybill.CurrencyInfo") }}
+    </p>
+
+    <FormDropdown class="w-full" :label="t('purchaseWaybill.Currency')" :options="SalesOrder" optionLabel="label"
+      optionValue="value" v-model="SalesOrder" :error="errors.Currency"
+      :placeholder="t('purchaseWaybill.CurrencyPlaceholder')" />
+
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+      <div>
+        <label class="block text-gray-900 text-lg">
+          {{ t("purchaseWaybill.ExchangeDate") }}
+        </label>
+        <DatePicker v-model="SalesOrder" showIcon fluid iconDisplay="input"
+          :placeholder="t('purchaseWaybill.ExchangedatePlaceholder')" />
+      </div>
+
+      <FormInput :label="t('purchaseWaybill.ExchangeValue')" v-model="SalesOrder" :error="errors.ExchangeValue"
+        :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')" />
 
     </div>
   </div>

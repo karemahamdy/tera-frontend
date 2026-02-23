@@ -690,6 +690,8 @@
   },
   "purchaseWaybill": {
     "purchaseWaybill": "إذن استلام مشتريات",
+    "addpurchaseWaybill": "إذن استلام مشتريات جديد ",
+    "viewpurchaseWaybill":  "إذن استلام مشتريات ",
     "subtitle": "إدارة استلامات المشتريات الواردة",
     "addNew": "إضافة عملية شراء جديدة",
     "searchPlaceholder": "ابحث برقم الإذن أو المورد أو أمر الشراء...",
@@ -729,7 +731,9 @@
     "ReceivingWarehousePlaceholder": "اختر المخزن",
     "zone": "المنطقة",
     "zonePlaceholder": "اختر المنطقة",
-    "PurchaseWaybillDeletedSuccessfully":"تم الحذف بنجاح"
+    "PurchaseWaybillDeletedSuccessfully":"تم الحذف بنجاح",
+    "PurchaseWaybillCreatedSuccessfully": "تم التعديل بنجاح",
+    "PurchaseWaybillUpdatedSuccessfully": "تم الانشاء بنجاح"
   },
   "salesWaybill": {
     "salesWaybill": "إذن صرف مبيعات",
@@ -760,6 +764,7 @@
     "ShippingAddressPlaceholder": "أدخل عنوان الشحن",
     "PurchaseOrder": "أمر الشراء",
     "SalesOrderPlaceholder": "اختر أمر الشراء",
+    "SalesOrder": " أمر الشراء",
     "SalesWaybillDeletedSuccessfully": "تم حذف العنصر بنجاح",
     "SalesWaybillCreatedSuccessfully": "تم انشاء العنصر بمجاح",
     "SalesWaybillUpdatedSuccessfully": "تم التحديث بنجاح"
@@ -1254,5 +1259,11 @@
     "transfer": "تحويل",
     "inbound": "وارد",
     "outbound": "صادر"
+  },
+"steps": {
+    "commercialDetails": "البيانات التجارية",
+    "warehouseDetails": "بيانات المخازن",
+    "lineItems": "بنود الفاتورة",
+    "payment": "الدفع"
   }
 }

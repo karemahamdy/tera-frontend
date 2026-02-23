@@ -78,13 +78,13 @@ const handleActionMenu = async (payload: any) => {
     const data = payload.data || payload.row || payload;
     if (action === 'edit') {
         router.push({
-            name: "PurchaseWaybillFormEdit",
+            name: "PurchaseWaybillEdit",
             params: { id: data.id },
         });
     }
     if (action === 'view') {
         router.push({
-            name: "PurchaseWaybillFormView",
+            name: "PurchaseWaybillView",
             params: { id: data.id },
         });
     }

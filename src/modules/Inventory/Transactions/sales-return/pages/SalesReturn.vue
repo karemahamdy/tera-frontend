@@ -58,7 +58,9 @@ const filtersOperation = computed(() => {
             placeholder: "SalesReturn.allreason",
             value: null,
             field: "ReturnReason",
+             isSingle: true,
             options: [
+                   { label: t("button.all"), value: null },
                  ...reasonsLookups.value
             ],
         }
