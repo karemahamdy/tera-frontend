@@ -31,3 +31,11 @@ export interface Pagination {
   orderBy?: string;
   orderDirection?: "asc" | "desc";
 }
+
+export interface MergeOrTransferTransactionsPayload {
+  sourceItemId: string;
+  targetItemId: string;
+  mergeTransfareType: string;
+  warehouseId?: string;
+  notes?: string;
+}

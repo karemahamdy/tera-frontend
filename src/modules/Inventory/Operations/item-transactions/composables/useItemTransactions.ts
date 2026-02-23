@@ -1,7 +1,7 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { ItemTransactions } from "../types/ItemTransactions";
+import type { ItemTransactions, MergeOrTransferTransactionsPayload } from "../types/ItemTransactions";
 import { ItemTransactionsService } from "../services/ItemTransactions.service";
 
 
@@ -45,41 +45,12 @@ export function useItemTransactions() {
     }
   };
 
-  const fetchItemTransactionsById = async (id: string) => {
-    loading.value = true;
-    try {
-      const resp = await ItemTransactionsService.getById(id);
-      return resp;
-    } catch (err: any) {
-      toastService.error(err);
-      return null;
-    } finally {
-      loading.value = false;
-    }
-  };
 
-  const createItemTransactions = async (payload: any) => {
+  const createItemTransactions = async (payload: MergeOrTransferTransactionsPayload) => {
     loading.value = true;
     try {
-      const response = await ItemTransactionsService.create(payload);
+      await ItemTransactionsService.create(payload);
       toastService.success(t("ItemTransactions.ItemTransactionsCreatedSuccessfully"));
-      await fetchItemTransactions(pageIndex.value);
-      return response;
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const updateItemTransactions = async (id: string, payload: any) => {
-    loading.value = true;
-    try {
-      const response = await ItemTransactionsService.update(id, payload);
-      toastService.success(t("ItemTransactions.ItemTransactionsUpdatedSuccessfully"));
-      await fetchItemTransactions(pageIndex.value);
-      return response;
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -117,9 +88,7 @@ export function useItemTransactions() {
     apiItemTransactions,
     tableData,
     fetchItemTransactions,
-    fetchItemTransactionsById,
     createItemTransactions,
-    updateItemTransactions,
     pageIndex,
     pageSize,
     totalCount,
