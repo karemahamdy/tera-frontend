@@ -10,6 +10,7 @@ const activeStep = ref(0);
 
 const formData = reactive({
   waybillDate: '',
+  documentNumber: '',
   inventoryRequest: '',
   direction: 'Transfer', 
   warehouse: '', 
@@ -48,7 +49,8 @@ const steps = [
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
      <ScreenHeader title="inventory" subtitle="inventoryRequest.transaction" actionName="warehouseTransaction.warehouseTransaction" />
-    <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
+    <BaseStepper v-model="activeStep" :steps="steps"   :code="formData?.documentNumber ?? ''"
+>
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
           <WarehouseTransaction v-if="activeStep === 0" v-model="formData" />

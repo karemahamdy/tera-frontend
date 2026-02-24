@@ -216,10 +216,10 @@ const removeItem = (data: any) => {
 
         <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
 
-        <QuantitySerialDialog v-if="currentItem  && isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
+        <SalesQuantitySerialDialog v-if="currentItem  && isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
             :initialSerials="currentItem.serials" @save="handleSaveSerials" />
 
-              <SalesQuantitySerialDialog v-if="currentItem  && !isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
+              <QuantitySerialDialog v-if="currentItem  && !isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
             :initialSerials="currentItem.serials" @save="handleSaveSerials" />
 
 

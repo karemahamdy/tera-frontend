@@ -27,12 +27,8 @@ const modelValue = computed({
   set: (val) => emit('update:modelValue', val)
 })
 
-const form = reactive({
-  waybillNumber: modelValue.value?.waybillNumber ?? "",
-})
-
 const errors = reactive({
-  waybillNumber: "",
+  documentNumber: "",
   InventoryRequest: "",
   warehouse: "",
   Zone: "",
@@ -44,7 +40,7 @@ onMounted(async () => {
   await Promise.all([getCostCenterLookups()]);
   const nextNumber = await fetchNextNumber()
   if (nextNumber) {
-    modelValue.value.waybillNumber = nextNumber
+    modelValue.value.documentNumber = nextNumber.documentNumber
   }
 })
 </script>
@@ -70,8 +66,14 @@ onMounted(async () => {
     </div>
 
 
-    <FormInput :label="t('purchaseWaybill.WaybillNumber')" v-model="form.waybillNumber" :error="errors.waybillNumber"
-      :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')" :invalid="!!errors.waybillNumber" disabled />
+   <FormInput
+  :label="t('purchaseWaybill.WaybillNumber')"
+  v-model="modelValue.documentNumber"
+  :error="errors.documentNumber"
+  :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')"
+  :invalid="!!errors.documentNumber"
+  disabled
+/>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
