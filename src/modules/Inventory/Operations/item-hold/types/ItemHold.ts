@@ -86,3 +86,4 @@ export interface ItemSerialTransactionResponse {
   errors: any;
   id: string | null;
 }
+

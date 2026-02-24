@@ -1,9 +1,9 @@
 import * as yup from "yup";
 
 export const ItemTransactionsSchema = yup.object({
-  transactionType: yup.string().required("form.fieldRequired"),
-  sourceItem: yup.string().required("form.fieldRequired"),
-  targetItem: yup.string().required("form.fieldRequired"),
-  warehouseID: yup.string().nullable(),
+  mergeTransfareType: yup.string().required("form.fieldRequired"),
+  sourceItemId: yup.string().required("form.fieldRequired"),
+  targetItemId: yup.string().required("form.fieldRequired"),
+  warehouseId: yup.string().nullable(),
   notes: yup.string().nullable(),
 });

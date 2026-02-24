@@ -39,3 +39,10 @@ export interface MergeOrTransferTransactionsPayload {
   warehouseId?: string;
   notes?: string;
 }
+
+
+export interface ItemInfo {
+  totalQuantity: number;
+  locations: number;
+  transaction: number;
+}
