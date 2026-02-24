@@ -63,3 +63,22 @@ export interface InventoryAdjustmentById {
   direction: AdjustmentDirection;
   lines: AdjustmentLine[];
 }
+
+
+export interface PhysicalCountItem {
+  itemId: string;
+  itemName: string;
+  itemCode: string;
+  countedId: string;
+  countedCode: string;
+  warehouseName: string;
+  countedQuantity: number;
+  variance: number;
+  availableBalance: number;
+};
+export interface CreateInventoryAdjustmentPayload {
+  adjustmentReason: string;
+  physicalCountHeaderIds: PhysicalCountItem[];
+  adjustmentNumber: string;
+  notes?: string | null;
+}

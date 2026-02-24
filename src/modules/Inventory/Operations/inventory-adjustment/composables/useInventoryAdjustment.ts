@@ -1,7 +1,12 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { InventoryAdjustment, InventoryAdjustmentById } from "../types/InventoryAdjustment";
+import type {
+  InventoryAdjustment,
+  InventoryAdjustmentById,
+  CreateInventoryAdjustmentPayload,
+  PhysicalCountItem,
+} from "../types/InventoryAdjustment";
 import { InventoryAdjustmentService } from "../services/InventoryAdjustmentservice";
 import { useRoute } from "vue-router";
 import router from "@/app/router";
@@ -12,6 +17,7 @@ export function useInventoryAdjustment() {
   const apiInventoryAdjustment = ref<InventoryAdjustment[]>([]);
   const inventoryAdjustment = ref<InventoryAdjustmentById | null>(null);
   const tableData = ref<any[]>([]);
+  const PhysicalCountsForAdjustmentByItem = ref<PhysicalCountItem[]>([]);
 
   const pageIndex = ref(1);
   const pageSize = ref(10);
@@ -64,14 +70,31 @@ export function useInventoryAdjustment() {
     }
   };
 
-  const createInventoryAdjustment = async (payload: any) => {
+  const createInventoryAdjustment = async (
+    payload: CreateInventoryAdjustmentPayload,
+  ) => {
     loading.value = true;
     try {
-      const response = await InventoryAdjustmentService.create(payload);
+      await InventoryAdjustmentService.create(payload);
       toastService.success(
         t("InventoryAdjustment.InventoryAdjustmentCreatedSuccessfully"),
       );
       await fetchInventoryAdjustment(pageIndex.value);
+      router.replace({ name: "InventoryAdjustment" });
+    } catch (err: any) {
+      toastService.error(err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const getPhysicalCountsForAdjustmentByItem = async () => {
+    loading.value = true;
+    try {
+      const response =
+        await InventoryAdjustmentService.getPhysicalCountsForAdjustmentByItem();
+      PhysicalCountsForAdjustmentByItem.value = response ?? [];
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -98,14 +121,17 @@ export function useInventoryAdjustment() {
     }
   };
 
-  const deleteInventoryAdjustment = async (id: string, getList: boolean = true) => {
+  const deleteInventoryAdjustment = async (
+    id: string,
+    getList: boolean = true,
+  ) => {
     loading.value = true;
     try {
       await InventoryAdjustmentService.delete(id);
       toastService.success(
         t("InventoryAdjustment.InventoryAdjustmentDeletedSuccessfully"),
       );
-      if(getList){
+      if (getList) {
         if (apiInventoryAdjustment.value.length === 1 && pageIndex.value > 1) {
           await fetchInventoryAdjustment(pageIndex.value - 1);
         } else {
@@ -180,5 +206,7 @@ export function useInventoryAdjustment() {
     onSearch,
     onFilterChange,
     onSort,
+    getPhysicalCountsForAdjustmentByItem,
+    PhysicalCountsForAdjustmentByItem,
   };
 }

@@ -1064,7 +1064,7 @@
     "notesPlaceholder": "Add any relevant notes...",
     "sourceTargetItems": "Transfer Movement Details",
     "sourceItem": "Source Item",
-    "sourceItemFrom": "Source Item (Form)",
+    "sourceItemFrom": "Source Item (From)",
     "sourceItemSelect": "Select Source Item",
     "targetItemSelect": "Select Target Item",
     "targetItemTo": "Target Item (To)",
