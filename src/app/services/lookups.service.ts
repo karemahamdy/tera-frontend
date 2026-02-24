@@ -125,8 +125,11 @@ export const LookupsService = {
     );
   },
   getItemLookups() {
-    return axiosWrapper.get<{ data: Lookups[] }>(
-      `/Lookups/ItemLookups`,
+    return axiosWrapper.get<{ data: Lookups[] }>(`/Lookups/ItemLookups`);
+  },
+  getSalesReasonLookups() {
+    return axiosWrapper.get<{ data: reasonsLookups[] }>(
+      `/InventoryLookups/sales-return-reasons`,
     );
   },
 };

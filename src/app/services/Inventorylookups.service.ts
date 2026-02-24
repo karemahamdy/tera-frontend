@@ -37,4 +37,5 @@ export const InventoryLookupsService = {
       `/InventoryLookups/items?trackedOnly=${trackedOnly}`,
     );
   },
+ 
 };
