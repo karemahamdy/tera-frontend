@@ -102,6 +102,7 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
+
   return {
     getSupplierLookups,
     getCurrenciesLookups,
