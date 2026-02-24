@@ -313,7 +313,7 @@ const handleWarehouseChange = async (item: any) => {
               </div>
               <BaseButton
                 v-else-if="!disabled"
-                :label="data.locationCode || t('itemsList.selectZone')"
+                :label="data.locationCode || t('itemList.selectZone')"
                 variant="outline-primary" class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200"
                 @click="openLocationPicker(data)" />
               <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
@@ -323,7 +323,7 @@ const handleWarehouseChange = async (item: any) => {
               </div>
             </template>
             <template v-else-if="data.warehouseId">
-              <span class="text-gray-400 italic text-xs">{{ t('itemsList.zoneDisabled') }}</span>
+              <span class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
             </template>
           </div>
         </template>
