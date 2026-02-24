@@ -118,4 +118,9 @@ getCostcenterLookups(isActive: boolean = true) {
       `/Lookups/AdjustmentReasonLookups`,
     );
   },
+   getSalesReasonLookups() {
+    return axiosWrapper.get<{ data: reasonsLookups[] }>(
+      `/InventoryLookups/sales-return-reasons`,
+    );
+  },
 };
