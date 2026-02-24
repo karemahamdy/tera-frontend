@@ -37,4 +37,9 @@ export const InventoryLookupsService = {
       `/InventoryLookups/items?trackedOnly=${trackedOnly}`,
     );
   },
+  getWarehouseHierarchyLookups() {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/Lookups/warehouse-hierarchy-lookups`,
+    );
+  },
 };

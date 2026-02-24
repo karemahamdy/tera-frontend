@@ -27,7 +27,7 @@ import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
-import { FileUpload } from "primevue";
+import { FileUpload, InputNumber } from "primevue";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 import MultiSelect from "primevue/multiselect";
@@ -61,6 +61,7 @@ export function setupPrimeVue(app: App) {
 
   app.component("Button", Button);
   app.component("InputText", InputText);
+  app.component("InputNumber", InputNumber);
   app.component("Card", Card);
   app.component("Password", Password);
   app.component("Checkbox", Checkbox);

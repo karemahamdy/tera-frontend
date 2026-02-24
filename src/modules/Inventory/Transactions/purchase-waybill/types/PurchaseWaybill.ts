@@ -72,6 +72,7 @@ export interface LineItem {
   id: string;
   lineNumber: number;
   itemId: string;
+  itemCode: string;
   itemName: string;
   unitId: string;
   unitName: string;

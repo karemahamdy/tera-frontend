@@ -94,12 +94,12 @@ const submit = async () => {
       })(),
       notes: formData.value.notes
     };
-
     if (mode.value === 'edit' && id.value) {
       await updatePurchaseWaybill(id.value, payload);
     } else {
       await createPurchaseWaybill(payload);
     }
+    await router.push("/purchase-waybill");
   } catch (error) {
     console.error('Failed to submit purchase waybill:', error);
   }
@@ -176,6 +176,7 @@ onMounted(async () => {
             </div>
             <div v-show="activeStep === 3">
               <Payment
+                :lineItems="formData?.lineItems"
                 :paymentInfo="formData?.paymentInfo"
                 :paymentTerms="formData?.paymentTerms"
                 :notes="formData?.notes"

@@ -14,6 +14,8 @@ export function useInventoryLookups() {
   const ZonesLookups = ref<LookupsOption[]>([]);
   const itemsLookups = ref<ItemLookup[]>([]);
   const UnitsLookups = ref<LookupsOption[]>([]);
+  const WarehouseHierarchyLookups = ref<any[]>([]);
+
 
   const getSupplierLookups = async () => {
     try {
@@ -31,7 +33,7 @@ export function useInventoryLookups() {
       const res = await InventoryLookupsService.getPaymentTermsLookups();
       PaymentTerms.value = res.data.map((group) => ({
         label: group.name,
-        value: group.code,
+        value: group.id || "",
       }));
     } catch (error) {
       toastService.error(error as string);
@@ -102,6 +104,15 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
+  const getWarehouseHierarchyLookups = async () => {
+    try {
+      const res = await InventoryLookupsService.getWarehouseHierarchyLookups();
+      WarehouseHierarchyLookups.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     getSupplierLookups,
     getCurrenciesLookups,
@@ -111,6 +122,7 @@ export function useInventoryLookups() {
     getZonesLookups,
     getItemsLookups,
     getUnitsLookups,
+    getWarehouseHierarchyLookups,
     ZonesLookups,
     supplierLookups,
     CurrenciesLookups,
@@ -118,6 +130,8 @@ export function useInventoryLookups() {
     PaymentTerms,
     WarehouseLookups,
     itemsLookups,
-    UnitsLookups
+    UnitsLookups,
+    WarehouseHierarchyLookups
   };
+
 }

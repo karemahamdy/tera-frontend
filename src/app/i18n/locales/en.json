@@ -427,6 +427,8 @@
     "ItemCreatedSuccessfully": "Item created successfully",
     "ItemUpdatedSuccessfully": "Item updated successfully",
     "ItemDeletedSuccessfully": "Item deleted successfully",
+    "selectZone": "Select Zone",
+    "zoneDisabled": "Zone selection disabled",
     "title": "Items",
     "subtitle": "Browse and manage all inventory items",
     "addItem": "Add New Item",
@@ -683,6 +685,17 @@
     "itemUpdatedSuccessfully": "Item updated successfully",
     "itemCreatedSuccessfully": "Item created successfully",
     "branchID": "Assigned Branch"
+  },
+  "locationPicker": {
+    "title": "Select Storage Location",
+    "searchPlaceholder": "Search by location code or zone...",
+    "locationCode": "Location Code",
+    "zoneCode": "Zone Code",
+    "zone": "Zone",
+    "row": "Row",
+    "column": "Column",
+    "rack": "Rack",
+    "confirmSelection": "Confirm Selection"
   },
   "purchaseWaybill": {
     "purchaseWaybill": "Purchase Waybill",
@@ -982,8 +995,8 @@
     "createAdjustment": "Create Adjustment",
     "newAdjustment": "New Adjustment",
     "itemToAdjustment": "Item To Adjustment",
-    "DamagedItem": "Damaged Item", 
-    "ExpiredItem": "Expired Item", 
+    "DamagedItem": "Damaged Item",
+    "ExpiredItem": "Expired Item",
     "CountVariance": "Count Variance",
     "InventoryAdjustmentDeletedSuccessfully": "Inventory Adjustment Deleted Successfully"
   },
@@ -1160,7 +1173,8 @@
     "subtotal": "Subtotal",
     "items": "Items",
     "selected": "selected",
-    "Showing": "Showing"
+    "Showing": "Showing",
+    "zoneDisabled": "Zone is disabled"
   },
   "itemDialog": {
     "selectItem": "Select Item",
