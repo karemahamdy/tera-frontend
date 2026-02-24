@@ -167,6 +167,8 @@ onMounted(async () => {
 
 const showLocationPicker = ref(false);
 const locationPickerTarget = ref<any>(null);
+const isLoadingLocation = ref(false);
+const loadingLocationItemId = ref<any>(null);
 
 const currentLocations = computed(() => {
   if (!locationPickerTarget.value) return [];
@@ -195,7 +197,7 @@ const handleSelectLocation = (location: any) => {
   emitUpdate();
 };
 
-const handleWarehouseChange = (item: any) => {
+const handleWarehouseChange = async (item: any) => {
   const wh = WarehouseLookups.value.find(w => w.value === item.warehouseId);
   if (wh) {
     item.warehouse = wh.label;
@@ -203,9 +205,16 @@ const handleWarehouseChange = (item: any) => {
     item.zone = '';
     item.zoneId = null;
     item.locationCode = '';
-    // Auto-open picker if Professional
-    const hierarchy = WarehouseHierarchyLookups.value.find(w => w.warehouseId === item.warehouseId);
-    if (hierarchy?.warehouseType === 'Professional') {
+    // If Professional, fetch hierarchy first then auto-open picker
+    if (wh.type === 'Professional') {
+      isLoadingLocation.value = true;
+      loadingLocationItemId.value = item.id;
+      try {
+        await getWarehouseHierarchyLookups();
+      } finally {
+        isLoadingLocation.value = false;
+        loadingLocationItemId.value = null;
+      }
       openLocationPicker(item);
     }
   }
@@ -295,11 +304,19 @@ const handleWarehouseChange = (item: any) => {
         <template #col-zone="{ data }">
           <div class="flex flex-col gap-1">
             <template
-              v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === data.warehouseId)?.warehouseType === 'Professional'">
-              <BaseButton v-if="!disabled" :label="data.locationCode || t('itemsList.selectZone')" size="small"
+              v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === data.warehouseId)?.warehouseType === 'Professional' || (isLoadingLocation && loadingLocationItemId === data.id)">
+              <!-- Loading spinner while fetching hierarchy -->
+              <div v-if="isLoadingLocation && loadingLocationItemId === data.id"
+                class="flex items-center gap-2 text-xs text-primary-500 font-medium py-1 px-2 border border-primary-200 rounded-lg">
+                <ProgressSpinner style="width:14px;height:14px" strokeWidth="6" />
+                <span>Loading...</span>
+              </div>
+              <BaseButton
+                v-else-if="!disabled"
+                :label="data.locationCode || t('itemsList.selectZone')"
                 variant="outline-primary" class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200"
                 @click="openLocationPicker(data)" />
-              <span v-else class="text-gray-700">{{ data.locationCode || '—' }}</span>
+              <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
               <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
                 {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack
                   }})</template>
@@ -313,7 +330,7 @@ const handleWarehouseChange = (item: any) => {
 
         <template #col-unitPrice="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.unitPrice }}</span>
-          <InputText v-model.number="data.unitPrice" class="w-20 p-inputtext-sm" :disabled="disabled" @input="() => {
+          <InputText v-else v-model.number="data.unitPrice" class="w-20 p-inputtext-sm" :disabled="disabled" @input="() => {
             data.total = calcTotal(data.quantity, data.unitPrice, data.tax);
             emitUpdate();
           }" />
@@ -321,7 +338,7 @@ const handleWarehouseChange = (item: any) => {
 
         <template #col-tax="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.tax }}%</span>
-          <InputText v-model.number="data.tax" class="w-16 p-inputtext-sm" :disabled="disabled" @input="() => {
+          <InputText  v-else v-model.number="data.tax" class="w-16 p-inputtext-sm" :disabled="disabled" @input="() => {
             data.total = calcTotal(data.quantity, data.unitPrice, data.tax);
             emitUpdate();
           }" />

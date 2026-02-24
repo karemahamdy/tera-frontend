@@ -54,8 +54,7 @@ const handleCancel = () => {
   >
     <div class="flex flex-col gap-6 pt-2">
       <!-- Search -->
-      <div class="relative">
-        <VsxIcon iconName="SearchNormal1" :size="20" type="linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+      <div>
         <InputText 
           v-model="searchQuery" 
           :placeholder="t('locationPicker.searchPlaceholder')" 
