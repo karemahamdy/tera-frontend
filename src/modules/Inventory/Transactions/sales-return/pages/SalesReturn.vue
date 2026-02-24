@@ -15,7 +15,7 @@ const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
 const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange, fetchSalesReturn, apiSalesReturn } = useSalesReturn();
-const { reasonsLookups, getReasonLookups } = useLookups();  
+const { reasonsSalesLookups, getSalesReasonLookups } = useLookups();  
 
 const rules = [
   "salesRules.stockAvailable",    
@@ -37,7 +37,7 @@ const customItems = [
 ];
 onMounted(() => {
    Promise.all([
-        getReasonLookups(), 
+        getSalesReasonLookups(), 
          fetchSalesReturn()
     ]);
 });
@@ -61,7 +61,7 @@ const filtersOperation = computed(() => {
              isSingle: true,
             options: [
                    { label: t("button.all"), value: null },
-                 ...reasonsLookups.value
+                 ...reasonsSalesLookups.value
             ],
         }
     ]

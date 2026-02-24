@@ -8,6 +8,7 @@ export function useLookups() {
   const branchesLookups = ref<LookupsOption[]>([]);
   const entitiesLookups = ref<LookupsOption[]>([]);
   const reasonsLookups = ref<LookupsOption[]>([]);
+  const reasonsSalesLookups = ref<LookupsOption[]>([]);
   const rolesLookups = ref<LookupsOption[]>([]);
   const screensLookups = ref<LookupsOption[]>([]);
   const CodeLookups = ref<LookupsOption[]>([]);
@@ -333,6 +334,17 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
+    const getSalesReasonLookups = async () => {
+    try {
+      const res = await LookupsService.getSalesReasonLookups();
+      reasonsSalesLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.name,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   return {
     groupsLookups,
     branchesLookups,
@@ -361,6 +373,7 @@ export function useLookups() {
     warehouseLookup,
     itemGroupLookups,
     adjustmentReasonLookups,
+    reasonsSalesLookups,
     getAdjustmentReasonLookups,
     getIPLookups,
     getReasonLookups,
@@ -388,5 +401,6 @@ export function useLookups() {
     getLedgerDetailCardLookups,
     getCostcenterLookups,
     getAccountsLookups,
+    getSalesReasonLookups
   };
 }
