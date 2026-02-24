@@ -209,10 +209,9 @@ onMounted(async () => {
             </template>
           </div>
         </template>
-<!-- select -->
+        <!-- select -->
         <template #col-uom="{ data }">
-          <span v-if="disabled || !unitOptionsMap[data.id]"
-            class="text-gray-700">{{ data.uom }}</span>
+          <span v-if="disabled || !unitOptionsMap[data.id]" class="text-gray-700">{{ data.uom }}</span>
           <select v-else v-model="data.uom"
             class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
             @change="() => { const opt = (unitOptionsMap[data.id] || []).find((o: any) => o.value === data.uom); if (opt) { data.unitId = opt.unitId; } emitUpdate(); }">
@@ -241,17 +240,21 @@ onMounted(async () => {
             <option value="Zone B">Zone B</option>
           </select>
         </template>
-<!--  -->
+        <!--  -->
         <template #col-unitPrice="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.unitPrice }}</span>
-          <InputText v-else :value="data.unitPrice" class="w-20 p-inputtext-sm"
-            @change="(e: any) => { const v = parseFloat(e.target.value) || 0; data.unitPrice = v; data.total = calcTotal(data.quantity, v, data.tax); emitUpdate(); }" />
+          <InputText v-model.number="data.unitPrice" class="w-20 p-inputtext-sm" :disabled="disabled" @input="() => {
+            data.total = calcTotal(data.quantity, data.unitPrice, data.tax);
+            emitUpdate();
+          }" />
         </template>
 
         <template #col-tax="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.tax }}%</span>
-          <InputText v-else :value="data.tax" class="w-16 p-inputtext-sm"
-            @change="(e: any) => { const v = parseFloat(e.target.value) || 0; data.tax = v; data.total = calcTotal(data.quantity, data.unitPrice, v); emitUpdate(); }" />
+          <InputText v-model.number="data.tax" class="w-16 p-inputtext-sm" :disabled="disabled" @input="() => {
+            data.total = calcTotal(data.quantity, data.unitPrice, data.tax);
+            emitUpdate();
+          }" />
         </template>
 
         <template #col-total="{ data }">
