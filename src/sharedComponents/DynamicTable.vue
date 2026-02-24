@@ -29,7 +29,8 @@ const props = defineProps({
   showDelete: { type: Boolean, default: true },
   hasSelection: { type: Boolean, default: false },
   selectedRows: { type: Array, default: () => [] },
-  selectionMode: { type: String, default: "multiple" }
+  selectionMode: { type: String, default: "multiple" },
+  dataKey: { type: String, default: "id" },
 });
 
 const emit = defineEmits(["action-menu-click", "page-change", "order-change", "update:selectedRows"]);
@@ -128,6 +129,7 @@ onBeforeUnmount(() => {
       @page="onPage"
       @sort="onSort"
       v-model:selection="selectedRowsLocal"
+      :dataKey="dataKey"
       paginatorTemplate="paginatorstart FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink paginatorend"
       currentPageReportTemplate="Showing {first}-{last} of {totalRecords} Records"
       class="border-2 border-[#E7E6E8] rounded-md"

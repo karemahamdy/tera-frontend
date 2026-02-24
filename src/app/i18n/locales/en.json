@@ -1065,7 +1065,8 @@
     "warehousePlaceholder": "Select  Source Warehouse",
     "ZonePlaceholder": "Select Source Zone",
     "WarehouseTransactionCreatedSuccessfully": "WarehouseTransaction Created Successfully",
-    "WarehouseTransactionUpdatedSuccessfully": "WarehouseTransaction Updated Successfully"
+    "WarehouseTransactionUpdatedSuccessfully": "WarehouseTransaction Updated Successfully",
+    "Zone": "Zone"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",
@@ -1076,7 +1077,7 @@
     "notesPlaceholder": "Add any relevant notes...",
     "sourceTargetItems": "Transfer Movement Details",
     "sourceItem": "Source Item",
-    "sourceItemFrom": "Source Item (Form)",
+    "sourceItemFrom": "Source Item (From)",
     "sourceItemSelect": "Select Source Item",
     "targetItemSelect": "Select Target Item",
     "targetItemTo": "Target Item (To)",
@@ -1149,7 +1150,8 @@
     "addedSerial": "Added Serial",
     "identifyItems": "Identify items to return from selected original waybill.",
     "totalQty": "Total QTY",
-    "finalizeSave": "Finalize & Save"
+    "finalizeSave": "Finalize & Save",
+    "serial23": "Serial 2/3"
   },
   "common": {
     "cancel": "Cancel",
@@ -1245,7 +1247,10 @@
     "note3": "Serial/lot tracked items: holds by specific numbers",
     "DamageHold": "Damage Hold",
     "Investigation": "Investigation",
-    "qcHold": "QC Hold"
+    "qcHold": "QC Hold",
+    "releaseItemConfirm": "Are you sure you want to release this item ?",
+    "releaseSerialConfirm": "Are you sure you want to release this serial ?",
+    "itemReleasedSuccessfully": "Item released successfully"
   },
   "ReturnItems": {
     "title": "Return Items",

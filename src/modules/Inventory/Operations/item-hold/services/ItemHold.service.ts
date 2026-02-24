@@ -1,13 +1,11 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, ItemHoldResponse,  } from "../types/ItemHold";
-
+import type { Pagination, ItemHoldResponse, ReleaseItemPayload, ItemSerialTransactionResponse, ReleaseSerialPayload } from "../types/ItemHold";
 
 export const ItemHoldService = {
   async getAll(params: Pagination) {
-
-    const resp = await axiosWrapper.get<ItemHoldResponse>(
-      `/item-hold`, { params }
-    );
+    const resp = await axiosWrapper.get<ItemHoldResponse>(`/item-hold`, {
+      params,
+    });
     return resp.data;
   },
 
@@ -21,7 +19,10 @@ export const ItemHoldService = {
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/purchase-waybill/${id}`, payload);
+    const data = await axiosWrapper.put<any>(
+      `/purchase-waybill/${id}`,
+      payload,
+    );
     return data.data;
   },
 
@@ -34,23 +35,32 @@ export const ItemHoldService = {
       `/purchase-waybill/Status/${id}`,
       null,
       {
-        params: { isActive }
-      }
+        params: { isActive },
+      },
     );
     return data.data;
   },
 
   async exportData(payload: any) {
-    const data = await axiosWrapper.get<Blob>(
-      `/purchase-waybill/export-LDCs`,
-      {
-        params: payload,
-        responseType: "blob",
-      }
-    );
+    const data = await axiosWrapper.get<Blob>(`/purchase-waybill/export-LDCs`, {
+      params: payload,
+      responseType: "blob",
+    });
 
     return data;
-    ;
-  }
+  },
 
+  async releaseItem(payload: ReleaseItemPayload ) {
+    await axiosWrapper.post<any>(`/item-hold/release-item`, payload);
+  },
+  async releaseSerial(payload: ReleaseSerialPayload ) {
+    await axiosWrapper.post<any>(`/item-hold/release-serial`, payload);
+  },
+
+  async getHoldingSerial(ItemId: string, WarehouseId: string, params: Pagination) {
+    const resp = await axiosWrapper.get<ItemSerialTransactionResponse>(`/item-hold/serial-holding-items-for-releasing/${ItemId}/${WarehouseId}`, {
+      params,
+    });
+    return resp.data;
+  },
 };

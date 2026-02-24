@@ -1,25 +1,29 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { ItemTransactions } from "../types/ItemTransactions";
+import router from "@/app/router";
+import type {
+  ItemTransactions,
+  MergeOrTransferTransactionsPayload,
+  ItemInfo,
+} from "../types/ItemTransactions";
 import { ItemTransactionsService } from "../services/ItemTransactions.service";
-
 
 export function useItemTransactions() {
   const { t } = useI18n();
   const loading = ref(false);
   const apiItemTransactions = ref<ItemTransactions[]>([]);
   const tableData = ref<any[]>([]);
-  
+
   const pageIndex = ref(1);
   const pageSize = ref(10);
   const totalCount = ref(0);
   const totalPages = ref(1);
-  
-  const searchTerm = ref('');
-  const orderBy = ref('');
-  const typeFilter = ref('');
-  const orderDirection = ref<'asc' | 'desc'>('desc');
+
+  const searchTerm = ref("");
+  const orderBy = ref("");
+  const typeFilter = ref("");
+  const orderDirection = ref<"asc" | "desc">("desc");
 
   const fetchItemTransactions = async (page = 1) => {
     loading.value = true;
@@ -30,7 +34,7 @@ export function useItemTransactions() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        typeFilter: typeFilter.value
+        typeFilter: typeFilter.value,
       });
       const payload = response && response.data ? response.data : response;
       apiItemTransactions.value = payload.items ?? [];
@@ -45,26 +49,16 @@ export function useItemTransactions() {
     }
   };
 
-  const fetchItemTransactionsById = async (id: string) => {
+  const createItemTransactions = async (
+    payload: MergeOrTransferTransactionsPayload,
+  ) => {
     loading.value = true;
     try {
-      const resp = await ItemTransactionsService.getById(id);
-      return resp;
-    } catch (err: any) {
-      toastService.error(err);
-      return null;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const createItemTransactions = async (payload: any) => {
-    loading.value = true;
-    try {
-      const response = await ItemTransactionsService.create(payload);
-      toastService.success(t("ItemTransactions.ItemTransactionsCreatedSuccessfully"));
-      await fetchItemTransactions(pageIndex.value);
-      return response;
+      await ItemTransactionsService.create(payload);
+      toastService.success(
+        t("ItemTransactions.ItemTransactionsCreatedSuccessfully"),
+      );
+      router.replace({ name: "ItemTransactions" });
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -72,22 +66,6 @@ export function useItemTransactions() {
       loading.value = false;
     }
   };
-
-  const updateItemTransactions = async (id: string, payload: any) => {
-    loading.value = true;
-    try {
-      const response = await ItemTransactionsService.update(id, payload);
-      toastService.success(t("ItemTransactions.ItemTransactionsUpdatedSuccessfully"));
-      await fetchItemTransactions(pageIndex.value);
-      return response;
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
 
   const onFilterChange = (filter: {
     filter: { field: string };
@@ -106,20 +84,50 @@ export function useItemTransactions() {
     fetchItemTransactions(1);
   };
 
-  const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+  const onSort = (orderByField: string, direction: "asc" | "desc") => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
     fetchItemTransactions(1);
-  }
+  };
+
+  const getItemInformations = async (
+    itemId: string,
+    warehouseId?: string,
+  ): Promise<ItemInfo> => {
+    try {
+      if (!itemId || itemId === "") {
+        return {
+          totalQuantity: 0,
+          locations: 0,
+          transaction: 0,
+        };
+      }
+      const response: any = await ItemTransactionsService.getItemInformations({
+        itemId,
+        warehouseId:
+          !warehouseId || warehouseId === "" ? undefined : warehouseId,
+      });
+      return {
+        totalQuantity: response.totalQuantity ?? 0,
+        locations: response.locations ?? 0,
+        transaction: response.transaction ?? 0,
+      };
+    } catch (err: any) {
+      toastService.error(err);
+      return {
+        totalQuantity: 0,
+        locations: 0,
+        transaction: 0,
+      };
+    }
+  };
 
   return {
     loading,
     apiItemTransactions,
     tableData,
     fetchItemTransactions,
-    fetchItemTransactionsById,
     createItemTransactions,
-    updateItemTransactions,
     pageIndex,
     pageSize,
     totalCount,
@@ -127,6 +135,7 @@ export function useItemTransactions() {
     setPage: (p: number) => fetchItemTransactions(p),
     onSearch,
     onFilterChange,
-    onSort
+    onSort,
+    getItemInformations,
   };
 }

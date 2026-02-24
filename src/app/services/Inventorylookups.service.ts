@@ -42,4 +42,5 @@ export const InventoryLookupsService = {
       `/Lookups/warehouse-hierarchy-lookups`,
     );
   },
+ 
 };
