@@ -69,7 +69,14 @@ const submit = async () => {
   try {
     const payload = {
       supplierDetails: formData.value.supplierDetails,
-      paymentTerms: formData.value.paymentTerms,
+      paymentTerms: {
+        ...formData.value.paymentTerms,
+        exchangeRate: formData.value.paymentTerms?.exchangeRate !== null &&
+          formData.value.paymentTerms?.exchangeRate !== undefined &&
+          formData.value.paymentTerms?.exchangeRate !== ''
+            ? Number(formData.value.paymentTerms.exchangeRate)
+            : null
+      },
       warehouseDetails: formData.value.warehouseDetails,
       lineItems: formData.value.lineItems.map((item: any) => ({
         itemId: item.itemId,

@@ -124,7 +124,7 @@ const handleSelectItem = (selectedItem: any) => {
     tax: tax,
     total: calcTotal(qty, price, tax),
     serials: [],
-    tracked: (originalItem?.trackingType || selectedItem.trackingType) !== 'None'
+    tracked: true  // Always show qty/serial dialog for all items
   };
   items.value.push(newItem);
   emitUpdate();
