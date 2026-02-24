@@ -1,6 +1,7 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import router from "@/app/router";
 import type {
   ItemTransactions,
   MergeOrTransferTransactionsPayload,
@@ -57,6 +58,7 @@ export function useItemTransactions() {
       toastService.success(
         t("ItemTransactions.ItemTransactionsCreatedSuccessfully"),
       );
+      router.replace({ name: "ItemTransactions" });
     } catch (err: any) {
       toastService.error(err);
       throw err;

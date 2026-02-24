@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, InventoryAdjustmentResponse, InventoryAdjustmentById  } from "../types/InventoryAdjustment";
+import type { Pagination, InventoryAdjustmentResponse, InventoryAdjustmentById, CreateInventoryAdjustmentPayload, PhysicalCountItem  } from "../types/InventoryAdjustment";
 
 
 export const InventoryAdjustmentService = {
@@ -16,8 +16,10 @@ export const InventoryAdjustmentService = {
     return data.data;
   },
 
-  async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
+  async create(payload: CreateInventoryAdjustmentPayload) {
+    const physicalCountHeaderIds = payload.physicalCountHeaderIds.map(item => item.countedId);
+    const apiPayload = { ...payload, physicalCountHeaderIds };
+    const data = await axiosWrapper.post<any>(`/physicalcount/adjustment`, apiPayload);
     return data.data;
   },
   async update(id: string, payload: any) {
@@ -51,6 +53,11 @@ export const InventoryAdjustmentService = {
 
     return data;
     ;
+  },
+
+  async getPhysicalCountsForAdjustmentByItem() {
+    const data = await axiosWrapper.get<{ data: PhysicalCountItem[] }>(`/physicalcount/physicalcounts-for-adjustment-by-item`);
+    return data.data;
   }
 
 };
