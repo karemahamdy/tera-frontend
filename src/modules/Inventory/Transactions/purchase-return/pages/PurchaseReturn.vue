@@ -6,6 +6,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { usePurchaseReturn } from "../composables/usePurchasReturn";
 import RulesCard from "@/sharedComponents/RulesCard.vue";
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 
 const { t } = useI18n();
@@ -14,7 +15,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange, fetchPurchaseReturn, apiPurchaseReturn } = usePurchaseReturn();
-
+const {supplierLookups, getSupplierLookups} = useInventoryLookups()
 const rules = [
   "purchaseRules.stockAvailable",    
   "purchaseRules.serialLot",         
@@ -35,17 +36,17 @@ const customItems = [
 ];
 onMounted(() => {
     fetchPurchaseReturn();
+    getSupplierLookups()
 });
 const filtersOperation = computed(() => {
     return [
           {
             placeholder: "purchaseWaybill.allsupplier",
             value: null,
-            field: "supplier",
+            field: "SupplierId",
             options: [
                 { label: t("purchaseWaybill.allsupplier"), value: null },
-                { label: t("button.Completed"), value: "IsActive" },
-                { label: t("button.Pending"), value: "InActive" },
+              ...supplierLookups.value
             ],
         },
         {
@@ -54,8 +55,8 @@ const filtersOperation = computed(() => {
             field: "status",
             options: [
                 { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.Completed"), value: "IsActive" },
-                { label: t("button.Pending"), value: "InActive" },
+                { label: t("button.Posted"), value: 2 },
+                { label: t("button.Pending"), value: 1 },
             ],
         },
     ]
