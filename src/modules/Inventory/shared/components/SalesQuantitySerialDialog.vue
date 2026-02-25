@@ -92,11 +92,6 @@ watch(localVisible, (newVal) => emit('update:visible', newVal));
                     <h3 class="font-bold text-lg text-gray-900">
                         {{ t('serial.selectQuantity') }}
                     </h3>
-
-                    <BaseButton :label="t('import')" icon="DocumentUpload" size="small" variant="outline-primary"
-                        class="px-2 py-1 text-xs" />
-                         <BaseButton :label="t('export')" icon="DocumentUpload" size="small" variant="outline-primary"
-                        class="px-2 py-1 text-xs" />
                 </div>
 
                 <div class="flex flex-col gap-4">
@@ -105,7 +100,7 @@ watch(localVisible, (newVal) => emit('update:visible', newVal));
                         <label class="text-xs text-gray-600 font-medium">
                             {{ t('serial.serialNumber') }}
                         </label>
-                        <InputText v-model="serialInput" :placeholder="t('serial.selectSerial')" class="w-full" />
+                        <Dropdown v-model="serialInput" :placeholder="t('serial.selectSerial')" class="w-full" />
                     </div>
 
 

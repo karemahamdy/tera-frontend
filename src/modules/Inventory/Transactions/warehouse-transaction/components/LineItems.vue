@@ -1,264 +1,394 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
-import SalesQuantitySerialDialog from '@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue';
+import StorageLocationPicker from '@/modules/Inventory/shared/components/StorageLocationPicker.vue';
+import FormDropdown from '@/sharedComponents/inputs/FormDropdown.vue';
+import FormInput from '@/sharedComponents/inputs/FormInput.vue';
+import { useInventoryLookups } from '@/composables/useInventoryLookups';
+
+const props = withDefaults(defineProps<{
+  lineItems?: any[] | null;
+  disabled?: boolean;
+}>(), {
+  lineItems: null,
+  disabled: false,
+});
 
 const { t } = useI18n();
-const emit = defineEmits(['next', 'prev']);
-const props = defineProps<{
-  transactionType: string
-}>()
+const emit = defineEmits(['update']);
+const { 
+  getItemsLookups, itemsLookups, 
+  getUnitsLookups, 
+  getWarehouseHierarchyLookups, WarehouseHierarchyLookups, 
+  getWarehouseLookups, WarehouseLookups 
+} = useInventoryLookups();
 
-// --- State ---
-const items = ref([
-    {
-        id: 1,
-        code: 'ITM-001',
-        name: 'Hydraulic Pump',
-        quantity: 0,
-        uom: 'PCS',
-        warehouse: 'WH-011',
-        zone: 'Zone A',
-        unitPrice: "450",
-        tax: "5",
-        total: 450.00,
-        serials: []
-    },
-    {
-        id: 2,
-        code: 'ITM-045',
-        name: 'Industrial 6205',
-        quantity: 0,
-        uom: 'PCS',
-        warehouse: 'WH-011',
-        zone: 'Zone A',
-        unitPrice: "85",
-        tax: "11",
-        total: 85.00,
-        serials: []
-    },
-    {
-        id: 3,
-        code: 'ITM-045',
-        name: 'Steel 10mm',
-        quantity: 3,
-        uom: 'PCS',
-        warehouse: 'WH-011',
-        zone: 'Zone A',
-        unitPrice: "70",
-        tax: "5",
-        total: 85.00,
-        serials: []
-    }
-]);
+const unitOptionsMap = ref<Record<number | string, any[]>>({});
 
-// --- Computed ---
-const subtotal = computed(() => items.value.reduce((sum: number, item: any) => sum + item.total, 0));
+function calcTotal(qty: number, price: number) {
+  return (qty || 0) * (price || 0);
+}
+
+function mapApiItem(item: any) {
+  unitOptionsMap.value[item.id || item.itemId] = [{ 
+    label: item.unitName || item.unitOfMeasureName, 
+    value: item.unitName || item.unitOfMeasureName, 
+    unitId: item.unitId || item.unitOfMeasureId, 
+    conversionFactor: 1 
+  }];
+  return {
+    id: item.id || Date.now() + Math.random(),
+    itemId: item.itemId,
+    code: item.itemCode,
+    name: item.itemName,
+    quantity: item.quantity,
+    uom: item.unitName || item.unitOfMeasureName || '',
+    unitId: item.unitId || item.unitOfMeasureId,
+    warehouse: item.warehouseName,
+    warehouseId: item.warehouseId,
+    zone: item.zoneName ?? '',
+    zoneId: item.zoneId ?? null,
+    locationId: item.locationId ?? null,
+    locationCode: item.locationCode ?? '',
+    unitPrice: Number(item.unitPrice) || 0,
+    total: Number(item.total) || calcTotal(item.quantity, item.unitPrice),
+    row: item.row ?? '',
+    column: item.column ?? '',
+    rack: item.rack ?? '',
+    serials: (item.serialLots || []).map((s: any) => ({
+      id: s.id, serial: s.mainSerial, qty: s.availableQuantity, batch: s.batchNumber, expire: s.expireDate
+    })),
+    tracked: true,
+  };
+}
+
+const items = ref<any[]>((props.lineItems ?? []).map(mapApiItem));
+const itemsError = ref("");
+
+function emitUpdate() {
+  emit('update', items.value);
+}
+
+function validate(): boolean {
+  itemsError.value = items.value.length > 0 ? "" : t("validation.atLeastOneItem");
+  return !itemsError.value;
+}
+
+defineExpose({ validate });
+
+const subtotal = computed(() => items.value.reduce((sum: number, item: any) => sum + (item.total || 0), 0));
 
 const columns = computed(() => [
-    { field: 'code', header: t('itemsList.itemCode') },
-    { field: 'name', header: t('itemsList.itemName') },
-    { field: 'quantity', header: t('itemsList.quantity') },
-    { field: 'uom', header: t('itemsList.uom') },
-    { field: 'warehouse', header: t('itemsList.warehouse') },
-    { field: 'zone', header: t('itemsList.zone') },
-    { field: 'unitPrice', header: t('itemsList.unitPrice') },
-    { field: 'tax', header: t('itemsList.tax') },
-    { field: 'total', header: t('itemsList.total') },
-    { field: 'action', header: '' }
+  { field: 'code', header: t('itemsList.itemCode') },
+  { field: 'name', header: t('itemsList.itemName') },
+  { field: 'quantity', header: t('itemsList.quantity') },
+  { field: 'uom', header: t('itemsList.uom') },
+  { field: 'warehouse', header: t('itemsList.warehouse') },
+  { field: 'zone', header: t('itemsList.zone') },
+  { field: 'unitPrice', header: t('itemsList.unitPrice') },
+  { field: 'total', header: t('itemsList.total') },
+  ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
-// --- Item Selection Dialog ---
 const showItemDialog = ref(false);
-const availableItems = ref([
-    { code: 'ITM-001', name: 'Hydraulic Pump Model A', unit: 'PCS' },
-    { code: 'ITM-045', name: 'Industrial Bearing 6205', unit: 'PCS' },
-    { code: 'ITM-269', name: 'Steel Plate 10mm', unit: 'SHT' },
-    { code: 'ITM-156', name: 'Lubricant Oil SAE 40', unit: 'LTR' },
-    { code: 'ITM-001', name: 'Hydraulic Pump Model A', unit: 'PCS', tracked: true },
-]);
+const availableItems = computed(() => itemsLookups.value.map(item => ({ ...item, label: item.name, value: item.id })));
 
-const openItemDialog = () => {
-    showItemDialog.value = true;
+const openItemDialog = async () => {
+  await getItemsLookups(false);
+  showItemDialog.value = true;
 };
 
-const handleSelectItem = (item: any) => {
-    items.value.push({
-        id: Date.now(),
-        code: item.code,
-        name: item.name,
-        quantity: 0,
-        uom: item.unit,
-        warehouse: '',
-        zone: '',
-        unitPrice: "0",
-        tax: "0",
-        total: 0,
-        serials: []
-    });
+const handleSelectItem = (selectedItem: any) => {
+  showItemDialog.value = false;
+  const originalItem = itemsLookups.value.find(i => i.id === selectedItem.id);
+  const units = originalItem?.units || selectedItem.units || [];
+  const baseUnit = units.find((u: any) => u.isBaseUnit);
+  const rowId = Date.now();
+
+  unitOptionsMap.value[rowId] = units.map((u: any) => ({
+    label: u.unitCode ? `${u.unitName} (${u.unitCode})` : u.unitName,
+    value: u.unitName,
+    unitId: u.unitId,
+    conversionFactor: u.conversionFactor
+  }));
+
+  const newItem = {
+    id: rowId,
+    itemId: selectedItem.id,
+    code: selectedItem.code,
+    name: selectedItem.name,
+    quantity: 1,
+    uom: baseUnit ? baseUnit.unitName : (selectedItem.baseUnitName || ''),
+    unitId: baseUnit ? baseUnit.unitId : (selectedItem.baseUnitId || ''),
+    warehouse: '',
+    warehouseId: '',
+    zone: '',
+    zoneId: null,
+    locationId: null,
+    locationCode: '',
+    unitPrice: 0,
+    total: 0,
+    serials: [],
+    tracked: true
+  };
+  items.value.push(newItem);
+  emitUpdate();
 };
 
-// --- Quantity/Serial Dialog ---
 const showQtyDialog = ref(false);
 const currentItem = ref<any>(null);
+const qtyDialogKey = ref(0);
 
 const openQtyDialog = (item: any) => {
+  currentItem.value = null;
+  qtyDialogKey.value++;
+  nextTick(() => {
     currentItem.value = item;
     showQtyDialog.value = true;
+  });
 };
 
-const isSalesTransaction = computed(() => props.transactionType === 'Transfer');
-
-
 const handleSaveSerials = (payload: any) => {
-    if (currentItem.value) {
-        currentItem.value.serials = payload.serials;
-        currentItem.value.quantity = payload.totalQty;
-    }
+  showQtyDialog.value = false;
+  if (currentItem.value) {
+    currentItem.value.serials = payload.serials;
+    currentItem.value.quantity = payload.totalQty;
+    currentItem.value.total = calcTotal(payload.totalQty, currentItem.value.unitPrice);
+  }
+  emitUpdate();
 };
 
 const removeItem = (data: any) => {
-    const index = items.value.findIndex(item => item.id === data.id);
-    if (index !== -1) {
-        items.value.splice(index, 1);
-    }
+  const index = items.value.findIndex(item => item.id === data.id);
+  if (index !== -1) {
+    items.value.splice(index, 1);
+    delete unitOptionsMap.value[data.id];
+  }
+  emitUpdate();
 };
+
+onMounted(async () => {
+  await Promise.all([
+    getUnitsLookups(),
+    getWarehouseLookups(),
+    getWarehouseHierarchyLookups()
+  ]);
+});
+
+const showLocationPicker = ref(false);
+const locationPickerTarget = ref<any>(null);
+const isLoadingLocation = ref(false);
+const loadingLocationItemId = ref<any>(null);
+
+const currentLocations = computed(() => {
+  if (!locationPickerTarget.value) return [];
+  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === locationPickerTarget.value.warehouseId);
+  return wh?.locations || [];
+});
+
+const openLocationPicker = (item: any) => {
+  if (!item.warehouseId) return;
+  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === item.warehouseId);
+  if (wh?.warehouseType === 'Professional') {
+    locationPickerTarget.value = item;
+    showLocationPicker.value = true;
+  }
+};
+
+const handleSelectLocation = (location: any) => {
+  if (locationPickerTarget.value) {
+    locationPickerTarget.value.zone = location.zoneName;
+    locationPickerTarget.value.zoneId = location.zoneId;
+    locationPickerTarget.value.locationId = location.id || location.locationId;
+    locationPickerTarget.value.locationCode = location.locationCode;
+    locationPickerTarget.value.row = location.row;
+    locationPickerTarget.value.column = location.column;
+    locationPickerTarget.value.rack = location.rack;
+  }
+  emitUpdate();
+};
+
+const handleWarehouseChange = async (item: any) => {
+  const wh = WarehouseLookups.value.find(w => w.value === item.warehouseId);
+  if (wh) {
+    item.warehouse = wh.label;
+    item.zone = '';
+    item.zoneId = null;
+    item.locationCode = '';
+    item.locationId = null;
+    if (wh.type === 'Professional') {
+      isLoadingLocation.value = true;
+      loadingLocationItemId.value = item.id;
+      try {
+        await getWarehouseHierarchyLookups();
+      } finally {
+        isLoadingLocation.value = false;
+        loadingLocationItemId.value = null;
+      }
+      openLocationPicker(item);
+    }
+  }
+  emitUpdate();
+};
+
 </script>
 
 <template>
-    <div class="flex flex-col h-full bg-white rounded-xl ">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h2 class="text-xl font-bold text-gray-900">{{ t('itemsList.title') }}</h2>
-                <p class="text-gray-500 text-sm">
-                    {{ t('itemsList.description') }}
-                </p>
-            </div>
-            <BaseButton :label="t('itemsList.addItem')" icon="pi pi-plus"
-                class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-                @click="openItemDialog" />
-        </div>
-
-        <!-- Table -->
-        <div class="overflow-x-auto">
-            <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
-                :showDelete="false">
-                <template #col-code="{ data }">
-                    <div class="flex items-center gap-2 rounded">
-                        <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
-                            <VsxIcon iconName="Airdrop" :size="20" type="linear" />
-                        </Badge>
-                        <Badge v-else severity="transparent" class="circle-badge">
-                            <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
-                        </Badge>
-                        <div class="text-base text-gray-700">{{ data.code }}</div>
-                    </div>
-                </template>
-
-                <template #col-name="{ data }">
-                    <span class="text-gray-600">{{ data.name }}</span>
-                </template>
-
-                <template #col-quantity="{ data }">
-                    <div class="flex items-center gap-2">
-                        <BaseButton :label="t('itemsList.add')" variant="outline-primary"
-                            @click="openQtyDialog(data)" />
-                        <span class="text-gray-500">({{ data.quantity }})</span>
-                    </div>
-                </template>
-
-                <template #col-uom="{ data }">
-                    <FormDropdown v-model="data.uom" :options="['PCS', 'KG', 'LTR']" class="w-20 p-inputtext-sm text-sm" />
-                </template>
-
-                <template #col-warehouse="{ data }">
-                    <FormDropdown v-model="data.warehouse" :options="['WH-011', 'WH-012']" class="w-24 p-inputtext-sm text-sm"
-                        :placeholder="t('items.warehouse')" />
-                </template>
-
-                <template #col-zone="{ data }">
-                    <FormDropdown v-model="data.zone" :options="['Zone A', 'Zone B']" class="w-24 p-inputtext-sm text-sm"
-                        :placeholder="t('items.zone')" />
-                </template>
-
-                <template #col-unitPrice="{ data }">
-                    <InputText v-model.number="data.unitPrice" class="w-20 p-inputtext-sm" />
-                </template>
-
-                <template #col-tax="{ data }">
-                    <InputText v-model.number="data.tax" class="w-16 p-inputtext-sm" prefix="%" />
-                </template>
-
-                <template #col-total="{ data }">
-                    <span class="font-medium text-gray-900">{{ data.total.toFixed(2) }}</span>
-                </template>
-
-                <template #col-action="{ data }">
-                    <button class="text-red-400 hover:text-red-600" @click="removeItem(data)">
-                        <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
-                    </button>
-                </template>
-            </DynamicTable>
-        </div>
-
-        <!-- Subtotal Footer -->
-        <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
-            <span class="text-gray-600 font-medium">
-                {{ t('itemsList.subtotal') }} ({{ items.length }} {{ t('itemsList.items') }})
-            </span>
-            <span class="text-xl font-bold text-primary-600">
-                ${{ subtotal.toFixed(2) }}
-            </span>
-        </div>
-
-        <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
-
-        <SalesQuantitySerialDialog v-if="currentItem  && isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
-            :initialSerials="currentItem.serials" @save="handleSaveSerials" />
-
-              <QuantitySerialDialog v-if="currentItem  && !isSalesTransaction" v-model:visible="showQtyDialog" :item="currentItem"
-            :initialSerials="currentItem.serials" @save="handleSaveSerials" />
-
-
+  <div class="flex flex-col h-full bg-white rounded-xl">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h2 class="text-xl font-bold text-gray-900">{{ t('itemsList.title') }}</h2>
+        <p class="text-gray-500 text-sm">{{ t('itemsList.description') }}</p>
+      </div>
+      <BaseButton v-if="!disabled" :label="t('itemsList.addItem')"
+        class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
+        @click="openItemDialog" />
     </div>
+
+    <div v-if="itemsError" class="mb-4 px-4 py-2 bg-red-50 border border-red-300 text-red-600 rounded-lg text-sm">
+      {{ itemsError }}
+    </div>
+
+    <div class="overflow-x-auto">
+      <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
+        :showDelete="false">
+        <template #col-code="{ data }">
+          <div class="flex items-center gap-2 rounded">
+            <Badge severity="transparent" class="circle-badge">
+              <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
+            </Badge>
+            <div class="text-base text-gray-700">{{ data.code }}</div>
+          </div>
+        </template>
+
+        <template #col-quantity="{ data }">
+          <div class="flex items-center gap-2">
+            <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
+              @click="openQtyDialog(data)" />
+            <span class="text-gray-500">({{ data.quantity }})</span>
+          </div>
+        </template>
+
+        <template #col-uom="{ data }">
+          <span v-if="disabled || !unitOptionsMap[data.id]" class="text-gray-700">
+            {{ data.uom }}
+          </span>
+
+          <div v-else class="min-w-24">
+            <FormDropdown :modelValue="data.uom" :options="unitOptionsMap[data.id] ?? []" label=""
+              :placeholder="t('items.uom')" optionLabel="label" optionValue="value" class="uom-dropdown"
+              @update:modelValue="(v: any) => {
+                data.uom = v;
+                const opt = (unitOptionsMap[data.id] ?? [])
+                  .find((o: any) => o.value === v);
+                if (opt) {
+                  data.unitId = opt.unitId;
+                }
+                emitUpdate();
+              }" />
+          </div>
+        </template>
+
+        <template #col-warehouse="{ data }">
+          <span v-if="disabled" class="text-gray-700">{{ data.warehouse }}</span>
+          <div v-else class="min-w-32">
+            <FormDropdown :modelValue="data.warehouseId" :options="WarehouseLookups" label=""
+              :placeholder="t('items.warehouse')"
+              @update:modelValue="(v: any) => { data.warehouseId = v; handleWarehouseChange(data); }"
+              class="warehouse-dropdown" />
+          </div>
+        </template>
+
+        <template #col-zone="{ data }">
+          <div class="flex flex-col gap-1">
+            <template
+              v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === data.warehouseId)?.warehouseType === 'Professional' || (isLoadingLocation && loadingLocationItemId === data.id)">
+              <div v-if="isLoadingLocation && loadingLocationItemId === data.id"
+                class="flex items-center gap-2 text-xs text-primary-500 font-medium py-1 px-2 border border-primary-200 rounded-lg">
+                <ProgressSpinner style="width:14px;height:14px" strokeWidth="6" />
+                <span>Loading...</span>
+              </div>
+              <BaseButton
+                v-else-if="!disabled"
+                :label="data.locationCode || t('itemList.selectZone')"
+                variant="outline-primary" class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200"
+                @click="openLocationPicker(data)" />
+              <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
+              <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
+                {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack }})</template>
+              </div>
+            </template>
+            <template v-else-if="data.warehouseId">
+              <span class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
+            </template>
+          </div>
+        </template>
+
+        <template #col-unitPrice="{ data }">
+          <span v-if="disabled" class="text-gray-700">{{ data.unitPrice }}</span>
+          <InputText v-else v-model.number="data.unitPrice" class="w-24 p-inputtext-sm" :disabled="disabled" 
+            @input="() => {
+              data.total = calcTotal(data.quantity, data.unitPrice);
+              emitUpdate();
+            }" />
+        </template>
+
+        <template #col-total="{ data }">
+          <span class="font-medium text-gray-900">{{ Number(data.total).toFixed(2) }}</span>
+        </template>
+
+        <template #col-action="{ data }">
+          <button v-if="!disabled" class="text-red-400 hover:text-red-600" @click="removeItem(data)">
+            <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
+          </button>
+        </template>
+      </DynamicTable>
+    </div>
+
+    <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
+      <span class="text-gray-600 font-medium">
+        {{ t('itemsList.subtotal') }} ({{ items.length }} {{ t('itemsList.items') }})
+      </span>
+      <span class="text-xl font-bold text-primary-600">${{ subtotal.toFixed(2) }}</span>
+    </div>
+
+    <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
+      @select="handleSelectItem" />
+    <QuantitySerialDialog v-if="showQtyDialog && currentItem" :key="qtyDialogKey" v-model:visible="showQtyDialog" :item="currentItem"
+      :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
+    <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker" :locations="currentLocations"
+      :selectedLocationId="locationPickerTarget?.locationId" @select="handleSelectLocation" />
+  </div>
 </template>
 
 <style scoped>
-
+:deep(.warehouse-dropdown .p-dropdown) {
+  background-color: #f9fafb;
+  border-color: #f3f4f6;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+:deep(.warehouse-dropdown label) {
+  display: none;
+}
 :deep(.p-select) {
-    border-color: #f3f4f6;
-    background-color: #f9fafb;
+  border-color: #f3f4f6;
+  background-color: #f9fafb;
 }
-
 :deep(.p-inputtext) {
-    border-color: #e5e7eb;
-    background-color: #f9fafb;
+  border-color: #e5e7eb;
+  background-color: #f9fafb;
 }
-
 :deep(.p-inputtext:focus) {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb;
 }
-
-.circle-badge-sm {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: nowrap;
-}
-
 .circle-badge {
-    background-color: transparent;
+  background-color: transparent;
 }
-
 .icon-transparent {
-    color: transparent;
+  color: transparent;
 }
 </style>

@@ -13,7 +13,7 @@ const { fetchNextNumber } = useWarehouseTransaction();
 const { getCostCenterLookups, costCenterLookups } = useInventoryLookups();
 
 const directions = [
-  { value: 'Transfer', labelKey: 'direction.transfer' },
+  { value: 'Transfare' , labelKey: 'direction.transfer' },
   { value: 'Inbound', labelKey: 'direction.inbound' },
   { value: 'Outbound', labelKey: 'direction.outbound' },
 ]
