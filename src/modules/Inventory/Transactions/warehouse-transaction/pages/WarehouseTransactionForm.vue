@@ -34,7 +34,7 @@ const activeStep = ref(0);
 
 const formData = reactive({
   details: {
-    direction: 'Inbound',
+    direction: 'Transfer',
     documentNumber: '',
     waybillDate: new Date(),
     inventoryRequest: '',
@@ -47,7 +47,7 @@ const formData = reactive({
     column: '',
     rack: '',
     costCenter: '',
-    type: 'Free',
+    type: '',
     destination: {
       warehouse: '',
       zone: '',

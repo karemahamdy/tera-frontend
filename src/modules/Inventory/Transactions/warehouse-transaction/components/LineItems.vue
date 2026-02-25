@@ -4,8 +4,6 @@ import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
 import StorageLocationPicker from '@/modules/Inventory/shared/components/StorageLocationPicker.vue';
-import FormDropdown from '@/sharedComponents/inputs/FormDropdown.vue';
-import FormInput from '@/sharedComponents/inputs/FormInput.vue';
 import { useInventoryLookups } from '@/composables/useInventoryLookups';
 
 const props = withDefaults(defineProps<{
