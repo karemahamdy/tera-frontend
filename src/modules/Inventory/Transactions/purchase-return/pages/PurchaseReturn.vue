@@ -64,13 +64,13 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'returnId', header: t('purchaseReturn.returnId'), sortable: true },
-        { field: 'invioceId', header: t('purchaseReturn.supplier'), sortable: true },
-        { field: 'originalPW', header: t('purchaseReturn.originalPW'), sortable: true },
-        { field: 'date', header: t('purchaseReturn.date'), type: 'date', sortable: true },
-        { field: 'supplier', header: t('purchaseReturn.items'), type: 'slot', sortable: true },
-        { field: 'purchaseOrder', header: t('purchaseReturn.total'), sortable: true },
-        { field: 'reason', header: t('purchaseReturn.reason'), type: 'slot', sortable: true },
+        { field: 'documentNumber', header: t('purchaseReturn.returnId'), sortable: true },
+        { field: 'supplierName', header: t('purchaseReturn.supplier'), sortable: true },
+        { field: 'originalWaybillNumbers', header: t('purchaseReturn.originalPW'), sortable: true },
+        { field: 'returnDate', header: t('purchaseReturn.date'), type: 'date', sortable: true },
+        { field: 'itemCount', header: t('purchaseReturn.items'), type: 'slot', sortable: true },
+        { field: 'grandTotal', header: t('purchaseReturn.total'), sortable: true },
+        { field: 'returnReason', header: t('purchaseReturn.reason'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
