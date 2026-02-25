@@ -91,7 +91,7 @@ const columns = computed(() => [
   { field: 'zone', header: t('itemsList.zone') },
   { field: 'quantity', header: t('itemsList.quantity') },
   { field: 'unitPrice', header: t('itemsList.unitPrice') },
-  { field: 'balance', header: t('itemsList.balance') },
+  { field: 'balance', header: t('itemList.balance') },
   { field: 'total', header: t('itemsList.total') },
   ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
