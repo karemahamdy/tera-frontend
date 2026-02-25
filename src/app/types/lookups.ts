@@ -58,3 +58,23 @@ export interface ApiResponse<T> {
   id?: any;
 }
 
+export interface WarehouseLocation {
+  id: string;
+  code: string;
+  zoneName: string;
+  zoneId: string;
+  zoneCode: string;
+  locationId: string;
+  row: string;
+  column: string;
+  rack: string;
+  locationCode: string;
+}
+
+export interface WarehouseHierarchy {
+  warehouseId: string;
+  warehouseCode: string;
+  warehouseName: string;
+  warehouseType: 'Professional' | 'Standard';
+  locations: WarehouseLocation[];
+}
