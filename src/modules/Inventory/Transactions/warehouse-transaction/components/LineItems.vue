@@ -3,14 +3,17 @@ import { ref, computed, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
+import SalesQuantitySerialDialog from '@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue';
 import StorageLocationPicker from '@/modules/Inventory/shared/components/StorageLocationPicker.vue';
 import { useInventoryLookups } from '@/composables/useInventoryLookups';
 
 const props = withDefaults(defineProps<{
   lineItems?: any[] | null;
+  direction?: string;
   disabled?: boolean;
 }>(), {
   lineItems: null,
+  direction: 'Inbound',
   disabled: false,
 });
 
@@ -20,7 +23,8 @@ const {
   getItemsLookups, itemsLookups, 
   getUnitsLookups, 
   getWarehouseHierarchyLookups, WarehouseHierarchyLookups, 
-  getWarehouseLookups, WarehouseLookups 
+  getWarehouseLookups, WarehouseLookups,
+  getItemBalance
 } = useInventoryLookups();
 
 const unitOptionsMap = ref<Record<number | string, any[]>>({});
@@ -58,6 +62,7 @@ function mapApiItem(item: any) {
     serials: (item.serialLots || []).map((s: any) => ({
       id: s.id, serial: s.mainSerial, qty: s.availableQuantity, batch: s.batchNumber, expire: s.expireDate
     })),
+    balance: item.balance || 0,
     tracked: true,
   };
 }
@@ -81,11 +86,12 @@ const subtotal = computed(() => items.value.reduce((sum: number, item: any) => s
 const columns = computed(() => [
   { field: 'code', header: t('itemsList.itemCode') },
   { field: 'name', header: t('itemsList.itemName') },
-  { field: 'quantity', header: t('itemsList.quantity') },
   { field: 'uom', header: t('itemsList.uom') },
   { field: 'warehouse', header: t('itemsList.warehouse') },
   { field: 'zone', header: t('itemsList.zone') },
+  { field: 'quantity', header: t('itemsList.quantity') },
   { field: 'unitPrice', header: t('itemsList.unitPrice') },
+  { field: 'balance', header: t('itemsList.balance') },
   { field: 'total', header: t('itemsList.total') },
   ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
@@ -128,6 +134,7 @@ const handleSelectItem = (selectedItem: any) => {
     locationCode: '',
     unitPrice: 0,
     total: 0,
+    balance: 0,
     serials: [],
     tracked: true
   };
@@ -195,7 +202,7 @@ const openLocationPicker = (item: any) => {
   }
 };
 
-const handleSelectLocation = (location: any) => {
+const handleSelectLocation = async (location: any) => {
   if (locationPickerTarget.value) {
     locationPickerTarget.value.zone = location.zoneName;
     locationPickerTarget.value.zoneId = location.zoneId;
@@ -204,6 +211,9 @@ const handleSelectLocation = (location: any) => {
     locationPickerTarget.value.row = location.row;
     locationPickerTarget.value.column = location.column;
     locationPickerTarget.value.rack = location.rack;
+    
+    // Fetch balance
+    await fetchItemBalance(locationPickerTarget.value);
   }
   emitUpdate();
 };
@@ -226,9 +236,18 @@ const handleWarehouseChange = async (item: any) => {
         loadingLocationItemId.value = null;
       }
       openLocationPicker(item);
+    } else {
+      // Fetch balance for standard warehouse
+      await fetchItemBalance(item);
     }
   }
   emitUpdate();
+};
+
+const fetchItemBalance = async (item: any) => {
+  if (item.itemId && item.warehouseId) {
+    item.balance = await getItemBalance(item.itemId, item.warehouseId, item.zoneId, item.locationId);
+  }
 };
 
 </script>
@@ -337,6 +356,10 @@ const handleWarehouseChange = async (item: any) => {
           <span class="font-medium text-gray-900">{{ Number(data.total).toFixed(2) }}</span>
         </template>
 
+        <template #col-balance="{ data }">
+          <span class="font-bold text-primary-600">{{ data.balance || 0 }}</span>
+        </template>
+
         <template #col-action="{ data }">
           <button v-if="!disabled" class="text-red-400 hover:text-red-600" @click="removeItem(data)">
             <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
@@ -354,8 +377,28 @@ const handleWarehouseChange = async (item: any) => {
 
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
-    <QuantitySerialDialog v-if="showQtyDialog && currentItem" :key="qtyDialogKey" v-model:visible="showQtyDialog" :item="currentItem"
-      :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
+    <template v-if="showQtyDialog && currentItem">
+      <SalesQuantitySerialDialog 
+        v-if="direction === 'Transfer'"
+        :key="qtyDialogKey" 
+        v-model:visible="showQtyDialog" 
+        :item="currentItem"
+        :initialSerials="currentItem.serials" 
+        :warehouseId="currentItem.warehouseId"
+        :zoneId="currentItem.zoneId"
+        :locationId="currentItem.locationId"
+        :disabled="disabled" 
+        @save="handleSaveSerials" 
+      />
+      <QuantitySerialDialog 
+        v-else
+        v-model:visible="showQtyDialog" 
+        :item="currentItem"
+        :initialSerials="currentItem.serials" 
+        :disabled="disabled" 
+        @save="handleSaveSerials" 
+      />
+    </template>
     <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker" :locations="currentLocations"
       :selectedLocationId="locationPickerTarget?.locationId" @select="handleSelectLocation" />
   </div>

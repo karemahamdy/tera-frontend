@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, reactive } from 'vue';
+import { ref, onMounted, computed, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
@@ -181,6 +181,36 @@ onMounted(async () => {
   }
   dataReady.value = true;
 });
+
+watch(() => formData.details.direction, (newVal, oldVal) => {
+  if (oldVal && newVal !== oldVal && mode.value === 'create') {
+    formData.lineItems = [];
+    const docNum = formData.details.documentNumber;
+    Object.assign(formData.details, {
+      direction: newVal,
+      documentNumber: docNum,
+      waybillDate: new Date(),
+      inventoryRequest: '',
+      warehouse: '',
+      zone: '',
+      zoneName: '',
+      locationId: null,
+      locationCode: '',
+      row: '',
+      column: '',
+      rack: '',
+      costCenter: '',
+      type: '',
+      destination: {
+        warehouse: '',
+        zone: '',
+        zoneName: '',
+        locationId: null,
+        locationCode: ''
+      }
+    });
+  }
+});
 </script>
 
 <template>
@@ -217,6 +247,7 @@ onMounted(async () => {
             <div v-show="activeStep === 1">
               <LineItems
                 :lineItems="formData.lineItems"
+                :direction="formData.details.direction"
                 :disabled="isDisabled"
                 @update="(val) => formData.lineItems = val"
               />

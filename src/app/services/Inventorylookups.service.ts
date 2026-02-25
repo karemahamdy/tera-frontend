@@ -47,4 +47,16 @@ export const InventoryLookupsService = {
       `/Lookups/warehouse-hierarchy-lookups`,
     );
   },
+  getItemSerials(itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) {
+    let url = `/InventoryLookups/item-serials?itemId=${itemId}&warehouseId=${warehouseId}`;
+    if (zoneId) url += `&zoneId=${zoneId}`;
+    if (locationId) url += `&locationId=${locationId}`;
+    return axiosWrapper.get<ApiResponse<any[]>>(url);
+  },
+  getItemBalance(itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) {
+    let url = `/InventoryLookups/item-balance?itemId=${itemId}&warehouseId=${warehouseId}`;
+    if (zoneId) url += `&zoneId=${zoneId}`;
+    if (locationId) url += `&locationId=${locationId}`;
+    return axiosWrapper.get<ApiResponse<any>>(url);
+  },
 };
