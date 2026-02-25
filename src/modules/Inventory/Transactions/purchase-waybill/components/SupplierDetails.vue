@@ -63,7 +63,7 @@ function emitUpdate() {
     },
     paymentTerms: {
       currencyId:   form.currencyId,
-      exchangeRate: form.exchangeRate !== null && form.exchangeRate !== '' && form.exchangeRate !== undefined
+      exchangeRate: form.exchangeRate !== null && form.exchangeRate !== undefined
         ? Number(form.exchangeRate)
         : null,
       rateDate: toDateStr(form.rateDate),
@@ -146,7 +146,7 @@ onMounted(async () => {
           :placeholder="t('purchaseWaybill.ExchangedatePlaceholder')" :disabled="disabled"
           @update:modelValue="emitUpdate" />
       </div>
-      <FormInput :label="t('purchaseWaybill.ExchangeValue')" v-model="form.exchangeRate"
+      <FormInput :label="t('purchaseWaybill.ExchangeValue')" v-model="form.exchangeRate" type="number"
         :error="errors.exchangeRate" :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')"
         :disabled="disabled" @blur="emitUpdate" />
     </div>
