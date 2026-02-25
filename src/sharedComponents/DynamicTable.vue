@@ -31,6 +31,7 @@ const props = defineProps({
   selectedRows: { type: Array, default: () => [] },
   selectionMode: { type: String, default: "multiple" },
   dataKey: { type: String, default: "id" },
+  canEdit: { type: Function, default: null },
 });
 
 const emit = defineEmits(["action-menu-click", "page-change", "order-change", "update:selectedRows"]);
@@ -57,7 +58,10 @@ const togglePermissionMenu = (event, row) => {
   if (permissionMenu.value) permissionMenu.value.toggle(event);
 };
 
+const rowShowEdit = ref(true);
+
 const toggleMenu = (event, row) => {
+  rowShowEdit.value = props.canEdit ? props.canEdit(row) : props.showEdit;
   if (menu.value && menu.value.toggle) {
     menu.value.toggle(event, row);
   }
@@ -300,7 +304,7 @@ onBeforeUnmount(() => {
     <ActionMenu
       ref="menu"
       :showView="showView"
-      :showEdit="showEdit"
+      :showEdit="rowShowEdit"
       :showDelete="showDelete"
       :customItems="customItems"
       @view="(row) => emit('action-menu-click', { action: 'view', row })"

@@ -150,6 +150,7 @@ const getStatusText = (status: any) => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiPurchaseReturn" :loading="loading" :customItems="customItems"
+                    :canEdit="(row: any) => row.status !== 'Posted'"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
