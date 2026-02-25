@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted } from "vue"
+import { reactive, onMounted, computed, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
 import type { PaymentInfoData, NotesData, PaymentTermsData } from '../types/PurchaseWaybill';
@@ -8,11 +8,13 @@ import { useInventoryLookups } from "@/composables/useInventoryLookups";
 const { PaymentTerms, IncotermsLookups, getIncotermsLookups, getPaymentTermsLookups } = useInventoryLookups();
 
 const props = withDefaults(defineProps<{
+  lineItems?: any[] | null;
   paymentInfo?: PaymentInfoData | null;
   paymentTerms?: PaymentTermsData | null;
   notes?: NotesData | null;
   disabled?: boolean;
 }>(), {
+  lineItems: () => [],
   paymentInfo: null,
   paymentTerms: null,
   notes: null,
@@ -36,6 +38,33 @@ const form = reactive({
   comment3:     props.notes?.comment3 ?? "",
   comment4:     props.notes?.comment4 ?? "",
   comment5:     props.notes?.comment5 ?? "",
+});
+
+const subTotal = computed(() => {
+  return (props.lineItems ?? []).reduce((sum, item) => sum + (Number(item.quantity) * Number(item.unitPrice) || 0), 0);
+});
+
+const totalTax = computed(() => {
+  return (props.lineItems ?? []).reduce((sum, item) => {
+    const itemSub = Number(item.quantity) * Number(item.unitPrice) || 0;
+    return sum + (itemSub * (Number(item.tax) || 0)) / 100;
+  }, 0);
+});
+
+const grandTotal = computed(() => {
+  return subTotal.value + totalTax.value - (Number(form.globalDiscount) || 0);
+});
+
+watch([subTotal, totalTax, grandTotal], ([newSub, newTax, newGrand]) => {
+  form.subTotal = newSub;
+  form.totalTax = newTax;
+  form.grandTotal = newGrand;
+  emitUpdate();
+}, { immediate: true });
+
+watch(() => form.globalDiscount, () => {
+  form.grandTotal = grandTotal.value;
+  emitUpdate();
 });
 
 function emitUpdate() {

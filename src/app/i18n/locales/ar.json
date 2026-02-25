@@ -472,6 +472,8 @@
     "ItemCreatedSuccessfully": "تم اضافة العنصر بنجاح",
     "ItemUpdatedSuccessfully": "تم تعديل العنصر بنجاح",
     "ItemDeletedSuccessfully": "تم حذف العنصر بنجاح",
+    "selectZone": "اختر المنطقة",
+    "zoneDisabled": "اختيار المنطقة معطل",
     "overview": {
       "overview": "نظرة عامة",
       "itemInformation": "معلومات الصنف",
@@ -690,10 +692,21 @@
     "itemCreatedSuccessfully": "تم إنشاء الصنف بنجاح",
     "branchID": "الفرع المعين"
   },
+  "locationPicker": {
+    "title": "اختر موقع التخزين",
+    "searchPlaceholder": "البحث برمز الموقع أو المنطقة...",
+    "locationCode": "كود الموقع",
+    "zoneCode": "كود المنطقة",
+    "zone": "المنطقة",
+    "row": "الصف",
+    "column": "العمود",
+    "rack": "الرف",
+    "confirmSelection": "تأكيد الاختيار"
+  },
   "purchaseWaybill": {
     "purchaseWaybill": "إذن استلام مشتريات",
     "addpurchaseWaybill": "إذن استلام مشتريات جديد ",
-    "viewpurchaseWaybill":  "إذن استلام مشتريات ",
+    "viewpurchaseWaybill": "إذن استلام مشتريات ",
     "subtitle": "إدارة استلامات المشتريات الواردة",
     "addNew": "إضافة عملية شراء جديدة",
     "searchPlaceholder": "ابحث برقم الإذن أو المورد أو أمر الشراء...",
@@ -733,7 +746,7 @@
     "ReceivingWarehousePlaceholder": "اختر المخزن",
     "zone": "المنطقة",
     "zonePlaceholder": "اختر المنطقة",
-    "PurchaseWaybillDeletedSuccessfully":"تم الحذف بنجاح",
+    "PurchaseWaybillDeletedSuccessfully": "تم الحذف بنجاح",
     "PurchaseWaybillCreatedSuccessfully": "تم التعديل بنجاح",
     "PurchaseWaybillUpdatedSuccessfully": "تم الانشاء بنجاح"
   },
@@ -1139,7 +1152,8 @@
     "addedSerial": "السيريالات المضافة",
     "identifyItems": "حدد العناصر المراد إرجاعها من إذن الشحن الأصلي.",
     "totalQty": "إجمالي الكمية",
-    "finalizeSave": "حفظ وإنهاء"
+    "finalizeSave": "حفظ وإنهاء",
+    "serial23": "سيريال 2/3"
   },
   "common": {
     "cancel": "إلغاء",
@@ -1163,7 +1177,8 @@
     "subtotal": "الإجمالي الفرعي",
     "items": "عنصر",
     "Showing": "عرض",
-    "selected": "محدد"
+    "selected": "محدد",
+    "zoneDisabled":"اختيار المنطقة معطل"
   },
   "itemDialog": {
     "selectItem": "اختيار صنف",
@@ -1229,7 +1244,10 @@
     "note3": "العناصر المتتبعة بالرقم التسلسلي أو رقم التشغيلة: يتم الحجز بأرقام محددة",
     "DamageHold": "حجز تلف",
     "Investigation": "تحقيق",
-    "qcHold": "حجز فحص الجودة"
+    "qcHold": "حجز فحص الجودة",
+    "releaseItemConfirm": "هل أنت متأكد أنك تريد التحرير عن هذا الصنف؟",
+    "releaseSerialConfirm": "هل أنت متأكد أنك تريد التحرير عن هذا الرقم التسلسلي؟",
+    "itemReleasedSuccessfully": "تم تحرير عن الصنف بنجاح"
   },
   "ReturnItems": {
     "title": "أصناف المرتجع",
@@ -1258,7 +1276,7 @@
     "inbound": "وارد",
     "outbound": "صادر"
   },
-"steps": {
+  "steps": {
     "commercialDetails": "البيانات التجارية",
     "warehouseDetails": "بيانات المخازن",
     "lineItems": "بنود الفاتورة",

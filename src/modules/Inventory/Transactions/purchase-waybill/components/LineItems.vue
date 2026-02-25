@@ -3,6 +3,8 @@ import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
+import StorageLocationPicker from '@/modules/Inventory/shared/components/StorageLocationPicker.vue';
+import FormDropdown from '@/sharedComponents/inputs/FormDropdown.vue';
 import { useInventoryLookups } from '@/composables/useInventoryLookups';
 import type { LineItem } from '../types/PurchaseWaybill';
 
@@ -16,8 +18,7 @@ const props = withDefaults(defineProps<{
 
 const { t } = useI18n();
 const emit = defineEmits(['next', 'prev', 'update']);
-
-const { getItemsLookups, itemsLookups, getUnitsLookups } = useInventoryLookups();
+const { getItemsLookups, itemsLookups, getUnitsLookups, getWarehouseHierarchyLookups, WarehouseHierarchyLookups, getWarehouseLookups, WarehouseLookups } = useInventoryLookups();
 
 const unitOptionsMap = ref<Record<number | string, any[]>>({});
 
@@ -32,7 +33,7 @@ function mapApiItem(item: LineItem) {
     id: item.id,
     lineNumber: item.lineNumber,
     itemId: item.itemId,
-    code: item.itemId,
+    code: item.itemCode,
     name: item.itemName,
     quantity: item.quantity,
     uom: item.unitName,
@@ -54,7 +55,6 @@ function mapApiItem(item: LineItem) {
 }
 
 const items = ref<any[]>((props.lineItems ?? []).map(mapApiItem));
-
 const itemsError = ref("");
 
 function emitUpdate() {
@@ -124,7 +124,7 @@ const handleSelectItem = (selectedItem: any) => {
     tax: tax,
     total: calcTotal(qty, price, tax),
     serials: [],
-    tracked: (originalItem?.trackingType || selectedItem.trackingType) !== 'None'
+    tracked: true  // Always show qty/serial dialog for all items
   };
   items.value.push(newItem);
   emitUpdate();
@@ -158,8 +158,69 @@ const removeItem = (data: any) => {
 };
 
 onMounted(async () => {
-  await getUnitsLookups();
+  await Promise.all([
+    getUnitsLookups(),
+    getWarehouseLookups(),
+    getWarehouseHierarchyLookups()
+  ]);
 });
+
+const showLocationPicker = ref(false);
+const locationPickerTarget = ref<any>(null);
+const isLoadingLocation = ref(false);
+const loadingLocationItemId = ref<any>(null);
+
+const currentLocations = computed(() => {
+  if (!locationPickerTarget.value) return [];
+  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === locationPickerTarget.value.warehouseId);
+  return wh?.locations || [];
+});
+
+const openLocationPicker = (item: any) => {
+  if (!item.warehouseId) return;
+  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === item.warehouseId);
+  if (wh?.warehouseType === 'Professional') {
+    locationPickerTarget.value = item;
+    showLocationPicker.value = true;
+  }
+};
+
+const handleSelectLocation = (location: any) => {
+  if (locationPickerTarget.value) {
+    locationPickerTarget.value.zone = location.zoneName;
+    locationPickerTarget.value.zoneId = location.zoneId;
+    locationPickerTarget.value.locationCode = location.locationCode;
+    locationPickerTarget.value.row = location.row;
+    locationPickerTarget.value.column = location.column;
+    locationPickerTarget.value.rack = location.rack;
+  }
+  emitUpdate();
+};
+
+const handleWarehouseChange = async (item: any) => {
+  const wh = WarehouseLookups.value.find(w => w.value === item.warehouseId);
+  if (wh) {
+    item.warehouse = wh.label;
+    // Reset zone/location when warehouse changes
+    item.zone = '';
+    item.zoneId = null;
+    item.locationCode = '';
+    // If Professional, fetch hierarchy first then auto-open picker
+    if (wh.type === 'Professional') {
+      isLoadingLocation.value = true;
+      loadingLocationItemId.value = item.id;
+      try {
+        await getWarehouseHierarchyLookups();
+      } finally {
+        isLoadingLocation.value = false;
+        loadingLocationItemId.value = null;
+      }
+      openLocationPicker(item);
+    }
+  }
+  emitUpdate();
+};
+
 </script>
 
 <template>
@@ -209,49 +270,78 @@ onMounted(async () => {
             </template>
           </div>
         </template>
-<!-- select -->
+        <!-- select -->
         <template #col-uom="{ data }">
-          <span v-if="disabled || !unitOptionsMap[data.id]"
-            class="text-gray-700">{{ data.uom }}</span>
-          <select v-else v-model="data.uom"
-            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
-            @change="() => { const opt = (unitOptionsMap[data.id] || []).find((o: any) => o.value === data.uom); if (opt) { data.unitId = opt.unitId; } emitUpdate(); }">
-            <option v-for="opt in unitOptionsMap[data.id]" :key="opt.unitId" :value="opt.value">{{ opt.label }}</option>
-          </select>
+          <span v-if="disabled || !unitOptionsMap[data.id]" class="text-gray-700">
+            {{ data.uom }}
+          </span>
+
+          <div v-else class="min-w-24">
+            <FormDropdown :modelValue="data.uom" :options="unitOptionsMap[data.id] ?? []" label=""
+              :placeholder="t('items.uom')" optionLabel="label" optionValue="value" class="uom-dropdown"
+              @update:modelValue="(v: any) => {
+                data.uom = v;
+                const opt = (unitOptionsMap[data.id] ?? [])
+                  .find((o: any) => o.value === v);
+                if (opt) {
+                  data.unitId = opt.unitId;
+                }
+                emitUpdate();
+              }" />
+          </div>
         </template>
 
         <template #col-warehouse="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.warehouse }}</span>
-          <select v-else v-model="data.warehouse"
-            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
-            @change="emitUpdate">
-            <option value="">{{ t('items.warehouse') }}</option>
-            <option value="WH-011">WH-011</option>
-            <option value="WH-012">WH-012</option>
-          </select>
+          <div v-else class="min-w-32">
+            <FormDropdown :modelValue="data.warehouseId" :options="WarehouseLookups" label=""
+              :placeholder="t('items.warehouse')"
+              @update:modelValue="(v: any) => { data.warehouseId = v; handleWarehouseChange(data); }"
+              class="warehouse-dropdown" />
+          </div>
         </template>
 
         <template #col-zone="{ data }">
-          <span v-if="disabled" class="text-gray-700">{{ data.zone || '—' }}</span>
-          <select v-else v-model="data.zone"
-            class="w-24 p-1 text-sm border border-gray-200 rounded bg-gray-50 focus:border-primary-500 focus:outline-none"
-            @change="emitUpdate">
-            <option value="">{{ t('items.zone') }}</option>
-            <option value="Zone A">Zone A</option>
-            <option value="Zone B">Zone B</option>
-          </select>
+          <div class="flex flex-col gap-1">
+            <template
+              v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === data.warehouseId)?.warehouseType === 'Professional' || (isLoadingLocation && loadingLocationItemId === data.id)">
+              <!-- Loading spinner while fetching hierarchy -->
+              <div v-if="isLoadingLocation && loadingLocationItemId === data.id"
+                class="flex items-center gap-2 text-xs text-primary-500 font-medium py-1 px-2 border border-primary-200 rounded-lg">
+                <ProgressSpinner style="width:14px;height:14px" strokeWidth="6" />
+                <span>Loading...</span>
+              </div>
+              <BaseButton
+                v-else-if="!disabled"
+                :label="data.locationCode || t('itemList.selectZone')"
+                variant="outline-primary" class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200"
+                @click="openLocationPicker(data)" />
+              <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
+              <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
+                {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack
+                  }})</template>
+              </div>
+            </template>
+            <template v-else-if="data.warehouseId">
+              <span class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
+            </template>
+          </div>
         </template>
-<!--  -->
+
         <template #col-unitPrice="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.unitPrice }}</span>
-          <InputText v-else :value="data.unitPrice" class="w-20 p-inputtext-sm"
-            @change="(e: any) => { const v = parseFloat(e.target.value) || 0; data.unitPrice = v; data.total = calcTotal(data.quantity, v, data.tax); emitUpdate(); }" />
+          <InputText v-else v-model.number="data.unitPrice" class="w-20 p-inputtext-sm" :disabled="disabled" @input="() => {
+            data.total = calcTotal(data.quantity, data.unitPrice, data.tax);
+            emitUpdate();
+          }" />
         </template>
 
         <template #col-tax="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.tax }}%</span>
-          <InputText v-else :value="data.tax" class="w-16 p-inputtext-sm"
-            @change="(e: any) => { const v = parseFloat(e.target.value) || 0; data.tax = v; data.total = calcTotal(data.quantity, data.unitPrice, v); emitUpdate(); }" />
+          <InputText  v-else v-model.number="data.tax" class="w-16 p-inputtext-sm" :disabled="disabled" @input="() => {
+            data.total = calcTotal(data.quantity, data.unitPrice, data.tax);
+            emitUpdate();
+          }" />
         </template>
 
         <template #col-total="{ data }">
@@ -277,25 +367,34 @@ onMounted(async () => {
       @select="handleSelectItem" />
     <QuantitySerialDialog v-if="showQtyDialog && currentItem" v-model:visible="showQtyDialog" :item="currentItem"
       :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
+    <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker" :locations="currentLocations"
+      :selectedLocationId="locationPickerTarget?.locationId" @select="handleSelectLocation" />
   </div>
 </template>
 
+
 <style scoped>
+:deep(.warehouse-dropdown .p-dropdown) {
+  background-color: #f9fafb;
+  border-color: #f3f4f6;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+:deep(.warehouse-dropdown label) {
+  display: none;
+}
 :deep(.p-select) {
   border-color: #f3f4f6;
   background-color: #f9fafb;
 }
-
 :deep(.p-inputtext) {
   border-color: #e5e7eb;
   background-color: #f9fafb;
 }
-
 :deep(.p-inputtext:focus) {
   border-color: #2563eb;
   box-shadow: 0 0 0 1px #2563eb;
 }
-
 .circle-badge-sm {
   width: 30px;
   height: 30px;
@@ -306,11 +405,9 @@ onMounted(async () => {
   justify-content: center;
   flex-wrap: nowrap;
 }
-
 .circle-badge {
   background-color: transparent;
 }
-
 .icon-transparent {
   color: transparent;
 }

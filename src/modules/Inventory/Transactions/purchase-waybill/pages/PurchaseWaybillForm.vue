@@ -69,7 +69,14 @@ const submit = async () => {
   try {
     const payload = {
       supplierDetails: formData.value.supplierDetails,
-      paymentTerms: formData.value.paymentTerms,
+      paymentTerms: {
+        ...formData.value.paymentTerms,
+        exchangeRate: formData.value.paymentTerms?.exchangeRate !== null &&
+          formData.value.paymentTerms?.exchangeRate !== undefined &&
+          formData.value.paymentTerms?.exchangeRate !== ''
+            ? Number(formData.value.paymentTerms.exchangeRate)
+            : null
+      },
       warehouseDetails: formData.value.warehouseDetails,
       lineItems: formData.value.lineItems.map((item: any) => ({
         itemId: item.itemId,
@@ -94,12 +101,12 @@ const submit = async () => {
       })(),
       notes: formData.value.notes
     };
-
     if (mode.value === 'edit' && id.value) {
       await updatePurchaseWaybill(id.value, payload);
     } else {
       await createPurchaseWaybill(payload);
     }
+    await router.push("/purchase-waybill");
   } catch (error) {
     console.error('Failed to submit purchase waybill:', error);
   }
@@ -176,6 +183,7 @@ onMounted(async () => {
             </div>
             <div v-show="activeStep === 3">
               <Payment
+                :lineItems="formData?.lineItems"
                 :paymentInfo="formData?.paymentInfo"
                 :paymentTerms="formData?.paymentTerms"
                 :notes="formData?.notes"

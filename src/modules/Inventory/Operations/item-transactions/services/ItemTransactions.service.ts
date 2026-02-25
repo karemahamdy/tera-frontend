@@ -1,56 +1,33 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, ItemTransactionsResponse,  } from "../types/ItemTransactions";
-
+import type {
+  Pagination,
+  ItemTransactionsResponse,
+  MergeOrTransferTransactionsPayload,
+  ItemInfo
+} from "../types/ItemTransactions";
 
 export const ItemTransactionsService = {
   async getAll(params: Pagination) {
-
     const resp = await axiosWrapper.get<ItemTransactionsResponse>(
-      `/MergeOrTransferTransactions`, { params }
+      `/MergeOrTransferTransactions`,
+      { params },
     );
     return resp.data;
   },
-
-  async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/purchase-waybill/${id}`);
-    return data.data;
-  },
-
-  async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
-    return data.data;
-  },
-  async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/purchase-waybill/${id}`, payload);
-    return data.data;
-  },
-
-  async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/purchase-waybill/${id}`);
-  },
-
-  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(
-      `/purchase-waybill/Status/${id}`,
-      null,
-      {
-        params: { isActive }
-      }
+  async create(payload: MergeOrTransferTransactionsPayload) {
+    const data = await axiosWrapper.post<any>(
+      `/MergeOrTransferTransactions`,
+      payload,
     );
     return data.data;
   },
-
-  async exportData(payload: any) {
-    const data = await axiosWrapper.get<Blob>(
-      `/purchase-waybill/export-LDCs`,
+  async getItemInformations(params: { itemId: string; warehouseId?: string }) {
+    const data = await axiosWrapper.get<{ data: ItemInfo }>(
+      `/MergeOrTransferTransactions/item-informations/`,
       {
-        params: payload,
-        responseType: "blob",
-      }
+        params,
+      },
     );
-
-    return data;
-    ;
-  }
-
+    return data.data;
+  },
 };

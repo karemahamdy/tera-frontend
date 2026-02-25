@@ -42,4 +42,9 @@ export const InventoryLookupsService = {
       `/Lookups/CostcenterLookups?isActive=true`,
     );
   },
+  getWarehouseHierarchyLookups() {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/Lookups/warehouse-hierarchy-lookups`,
+    );
+  },
 };

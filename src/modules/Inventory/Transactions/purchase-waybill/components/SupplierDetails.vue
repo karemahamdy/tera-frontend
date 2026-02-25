@@ -39,6 +39,16 @@ const errors = reactive({
   purchaseOrderRef: "", externalReference: "", currencyId: "", exchangeRate: "",
 });
 
+function toDateStr(d: Date | string | null | undefined): string | null {
+  if (!d) return null;
+  const date = d instanceof Date ? d : new Date(d);
+  if (isNaN(date.getTime())) return null;
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function emitUpdate() {
   if (props.disabled) return;
   emit("update", {
@@ -48,13 +58,15 @@ function emitUpdate() {
       supplierSalesOrder:   form.supplierSalesOrder,
       purchaseOrderRef:     form.purchaseOrderRef,
       externalReference:    form.externalReference,
-      waybillDate:          form.waybillDate?.toISOString(),
-      expectedDeliveryDate: form.expectedDeliveryDate?.toISOString(),
+      waybillDate:          toDateStr(form.waybillDate),
+      expectedDeliveryDate: toDateStr(form.expectedDeliveryDate),
     },
     paymentTerms: {
       currencyId:   form.currencyId,
-      exchangeRate: form.exchangeRate,
-      rateDate:     form.rateDate?.toISOString(),
+      exchangeRate: form.exchangeRate !== null && form.exchangeRate !== undefined
+        ? Number(form.exchangeRate)
+        : null,
+      rateDate: toDateStr(form.rateDate),
     }
   });
 }
@@ -134,7 +146,7 @@ onMounted(async () => {
           :placeholder="t('purchaseWaybill.ExchangedatePlaceholder')" :disabled="disabled"
           @update:modelValue="emitUpdate" />
       </div>
-      <FormInput :label="t('purchaseWaybill.ExchangeValue')" v-model="form.exchangeRate"
+      <FormInput :label="t('purchaseWaybill.ExchangeValue')" v-model="form.exchangeRate" type="number"
         :error="errors.exchangeRate" :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')"
         :disabled="disabled" @blur="emitUpdate" />
     </div>
