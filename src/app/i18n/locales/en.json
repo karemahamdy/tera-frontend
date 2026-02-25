@@ -1068,7 +1068,9 @@
     "ZonePlaceholder": "Select Source Zone",
     "WarehouseTransactionCreatedSuccessfully": "WarehouseTransaction Created Successfully",
     "WarehouseTransactionUpdatedSuccessfully": "WarehouseTransaction Updated Successfully",
-    "Zone": "Zone"
+    "Zone": "Zone",
+    "review": "Review",
+    "transactionDetails": "Transaction Details"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",

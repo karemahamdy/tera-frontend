@@ -194,33 +194,6 @@ onMounted(async () => {
 
       <!-- Warehouse/Zone for Inbound/Outbound -->
       <template v-if="modelValue.direction !== 'Transfer'">
-        <FormDropdown 
-          :label="t('warehouseTransaction.warehouse')" 
-          v-model="modelValue.warehouse"
-          :error="errors.warehouse" 
-          :placeholder="t('itemList.warehousePlaceholder')"
-          :options="WarehouseLookups"
-          :disabled="disabled"
-          @update:modelValue="handleSrcWarehouseChange"
-        />
-
-        <!-- Zone/Location — StorageLocationPicker for Professional -->
-        <div v-if="getWhType(modelValue.warehouse) === 'Professional'">
-          <label class="block text-gray-600 text-lg mb-1">{{ t('itemList.zone') }}</label>
-          <div v-if="isLoadingSrc" class="py-2"><ProgressSpinner style="width:20px;height:20px" /></div>
-          <div v-else class="flex flex-col gap-1">
-            <BaseButton
-              :label="modelValue.locationCode || t('warehouseTransaction.selectZone')"
-              variant="outline-primary"
-              class="w-full text-left justify-start font-normal border-gray-300"
-              :disabled="disabled"
-              @click="showSrcPicker = true"
-            />
-            <span v-if="modelValue.locationCode" class="text-xs text-gray-400">
-              {{ modelValue.zoneName }} <template v-if="modelValue.row">(R:{{ modelValue.row }} C:{{ modelValue.column }} R:{{ modelValue.rack }})</template>
-            </span>
-          </div>
-        </div>
 
         <FormDropdown 
           :label="t('items.costCenter')" 
@@ -239,6 +212,34 @@ onMounted(async () => {
           :options="typeOptions" 
           :disabled="disabled"
         />
+
+          <FormDropdown 
+          :label="t('warehouseTransaction.warehouse')" 
+          v-model="modelValue.warehouse"
+          :error="errors.warehouse" 
+          :placeholder="t('itemList.warehousePlaceholder')"
+          :options="WarehouseLookups"
+          :disabled="disabled"
+          @update:modelValue="handleSrcWarehouseChange"
+        />
+        <!-- Zone/Location — StorageLocationPicker for Professional -->
+        <div v-if="getWhType(modelValue.warehouse) === 'Professional'">
+          <label class="block text-gray-600 text-lg mb-1">{{ t('itemList.zone') }}</label>
+          <div v-if="isLoadingSrc" class="py-2"><ProgressSpinner style="width:20px;height:20px" /></div>
+          <div v-else class="flex flex-col gap-1">
+            <BaseButton
+              :label="modelValue.locationCode || t('warehouseTransaction.selectZone')"
+              variant="outline-primary"
+              class="w-full text-left justify-start font-normal border-gray-300"
+              :disabled="disabled"
+              @click="showSrcPicker = true"
+            />
+            <span v-if="modelValue.locationCode" class="text-xs text-gray-400">
+              {{ modelValue.zoneName }} <template v-if="modelValue.row">(R:{{ modelValue.row }} C:{{ modelValue.column }} R:{{ modelValue.rack }})</template>
+            </span>
+          </div>
+        </div>
+
       </template>
 
       <!-- Transfer Source/Target Grid -->

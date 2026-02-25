@@ -85,9 +85,9 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
-  const getItemsLookups = async (trackedOnly: boolean = false) => {
+  const getItemsLookups = async () => {
     try {
-      const res = await InventoryLookupsService.getItemsLookups(trackedOnly);
+      const res = await InventoryLookupsService.getItemsLookups();
       itemsLookups.value = res.data;
     } catch (error) {
       toastService.error(error as string);

@@ -74,7 +74,8 @@ function toDateStr(d: any): string | null {
   if (!d) return null;
   const date = d instanceof Date ? d : new Date(d);
   if (isNaN(date.getTime())) return null;
-  return date.toISOString().split('T')[0];
+  const isoDate = date.toISOString().split('T')[0];
+  return isoDate ?? null;
 }
 
 const summaryData = computed(() => {

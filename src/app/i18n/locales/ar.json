@@ -1069,7 +1069,9 @@
     "Zone": "المنطقة",
     "ZonePlaceholder": "اختر المنطقة",
     "WarehouseTransactionUpdatedSuccessfully": "تم التعديل بنجاح",
-    "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح"
+    "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح",
+    "review": "مراجعة",
+    "transactionDetails"  : "تفاصيل المعاملة"
   },
   "itemTransaction": {
     "createNewTransaction": "إنشاء معاملة جديدة",

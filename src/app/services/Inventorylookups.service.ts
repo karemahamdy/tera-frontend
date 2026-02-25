@@ -32,9 +32,9 @@ export const InventoryLookupsService = {
       `/InventoryLookups/incoterms`,
     );
   },
-  getItemsLookups(trackedOnly: boolean = false) {
+  getItemsLookups() {
     return axiosWrapper.get<ApiResponse<ItemLookup[]>>(
-      `/InventoryLookups/items?trackedOnly=${trackedOnly}`,
+      `/InventoryLookups/items?trackedOnly=true`,
     );
   },
   getCostCenterLookups() {

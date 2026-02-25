@@ -87,7 +87,7 @@ const showItemDialog = ref(false);
 const availableItems = computed(() => itemsLookups.value.map(item => ({ ...item, label: item.name, value: item.id })));
 
 const openItemDialog = async () => {
-  await getItemsLookups(false);
+  await getItemsLookups();
   showItemDialog.value = true;
 };
 
