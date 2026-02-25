@@ -156,7 +156,7 @@ const getStatusText = (status: any) => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiSalesReturn" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" :canEdit="(row: any) => row.status !== 'Posted'"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
                     <template v-slot:["col-status"]="{ data }">
