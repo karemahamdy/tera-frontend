@@ -255,7 +255,7 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
 
             <div v-show="activeStep === 2">
               <TransactionSummary
-                :data="summaryData"
+                :data="summaryData || {}"
               />
             </div>
           </template>

@@ -7,23 +7,6 @@ defineProps({
   data: {
     type: Object,
     required: true,
-    default: () => ({
-      waybillDate: '18 Jan 2026',
-      inventoryRequest: 'REQ-TRF-2026-014',
-      direction: 'Transfer',
-      warehouse: 'Finished Goods',
-      zone: 'Finished Goods Zone',
-      type: 'Internal Transfer',
-      costCenter: 'CC-FIN-001 – Finance',
-      source: {
-        warehouse: 'Main Warehouse',
-        zone: 'Raw Materials Zone'
-      },
-      destination: {
-        warehouse: 'Finished Goods',
-        zone: 'Finished Goods Zone'
-      }
-    })
   }
 })
 </script>

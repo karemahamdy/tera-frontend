@@ -41,7 +41,7 @@ function mapApiItem(item: any) {
     conversionFactor: 1 
   }];
   return {
-    id: item.id || Date.now() + Math.random(),
+    // id: item.id || Date.now() + Math.random(),
     itemId: item.itemId,
     code: item.itemCode,
     name: item.itemName,
