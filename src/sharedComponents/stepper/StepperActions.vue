@@ -32,7 +32,7 @@ const isLast = computed(() => props.current === props.total - 1);
     </button>
     <button v-if="isLast" @click="$emit('finish')" class="min-w-30 bg-primary-600 hover:bg-primary-700 text-white
              rounded-lg px-5 py-2 transition">
-      {{ finishText || $t("button.save") }}
+      {{ finishText || t("button.save") }}
     </button>
 
   </div>

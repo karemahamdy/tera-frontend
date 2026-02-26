@@ -7,23 +7,6 @@ defineProps({
   data: {
     type: Object,
     required: true,
-    default: () => ({
-      waybillDate: '18 Jan 2026',
-      inventoryRequest: 'REQ-TRF-2026-014',
-      direction: 'Transfer',
-      warehouse: 'Finished Goods',
-      zone: 'Finished Goods Zone',
-      type: 'Internal Transfer',
-      costCenter: 'CC-FIN-001 – Finance',
-      source: {
-        warehouse: 'Main Warehouse',
-        zone: 'Raw Materials Zone'
-      },
-      destination: {
-        warehouse: 'Finished Goods',
-        zone: 'Finished Goods Zone'
-      }
-    })
   }
 })
 </script>
@@ -57,29 +40,29 @@ defineProps({
         <p class="text-base font-semibold text-gray-800">{{ data.direction }}</p>
       </div>
 
-      <div>
+      <div v-if="data.direction !== 'Transfare'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.warehouse') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.warehouse }}</p>
       </div>
 
-      <div>
+      <div v-if="data.direction !== 'Transfare'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.zone') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.zone }}</p>
       </div>
 
-      <div>
+      <div v-if="data.direction !== 'Transfare'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.type') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.type }}</p>
       </div>
 
-      <div class="md:col-span-3">
+      <div class="md:col-span-3" v-if="data.direction !== 'Transfare'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.costCenter') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.costCenter }}</p>
       </div>
     </div>
 
 
-    <div v-if="data.direction === 'Transfer'" class="mt-8 pt-6 border-t border-gray-100">
+    <div v-if="data.direction === 'Transfare'" class="mt-8 pt-6 border-t border-gray-100">
       <h3 class="text-sm font-semibold text-gray-800 mb-4">
         {{ t('transaction.transferDetails') }}
       </h3>
@@ -92,11 +75,11 @@ defineProps({
           </p>
 
           <div class="grid grid-cols-2 gap-4">
-            <div>
+            <div >
               <p class="text-xs text-gray-500 mb-1">{{ t('transaction.warehouse') }}</p>
               <p class="text-sm font-semibold text-gray-800">{{ data.source?.warehouse || '-' }}</p>
             </div>
-            <div>
+            <div >
               <p class="text-xs text-gray-500 mb-1">{{ t('transaction.zone') }}</p>
               <p class="text-sm font-semibold text-gray-800">{{ data.source?.zone || '-' }}</p>
             </div>

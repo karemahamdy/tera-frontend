@@ -13,7 +13,10 @@ export function useInventoryLookups() {
   const ZonesLookups = ref<LookupsOption[]>([]);
   const itemsLookups = ref<ItemLookup[]>([]);
   const UnitsLookups = ref<LookupsOption[]>([]);
+  const costCenterLookups = ref<LookupsOption[]>([]);
   const WarehouseHierarchyLookups = ref<any[]>([]);
+  const serialsLookups = ref<any[]>([]);
+  const itemBalance = ref<number>(0);
 
   const ItemsSerialsLookups = ref<any[]>([]);
 
@@ -98,9 +101,9 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
-  const getItemsLookups = async (trackedOnly: boolean = false) => {
+  const getItemsLookups = async () => {
     try {
-      const res = await InventoryLookupsService.getItemsLookups(trackedOnly);
+      const res = await InventoryLookupsService.getItemsLookups();
       itemsLookups.value = res.data;
     } catch (error) {
       toastService.error(error as string);
@@ -118,12 +121,43 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
+  const getCostCenterLookups = async () => {
+    try {
+      const res = await LookupsService.getCostcenterLookups();
+      costCenterLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   const getWarehouseHierarchyLookups = async () => {
     try {
       const res = await InventoryLookupsService.getWarehouseHierarchyLookups();
       WarehouseHierarchyLookups.value = res.data;
     } catch (error) {
       toastService.error(error as string);
+    }
+  };
+
+  const getItemSerials = async (itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) => {
+    try {
+      const res = await InventoryLookupsService.getItemSerials(itemId, warehouseId, zoneId, locationId);
+      serialsLookups.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
+  const getItemBalance = async (itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) => {
+    try {
+      const res = await InventoryLookupsService.getItemBalance(itemId, warehouseId, zoneId, locationId);
+      // The user provided structure: { "totalBalance": ... }
+      return res.data?.totalBalance ?? res.data ?? 0;
+    } catch (error) {
+      toastService.error(error as string);
+      return 0;
     }
   };
 
@@ -136,7 +170,10 @@ export function useInventoryLookups() {
     getZonesLookups,
     getItemsLookups,
     getUnitsLookups,
+    getCostCenterLookups,
     getWarehouseHierarchyLookups,
+    getItemSerials,
+    getItemBalance,
     getItemSerialsLookups,
     ItemsSerialsLookups,
     ZonesLookups,
@@ -147,6 +184,10 @@ export function useInventoryLookups() {
     WarehouseLookups,
     itemsLookups,
     UnitsLookups,
+    costCenterLookups,
     WarehouseHierarchyLookups,
+    serialsLookups,
+    itemBalance
+  
   };
 }

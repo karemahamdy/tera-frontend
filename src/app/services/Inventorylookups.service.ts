@@ -1,9 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type {
-  ApiResponse,
-  InventoryLookups,
-  ItemLookup,
-} from "../types/lookups";
+import type { ApiResponse, InventoryLookups, ItemLookup, Lookups } from "../types/lookups";
 
 export const InventoryLookupsService = {
   getCurrenciesLookups() {
@@ -36,9 +32,14 @@ export const InventoryLookupsService = {
       `/InventoryLookups/incoterms`,
     );
   },
-  getItemsLookups(trackedOnly: boolean = false) {
+  getItemsLookups() {
     return axiosWrapper.get<ApiResponse<ItemLookup[]>>(
-      `/InventoryLookups/items?trackedOnly=${trackedOnly}`,
+      `/InventoryLookups/items?trackedOnly=false`,
+    );
+  },
+  getCostCenterLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>(
+      `/Lookups/CostcenterLookups?isActive=true`,
     );
   },
   getWarehouseHierarchyLookups() {
@@ -46,17 +47,16 @@ export const InventoryLookupsService = {
       `/Lookups/warehouse-hierarchy-lookups`,
     );
   },
-  getItemSerialsLookups(params: {
-    itemId: string;
-    warehouseId: string;
-    zoneId?: string;
-    locationId?: string;
-  }) {
-    return axiosWrapper.get<ApiResponse<any[]>>(
-      `/InventoryLookups/item-serials`,
-      {
-        params,
-      },
-    );
+  getItemSerials(itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) {
+    let url = `/InventoryLookups/item-serials?itemId=${itemId}&warehouseId=${warehouseId}`;
+    if (zoneId) url += `&zoneId=${zoneId}`;
+    if (locationId) url += `&locationId=${locationId}`;
+    return axiosWrapper.get<ApiResponse<any[]>>(url);
+  },
+  getItemBalance(itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) {
+    let url = `/InventoryLookups/item-balance?itemId=${itemId}&warehouseId=${warehouseId}`;
+    if (zoneId) url += `&zoneId=${zoneId}`;
+    if (locationId) url += `&locationId=${locationId}`;
+    return axiosWrapper.get<ApiResponse<any>>(url);
   },
 };

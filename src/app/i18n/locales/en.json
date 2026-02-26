@@ -64,7 +64,9 @@
     "Pending": "Pending",
     "Posted": "Posted",
     "Shipped": "Shipped",
-    "step": "Step {index} of {total}"
+    "step": "Step {index} of {total}",
+    "free": "Free",
+    "production": "Production"
   },
   "table": {
     "description": "Description",
@@ -1067,7 +1069,9 @@
     "ZonePlaceholder": "Select Source Zone",
     "WarehouseTransactionCreatedSuccessfully": "WarehouseTransaction Created Successfully",
     "WarehouseTransactionUpdatedSuccessfully": "WarehouseTransaction Updated Successfully",
-    "Zone": "Zone"
+    "Zone": "Zone",
+    "review": "Review",
+    "transactionDetails": "Transaction Details"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",
