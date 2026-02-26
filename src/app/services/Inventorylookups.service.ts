@@ -59,4 +59,17 @@ export const InventoryLookupsService = {
     if (locationId) url += `&locationId=${locationId}`;
     return axiosWrapper.get<ApiResponse<any>>(url);
   },
+   getItemSerialsLookups(params: {
+    itemId: string;
+    warehouseId: string;
+    zoneId?: string;
+    locationId?: string;
+  }) {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/item-serials`,
+      {
+        params,
+      },
+    );
+  },
 };
