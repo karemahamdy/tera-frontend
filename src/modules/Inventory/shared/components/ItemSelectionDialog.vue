@@ -79,6 +79,7 @@ const filteredItems = computed(() => {
                         </Badge>
                         <div class="text-base text-gray-700">{{ data.code }}</div>
                         </div>
+                         
                     </template>
                     
                     <template #col-action="{ data }">

@@ -4,7 +4,6 @@ import { toastService } from "@/app/services/toastService";
 import { InventoryLookupsService } from "@/app/services/Inventorylookups.service";
 import { LookupsService } from "@/app/services/lookups.service";
 
-
 export function useInventoryLookups() {
   const supplierLookups = ref<LookupsOption[]>([]);
   const CurrenciesLookups = ref<LookupsOption[]>([]);
@@ -19,6 +18,21 @@ export function useInventoryLookups() {
   const serialsLookups = ref<any[]>([]);
   const itemBalance = ref<number>(0);
 
+  const ItemsSerialsLookups = ref<any[]>([]);
+
+  const getItemSerialsLookups = async (params: {
+    itemId: string;
+    warehouseId: string;
+    zoneId?: string;
+    locationId?: string;
+  }) => {
+    try {
+      const res = await InventoryLookupsService.getItemSerialsLookups(params);
+      ItemsSerialsLookups.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
 
   const getSupplierLookups = async () => {
     try {
@@ -101,7 +115,7 @@ export function useInventoryLookups() {
       UnitsLookups.value = res.data.map((u: any) => ({
         label: u.name,
         value: u.name,
-        type: u.id
+        type: u.id,
       }));
     } catch (error) {
       toastService.error(error as string);
@@ -160,6 +174,8 @@ export function useInventoryLookups() {
     getWarehouseHierarchyLookups,
     getItemSerials,
     getItemBalance,
+    getItemSerialsLookups,
+    ItemsSerialsLookups,
     ZonesLookups,
     supplierLookups,
     CurrenciesLookups,
@@ -172,6 +188,6 @@ export function useInventoryLookups() {
     WarehouseHierarchyLookups,
     serialsLookups,
     itemBalance
+  
   };
-
 }

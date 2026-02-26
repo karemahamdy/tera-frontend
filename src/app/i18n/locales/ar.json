@@ -90,7 +90,8 @@
     "passwordsMustMatch": "يجب أن تتطابق كلمات المرور",
     "invalidEmail": "البريد الإلكتروني غير صالح",
     "toDate": "الى",
-    "fromDate": "من"
+    "fromDate": "من",
+    "min_1": "الحد الأدنى 1"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -1155,7 +1156,9 @@
     "identifyItems": "حدد العناصر المراد إرجاعها من إذن الشحن الأصلي.",
     "totalQty": "إجمالي الكمية",
     "finalizeSave": "حفظ وإنهاء",
-    "serial23": "سيريال 2/3"
+    "serial23": "سيريال 2/3",
+    "selectSerialAndQuantity": "اختر السيريال والكمية",
+    "selectAtLeastOneSerial": "يرجى اختيار سيريال واحد على الأقل"
   },
   "common": {
     "cancel": "إلغاء",
@@ -1213,6 +1216,7 @@
     "Type": "النوع"
   },
   "itemHold": {
+    "holdItem": "حجز الصنف",
     "createItemHold": "إنشاء حجز صنف",
     "createItemHoldDescription": "إدارة حجز المخزون للفحص الجودة والحجوزات والتلف",
     "item": "الصنف",
@@ -1249,7 +1253,8 @@
     "qcHold": "حجز فحص الجودة",
     "releaseItemConfirm": "هل أنت متأكد أنك تريد التحرير عن هذا الصنف؟",
     "releaseSerialConfirm": "هل أنت متأكد أنك تريد التحرير عن هذا الرقم التسلسلي؟",
-    "itemReleasedSuccessfully": "تم تحرير عن الصنف بنجاح"
+    "itemReleasedSuccessfully": "تم تحرير عن الصنف بنجاح",
+    "ItemHoldCreatedSuccessfully": "تم إنشاء حجز الصنف بنجاح"
   },
   "ReturnItems": {
     "title": "أصناف المرتجع",
