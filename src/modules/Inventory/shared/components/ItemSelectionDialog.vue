@@ -71,7 +71,7 @@ const filteredItems = computed(() => {
                 >
                     <template #col-code="{ data }">
                          <div class="flex items-center gap-2 rounded">
-                        <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
+                        <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
                             <VsxIcon iconName="Airdrop" :size="20" type="linear" />
                         </Badge>
                         <Badge v-else severity="transparent" class="circle-badge">

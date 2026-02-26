@@ -277,14 +277,18 @@ const fetchItemBalance = async (item: any) => {
     <div class="overflow-x-auto">
       <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
         :showDelete="false">
+       
         <template #col-code="{ data }">
-          <div class="flex items-center gap-2 rounded">
-            <Badge severity="transparent" class="circle-badge">
-              <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
-            </Badge>
-            <div class="text-base text-gray-700">{{ data.code }}</div>
-          </div>
-        </template>
+                         <div class="flex items-center gap-2 rounded">
+                        <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
+                            <VsxIcon iconName="Airdrop" :size="20" type="linear" />
+                        </Badge>
+                        <Badge v-else severity="transparent" class="circle-badge">
+                            <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
+                        </Badge>
+                        <div class="text-base text-gray-700">{{ data.code }}</div>
+                        </div>
+                    </template>
 
         <template #col-quantity="{ data }">
           <div class="flex items-center gap-2">
@@ -435,7 +439,16 @@ const fetchItemBalance = async (item: any) => {
 .circle-badge {
   background-color: transparent;
 }
-
+.circle-badge-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
 .icon-transparent {
   color: transparent;
 }
