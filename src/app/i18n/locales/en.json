@@ -82,7 +82,8 @@
     "passwordsMustMatch": "Passwords must match",
     "invalidEmail": "Invalid email",
     "toDate": "to Date",
-    "fromDate": "from Date"
+    "fromDate": "from Date",
+    "min_1": "Minimum 1"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -1151,7 +1152,9 @@
     "identifyItems": "Identify items to return from selected original waybill.",
     "totalQty": "Total QTY",
     "finalizeSave": "Finalize & Save",
-    "serial23": "Serial 2/3"
+    "serial23": "Serial 2/3",
+    "selectSerialAndQuantity": "Select Serial & Quantity",
+    "selectAtLeastOneSerial": "Please select at least one serial number"
   },
   "common": {
     "cancel": "Cancel",
@@ -1214,6 +1217,7 @@
     "serialLot": "Serial/Lot tracking items require number assignment"
   },
   "itemHold": {
+    "holdItem": "Hold Item",
     "createItemHold": "Create Item Hold",
     "createItemHoldDescription": "Manage inventory holds for quality checks, reservations, and damage",
     "item": "Item",
@@ -1250,7 +1254,8 @@
     "qcHold": "QC Hold",
     "releaseItemConfirm": "Are you sure you want to release this item ?",
     "releaseSerialConfirm": "Are you sure you want to release this serial ?",
-    "itemReleasedSuccessfully": "Item released successfully"
+    "itemReleasedSuccessfully": "Item released successfully",
+    "ItemHoldCreatedSuccessfully": "Item Hold created successfully"
   },
   "ReturnItems": {
     "title": "Return Items",

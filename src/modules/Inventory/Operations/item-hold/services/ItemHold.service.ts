@@ -1,5 +1,13 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, ItemHoldResponse, ReleaseItemPayload, ItemSerialTransactionResponse, ReleaseSerialPayload } from "../types/ItemHold";
+import type {
+  Pagination,
+  ItemHoldResponse,
+  ReleaseItemPayload,
+  ItemSerialTransactionResponse,
+  ReleaseSerialPayload,
+  ItemHoldPayload,
+} from "../types/ItemHold";
+import { formatDate } from "@/app/utils/dates";
 
 export const ItemHoldService = {
   async getAll(params: Pagination) {
@@ -14,8 +22,9 @@ export const ItemHoldService = {
     return data.data;
   },
 
-  async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
+  async create(payload: ItemHoldPayload) {
+    payload.holdDate = `${formatDate(new Date(payload.holdDate))} 00:00:00`;
+    const data = await axiosWrapper.post<any>(`/item-hold`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
@@ -50,17 +59,24 @@ export const ItemHoldService = {
     return data;
   },
 
-  async releaseItem(payload: ReleaseItemPayload ) {
+  async releaseItem(payload: ReleaseItemPayload) {
     await axiosWrapper.post<any>(`/item-hold/release-item`, payload);
   },
-  async releaseSerial(payload: ReleaseSerialPayload ) {
+  async releaseSerial(payload: ReleaseSerialPayload) {
     await axiosWrapper.post<any>(`/item-hold/release-serial`, payload);
   },
 
-  async getHoldingSerial(ItemId: string, WarehouseId: string, params: Pagination) {
-    const resp = await axiosWrapper.get<ItemSerialTransactionResponse>(`/item-hold/serial-holding-items-for-releasing/${ItemId}/${WarehouseId}`, {
-      params,
-    });
+  async getHoldingSerial(
+    ItemId: string,
+    WarehouseId: string,
+    params: Pagination,
+  ) {
+    const resp = await axiosWrapper.get<ItemSerialTransactionResponse>(
+      `/item-hold/serial-holding-items-for-releasing/${ItemId}/${WarehouseId}`,
+      {
+        params,
+      },
+    );
     return resp.data;
   },
 };
