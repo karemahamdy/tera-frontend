@@ -1,5 +1,9 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { ApiResponse, InventoryLookups, ItemLookup } from "../types/lookups";
+import type {
+  ApiResponse,
+  InventoryLookups,
+  ItemLookup,
+} from "../types/lookups";
 
 export const InventoryLookupsService = {
   getCurrenciesLookups() {
@@ -42,5 +46,17 @@ export const InventoryLookupsService = {
       `/Lookups/warehouse-hierarchy-lookups`,
     );
   },
- 
+  getItemSerialsLookups(params: {
+    itemId: string;
+    warehouseId: string;
+    zoneId?: string;
+    locationId?: string;
+  }) {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/item-serials`,
+      {
+        params,
+      },
+    );
+  },
 };

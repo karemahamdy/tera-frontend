@@ -70,15 +70,15 @@ const filteredItems = computed(() => {
                     :showDelete="false"
                 >
                     <template #col-code="{ data }">
-                         <div class="flex items-center gap-2 rounded">
-                        <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
-                            <VsxIcon iconName="Airdrop" :size="20" type="linear" />
-                        </Badge>
-                        <Badge v-else severity="transparent" class="circle-badge">
-                            <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
-                        </Badge>
-                        <div class="text-base text-gray-700">{{ data.code }}</div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-7">
+                                <Badge v-if="data.trackingType == 'Serial'" severity="success" class="circle-badge-sm">
+                                    <VsxIcon iconName="Brodcast" :size="20" type="linear" />
+                                </Badge>
+                            </div>
+                            <div class="text-base text-gray-700">{{ data.code }}</div>
                         </div>
+                         
                     </template>
                     
                     <template #col-action="{ data }">
