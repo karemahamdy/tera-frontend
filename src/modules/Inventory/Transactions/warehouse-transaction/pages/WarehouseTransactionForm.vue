@@ -266,9 +266,7 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
         v-if="mode !== 'view'"
         :current="activeStep"
         :total="steps.length"
-        nextText="Next"
-        prevText="Back"
-        :finishText="mode === 'edit' ? 'Update' : 'Create'"
+       
         @next="nextTab"
         @previous="previousTab"
         @finish="submit"

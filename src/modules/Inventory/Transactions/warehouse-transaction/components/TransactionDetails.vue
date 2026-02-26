@@ -193,7 +193,7 @@ onMounted(async () => {
       </div>
 
       <!-- Warehouse/Zone for Inbound/Outbound -->
-      <template v-if="modelValue.direction !== 'Transfer'">
+      <template v-if="modelValue.direction !== 'Transfare'">
 
         <FormDropdown 
           :label="t('items.costCenter')" 
@@ -242,8 +242,8 @@ onMounted(async () => {
 
       </template>
 
-      <!-- Transfer Source/Target Grid -->
-      <div v-if="modelValue.direction === 'Transfer'" class="mt-5 md:col-span-2">
+      <!-- Transfare Source/Target Grid -->
+      <div v-if="modelValue.direction === 'Transfare'" class="mt-5 md:col-span-2">
         <p><strong>{{ $t("itemTransaction.sourceTargetItems") }}</strong></p>
         <div class="grid grid-cols-9 justify-center items-center gap-2 mt-2">
 
