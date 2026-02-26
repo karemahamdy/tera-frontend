@@ -34,7 +34,7 @@ export const InventoryLookupsService = {
   },
   getItemsLookups() {
     return axiosWrapper.get<ApiResponse<ItemLookup[]>>(
-      `/InventoryLookups/items?trackedOnly=true`,
+      `/InventoryLookups/items?trackedOnly=false`,
     );
   },
   getCostCenterLookups() {

@@ -19,10 +19,10 @@ const props = withDefaults(defineProps<{
 
 const { t } = useI18n();
 const emit = defineEmits(['update']);
-const { 
-  getItemsLookups, itemsLookups, 
-  getUnitsLookups, 
-  getWarehouseHierarchyLookups, WarehouseHierarchyLookups, 
+const {
+  getItemsLookups, itemsLookups,
+  getUnitsLookups,
+  getWarehouseHierarchyLookups, WarehouseHierarchyLookups,
   getWarehouseLookups, WarehouseLookups,
   getItemBalance
 } = useInventoryLookups();
@@ -34,20 +34,21 @@ function calcTotal(qty: number, price: number) {
 }
 
 function mapApiItem(item: any) {
-  unitOptionsMap.value[item.id || item.itemId] = [{ 
-    label: item.unitName || item.unitOfMeasureName, 
-    value: item.unitName || item.unitOfMeasureName, 
-    unitId: item.unitId || item.unitOfMeasureId, 
-    conversionFactor: 1 
+  unitOptionsMap.value[item.id || item.itemId] = [{
+    label: item.unitName || item.unitOfMeasureName,
+    value: item.unitName || item.unitOfMeasureName,
+    unitId: item.unitOfMeasure || item.unitOfMeasureId,
+    conversionFactor: 1
   }];
   return {
     // id: item.id || Date.now() + Math.random(),
     itemId: item.itemId,
+    trackingType: item.trackingType || null,
     code: item.itemCode,
     name: item.itemName,
     quantity: item.quantity,
     uom: item.unitName || item.unitOfMeasureName || '',
-    unitId: item.unitId || item.unitOfMeasureId,
+    unitId: item.unitOfMeasure || item.unitOfMeasureId,
     warehouse: item.warehouseName,
     warehouseId: item.warehouseId,
     zone: item.zoneName ?? '',
@@ -114,18 +115,23 @@ const handleSelectItem = (selectedItem: any) => {
   unitOptionsMap.value[rowId] = units.map((u: any) => ({
     label: u.unitCode ? `${u.unitName} (${u.unitCode})` : u.unitName,
     value: u.unitName,
-    unitId: u.unitId,
+    unitId: u.id,
     conversionFactor: u.conversionFactor
   }));
+
+  // Get the first unit as fallback if no base unit found
+  const defaultUnit = baseUnit || units[0];
+  const unitIdValue = defaultUnit?.id || selectedItem.baseUnitId || null;
 
   const newItem = {
     id: rowId,
     itemId: selectedItem.id,
+    trackingType: selectedItem.trackingType || null,
     code: selectedItem.code,
     name: selectedItem.name,
     quantity: 1,
-    uom: baseUnit ? baseUnit.unitName : (selectedItem.baseUnitName || ''),
-    unitId: baseUnit ? baseUnit.unitId : (selectedItem.baseUnitId || ''),
+    uom: defaultUnit ? defaultUnit.unitName : (selectedItem.baseUnitName || ''),
+    unitId: unitIdValue,
     warehouse: '',
     warehouseId: '',
     zone: '',
@@ -211,7 +217,7 @@ const handleSelectLocation = async (location: any) => {
     locationPickerTarget.value.row = location.row;
     locationPickerTarget.value.column = location.column;
     locationPickerTarget.value.rack = location.rack;
-    
+
     // Fetch balance
     await fetchItemBalance(locationPickerTarget.value);
   }
@@ -282,9 +288,20 @@ const fetchItemBalance = async (item: any) => {
 
         <template #col-quantity="{ data }">
           <div class="flex items-center gap-2">
-            <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
-              @click="openQtyDialog(data)" />
-            <span class="text-gray-500">({{ data.quantity }})</span>
+            <template v-if="data.trackingType === 'Serial'">
+              <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
+                @click="openQtyDialog(data)" />
+              <span class="text-gray-500">({{ data.quantity }})</span>
+            </template>
+            <template v-else>
+              <InputText v-if="!disabled" v-model.number="data.quantity" class="w-20 p-inputtext-sm" @input="() => {
+                data.total = calcTotal(data.quantity, data.unitPrice);
+                emitUpdate();
+              }" />
+              <span v-else class="text-gray-700">
+                {{ data.quantity }}
+              </span>
+            </template>
           </div>
         </template>
 
@@ -327,14 +344,13 @@ const fetchItemBalance = async (item: any) => {
                 <ProgressSpinner style="width:14px;height:14px" strokeWidth="6" />
                 <span>Loading...</span>
               </div>
-              <BaseButton
-                v-else-if="!disabled"
-                :label="data.locationCode || t('itemList.selectZone')"
+              <BaseButton v-else-if="!disabled" :label="data.locationCode || t('itemList.selectZone')"
                 variant="outline-primary" class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200"
                 @click="openLocationPicker(data)" />
               <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
               <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
-                {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack }})</template>
+                {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack
+                  }})</template>
               </div>
             </template>
             <template v-else-if="data.warehouseId">
@@ -345,11 +361,10 @@ const fetchItemBalance = async (item: any) => {
 
         <template #col-unitPrice="{ data }">
           <span v-if="disabled" class="text-gray-700">{{ data.unitPrice }}</span>
-          <InputText v-else v-model.number="data.unitPrice" class="w-24 p-inputtext-sm" :disabled="disabled" 
-            @input="() => {
-              data.total = calcTotal(data.quantity, data.unitPrice);
-              emitUpdate();
-            }" />
+          <InputText v-else v-model.number="data.unitPrice" class="w-24 p-inputtext-sm" :disabled="disabled" @input="() => {
+            data.total = calcTotal(data.quantity, data.unitPrice);
+            emitUpdate();
+          }" />
         </template>
 
         <template #col-total="{ data }">
@@ -378,26 +393,12 @@ const fetchItemBalance = async (item: any) => {
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
     <template v-if="showQtyDialog && currentItem">
-      <SalesQuantitySerialDialog 
-        v-if="direction === 'Transfer'"
-        :key="qtyDialogKey" 
-        v-model:visible="showQtyDialog" 
-        :item="currentItem"
-        :initialSerials="currentItem.serials" 
-        :warehouseId="currentItem.warehouseId"
-        :zoneId="currentItem.zoneId"
-        :locationId="currentItem.locationId"
-        :disabled="disabled" 
-        @save="handleSaveSerials" 
-      />
-      <QuantitySerialDialog 
-        v-else
-        v-model:visible="showQtyDialog" 
-        :item="currentItem"
-        :initialSerials="currentItem.serials" 
-        :disabled="disabled" 
-        @save="handleSaveSerials" 
-      />
+      <SalesQuantitySerialDialog v-if="direction === 'Transfer'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
+        :item="currentItem" :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId"
+        :zoneId="currentItem.zoneId" :locationId="currentItem.locationId" :disabled="disabled"
+        @save="handleSaveSerials" />
+      <QuantitySerialDialog v-else v-model:visible="showQtyDialog" :item="currentItem"
+        :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
     </template>
     <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker" :locations="currentLocations"
       :selectedLocationId="locationPickerTarget?.locationId" @select="handleSelectLocation" />
@@ -411,24 +412,30 @@ const fetchItemBalance = async (item: any) => {
   border-radius: 0.5rem;
   font-size: 0.875rem;
 }
+
 :deep(.warehouse-dropdown label) {
   display: none;
 }
+
 :deep(.p-select) {
   border-color: #f3f4f6;
   background-color: #f9fafb;
 }
+
 :deep(.p-inputtext) {
   border-color: #e5e7eb;
   background-color: #f9fafb;
 }
+
 :deep(.p-inputtext:focus) {
   border-color: #2563eb;
   box-shadow: 0 0 0 1px #2563eb;
 }
+
 .circle-badge {
   background-color: transparent;
 }
+
 .icon-transparent {
   color: transparent;
 }
