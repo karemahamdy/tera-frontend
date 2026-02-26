@@ -119,8 +119,10 @@ onMounted(async () => {
   
   if (!modelValue.value.documentNumber) {
     const nextNumber = await fetchNextNumber()
-    if (nextNumber) {
-      modelValue.value.documentNumber = nextNumber.documentNumber
+    if (nextNumber && typeof nextNumber === 'string') {
+      modelValue.value.documentNumber = nextNumber;
+    } else if (nextNumber && nextNumber.documentNumber) {
+      modelValue.value.documentNumber = nextNumber.documentNumber;
     }
   }
 })

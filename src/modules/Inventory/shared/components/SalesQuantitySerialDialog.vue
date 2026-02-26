@@ -30,8 +30,12 @@ const isProcessing = ref(false);
 const serialList = ref<any[]>(props.initialSerials ? [...props.initialSerials] : []);
 
 const columns = computed(() => [
-    { field: 'serial', header: t('serial.serial') },
-    { field: 'qty', header: t('serial.qty') },
+    { field: 'mainSerial', header: t('serial.serial') },
+    { field: 'availableQuantity', header: t('serial.qty') },
+    { field: 'batchNumber', header: t('serial.batch') },
+    { field: 'expireDate', header: t('serial.expire'), type: 'date' },
+    { field: 'serialNumber2', header: t('serial.serialNumber2') },
+    { field: 'comment', header: t('serial.comment') },
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 

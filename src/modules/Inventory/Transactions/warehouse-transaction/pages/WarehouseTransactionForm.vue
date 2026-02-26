@@ -9,6 +9,7 @@ import LineItems from '../components/LineItems.vue';
 import TransactionSummary from '../components/TransactionSummary.vue';
 import { useWarehouseTransaction } from '../composables/useWarehouseTransaction';
 import { useInventoryLookups } from '@/composables/useInventoryLookups';
+import { toastService } from '../../../../../app/services/toastService';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -124,20 +125,20 @@ const submit = async () => {
       lineItems: formData.lineItems.map((item: any) => ({
         itemId: item.itemId,
         quantity: Number(item.quantity) || 0,
-        unitOfMeasure: item.unitId || null,
+        unitOfMeasure: item.unitId || item.unitOfMeasure || null,
         warehouseId: item.warehouseId || det.warehouse || null,
         zoneId: item.zoneId || null,
         locationId: item.locationId || null,
         unitPrice: Number(item.unitPrice) || 0,
-        lineTotal: Number(item.total) || 0,
-        serialLots: (item.serials || []).map((s: any) => ({
-          mainSerial: s.serial || '',
-          availableQuantity: Number(s.qty) || 0,
-          batchNumber: s.batch || '',
-          expireDate: s.expire ? new Date(s.expire).toISOString() : null,
-          serialNumber2: s.serialNumber2 || '',
-          serialNumber3: s.serialNumber3 || '',
-          comment: s.comment || '',
+        total: Number(item.total) || 0,
+        serialLots: (item.serials || item.serialLots || []).map((s: any) => ({
+          mainSerial: s.serial || s.mainSerial || '',
+          availableQuantity: Number(s.qty ?? s.availableQuantity) || 0,
+          batchNumber: s.batch || s.batchNumber || null,
+          expireDate: s.expire || s.expireDate ? new Date((s.expire || s.expireDate)).toISOString() : null,
+          serialNumber2: s.serialNumber2 || null,
+          serialNumber3: s.serialNumber3 || null,
+          comment: s.comment || null,
         })),
       })),
     };
@@ -148,8 +149,8 @@ const submit = async () => {
       await createWarehouseTransaction(payload);
     }
     await router.push('/warehouse-transaction');
-  } catch (error) {
-    console.error('Failed to submit warehouse transaction:', error);
+  } catch (error: any) {
+    toastService.error(error);
   }
 };
 
@@ -157,6 +158,8 @@ onMounted(async () => {
   await getWarehouseLookups();
   if (id.value) {
     const result = await fetchWarehouseTransactionById(id.value);
+    console.log(result);
+    
     if (result) {
       formData.details.direction = result.transactionType || ' ';
       formData.details.documentNumber = result.waybillNumber || '';
@@ -164,16 +167,18 @@ onMounted(async () => {
       formData.details.inventoryRequest = result.requestReference || '';
       formData.details.warehouse = result.warehouseId || '';
       formData.details.zone = result.zoneId || '';
+      formData.details.zoneName = result.zoneName || '';
       formData.details.locationId = result.locationId || null;
-      formData.details.locationCode = result.locationCode || '';
+      formData.details.locationCode = result.locationName || result.locationCode || '';
       formData.details.costCenter = result.costCenterId || '';
       formData.details.type = result.warehouseTransactionType || ' ';
       
       if (result.destinationWarehouseId) {
         formData.details.destination.warehouse = result.destinationWarehouseId;
         formData.details.destination.zone = result.destinationZoneId;
+        formData.details.destination.zoneName = result.destinationZoneName || '';
         formData.details.destination.locationId = result.destinationLocationId || null;
-        formData.details.destination.locationCode = result.destinationLocationCode || '';
+        formData.details.destination.locationCode = result.destinationLocationName || result.destinationLocationCode || '';
       }
       
       formData.lineItems = result.lineItems || [];
@@ -185,30 +190,24 @@ onMounted(async () => {
 watch(() => formData.details.direction, (newVal, oldVal) => {
   if (oldVal && newVal !== oldVal && mode.value === 'create') {
     formData.lineItems = [];
-    const docNum = formData.details.documentNumber;
-    Object.assign(formData.details, {
-      direction: newVal,
-      documentNumber: docNum,
-      waybillDate: new Date(),
-      inventoryRequest: '',
-      warehouse: '',
-      zone: '',
-      zoneName: '',
-      locationId: null,
-      locationCode: '',
-      row: '',
-      column: '',
-      rack: '',
-      costCenter: '',
-      type: '',
-      destination: {
-        warehouse: '',
-        zone: '',
-        zoneName: '',
-        locationId: null,
-        locationCode: ''
-      }
-    });
+    formData.details.inventoryRequest = '';
+    formData.details.warehouse = '';
+    formData.details.zone = '';
+    formData.details.zoneName = '';
+    formData.details.locationId = null;
+    formData.details.locationCode = '';
+    formData.details.row = '';
+    formData.details.column = '';
+    formData.details.rack = '';
+    formData.details.costCenter = '';
+    formData.details.type = '';
+    
+    // reset destination retaining the observable reference
+    formData.details.destination.warehouse = '';
+    formData.details.destination.zone = '';
+    formData.details.destination.zoneName = '';
+    formData.details.destination.locationId = null;
+    formData.details.destination.locationCode = '';
   }
 });
 </script>
@@ -221,12 +220,6 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
         subtitle="inventoryRequest.transaction"
         :actionName="mode === 'create' ? 'warehouseTransaction.newTransaction' : 'warehouseTransaction.warehouseTransaction'"
         class="!mb-0"
-      />
-      <BaseButton
-        v-if="mode === 'view'"
-        label="button.edit"
-        class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-        @click="router.push({ name: 'WarehouseTransactionFormEdit', params: { id } })"
       />
     </div>
 
