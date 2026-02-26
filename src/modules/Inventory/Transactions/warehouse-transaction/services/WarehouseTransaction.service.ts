@@ -29,21 +29,21 @@ export const WarehouseTransactionService = {
   },
   async getById(id: string): Promise<any> {
     const data = await axiosWrapper.get<any>(`/warehouse-transactions/${id}`);
-    return data.data;
+    return data.data ?? data;
   },
   async create(payload: any) {
     const data = await axiosWrapper.post<any>(
       `/warehouse-transactions`,
       payload,
     );
-    return data.data;
+    return data.data ?? data;
   },
   async update(id: string, payload: any) {
     const data = await axiosWrapper.put<any>(
       `/warehouse-transactions/${id}`,
       payload,
     );
-    return data.data;
+    return data.data ?? data;
   },
   async delete(id: string): Promise<void> {
     await axiosWrapper.delete(`/warehouse-transactions/${id}`);

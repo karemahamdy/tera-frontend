@@ -41,7 +41,7 @@ function mapApiItem(item: any) {
     conversionFactor: 1
   }];
   return {
-    // id: item.id || Date.now() + Math.random(),
+    id: item.id || Date.now() + Math.random(),
     itemId: item.itemId,
     trackingType: item.trackingType || null,
     code: item.itemCode,
@@ -277,18 +277,18 @@ const fetchItemBalance = async (item: any) => {
     <div class="overflow-x-auto">
       <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
         :showDelete="false">
-       
+
         <template #col-code="{ data }">
-                         <div class="flex items-center gap-2 rounded">
-                        <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
-                            <VsxIcon iconName="Airdrop" :size="20" type="linear" />
-                        </Badge>
-                        <Badge v-else severity="transparent" class="circle-badge">
-                            <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
-                        </Badge>
-                        <div class="text-base text-gray-700">{{ data.code }}</div>
-                        </div>
-                    </template>
+          <div class="flex items-center gap-2 rounded">
+            <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
+              <VsxIcon iconName="Airdrop" :size="20" type="linear" />
+            </Badge>
+            <Badge v-else severity="transparent" class="circle-badge">
+              <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
+            </Badge>
+            <div class="text-base text-gray-700">{{ data.code }}</div>
+          </div>
+        </template>
 
         <template #col-quantity="{ data }">
           <div class="flex items-center gap-2">
@@ -354,7 +354,7 @@ const fetchItemBalance = async (item: any) => {
               <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
               <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
                 {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack
-                  }})</template>
+                }})</template>
               </div>
             </template>
             <template v-else-if="data.warehouseId">
@@ -397,7 +397,7 @@ const fetchItemBalance = async (item: any) => {
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
     <template v-if="showQtyDialog && currentItem">
-      <SalesQuantitySerialDialog v-if="direction === 'Transfer'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
+      <SalesQuantitySerialDialog v-if="direction === 'Transfare'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
         :item="currentItem" :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId"
         :zoneId="currentItem.zoneId" :locationId="currentItem.locationId" :disabled="disabled"
         @save="handleSaveSerials" />
@@ -416,26 +416,21 @@ const fetchItemBalance = async (item: any) => {
   border-radius: 0.5rem;
   font-size: 0.875rem;
 }
-
 :deep(.warehouse-dropdown label) {
   display: none;
 }
-
 :deep(.p-select) {
   border-color: #f3f4f6;
   background-color: #f9fafb;
 }
-
 :deep(.p-inputtext) {
   border-color: #e5e7eb;
   background-color: #f9fafb;
 }
-
 :deep(.p-inputtext:focus) {
   border-color: #2563eb;
   box-shadow: 0 0 0 1px #2563eb;
 }
-
 .circle-badge {
   background-color: transparent;
 }
