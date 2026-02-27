@@ -783,7 +783,11 @@
     "SalesOrder": " أمر الشراء",
     "SalesWaybillDeletedSuccessfully": "تم حذف العنصر بنجاح",
     "SalesWaybillCreatedSuccessfully": "تم انشاء العنصر بمجاح",
-    "SalesWaybillUpdatedSuccessfully": "تم التحديث بنجاح"
+    "SalesWaybillUpdatedSuccessfully": "تم التحديث بنجاح",
+    "addSalesWaybill": "إضافة بوليصة شحن جديدة",
+    "viewSalesWaybill": "عرض بوليصة الشحن",
+    "InvoiceNumber": "رقم الفاتورة",
+    "InvoiceNumberPlaceholder": "أدخل رقم الفاتورة"
   },
   "SalesReturn": {
     "salesReturn": "مرتجع المبيعات",
