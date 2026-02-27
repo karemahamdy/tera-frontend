@@ -61,7 +61,14 @@ function mapApiItem(item: any) {
     column: item.column ?? '',
     rack: item.rack ?? '',
     serials: (item.serialLots || []).map((s: any) => ({
-      id: s.id, serial: s.mainSerial, qty: s.availableQuantity, batch: s.batchNumber, expire: s.expireDate
+      id: s.id, 
+      mainSerial: s.mainSerial, 
+      qty: s.availableQuantity, 
+      batchNumber: s.batchNumber, 
+      expireDate: s.expireDate,
+      serialNumber2: s.serialNumber2,
+      serialNumber3: s.serialNumber3,
+      comment: s.comment
     })),
     balance: item.balance || 0,
     tracked: true,

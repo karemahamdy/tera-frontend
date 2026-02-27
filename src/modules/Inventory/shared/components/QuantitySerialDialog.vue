@@ -32,10 +32,10 @@ const isProcessing = ref(false);
 const serialList = ref<any[]>(props.initialSerials ? [...props.initialSerials] : []);
 
 const columns = computed(() => [
-    { field: 'serial', header: t('serial.serial') },
+    { field: 'mainSerial', header: t('serial.serial') },
     { field: 'qty', header: t('serial.qty') },
-    { field: 'batch', header: t('serial.batch') },
-    { field: 'expire', header: t('serial.expire') },
+    { field: 'batchNumber', header: t('serial.batch') },
+    { field: 'expireDate', header: t('serial.expire') },
     { field: 'comment', header: t('serial.comment') },
     { field: 'action', header: '' }
 ]);
@@ -48,10 +48,10 @@ const addSerial = () => {
     if (!serialInput.value && !qtyInput.value) return;
 
     serialList.value.push({
-        serial: serialInput.value,
+        mainSerial: serialInput.value,
         qty: qtyInput.value || "0",
-        batch: batchInput.value,
-        expire: expireDateInput.value,
+        batchNumber: batchInput.value,
+        expireDate: expireDateInput.value,
         comment: commentInput.value
     });
 
@@ -84,10 +84,10 @@ const handleFileUpload = async (event: Event) => {
         if (response.succeeded && Array.isArray(response.data)) {
             // Map incoming data to our serial format if needed
             const newSerials = response.data.map(s => ({
-                serial: s.mainSerial || s.serial || '',
+                mainSerial: s.mainSerial || s.serial || '',
                 qty: s.quantity || s.qty || 1,
-                batch: s.batchNumber || s.batch || '',
-                expire: s.expireDate || s.expire || null,
+                batchNumber: s.batchNumber || s.batch || '',
+                expireDate: s.expireDate || s.expire || null,
                 comment: s.note || s.comment || ''
             }));
             serialList.value = [...serialList.value, ...newSerials];

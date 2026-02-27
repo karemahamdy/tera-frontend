@@ -132,10 +132,10 @@ const submit = async () => {
         unitPrice: Number(item.unitPrice) || 0,
         total: Number(item.total) || 0,
         serialLots: (item.serials || item.serialLots || []).map((s: any) => ({
-          mainSerial: s.serial || s.mainSerial || '',
+          mainSerial: s.mainSerial || s.serial || '',
           availableQuantity: Number(s.qty ?? s.availableQuantity) || 0,
-          batchNumber: s.batch || s.batchNumber || null,
-          expireDate: s.expire || s.expireDate ? new Date((s.expire || s.expireDate)).toISOString() : null,
+          batchNumber: s.batchNumber || s.batch || null,
+          expireDate: s.expireDate || s.expire ? new Date((s.expireDate || s.expire)).toISOString() : null,
           serialNumber2: s.serialNumber2 || null,
           serialNumber3: s.serialNumber3 || null,
           comment: s.comment || null,
