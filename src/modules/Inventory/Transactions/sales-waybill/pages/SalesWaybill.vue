@@ -86,13 +86,13 @@ const handleActionMenu = async (payload: any) => {
     const data = payload.data || payload.row || payload;
     if (action === 'edit') {
         router.push({
-            name: "PurchaseWaybillFormEdit",
+            name: "SalesWaybillEdit",
             params: { id: data.id },
         });
     }
     if (action === 'view') {
         router.push({
-            name: "PurchaseWaybillFormView",
+            name: "SalesWaybillView",
             params: { id: data.id },
         });
     }
