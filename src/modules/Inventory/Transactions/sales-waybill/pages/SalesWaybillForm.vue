@@ -9,6 +9,7 @@ import LineItems from '../components/LineItems.vue';
 import Payment from '../components/Payment.vue';
 import { useSalesWaybill } from '../composables/useSales';
 import { useI18n } from "vue-i18n";
+import { toastService } from '@/app/services/toastService';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -118,8 +119,8 @@ const submit = async () => {
       await createSalesWaybill(payload);
     }
     await router.push("/sales-waybill");
-  } catch (error) {
-    console.error('Failed to submit sales waybill:', error);
+  } catch (error: any) {
+   toastService.error(error);
   }
 };
 

@@ -234,17 +234,18 @@ const removeItem = (data: any) => {
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
                 :showDelete="false">
-                <template #col-code="{ data }">
-                    <div class="flex items-center gap-2 rounded">
-                        <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
+                 <template #col-code="{ data }">
+                         <div class="flex items-center gap-2 rounded">
+                        <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
                             <VsxIcon iconName="Airdrop" :size="20" type="linear" />
                         </Badge>
                         <Badge v-else severity="transparent" class="circle-badge">
                             <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
                         </Badge>
                         <div class="text-base text-gray-700">{{ data.code }}</div>
-                    </div>
-                </template>
+                        </div>
+                         
+                    </template>
 
                 <template #col-name="{ data }">
                     <span class="text-gray-600">{{ data.name }}</span>
