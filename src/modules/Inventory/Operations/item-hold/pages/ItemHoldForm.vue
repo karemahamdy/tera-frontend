@@ -41,6 +41,8 @@ const hasSerial = computed(() => {
             itemId: itemId.value,
             warehouseId: warehouseID.value
         })
+    } else {
+        serialsForBlocking.value = [];
     }
 
     return isSerial.value && itemId.value && warehouseID.value
