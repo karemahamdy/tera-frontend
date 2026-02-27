@@ -78,45 +78,39 @@ const submit = async () => {
             : null
       },
       warehouseDetails: formData.value.warehouseDetails,
-      lineItems: formData.value.lineItems.map((item: any) => ({
-        itemId: item.itemId,
-        quantity: Number(item.quantity) || 0,
-        unitId: item.unitId || null,
-        warehouseId: item.warehouseId || formData.value.warehouseDetails?.warehouseId || null,
-        zoneId: item.zoneId || formData.value.warehouseDetails?.zoneId || null,
-        locationId: item.locationId || null,
-        unitPrice: Number(item.unitPrice) || 0,
-        unitTaxPercent: Number(item.tax) || 0,
-        note: item.note || '',
-        isBlocked: item.isBlocked || false,
-        serials: (item.serials || []).map((s: any) => ({
-          mainSerial: s.serial || s.mainSerial || '',
-          quantity: Number(s.qty ?? s.quantity) || 0,
-          batchNumber: s.batch || s.batchNumber || null,
-          expireDate: s.expire || s.expireDate ? new Date((s.expire || s.expireDate)).toISOString() : null,
-          serialNumber2: s.serialNumber2 || null,
-          serialNumber3: s.serialNumber3 || null,
-          comment: s.comment || null,
-        }))
-      })),
-      paymentInfo: (() => {
-        const pi = formData.value.paymentInfo;
-        const rate = Number(formData.value.paymentTerms?.exchangeRate) || 1;
-        return {
-          ...pi,
-          subTotalBase: Number((pi?.subTotal ?? 0)) * rate,
-          taxAmountBase: Number((pi?.totalTax ?? 0)) * rate,
-          discountAmountBase: Number((pi?.globalDiscount ?? 0)) * rate,
-          grandTotalBase: Number((pi?.grandTotal ?? 0)) * rate,
-        };
-      })(),
       notes: formData.value.notes
     };
     
+    const finalPayload = {
+        ...payload,
+        lineItems: formData.value.lineItems.map((item: any) => ({
+            id: item.id || undefined, // Preserve ID for updates
+            itemId: item.itemId,
+            quantity: Number(item.quantity) || 0,
+            unitId: item.unitId || null,
+            warehouseId: item.warehouseId || formData.value.warehouseDetails?.warehouseId || null,
+            zoneId: item.zoneId || formData.value.warehouseDetails?.zoneId || null,
+            locationId: item.locationId || null,
+            unitPrice: Number(item.unitPrice) || 0,
+            unitTaxPercent: Number(item.tax) || 0,
+            note: item.note || '',
+            isBlocked: item.isBlocked || false,
+            serials: (item.serials || []).map((s: any) => ({
+                mainSerial: s.serial || s.mainSerial || '',
+                quantity: Number(s.qty ?? s.quantity) || 0,
+                batchNumber: s.batch || s.batchNumber || null,
+                expireDate: s.expire || s.expireDate ? new Date((s.expire || s.expireDate)).toISOString() : null,
+                serialNumber2: s.serialNumber2 || null,
+                serialNumber3: s.serialNumber3 || null,
+                comment: s.comment || null,
+            }))
+        }))
+    };
+    
     if (mode.value === 'edit' && id.value) {
-      await updateSalesWaybill(id.value, payload);
+      await updateSalesWaybill(id.value, finalPayload);
     } else {
-      await createSalesWaybill(payload);
+      await createSalesWaybill(finalPayload);
     }
     await router.push("/sales-waybill");
   } catch (error: any) {
@@ -131,11 +125,91 @@ const steps = [
   { label: t("steps.payment") }
 ];
 
+const mapApiToForm = (apiData: any) => {
+  const cd = apiData.customerDetails ?? {};
+  const pt = apiData.paymentTerms ?? {};
+  const wd = apiData.warehouseDetails ?? {};
+  const pi = apiData.paymentInfo ?? {};
+
+  return {
+    customerDetails: {
+      documentNumber: cd.documentNumber ?? "",
+      customerId:     cd.customerId ?? null,
+      customerName:   cd.customerName ?? "",
+      salesOrderRef:  cd.salesOrderRef ?? "",
+      trackingNumber: cd.trackingNumber ?? "",
+      shippingAddress:cd.shippingAddress ?? "",
+      invoiceNumber:  cd.invoiceNumber ?? "",
+      waybillDate:    cd.waybillDate ? new Date(cd.waybillDate) : new Date(),
+      deliveryDate:   cd.deliveryDate ? new Date(cd.deliveryDate) : new Date(),
+    },
+    paymentTerms: {
+      currencyId:       pt.currencyId ?? null,
+      currencyCode:     pt.currencyCode ?? "",
+      exchangeRate:     pt.exchangeRate ?? 1,
+      rateDate:         pt.rateDate ? new Date(pt.rateDate) : new Date(),
+      baseCurrencyCode: pt.baseCurrencyCode ?? "USD",
+    },
+    warehouseDetails: {
+      warehouseId:   wd.warehouseId ?? "",
+      warehouseName: wd.warehouseName ?? "",
+      zoneId:        wd.zoneId ?? null,
+      zoneName:      wd.zoneName ?? "",
+    },
+    lineItems: (apiData.lineItems || []).map((item: any) => ({
+      id:           item.id,
+      itemId:       item.itemId,
+      code:         item.itemCode,
+      name:         item.itemName,
+      quantity:     item.quantity,
+      unitId:       item.unitId,
+      uom:          item.unitName,
+      unitPrice:    item.unitPrice,
+      tax:          item.unitTaxPercent,
+      total:        item.lineTotal,
+      warehouseId:  item.warehouseId,
+      warehouseName:item.warehouseName,
+      zoneId:       item.zoneId,
+      zoneName:     item.zoneName,
+      locationId:   item.locationId,
+      locationCode: item.locationCode,
+      note:         item.note,
+      isBlocked:    item.isBlocked,
+      trackingType: item.trackingType,
+      balance:      item.balance ?? 0,
+      tracked:      item.trackingType === 'Serial',
+      serials: (item.serials || []).map((s: any) => ({
+        id:            s.id,
+        mainSerial:    s.mainSerial,
+        qty:           s.quantity,
+        batchNumber:   s.batchNumber,
+        expireDate:    s.expireDate,
+        serialNumber2: s.serialNumber2,
+        serialNumber3: s.serialNumber3,
+        comment:       s.comment,
+      }))
+    })),
+    paymentInfo: {
+      paymentType:    pi.paymentType ?? "Payable",
+      paymentTermId:  pi.paymentTermId ?? null,
+      paymentTermName:pi.paymentTermName ?? "",
+      purchaseType:   pi.purchaseType ?? null,
+      incoterm:       pi.incoterm ?? null,
+      subTotal:       pi.subTotal ?? 0,
+      totalTax:       pi.totalTax ?? 0,
+      globalDiscount: pi.globalDiscount ?? 0,
+      grandTotal:     pi.grandTotal ?? 0,
+    },
+    notes: apiData.notes ?? null,
+  };
+};
+
+
 onMounted(async () => {
   if (id.value) {
     const result = await fetchSalesWaybillById(id.value);
     if (result) {
-      formData.value = result;
+      formData.value = mapApiToForm(result);
     }
   }
 });
@@ -149,12 +223,6 @@ onMounted(async () => {
         subtitle="operation.transactions"
         :actionName="mode === 'create' ? 'salesWaybill.addSalesWaybill' : 'salesWaybill.viewSalesWaybill'"
         class="!mb-0"
-      />
-      <BaseButton
-        v-if="mode === 'view'"
-        label="button.edit"
-        class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-        @click="router.push({ name: 'SalesWaybillEdit', params: { id } })"
       />
     </div>
 

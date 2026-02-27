@@ -18,14 +18,14 @@ const props = defineProps<{
 const emit = defineEmits(['prev', 'submit', 'update'])
 
 const form = reactive({
-    paymentType: props.paymentInfo?.paymentType ?? "Payable",
-    paymentTermId: props.paymentInfo?.paymentTermId ?? null as string | null,
-    purchaseType: props.paymentInfo?.purchaseType ?? null as string | null,
-    incoterm: props.paymentInfo?.incoterm ?? null as string | null,
-    subTotal: props.paymentInfo?.subTotal ?? 0,
-    totalTax: props.paymentInfo?.totalTax ?? 0,
+    paymentType:    props.paymentInfo?.paymentType ?? "Payable",
+    paymentTermId:  props.paymentInfo?.paymentTermId ?? null as string | null,
+    purchaseType:   props.paymentInfo?.purchaseType ?? null as string | null,
+    incoterm:       props.paymentInfo?.incoterm ?? null as string | null,
+    subTotal:       props.paymentInfo?.subTotal ?? 0,
+    totalTax:       props.paymentInfo?.totalTax ?? 0,
     globalDiscount: props.paymentInfo?.globalDiscount ?? 0,
-    grandTotal: props.paymentInfo?.grandTotal ?? 0,
+    grandTotal:     props.paymentInfo?.grandTotal ?? 0,
     comment1: props.notes?.comment1 ?? "",
     comment2: props.notes?.comment2 ?? "",
     comment3: props.notes?.comment3 ?? "",
@@ -35,6 +35,26 @@ const form = reactive({
 });
 
 const incotermsOptions = ref([{ label: 'EXW', value: 'EXW' }, { label: 'FOB', value: 'FOB' }]);
+
+// Re-initialize form when parent props arrive (view/edit mode)
+watch(() => props.paymentInfo, (pi) => {
+    if (!pi) return;
+    form.paymentType =    pi.paymentType ?? "Payable";
+    form.paymentTermId =  pi.paymentTermId ?? null;
+    form.purchaseType =   pi.purchaseType ?? null;
+    form.incoterm =       pi.incoterm ?? null;
+    form.globalDiscount = pi.globalDiscount ?? 0;
+}, { immediate: true });
+
+watch(() => props.notes, (n) => {
+    if (!n) return;
+    form.comment1 = n.comment1 ?? "";
+    form.comment2 = n.comment2 ?? "";
+    form.comment3 = n.comment3 ?? "";
+    form.comment4 = n.comment4 ?? "";
+    form.comment5 = n.comment5 ?? "";
+    form.note =     n.note ?? "";
+}, { immediate: true });
 
 // --- Computeds for Summary ---
 const subTotal = computed(() => {
@@ -70,14 +90,14 @@ function emitUpdate() {
     if (props.disabled) return;
     emit('update', { 
         paymentInfo: { 
-            paymentType: form.paymentType,
+            paymentType:   form.paymentType,
             paymentTermId: form.paymentTermId,
-            purchaseType: form.purchaseType,
-            incoterm: form.incoterm,
-            subTotal: form.subTotal,
-            totalTax: form.totalTax,
-            globalDiscount: form.globalDiscount,
-            grandTotal: form.grandTotal
+            purchaseType:  form.purchaseType,
+            incoterm:      form.incoterm,
+            subTotal:      form.subTotal,
+            totalTax:      form.totalTax,
+            globalDiscount:form.globalDiscount,
+            grandTotal:    form.grandTotal
         },
         notes: { 
             comment1: form.comment1,
@@ -85,7 +105,7 @@ function emitUpdate() {
             comment3: form.comment3,
             comment4: form.comment4,
             comment5: form.comment5,
-            note: form.note 
+            note:     form.note 
         }
     });
 }
@@ -98,6 +118,7 @@ const salesTypeOptions = [
 onMounted(async () => {
     await getPaymentTermsLookups();
 });
+
 </script>
 
 <template>

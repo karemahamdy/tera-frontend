@@ -781,8 +781,8 @@
     "SalesWaybillUpdatedSuccessfully": "SalesWaybill Updated Successfully",
     "SalesWaybillCreatedSuccessfully": "SalesWaybill Created Successfully",
     "addSalesWaybill": "Add Sales Waybill",
-    "editSalesWaybillInfo": "Edit Sales Waybill",
-    "viewSalesWaybillInfo": "View Sales Waybill",
+    "editSalesWaybill": "Edit Sales Waybill",
+    "viewSalesWaybill": "View Sales Waybill",
     "InvoiceNumber": "Invoice Number",
     "InvoiceNumberPlaceholder": "Enter Invoice Number"
   },

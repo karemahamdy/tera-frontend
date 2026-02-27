@@ -68,7 +68,7 @@ const columns = computed(() => [
     { field: 'unitPrice', header: t('itemsList.unitPrice') },
     { field: 'tax', header: t('itemsList.tax') },
     { field: 'total', header: t('itemsList.total') },
-    { field: 'action', header: '' }
+    ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
 // --- Item Selection Dialog ---
@@ -280,7 +280,7 @@ const removeItem = (data: any) => {
 
                 <template #col-unitId="{ data }">
                     <FormDropdown :modelValue="data.unitId" :options="UnitsLookups" optionLabel="label"
-                        optionValue="value" class="w-24 p-inputtext-sm text-sm" :disabled="disabled" @update:modelValue="(v: any) => {
+                        optionValue="value" class="w-34 p-inputtext-sm text-sm" :disabled="disabled" @update:modelValue="(v: any) => {
                             data.unitId = v;
                             const unit = UnitsLookups.find(u => u.value === v);
                             if (unit) data.uom = unit.label;
@@ -291,7 +291,7 @@ const removeItem = (data: any) => {
                 <template #col-warehouseId="{ data }">
                     <FormDropdown :modelValue="data.warehouseId"
                         @update:modelValue="handleWarehouseChange($event, data)" :options="WarehouseLookups"
-                        optionLabel="label" optionValue="value" class="w-28 p-inputtext-sm text-sm"
+                        optionLabel="label" optionValue="value" class="w-34 p-inputtext-sm text-sm"
                         :placeholder="t('items.warehouse')" :disabled="disabled" />
                 </template>
 
@@ -319,7 +319,7 @@ const removeItem = (data: any) => {
                         </template>
                         <template v-else-if="data.warehouseId">
                             <FormDropdown v-model="data.zoneId" :options="ZonesLookups" optionLabel="label"
-                                optionValue="value" class="w-28 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
+                                optionValue="value" class="w-30 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
                                 :disabled="disabled" />
                         </template>
                     </div>
