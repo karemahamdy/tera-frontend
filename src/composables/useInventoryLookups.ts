@@ -6,6 +6,7 @@ import { LookupsService } from "@/app/services/lookups.service";
 
 export function useInventoryLookups() {
   const supplierLookups = ref<LookupsOption[]>([]);
+  const customerLookups = ref<LookupsOption[]>([]);
   const CurrenciesLookups = ref<LookupsOption[]>([]);
   const IncotermsLookups = ref<LookupsOption[]>([]);
   const WarehouseLookups = ref<LookupsOption[]>([]);
@@ -38,6 +39,17 @@ export function useInventoryLookups() {
     try {
       const res = await InventoryLookupsService.getSupplierLookups();
       supplierLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id || "",
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+   const getCustomerLookups = async () => {
+    try {
+      const res = await InventoryLookupsService.getCustomerLookups();
+      customerLookups.value = res.data.map((group) => ({
         label: group.name,
         value: group.id || "",
       }));
@@ -153,7 +165,6 @@ export function useInventoryLookups() {
   const getItemBalance = async (itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) => {
     try {
       const res = await InventoryLookupsService.getItemBalance(itemId, warehouseId, zoneId, locationId);
-      // The user provided structure: { "totalBalance": ... }
       return res.data?.totalBalance ?? res.data ?? 0;
     } catch (error) {
       toastService.error(error as string);
@@ -175,6 +186,8 @@ export function useInventoryLookups() {
     getItemSerials,
     getItemBalance,
     getItemSerialsLookups,
+    getCustomerLookups,
+    customerLookups,
     ItemsSerialsLookups,
     ZonesLookups,
     supplierLookups,

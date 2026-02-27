@@ -5,27 +5,27 @@ import type { SalesWaybill } from "../types/SalesWaybill";
 import { SalesWaybillService } from "../services/SalesWaybill.service";
 
 export function useSalesWaybill() {
-  
-const loading = ref(false);
-const apiSalesWaybill = ref<SalesWaybill[]>([]);
-const tableData = ref<any[]>([]);
 
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
+  const loading = ref(false);
+  const apiSalesWaybill = ref<SalesWaybill[]>([]);
+  const tableData = ref<any[]>([]);
 
-const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref('');
-const orderDirection = ref<'asc' | 'desc'>('desc');
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
+
+  const searchTerm = ref('');
+  const orderBy = ref('');
+  const StatusFilter = ref('');
+  const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const { t } = useI18n();
 
   const fetchSalesWaybill = async (page = 1) => {
     loading.value = true;
     try {
-       const params: any = {
+      const params: any = {
         pageIndex: page,
         pageSize: pageSize.value,
       };
@@ -105,6 +105,19 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     }
   };
 
+  const fetchNextNumber = async () => {
+    loading.value = true;
+    try {
+      const resp = await SalesWaybillService.getNextNumber();
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const onFilterChange = (filter: {
     filter: { field: string };
     value: string;
@@ -137,6 +150,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     createSalesWaybill,
     updateSalesWaybill,
     deleteSalesWaybill,
+    fetchNextNumber,
     pageIndex,
     pageSize,
     totalCount,

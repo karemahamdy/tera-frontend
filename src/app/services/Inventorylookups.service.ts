@@ -12,6 +12,11 @@ export const InventoryLookupsService = {
       `/InventoryLookups/suppliers`,
     );
   },
+    getCustomerLookups() {
+    return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
+      `/InventoryLookups/customers`,
+    );
+  },
   getPaymentTermsLookups() {
     return axiosWrapper.get<ApiResponse<InventoryLookups[]>>(
       `/InventoryLookups/payment-terms`,
