@@ -397,7 +397,7 @@ const fetchItemBalance = async (item: any) => {
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
     <template v-if="showQtyDialog && currentItem">
-      <SalesQuantitySerialDialog v-if="direction === 'Transfare'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
+      <SalesQuantitySerialDialog v-if="direction === 'Transfare' || direction === 'Outbound'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
         :item="currentItem" :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId"
         :zoneId="currentItem.zoneId" :locationId="currentItem.locationId" :disabled="disabled"
         @save="handleSaveSerials" />
