@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { reactive, computed, onMounted } from "vue";
+import { reactive, computed, onMounted, watch } from "vue";
 import { useI18n } from "vue-i18n"
 import { useInventoryLookups } from "@/composables/useInventoryLookups"
-// import type { WarehouseDetailsData } from "../types/PurchaseWaybill";
 
 const props = withDefaults(defineProps<{
    warehouseDetails?: any;
@@ -23,6 +22,17 @@ const form = reactive({
 
 const errors = reactive({ warehouseId: "", zoneId: "" });
 
+// Re-initialize when parent data arrives (view/edit mode)
+watch(() => props.warehouseDetails, async (wd) => {
+  if (!wd) return;
+  form.warehouseId = wd.warehouseId ?? "";
+  form.zoneId = wd.zoneId ?? null;
+  // Load zones if needed
+  if (wd.warehouseId && wd.zoneId) {
+    await getZonesLookups(wd.warehouseId);
+  }
+}, { immediate: true });
+
 const selectedWarehouse = computed(() =>
   WarehouseLookups.value.find(w => w.value === form.warehouseId)
 );
@@ -31,12 +41,9 @@ const isProf = computed(() => selectedWarehouse.value?.type === 'Professional');
 
 function emitUpdate() {
   if (props.disabled) return;
-  // const selectedZone = ZonesLookups.value.find(z => z.value === form.zoneId);
   emit("update", {
     warehouseId: form.warehouseId,
-    // warehouseName: selectedWarehouse.value?.label ?? (props.warehouseDetails?.warehouseName ?? ""),
     zoneId: form.zoneId,
-    // zoneName: selectedZone?.label ?? (props.warehouseDetails?.zoneName ?? ""),
   });
 }
 
@@ -66,10 +73,6 @@ defineExpose({ validate });
 
 onMounted(async () => {
   await getWarehouseLookups();
-
-  if (props.warehouseDetails?.warehouseId && props.warehouseDetails?.zoneId) {
-    await getZonesLookups(props.warehouseDetails.warehouseId);
-  }
 });
 </script>
 

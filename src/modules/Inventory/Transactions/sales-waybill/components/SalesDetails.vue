@@ -7,7 +7,6 @@ import { useSalesWaybill } from "../composables/useSales";
 
 const { t } = useI18n()
 
-// Use actual exports from useInventoryLookups
 const { 
   getCustomerLookups, 
   customerLookups, 
@@ -25,48 +24,59 @@ const props = defineProps<{
 
 const emit = defineEmits(['update']);
 
-const errors = ref<Record<string, string>>({});
+function toDate(val: any): Date {
+  if (!val) return new Date();
+  const d = val instanceof Date ? val : new Date(val);
+  return isNaN(d.getTime()) ? new Date() : d;
+}
 
-// Mapped object matching parent form
-const localData = ref({
-  customerDetails: {
-    documentNumber: "",
-    customerId: null as string | null,
-    salesOrderRef: "",
-    trackingNumber: "",
-    shippingAddress: "",
-    invoiceNumber: "",
-    waybillDate: new Date(),
-    deliveryDate: new Date()
-  },
-  paymentTerms: {
-    currencyId: null as string | null,
-    exchangeRate: 1,
-    rateDate: new Date(),
-    currencyCode: "",
-    baseCurrencyCode: ""
+function buildLocalData() {
+  return {
+    customerDetails: {
+      documentNumber:  props.salesDetails?.documentNumber ?? "",
+      customerId:      props.salesDetails?.customerId ?? null as string | null,
+      customerName:    props.salesDetails?.customerName ?? "",
+      salesOrderRef:   props.salesDetails?.salesOrderRef ?? "",
+      trackingNumber:  props.salesDetails?.trackingNumber ?? "",
+      shippingAddress: props.salesDetails?.shippingAddress ?? "",
+      invoiceNumber:   props.salesDetails?.invoiceNumber ?? "",
+      waybillDate:     toDate(props.salesDetails?.waybillDate),
+      deliveryDate:    toDate(props.salesDetails?.deliveryDate),
+    },
+    paymentTerms: {
+      currencyId:       props.paymentTerms?.currencyId ?? null as string | null,
+      exchangeRate:     props.paymentTerms?.exchangeRate ?? 1,
+      rateDate:         toDate(props.paymentTerms?.rateDate),
+      currencyCode:     props.paymentTerms?.currencyCode ?? "",
+      baseCurrencyCode: props.paymentTerms?.baseCurrencyCode ?? "USD",
+    },
+  };
+}
+
+const localData = ref(buildLocalData());
+
+// Re-initialize when the parent passes data (for view/edit mode)
+watch(() => props.salesDetails, () => {
+  if (props.salesDetails) {
+    localData.value = buildLocalData();
+    emitUpdate();
   }
-});
+}, { deep: true });
 
 onMounted(async () => {
-  // Fetch actual lookups
   await Promise.all([
     getCustomerLookups(),
     getCurrenciesLookups()
   ]);
 
-  if (props.salesDetails) Object.assign(localData.value.customerDetails, props.salesDetails);
-  if (props.paymentTerms) Object.assign(localData.value.paymentTerms, props.paymentTerms);
-
+  // For create mode: fetch next document number
   if (!props.disabled && !localData.value.customerDetails.documentNumber) {
-    const nextNumber = await fetchNextNumber();
-    if (nextNumber && typeof nextNumber === 'string') {
-      localData.value.customerDetails.documentNumber = nextNumber;
-    } else if (nextNumber && nextNumber.documentNumber) {
-      localData.value.customerDetails.documentNumber = nextNumber.documentNumber;
+    const result = await fetchNextNumber();
+    if (result) {
+      localData.value.customerDetails.documentNumber = typeof result === 'string' ? result : (result.documentNumber ?? "");
+      emitUpdate();
     }
   }
-  emitUpdate();
 });
 
 watch(
@@ -78,12 +88,6 @@ watch(
       localData.value.paymentTerms.baseCurrencyCode = "USD";
     }
   }
-);
-
-watch(
-  () => localData.value,
-  () => emitUpdate(),
-  { deep: true }
 );
 
 function emitUpdate() {
@@ -104,7 +108,7 @@ function emitUpdate() {
     <FormInput 
       :label="t('salesWaybill.salesWaybill')" 
       v-model="localData.customerDetails.documentNumber" 
-      :error="errors.documentNumber"
+    
       :placeholder="t('salesWaybill.salesWaybillPlaceholder')" 
       disabled 
     />
@@ -115,7 +119,7 @@ function emitUpdate() {
       <FormDropdown 
         :label="t('salesWaybill.Customer')" 
         v-model="localData.customerDetails.customerId" 
-        :error="errors.customerId"
+      
         :placeholder="t('salesWaybill.CustomerPlaceholder')" 
         :options="customerLookups"
         optionLabel="label"
@@ -127,7 +131,7 @@ function emitUpdate() {
       <FormInput 
         :label="t('salesWaybill.SalesOrderReference')" 
         v-model="localData.customerDetails.salesOrderRef"
-        :error="errors.salesOrderRef" 
+        
         :placeholder="t('salesWaybill.SalesOrderReferencePlaceholder')"
         :disabled="disabled" 
       />
@@ -164,7 +168,6 @@ function emitUpdate() {
           <FormInput 
             :label="t('salesWaybill.TrackingNumber')" 
             v-model="localData.customerDetails.trackingNumber"
-            :error="errors.trackingNumber" 
             :placeholder="t('salesWaybill.TrackingNumberPlaceholder')"
             :disabled="disabled" 
           />
@@ -174,7 +177,7 @@ function emitUpdate() {
           <FormInput 
             :label="t('salesWaybill.ShippingAddress')" 
             v-model="localData.customerDetails.shippingAddress"
-            :error="errors.shippingAddress" 
+  
             :placeholder="t('salesWaybill.ShippingAddressPlaceholder')"
             :disabled="disabled" 
           />
@@ -185,7 +188,6 @@ function emitUpdate() {
         <FormInput 
           :label="t('salesWaybill.InvoiceNumber')" 
           v-model="localData.customerDetails.invoiceNumber"
-          :error="errors.invoiceNumber" 
           :placeholder="t('salesWaybill.InvoiceNumberPlaceholder')"
           :disabled="disabled" 
         />
@@ -206,7 +208,6 @@ function emitUpdate() {
       optionLabel="label"
       optionValue="value" 
       v-model="localData.paymentTerms.currencyId" 
-      :error="errors.currencyId"
       :placeholder="t('purchaseWaybill.CurrencyPlaceholder')" 
       :disabled="disabled" 
     />
@@ -227,7 +228,7 @@ function emitUpdate() {
       <FormInput 
         :label="t('purchaseWaybill.ExchangeValue')" 
         v-model="localData.paymentTerms.exchangeRate" 
-        :error="errors.exchangeRate"
+    
         :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')" 
         type="number"
         :disabled="disabled" 

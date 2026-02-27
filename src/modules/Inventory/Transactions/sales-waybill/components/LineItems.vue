@@ -60,15 +60,15 @@ const subtotal = computed(() => items.value.reduce((sum: number, item: any) => s
 const columns = computed(() => [
     { field: 'code', header: t('itemsList.itemCode') },
     { field: 'name', header: t('itemsList.itemName') },
-    { field: 'quantity', header: t('itemsList.quantity') },
     { field: 'unitId', header: t('itemsList.uom') },
     { field: 'warehouseId', header: t('itemsList.warehouse') },
     { field: 'zoneId', header: t('itemsList.zone') },
+    { field: 'quantity', header: t('itemsList.quantity') },
     { field: 'balance', header: t('itemList.balance') },
     { field: 'unitPrice', header: t('itemsList.unitPrice') },
     { field: 'tax', header: t('itemsList.tax') },
     { field: 'total', header: t('itemsList.total') },
-    { field: 'action', header: '' }
+    ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
 // --- Item Selection Dialog ---
@@ -81,8 +81,9 @@ const openItemDialog = () => {
 
 const handleSelectItem = (item: any) => {
     items.value.push({
-        id: Date.now().toString(),
+        // id: Date.now().toString(),
         itemId: item.id || item.itemId,
+        trackingType: item.trackingType || null,
         code: item.code,
         name: item.name,
         quantity: 1,
@@ -103,7 +104,7 @@ const handleSelectItem = (item: any) => {
         isBlocked: false,
         note: "",
         balance: 0,
-        tracked: item.trackingType === 'Serial' || item.trackingType === 'Batch' || item.tracked,
+        tracked: item.trackingType === 'Serial' || item.trackingType === 'None' || item.tracked,
         serials: []
     });
     emitUpdate();
@@ -243,25 +244,43 @@ const removeItem = (data: any) => {
                             <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
                         </Badge>
                         <div class="text-base text-gray-700">{{ data.code }}</div>
-                        </div>
-                         
+                        </div>       
                     </template>
+
+                     <template #col-quantity="{ data }">
+          <div class="flex items-center gap-2">
+            <template v-if="data.trackingType === 'Serial'">
+              <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
+                @click="openQtyDialog(data)" />
+              <span class="text-gray-500">({{ data.quantity }})</span>
+            </template>
+            <template v-else>
+              <InputText v-if="!disabled" v-model.number="data.quantity" class="w-20 p-inputtext-sm" @input="() => {
+                data.total = calcTotal(data.quantity, data.tax, data.unitPrice);
+                emitUpdate();
+              }" />
+              <span v-else class="text-gray-700">
+                {{ data.quantity }}
+              </span>
+            </template>
+          </div>
+        </template>
 
                 <template #col-name="{ data }">
                     <span class="text-gray-600">{{ data.name }}</span>
                 </template>
 
-                <template #col-quantity="{ data }">
+                <!-- <template #col-quantity="{ data }">
                     <div class="flex items-center gap-2">
                         <BaseButton v-if="!disabled" :label="t('itemsList.add')" variant="outline-primary"
                             @click="openQtyDialog(data)" />
                         <span class="text-gray-500">({{ data.quantity }})</span>
                     </div>
-                </template>
+                </template> -->
 
                 <template #col-unitId="{ data }">
                     <FormDropdown :modelValue="data.unitId" :options="UnitsLookups" optionLabel="label"
-                        optionValue="value" class="w-24 p-inputtext-sm text-sm" :disabled="disabled" @update:modelValue="(v: any) => {
+                        optionValue="value" class="w-34 p-inputtext-sm text-sm" :disabled="disabled" @update:modelValue="(v: any) => {
                             data.unitId = v;
                             const unit = UnitsLookups.find(u => u.value === v);
                             if (unit) data.uom = unit.label;
@@ -272,7 +291,7 @@ const removeItem = (data: any) => {
                 <template #col-warehouseId="{ data }">
                     <FormDropdown :modelValue="data.warehouseId"
                         @update:modelValue="handleWarehouseChange($event, data)" :options="WarehouseLookups"
-                        optionLabel="label" optionValue="value" class="w-28 p-inputtext-sm text-sm"
+                        optionLabel="label" optionValue="value" class="w-34 p-inputtext-sm text-sm"
                         :placeholder="t('items.warehouse')" :disabled="disabled" />
                 </template>
 
@@ -300,7 +319,7 @@ const removeItem = (data: any) => {
                         </template>
                         <template v-else-if="data.warehouseId">
                             <FormDropdown v-model="data.zoneId" :options="ZonesLookups" optionLabel="label"
-                                optionValue="value" class="w-28 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
+                                optionValue="value" class="w-30 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
                                 :disabled="disabled" />
                         </template>
                     </div>
