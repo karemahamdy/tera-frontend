@@ -70,6 +70,9 @@ const handleCancel = () => {
             dataKey="id"
             scrollable
             scrollHeight="400px"
+            :paginator="filteredLocations.length > 5"
+            :rows="5"
+            
           >
             <Column style="width: 4rem">
                 <template #body="slotProps">

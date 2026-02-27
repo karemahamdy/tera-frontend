@@ -63,7 +63,7 @@ const filteredItems = computed(() => {
                 <DynamicTable 
                     :columns="columns" 
                     :data="filteredItems" 
-                    :paginator="false" 
+                    :paginator="true" 
                     :rows="5"
                     :showView="false"
                     :showEdit="false"

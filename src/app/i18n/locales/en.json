@@ -1023,7 +1023,16 @@
     "review": "Review",
     "reviewOpeningBalance": "Review Opening Balance",
     "item": "Item",
-    "editOpeningBalance": "Edit Opening Balance"
+    "editOpeningBalance": "Edit Opening Balance",
+    "itemId": "Item",
+    "warehouseId": "Warehouse",
+    "locationId": "Location",
+    "uomId": "Unit Of Measure",
+    "code": "Item Code",
+    "unitCost": "Unit Cost",
+    "quantity": "Quantity",
+    "notes": "Notes",
+    "serials": "Serials"
   },
   "inventoryRequest": {
     "allTypes": "All Types",

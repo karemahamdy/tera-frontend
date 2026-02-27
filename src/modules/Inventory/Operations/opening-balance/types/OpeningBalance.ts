@@ -31,3 +31,11 @@ export interface Pagination {
   WarehouseFilter?: string | null;
   UoM?: string | null;
 }
+
+
+export interface SelectedItem {
+  id: string;
+  code: string;
+  name: string;
+  trackingType: string;
+}

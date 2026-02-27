@@ -3,24 +3,46 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { OpeningBalance } from "../types/OpeningBalance";
 import { OpeningBalanceService } from "../services/OpeningBalance.service";
+import { useForm } from "vee-validate";
+import { OpeningBalanceSchema } from "../validation/OpeningBalanceSchema";
+import router from "@/app/router";
 
-const loading = ref(false);
-const apiOpeningBalance = ref<OpeningBalance[]>([]);
-const tableData = ref<any[]>([]);
+const { handleSubmit, errors, defineField, resetForm, setValues } = useForm({
+  validationSchema: OpeningBalanceSchema,
+});
 
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
+const [itemId] = defineField("itemId");
+const [warehouseId] = defineField("warehouseId");
+const [locationId] = defineField("locationId");
+const [date] = defineField("date");
+const [uomId] = defineField("uomId");
+const [code] = defineField("code");
+const [unitCost] = defineField("unitCost");
+const [quantity] = defineField("quantity");
+const [notes] = defineField("notes");
+const [serials] = defineField("serials");
 
-const searchTerm = ref("");
-const orderBy = ref("");
-const WarehouseFilter = ref<string | null>(null);
-const UoM = ref<string | null>(null);
-const orderDirection = ref<"asc" | "desc">("desc");
+const itemName = ref<string>("");
+const isSerial = ref<boolean>(false);
+const warehouseName = ref<null | string>(null);
+const locationName = ref<null | string>(null);
 
 export function useOpeningBalance() {
   const { t } = useI18n();
+  const loading = ref(false);
+  const apiOpeningBalance = ref<OpeningBalance[]>([]);
+  const tableData = ref<any[]>([]);
+
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
+
+  const searchTerm = ref("");
+  const orderBy = ref("");
+  const WarehouseFilter = ref<string | null>(null);
+  const UoM = ref<string | null>(null);
+  const orderDirection = ref<"asc" | "desc">("desc");
 
   const fetchOpeningBalance = async (page = 1) => {
     loading.value = true;
@@ -51,7 +73,8 @@ export function useOpeningBalance() {
     loading.value = true;
     try {
       const resp = await OpeningBalanceService.getById(id);
-      return resp;
+      resp.date = new Date(resp.date);
+      setValues(resp);
     } catch (err: any) {
       toastService.error(err);
       return null;
@@ -63,12 +86,11 @@ export function useOpeningBalance() {
   const createOpeningBalance = async (payload: any) => {
     loading.value = true;
     try {
-      const response = await OpeningBalanceService.create(payload);
+      await OpeningBalanceService.create(payload);
       toastService.success(
         t("OpeningBalance.OpeningBalanceCreatedSuccessfully"),
       );
-      await fetchOpeningBalance(pageIndex.value);
-      return response;
+      router.replace({ name: "OpeningBalance" });
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -80,12 +102,11 @@ export function useOpeningBalance() {
   const updateOpeningBalance = async (id: string, payload: any) => {
     loading.value = true;
     try {
-      const response = await OpeningBalanceService.update(id, payload);
+      await OpeningBalanceService.update(id, payload);
       toastService.success(
         t("OpeningBalance.OpeningBalanceUpdatedSuccessfully"),
       );
-      await fetchOpeningBalance(pageIndex.value);
-      return response;
+      router.replace({ name: "OpeningBalance" });
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -155,6 +176,14 @@ export function useOpeningBalance() {
     fetchOpeningBalance(1);
   };
 
+  const resetFormToInitialValues = () => {
+    resetForm();
+    itemName.value = "";
+    isSerial.value = false;
+    warehouseName.value = null;
+    locationName.value = null;
+  };
+
   return {
     loading,
     apiOpeningBalance,
@@ -173,5 +202,23 @@ export function useOpeningBalance() {
     onSearch,
     onFilterChange,
     onSort,
+
+    resetFormToInitialValues,
+    handleSubmit,
+    errors,
+    itemId,
+    warehouseId,
+    locationId,
+    date,
+    uomId,
+    code,
+    unitCost,
+    quantity,
+    notes,
+    serials,
+    itemName,
+    isSerial,
+    warehouseName,
+    locationName,
   };
 }
