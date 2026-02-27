@@ -110,7 +110,7 @@ const submit = async () => {
       waybillNumber: det.documentNumber,
       waybillDate: toDateStr(det.waybillDate),
       requestReference: det.inventoryRequest || null,
-      transactionType: det.direction,
+      transactionType: det.direction || null,
       costCenterId: det.costCenter || null,
       warehouseTransactionType: det.type || null,
       
@@ -171,7 +171,7 @@ onMounted(async () => {
       formData.details.locationId = result.locationId || null;
       formData.details.locationCode = result.locationName || result.locationCode || '';
       formData.details.costCenter = result.costCenterId || '';
-      formData.details.type = result.warehouseTransactionType || ' ';
+      formData.details.type = result.warehouseTransactionType || null;
       
       if (result.destinationWarehouseId) {
         formData.details.destination.warehouse = result.destinationWarehouseId;
