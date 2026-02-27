@@ -84,7 +84,7 @@ const availableSerialsOptions = computed(() =>
     serialsLookups.value.map(s => ({
         label: `${s.mainSerial} (Qty: ${s.availableQuantity})`,
         value: s.mainSerial,
-        qty: s.quantity,
+        qty: s.availableQuantity,
     }))
 );
 
