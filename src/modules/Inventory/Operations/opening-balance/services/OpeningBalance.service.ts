@@ -12,16 +12,16 @@ export const OpeningBalanceService = {
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/purchase-waybill/${id}`);
+    const data = await axiosWrapper.get<any>(`/OpeningBalances/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
+    const data = await axiosWrapper.post<any>(`/OpeningBalances`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/purchase-waybill/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/OpeningBalances/${id}`, payload);
     return data.data;
   },
 

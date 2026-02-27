@@ -5,7 +5,6 @@ export const OpeningBalanceRoutes = [
     name: "OpeningBalance",
     meta: {
       hide: true,
-      localizedTitle: "Purchase Waybill",
       permission: null
     },
   },

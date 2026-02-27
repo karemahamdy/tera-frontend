@@ -1024,7 +1024,16 @@
     "review": "مراجعة",
     "reviewOpeningBalance": "مراجعة الرصيد الافتتاحي",
     "item": "الصنف",
-    "editOpeningBalance": "تعديل رصيد افتتاحي"
+    "editOpeningBalance": "تعديل رصيد افتتاحي",
+    "itemId": "الصنف",
+    "warehouseId": "المستودع",
+    "locationId": "الموقع",
+    "uomId": "وحدة القياس",
+    "code": "رمز الصنف",
+    "unitCost": "تكلفة الوحدة",
+    "quantity": "الكمية",
+    "notes": "ملاحظات",
+    "serials": "أرقام تسلسلية"
   },
   "inventoryRequest": {
     "allTypes": "جميع الأنواع",
