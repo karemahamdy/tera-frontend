@@ -187,18 +187,14 @@ onMounted(async () => {
             </div>
         </div>
 
-        <div class="mt-8">
+        <div class="mt-4">
             <h3 class="font-bold text-lg text-gray-700 mb-4">{{ t("payment.notesComments") }}</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput v-model="form.comment1" :label="t('payment.comment1')" :placeholder="t('payment.commentPlaceholder')" :disabled="disabled" @blur="emitUpdate" />
                 <FormInput v-model="form.comment2" :label="t('payment.comment2')" :placeholder="t('payment.commentPlaceholder')" :disabled="disabled" @blur="emitUpdate" />
                 <FormInput v-model="form.comment3" :label="t('payment.comment3')" :placeholder="t('payment.commentPlaceholder')" :disabled="disabled" @blur="emitUpdate" />
                 <FormInput v-model="form.comment4" :label="t('payment.comment4')" :placeholder="t('payment.commentPlaceholder')" :disabled="disabled" @blur="emitUpdate" />
-                <FormInput v-model="form.comment5" :label="t('payment.comment5')" :placeholder="t('payment.commentPlaceholder')" class="md:col-span-2" :disabled="disabled" @blur="emitUpdate" />
-                <div class="md:col-span-2 mt-2">
-                     <label class="block text-gray-600 mb-1">General Note</label>
-                     <Textarea v-model="form.note" rows="3" class="w-full p-inputtext" placeholder="Additional notes..." :disabled="disabled" @blur="emitUpdate" />
-                </div>
+                <FormInput v-model="form.comment5" :label="t('payment.comment5')" :placeholder="t('payment.commentPlaceholder')" class="md:col-span-2" :disabled="disabled" @blur="emitUpdate" /> 
             </div>
         </div>
     </div>

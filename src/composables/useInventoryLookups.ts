@@ -46,7 +46,7 @@ export function useInventoryLookups() {
       toastService.error(error as string);
     }
   };
-   const getCustomerLookups = async () => {
+  const getCustomerLookups = async () => {
     try {
       const res = await InventoryLookupsService.getCustomerLookups();
       customerLookups.value = res.data.map((group) => ({
@@ -126,7 +126,7 @@ export function useInventoryLookups() {
       const res = await LookupsService.getUnitsLookups();
       UnitsLookups.value = res.data.map((u: any) => ({
         label: u.name,
-        value: u.name,
+        value: u.id,
         type: u.id,
       }));
     } catch (error) {
@@ -201,6 +201,6 @@ export function useInventoryLookups() {
     WarehouseHierarchyLookups,
     serialsLookups,
     itemBalance
-  
+
   };
 }

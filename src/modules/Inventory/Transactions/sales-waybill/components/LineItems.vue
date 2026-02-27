@@ -7,17 +7,18 @@ import { useI18n } from 'vue-i18n';
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const { t } = useI18n();
-const { 
-    getWarehouseLookups, WarehouseLookups, 
-    getZonesLookups, ZonesLookups, 
-    getUnitsLookups, UnitsLookups, 
+const {
+    getWarehouseLookups, WarehouseLookups,
+    getZonesLookups, ZonesLookups,
+    getUnitsLookups, UnitsLookups,
     getItemsLookups, itemsLookups,
-    getWarehouseHierarchyLookups, WarehouseHierarchyLookups
+    getWarehouseHierarchyLookups, WarehouseHierarchyLookups,
+    getItemBalance
 } = useInventoryLookups();
 
 const props = defineProps<{
-  lineItems?: any[];
-  disabled?: boolean;
+    lineItems?: any[];
+    disabled?: boolean;
 }>();
 
 const emit = defineEmits(['next', 'prev', 'update']);
@@ -34,19 +35,23 @@ onMounted(async () => {
         getItemsLookups(),
         getWarehouseHierarchyLookups()
     ]);
-    
+
     if (props.lineItems && props.lineItems.length > 0) {
-        items.value = [...props.lineItems.map(i => ({...i}))];
+        items.value = props.lineItems.map(i => ({ ...i, balance: 0, tracked: i.tracked ?? true }));
+        // Fetch balances for existing items
+        for (const item of items.value) {
+            fetchItemBalance(item);
+        }
     }
 });
 
 function calcTotal(qty: number, price: number, tax: number) {
-  const sub = (qty || 0) * (price || 0);
-  return sub + (sub * (tax || 0)) / 100;
+    const sub = (qty || 0) * (price || 0);
+    return sub + (sub * (tax || 0)) / 100;
 }
 
 function emitUpdate() {
-  emit('update', [...items.value]);
+    emit('update', [...items.value]);
 }
 
 // --- Computed ---
@@ -71,7 +76,7 @@ const showItemDialog = ref(false);
 const availableItems = computed(() => itemsLookups.value);
 
 const openItemDialog = () => {
-    if(!props.disabled) showItemDialog.value = true;
+    if (!props.disabled) showItemDialog.value = true;
 };
 
 const handleSelectItem = (item: any) => {
@@ -80,8 +85,9 @@ const handleSelectItem = (item: any) => {
         itemId: item.id || item.itemId,
         code: item.code,
         name: item.name,
-        quantity: 1, // Set default to 1 like PW
+        quantity: 1,
         unitId: item.baseUnitId || null,
+        uom: item.baseUnitName || 'PCS',
         warehouse: '',
         warehouseId: null,
         zone: '',
@@ -96,10 +102,19 @@ const handleSelectItem = (item: any) => {
         total: 0,
         isBlocked: false,
         note: "",
-        tracked: item.trackingType === 'Serial' || item.trackingType === 'Batch',
+        balance: 0,
+        tracked: item.trackingType === 'Serial' || item.trackingType === 'Batch' || item.tracked,
         serials: []
     });
     emitUpdate();
+};
+
+const fetchItemBalance = async (item: any) => {
+    if (item.itemId && item.warehouseId) {
+        item.balance = await getItemBalance(item.itemId, item.warehouseId, item.zoneId, item.locationId);
+    } else {
+        item.balance = 0;
+    }
 };
 
 const handleWarehouseChange = async (val: string, rowData: any) => {
@@ -125,9 +140,12 @@ const handleWarehouseChange = async (val: string, rowData: any) => {
         } else {
             await getZonesLookups(val);
         }
+        await fetchItemBalance(rowData);
     } else {
         rowData.zoneId = null;
+        rowData.balance = 0;
     }
+    emitUpdate();
 };
 
 const showLocationPicker = ref(false);
@@ -136,31 +154,33 @@ const isLoadingLocation = ref(false);
 const loadingLocationItemId = ref<any>(null);
 
 const currentLocations = computed(() => {
-  if (!locationPickerTarget.value) return [];
-  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === locationPickerTarget.value.warehouseId);
-  return wh?.locations || [];
+    if (!locationPickerTarget.value) return [];
+    const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === locationPickerTarget.value.warehouseId);
+    return wh?.locations || [];
 });
 
 const openLocationPicker = (item: any) => {
-  if (!item.warehouseId || props.disabled) return;
-  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === item.warehouseId);
-  if (wh?.warehouseType === 'Professional') {
-    locationPickerTarget.value = item;
-    showLocationPicker.value = true;
-  }
+    if (!item.warehouseId || props.disabled) return;
+    const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === item.warehouseId);
+    if (wh?.warehouseType === 'Professional') {
+        locationPickerTarget.value = item;
+        showLocationPicker.value = true;
+    }
 };
 
-const handleSelectLocation = (location: any) => {
-  if (locationPickerTarget.value) {
-    locationPickerTarget.value.zone = location.zoneName;
-    locationPickerTarget.value.zoneId = location.zoneId;
-    locationPickerTarget.value.locationId = location.locationId;
-    locationPickerTarget.value.locationCode = location.locationCode;
-    locationPickerTarget.value.row = location.row;
-    locationPickerTarget.value.column = location.column;
-    locationPickerTarget.value.rack = location.rack;
-  }
-  emitUpdate();
+const handleSelectLocation = async (location: any) => {
+    if (locationPickerTarget.value) {
+        locationPickerTarget.value.zone = location.zoneName;
+        locationPickerTarget.value.zoneId = location.zoneId;
+        locationPickerTarget.value.locationId = location.locationId;
+        locationPickerTarget.value.locationCode = location.locationCode;
+        locationPickerTarget.value.row = location.row;
+        locationPickerTarget.value.column = location.column;
+        locationPickerTarget.value.rack = location.rack;
+        // Refresh balance after location selection
+        await fetchItemBalance(locationPickerTarget.value);
+    }
+    emitUpdate();
 };
 
 // --- Quantity/Serial Dialog ---
@@ -239,42 +259,59 @@ const removeItem = (data: any) => {
                 </template>
 
                 <template #col-unitId="{ data }">
-                    <FormDropdown v-model="data.unitId" :options="UnitsLookups" optionLabel="label" optionValue="value" class="w-24 p-inputtext-sm text-sm" :disabled="disabled" />
+                    <FormDropdown :modelValue="data.unitId" :options="UnitsLookups" optionLabel="label"
+                        optionValue="value" class="w-24 p-inputtext-sm text-sm" :disabled="disabled" @update:modelValue="(v: any) => {
+                            data.unitId = v;
+                            const unit = UnitsLookups.find(u => u.value === v);
+                            if (unit) data.uom = unit.label;
+                            emitUpdate();
+                        }" />
                 </template>
 
                 <template #col-warehouseId="{ data }">
-                    <FormDropdown :modelValue="data.warehouseId" @update:modelValue="handleWarehouseChange($event, data)" :options="WarehouseLookups" optionLabel="label" optionValue="value" class="w-28 p-inputtext-sm text-sm" :placeholder="t('items.warehouse')" :disabled="disabled" />
+                    <FormDropdown :modelValue="data.warehouseId"
+                        @update:modelValue="handleWarehouseChange($event, data)" :options="WarehouseLookups"
+                        optionLabel="label" optionValue="value" class="w-28 p-inputtext-sm text-sm"
+                        :placeholder="t('items.warehouse')" :disabled="disabled" />
                 </template>
 
                 <template #col-zoneId="{ data }">
                     <div class="flex flex-col gap-1">
-                        <template v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === data.warehouseId)?.warehouseType === 'Professional' || (isLoadingLocation && loadingLocationItemId === data.id)">
+                        <template
+                            v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === data.warehouseId)?.warehouseType === 'Professional' || (isLoadingLocation && loadingLocationItemId === data.id)">
                             <!-- Loading spinner while fetching hierarchy -->
                             <div v-if="isLoadingLocation && loadingLocationItemId === data.id"
                                 class="flex items-center gap-2 text-xs text-primary-500 font-medium py-1 px-2 border border-primary-200 rounded-lg">
                                 <ProgressSpinner style="width:14px;height:14px" strokeWidth="6" />
                                 <span>Loading...</span>
                             </div>
-                            <BaseButton
-                                v-else-if="!disabled"
-                                :label="data.locationCode || t('itemList.selectZone')"
-                                variant="outline-primary" class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200 min-w-28 text-center justify-center flex"
+                            <BaseButton v-else-if="!disabled" :label="data.locationCode || t('itemList.selectZone')"
+                                variant="outline-primary"
+                                class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200 min-w-28 text-center justify-center flex"
                                 @click="openLocationPicker(data)" />
-                            
+
                             <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
-                            
+
                             <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
-                                {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack }})</template>
+                                {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{
+                                    data.rack }})</template>
                             </div>
                         </template>
                         <template v-else-if="data.warehouseId">
-                            <FormDropdown v-model="data.zoneId" :options="ZonesLookups" optionLabel="label" optionValue="value" class="w-28 p-inputtext-sm text-sm" :placeholder="t('items.zone')" :disabled="disabled" />
+                            <FormDropdown v-model="data.zoneId" :options="ZonesLookups" optionLabel="label"
+                                optionValue="value" class="w-28 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
+                                :disabled="disabled" />
                         </template>
                     </div>
                 </template>
 
                 <template #col-balance="{ data }">
-                    <span class="font-medium text-gray-900">-</span>
+                    <div class="flex items-center gap-1.5">
+                        <span>
+                            {{ data.balance || 0 }}
+                        </span>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase">{{ data.uom || 'PCS' }}</span>
+                    </div>
                 </template>
 
                 <template #col-unitPrice="{ data }">
@@ -287,12 +324,13 @@ const removeItem = (data: any) => {
                 </template>
 
                 <template #col-tax="{ data }">
-                    <InputText v-model.number="data.tax" class="w-16 p-inputtext-sm" prefix="%" :disabled="disabled" @input="(e: any) => {
-                        const v = Number(e.target.value) || 0;
-                        data.tax = v;
-                        data.total = calcTotal(data.quantity, data.unitPrice, v);
-                        emitUpdate();
-                    }" />
+                    <InputText v-model.number="data.tax" class="w-16 p-inputtext-sm" prefix="%" :disabled="disabled"
+                        @input="(e: any) => {
+                            const v = Number(e.target.value) || 0;
+                            data.tax = v;
+                            data.total = calcTotal(data.quantity, data.unitPrice, v);
+                            emitUpdate();
+                        }" />
                 </template>
 
                 <template #col-total="{ data }">
@@ -316,10 +354,14 @@ const removeItem = (data: any) => {
                 ${{ subtotal.toFixed(2) }}
             </span>
         </div>
- 
+
         <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
-        <SalesQuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem" :initialSerials="currentItem.serials" @save="handleSaveSerials" />
-        <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker" :locations="currentLocations" :selectedLocationId="locationPickerTarget?.locationId" @select="handleSelectLocation" />
+        <SalesQuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
+            :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId" :zoneId="currentItem.zoneId"
+            :locationId="currentItem.locationId" @save="handleSaveSerials" />
+        <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker"
+            :locations="currentLocations" :selectedLocationId="locationPickerTarget?.locationId"
+            @select="handleSelectLocation" />
 
     </div>
 </template>
