@@ -2,7 +2,7 @@
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import SalesQuantitySerialDialog from '@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue';
 import StorageLocationPicker from '@/modules/Inventory/shared/components/StorageLocationPicker.vue';
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
@@ -23,7 +23,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['next', 'prev', 'update']);
 
-const activeZonesLookups = ref<any[]>([]);
+// const activeZonesLookups = ref<any[]>([]);
 
 // --- State ---
 const items = ref<any[]>([]);
