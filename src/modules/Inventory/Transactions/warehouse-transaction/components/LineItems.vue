@@ -61,7 +61,14 @@ function mapApiItem(item: any) {
     column: item.column ?? '',
     rack: item.rack ?? '',
     serials: (item.serialLots || []).map((s: any) => ({
-      id: s.id, serial: s.mainSerial, qty: s.availableQuantity, batch: s.batchNumber, expire: s.expireDate
+      id: s.id, 
+      mainSerial: s.mainSerial, 
+      qty: s.availableQuantity, 
+      batchNumber: s.batchNumber, 
+      expireDate: s.expireDate,
+      serialNumber2: s.serialNumber2,
+      serialNumber3: s.serialNumber3,
+      comment: s.comment
     })),
     balance: item.balance || 0,
     tracked: true,
@@ -397,7 +404,7 @@ const fetchItemBalance = async (item: any) => {
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
     <template v-if="showQtyDialog && currentItem">
-      <SalesQuantitySerialDialog v-if="direction === 'Transfare'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
+      <SalesQuantitySerialDialog v-if="direction === 'Transfare' || direction === 'Outbound'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
         :item="currentItem" :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId"
         :zoneId="currentItem.zoneId" :locationId="currentItem.locationId" :disabled="disabled"
         @save="handleSaveSerials" />

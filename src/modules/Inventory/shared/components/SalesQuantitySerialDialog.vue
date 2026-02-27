@@ -31,10 +31,11 @@ const serialList = ref<any[]>(props.initialSerials ? [...props.initialSerials] :
 
 const columns = computed(() => [
     { field: 'mainSerial', header: t('serial.serial') },
-    { field: 'availableQuantity', header: t('serial.qty') },
+    { field: 'qty', header: t('serial.qty') },
     { field: 'batchNumber', header: t('serial.batch') },
     { field: 'expireDate', header: t('serial.expire'), type: 'date' },
     { field: 'serialNumber2', header: t('serial.serialNumber2') },
+    { field: 'serialNumber3', header: t('serial.serialNumber3') },
     { field: 'comment', header: t('serial.comment') },
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
@@ -44,15 +45,19 @@ const totalQty = computed(() =>
 );
 
 const addSerial = () => {
-    if (!serialInput.value && !qtyInput.value) return;
+    if (!serialInput.value) return;
     
     const found = serialsLookups.value.find(s => s.mainSerial === serialInput.value);
 
     serialList.value.push({
-        serial: serialInput.value,
+        mainSerial: serialInput.value,
         qty: qtyInput.value || 0,
-        batch: found?.batchNumber || '',
-        expire: found?.expireDate || null,
+        batchNumber: found?.batchNumber || '',
+        expireDate: found?.expireDate || null,
+        serialNumber2: found?.serialNumber2 || '',
+        serialNumber3: found?.serialNumber3 || '',
+        comment: found?.comment || '',
+        availableQuantity: found?.availableQuantity || 0
     });
 
     serialInput.value = '';
@@ -77,7 +82,7 @@ const close = () => {
 
 const availableSerialsOptions = computed(() => 
     serialsLookups.value.map(s => ({
-        label: `${s.mainSerial} (Qty: ${s.quantity})`,
+        label: `${s.mainSerial} (Qty: ${s.availableQuantity})`,
         value: s.mainSerial,
         qty: s.quantity,
     }))
