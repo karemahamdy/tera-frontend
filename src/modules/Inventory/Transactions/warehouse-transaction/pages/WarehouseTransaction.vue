@@ -143,14 +143,15 @@ const addWarehouseTransaction = () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiWarehouseTransaction" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    @action-menu-click="handleActionMenu" :canEdit="(row: any) => row.status !== 'Posted'"
+                     :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
                     <template v-slot:["col-transactionDirection"]="{ data }">
-                        <div v-if="data.transactionDirection === 'Transfer'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
+                        <div v-if="data.transactionDirection === 'Transfare'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
                             <VsxIcon iconName="ArrowSwapHorizontal" type="linear" />
-                            <span>{{ data.transactionDirection }}</span>
+                            <span>{{ data.transactionDirection ==='Transfare' ? 'Transfer' : data.transactionDirection }}</span>
                         </div>
-                        <div v-else-if="data.transactionDirection === 'In'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
+                        <div v-else-if="data.transactionDirection === 'Inbound'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
                             <VsxIcon iconName="ArrowDown" type="linear" />
                             <span>{{ data.transactionDirection }}</span>
                         </div>

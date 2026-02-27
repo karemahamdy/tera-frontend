@@ -70,7 +70,9 @@
     "Posted": "ترحيل",
     "Pending": "معلق",
     "Shipped": "تم الشحن",
-    "step": "الخطوة {index} من {total}"
+    "step": "الخطوة {index} من {total}",
+    "free": "حر",
+    "production": "انتاج"
   },
   "table": {
     "description": "الوصف",
@@ -1077,7 +1079,9 @@
     "Zone": "المنطقة",
     "ZonePlaceholder": "اختر المنطقة",
     "WarehouseTransactionUpdatedSuccessfully": "تم التعديل بنجاح",
-    "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح"
+    "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح",
+    "review": "مراجعة",
+    "transactionDetails"  : "تفاصيل المعاملة"
   },
   "itemTransaction": {
     "createNewTransaction": "إنشاء معاملة جديدة",
