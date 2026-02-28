@@ -21,7 +21,7 @@ const {
   updateWarehouseTransaction,
 } = useWarehouseTransaction();
 
-const { WarehouseLookups, getWarehouseLookups, UnitsLookups, getUnitsLookups } = useInventoryLookups();
+const { WarehouseLookups, getWarehouseLookups } = useInventoryLookups();
 
 const id = computed(() => route.params.id as string | undefined);
 const mode = computed(() => {
@@ -155,8 +155,7 @@ const submit = async () => {
 };
 
 onMounted(async () => {
-  // fetch units too so we can translate unit IDs when viewing
-  await Promise.all([getWarehouseLookups(), getUnitsLookups()]);
+  await getWarehouseLookups();
   if (id.value) {
     const result = await fetchWarehouseTransactionById(id.value);
     console.log(result);
@@ -181,39 +180,8 @@ onMounted(async () => {
         formData.details.destination.locationId = result.destinationLocationId || null;
         formData.details.destination.locationCode = result.destinationLocationName || result.destinationLocationCode || '';
       }
-      console.log('mapped details', formData.details);
       
-      if (result.lineItems) {
-        const unitList = UnitsLookups.value || [];
-        formData.lineItems = result.lineItems.map((item: any) => {
-          const found = unitList.find(u => u.type === item.unitOfMeasure);
-          return {
-            itemId: item.itemId,
-            trackingType: (item.serialLots && item.serialLots.length > 0) ? 'Serial' : 'None',
-            code: item.itemCode,
-            name: item.itemName,
-            quantity: item.quantity,
-            uom: found ? found.label : (item.unitOfMeasureName || item.unitOfMeasure || ''),
-            unitId: item.unitOfMeasure,
-            warehouse: item.warehouseName,
-            warehouseId: item.warehouseId,
-            zone: item.zoneName || '',
-            zoneId: item.zoneId || null,
-            locationId: item.locationId || null,
-            locationCode: item.locationCode || item.locationName || '',
-            unitPrice: item.unitPrice || 0,
-            total: item.total || 0,
-            balance: item.balance || 0,
-            serials: (item.serialLots || []).map((s: any) => ({
-              serial: s.mainSerial,
-              qty: s.availableQuantity,
-              batch: s.batchNumber,
-              expire: s.expireDate
-            }))
-          };
-        });
-        console.log('mapped lineItems', formData.lineItems);
-      }
+      formData.lineItems = result.lineItems || [];
     }
   }
   dataReady.value = true;
