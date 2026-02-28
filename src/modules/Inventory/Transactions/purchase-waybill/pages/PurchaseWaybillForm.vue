@@ -138,12 +138,6 @@ onMounted(async () => {
         :actionName="mode === 'create' ? 'purchaseWaybill.addpurchaseWaybill' : 'purchaseWaybill.viewpurchaseWaybill'"
         class="!mb-0"
       />
-      <BaseButton
-        v-if="mode === 'view'"
-        label="button.edit"
-        class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-        @click="router.push({ name: 'PurchaseWaybillEdit', params: { id } })"
-      />
     </div>
     <BaseStepper
       v-model="activeStep"

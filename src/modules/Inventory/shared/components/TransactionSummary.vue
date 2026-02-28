@@ -10,6 +10,8 @@ const props = defineProps({
     currency: { type: String, default: 'SAR' },
     exchangeRate: { type: Number, default: 1 },
     baseCurrency: { type: String, default: 'SAR' }
+    ,
+    disabled: { type: Boolean, default: false }
 });
 
 const globalDiscount = defineModel('globalDiscount', { default: 0 });
@@ -17,7 +19,7 @@ const globalDiscount = defineModel('globalDiscount', { default: 0 });
 const subTotalBase = computed(() => props.subTotal * props.exchangeRate);
 const taxTotalBase = computed(() => props.taxTotal * props.exchangeRate);
 const grandTotalBase = computed(() => props.grandTotal * props.exchangeRate);
-const discountBase = computed(() => (Number(globalDiscount.value) || 0) * props.exchangeRate);
+
 
 </script>
 
@@ -53,6 +55,7 @@ const discountBase = computed(() => (Number(globalDiscount.value) || 0) * props.
             </label>
             <div class="flex items-center gap-2">
                 <InputNumber v-model.number="globalDiscount" placeholder="0.00"
+                    :disabled="disabled"
                     class="flex-1 bg-gray-50 border-none" />
             </div>
         </div>

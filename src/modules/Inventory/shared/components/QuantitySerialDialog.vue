@@ -165,23 +165,25 @@ watch(
             accept=".xlsx,.xls,.csv"
             @change="handleFileUpload"
           />
-          <!-- <BaseButton
-            :label="t('import')"
-            icon="DocumentUpload"
-            size="small"
-            variant="outline-primary"
-            class="px-2 py-1 text-xs"
-            :loading="isProcessing"
-            @click="triggerImport"
-          /> -->
-          <!-- <BaseButton
-            :label="t('export')"
-            icon="DocumentDownload"
-            size="small"
-            variant="outline-primary"
-            class="px-2 py-1 text-xs"
-            @click="exportTemplateFunction"
-          /> -->
+          <template v-show="false">
+            <BaseButton
+              :label="t('import')"
+              icon="DocumentUpload"
+              size="small"
+              variant="outline-primary"
+              class="px-2 py-1 text-xs"
+              :loading="isProcessing"
+              @click="triggerImport"
+            />
+            <BaseButton
+              :label="t('export')"
+              icon="DocumentDownload"
+              size="small"
+              variant="outline-primary"
+              class="px-2 py-1 text-xs"
+              @click="exportTemplateFunction"
+            />
+          </template>
         </div>
 
         <div class="flex flex-col gap-4">
