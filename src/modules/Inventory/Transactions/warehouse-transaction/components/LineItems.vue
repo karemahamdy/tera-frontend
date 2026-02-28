@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue';
+import { ref, computed, onMounted, nextTick, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
@@ -76,6 +76,16 @@ function mapApiItem(item: any) {
 }
 
 const items = ref<any[]>((props.lineItems ?? []).map(mapApiItem));
+
+// keep internal items in sync if parent updates the prop (e.g. loading existing record)
+watch(
+  () => props.lineItems,
+  (newVal) => {
+    items.value = (newVal ?? []).map(mapApiItem);
+    emitUpdate();
+  },
+  { immediate: false }
+);
 const itemsError = ref("");
 
 function emitUpdate() {
