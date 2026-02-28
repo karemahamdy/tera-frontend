@@ -309,11 +309,14 @@ const removeItem = (data: any) => {
                                     data.rack }})</template>
                             </div>
                         </template>
-                        <template v-else-if="data.warehouseId">
+                        <!-- <template v-else-if="data.warehouseId">
                             <FormDropdown v-model="data.zoneId" :options="ZonesLookups" optionLabel="label"
                                 optionValue="value" class="w-38 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
                                 :disabled="disabled" />
-                        </template>
+                        </template> -->
+                         <template v-else-if="data.warehouseId">
+              <span class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
+            </template>
                     </div>
                 </template>
 

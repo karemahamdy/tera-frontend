@@ -360,7 +360,7 @@ const handleWarehouseChange = async (item: any) => {
       <span class="text-gray-600 font-medium">
         {{ t('itemsList.subtotal') }} ({{ items.length }} {{ t('itemsList.items') }})
       </span>
-      <span class="text-xl font-bold text-primary-600">${{ subtotal.toFixed(2) }}</span>
+      <span class="text-xl font-bold text-primary-600">{{ subtotal.toFixed(2) }}</span>
     </div>
 
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"

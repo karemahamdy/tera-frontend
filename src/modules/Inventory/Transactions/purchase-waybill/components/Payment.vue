@@ -178,6 +178,7 @@ onMounted(async () => {
           :currency="props.paymentTerms?.currencyCode"
           :exchangeRate="props.paymentTerms?.exchangeRate"
           :baseCurrency="props.paymentTerms?.baseCurrencyCode"
+          :disabled="disabled"
         />
       </div>
     </div>
