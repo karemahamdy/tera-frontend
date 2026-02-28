@@ -28,15 +28,12 @@ export const itemSchema = yup.object({
   manufacturerPartNumber: yup.string().nullable(),
   barcodeSKU: yup.string().nullable(),
   baseUOM: yup.string().required("form.fieldRequired"),
-  rules: yup
-    .array()
-    .of(
-      yup.object({
-        toUnitId: yup.string().required("form.fieldRequired"),
-        factor: yup.number().nullable(),
-      }),
-    )
-    .min(1, "form.fieldRequired"),
+  rules: yup.array().of(
+    yup.object({
+      toUnitId: yup.string().required("form.fieldRequired"),
+      factor: yup.number().nullable(),
+    }),
+  ),
   tracking: yup.string().nullable(),
   autoGenerate: yup.boolean().nullable(),
   initialSerial: yup.string().nullable(),
