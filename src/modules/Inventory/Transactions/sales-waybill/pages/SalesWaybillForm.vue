@@ -27,20 +27,40 @@ const isDisabled = computed(() => mode.value === 'view');
 
 const dataReady = computed(() => !id.value || !!formData.value.customerDetails);
 
-const formData = ref<any>({
-  customerDetails: null,
-  paymentTerms: null,
+const defaultFormData = {
+  customerDetails: {
+    documentNumber: "",
+    customerId: null,
+    customerName: "",
+    salesOrderRef: "",
+    trackingNumber: "",
+    shippingAddress: "",
+    invoiceNumber: "",
+    waybillDate: new Date(),
+    deliveryDate: new Date(),
+  },
+  paymentTerms: {
+    currencyId: null,
+    currencyCode: "",
+    exchangeRate: 1,
+    rateDate: new Date(),
+    baseCurrencyCode: "USD",
+  },
   warehouseDetails: null,
   lineItems: [],
   paymentInfo: null,
   notes: null
-});
+};
+
+const formData = ref<any>({ ...defaultFormData });
 
 const activeStep = ref(0);
 
 const updateCustomerData = (data: any) => {
+  console.log('SalesWaybillForm received customer update:', data);
   formData.value.customerDetails = data.customerDetails;
   formData.value.paymentTerms = { ...formData.value.paymentTerms, ...data.paymentTerms };
+  console.log('SalesWaybillForm formData.customerDetails after update:', formData.value.customerDetails);
 };
 
 const updateWarehouseData = (data: any) => {
@@ -67,19 +87,31 @@ const previousTab = () => {
 
 const submit = async () => {
   try {
+    console.log('Submitting with formData:', formData.value);
+    const exchangeRate = formData.value.paymentTerms?.exchangeRate !== null && 
+          formData.value.paymentTerms?.exchangeRate !== undefined && 
+          formData.value.paymentTerms?.exchangeRate !== '' 
+            ? Number(formData.value.paymentTerms.exchangeRate) 
+            : 1;
+
     const payload = {
       customerDetails: formData.value.customerDetails,
       paymentTerms: {
         ...formData.value.paymentTerms,
-        exchangeRate: formData.value.paymentTerms?.exchangeRate !== null &&
-          formData.value.paymentTerms?.exchangeRate !== undefined &&
-          formData.value.paymentTerms?.exchangeRate !== ''
-            ? Number(formData.value.paymentTerms.exchangeRate)
-            : null
+        exchangeRate
       },
       warehouseDetails: formData.value.warehouseDetails,
+      paymentInfo: formData.value.paymentInfo ? {
+        ...formData.value.paymentInfo,
+        subTotalBase: Number(((formData.value.paymentInfo.subTotal || 0) * exchangeRate).toFixed(2)),
+        taxAmountBase: Number(((formData.value.paymentInfo.totalTax || 0) * exchangeRate).toFixed(2)),
+        globalDiscountBase: Number(((formData.value.paymentInfo.globalDiscount || 0) * exchangeRate).toFixed(2)),
+        grandTotalBase: Number(((formData.value.paymentInfo.grandTotal || 0) * exchangeRate).toFixed(2))
+      } : null,
       notes: formData.value.notes
     };
+    
+    console.log('Final payload before lineItems:', payload);
     
     const finalPayload = {
         ...payload,
@@ -106,6 +138,8 @@ const submit = async () => {
             }))
         }))
     };
+    
+    console.log('Final payload to send:', finalPayload);
     
     if (mode.value === 'edit' && id.value) {
       await updateSalesWaybill(id.value, finalPayload);
