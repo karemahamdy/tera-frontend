@@ -73,6 +73,14 @@ const grandTotalValue = computed(() => {
     return subTotal.value + totalTax.value - (Number(form.globalDiscount) || 0);
 });
 
+// exchange rate from parent terms (default 1)
+const exchangeRate = computed(() => props.paymentTerms?.exchangeRate || 1);
+
+// base-currency equivalents
+const subTotalBase = computed(() => Number((subTotal.value * exchangeRate.value).toFixed(2)));
+const discountAmountBase = computed(() => Number(((Number(form.globalDiscount) || 0) * exchangeRate.value).toFixed(2)));
+const grandTotalBase = computed(() => Number((grandTotalValue.value * exchangeRate.value).toFixed(2)));
+
 // Watch totals and update reactive form only — do NOT emit here.
 // Emitting from this watcher causes the parent to update formData → lineItems
 // flows back down → computeds re-run → watcher fires again → infinite loop.
@@ -87,6 +95,12 @@ watch(() => form.globalDiscount, () => {
     emitUpdate();
 });
 
+// when exchange rate changes (or any base total changes) re-emit so parent can react
+watch(exchangeRate, () => {
+    // parent will recompute any payload fields and base numbers
+    emitUpdate();
+});
+
 function emitUpdate() {
     if (props.disabled) return;
     emit('update', { 
@@ -98,7 +112,12 @@ function emitUpdate() {
             subTotal:      form.subTotal,
             totalTax:      form.totalTax,
             globalDiscount:form.globalDiscount,
-            grandTotal:    form.grandTotal
+            grandTotal:    form.grandTotal,
+
+            // base amounts depend on exchange rate / total base
+            subTotalBase: subTotalBase.value,
+            discountAmountBase: discountAmountBase.value,
+            grandTotalBase: grandTotalBase.value
         },
         notes: { 
             comment1: form.comment1,
