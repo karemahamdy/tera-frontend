@@ -153,15 +153,15 @@ const addInventoryRequest = () => {
                     <template  v-slot:["col-type"]="{ data }">
                         <div v-if="data.type === 'Transfer'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
                             <VsxIcon iconName="ArrowSwapHorizontal" type="linear" />
-                            <span>{{ data.type }}</span>
+                            <span>{{ $t("inventoryRequest.transfer") }}</span>
                         </div>
                         <div v-else-if="data.type === 'Inbound'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
                             <VsxIcon iconName="ArrowDown" type="linear" />
-                            <span>{{ data.type }}</span>
+                            <span>{{ $t("inventoryRequest.inbound") }}</span>
                         </div>
-                        <div v-else class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
+                        <div v-else-if="data.type === 'Outbound'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
                             <VsxIcon iconName="ArrowUp" type="linear" />
-                            <span>{{ data.type }}</span>
+                            <span>{{ $t("inventoryRequest.outbound") }}</span>
                         </div>
                     </template>
                     <template  v-slot:["col-requestId"]="{ data }">
