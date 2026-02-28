@@ -1235,7 +1235,8 @@
   "RequestRules": {
     "department": "Department submits Issue Request for required materials",
     "items": "Items are validated against available stock and holds",
-    "serialLot": "Serial/Lot tracking items require number assignment"
+    "serialLot": "Serial/Lot tracking items require number assignment",
+    "ruleHeader": "Workflow:"
   },
   "itemHold": {
     "holdItem": "Hold Item",
