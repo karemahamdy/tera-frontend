@@ -14,10 +14,12 @@ const props = defineProps({
 
 const globalDiscount = defineModel('globalDiscount', { default: 0 });
 
-const subTotalBase = computed(() => props.subTotal * props.exchangeRate);
-const taxTotalBase = computed(() => props.taxTotal * props.exchangeRate);
-const grandTotalBase = computed(() => props.grandTotal * props.exchangeRate);
-const discountBase = computed(() => (Number(globalDiscount.value) || 0) * props.exchangeRate);
+const effectiveExchangeRate = computed(() => Number(props.exchangeRate) || 1);
+
+const subTotalBase = computed(() => props.subTotal * effectiveExchangeRate.value);
+const taxTotalBase = computed(() => props.taxTotal * effectiveExchangeRate.value);
+const grandTotalBase = computed(() => props.grandTotal * effectiveExchangeRate.value);
+const discountBase = computed(() => (Number(globalDiscount.value) || 0) * effectiveExchangeRate.value);
 
 </script>
 
@@ -34,16 +36,16 @@ const discountBase = computed(() => (Number(globalDiscount.value) || 0) * props.
                 <span class="font-bold text-gray-700">{{ currency }} {{ props.subTotal.toFixed(2) }}</span>
             </div>
             <div class="flex justify-between text-sm" v-if="currency !== baseCurrency">
-                <span class="text-gray-600">{{ $t('summary.subTotal') }} ({{ baseCurrency }})</span>
-                <span class="font-bold text-success-500">{{ baseCurrency }} {{ subTotalBase.toFixed(2) }}</span>
+                <span class="text-success-600 font-medium">{{ $t('summary.subTotal') }} ({{ baseCurrency }})</span>
+                <span class="font-bold text-success-600">{{ baseCurrency }} {{ subTotalBase.toFixed(2) }}</span>
             </div>
             <div class="flex justify-between text-sm">
                 <span class="text-gray-600">{{ $t('summary.totalTax') }}</span>
                 <span class="font-bold text-gray-700">{{ currency }} {{ props.taxTotal.toFixed(2) }}</span>
             </div>
             <div class="flex justify-between text-sm" v-if="currency !== baseCurrency">
-                <span class="text-gray-600">{{ $t('summary.totalTax') }} ({{ baseCurrency }})</span>
-                <span class="font-bold text-success-500">{{ baseCurrency }} {{ taxTotalBase.toFixed(2) }}</span>
+                <span class="text-success-600 font-medium">{{ $t('summary.totalTax') }} ({{ baseCurrency }})</span>
+                <span class="font-bold text-success-600">{{ baseCurrency }} {{ taxTotalBase.toFixed(2) }}</span>
             </div>
         </div>
 
@@ -54,7 +56,7 @@ const discountBase = computed(() => (Number(globalDiscount.value) || 0) * props.
             <div class="flex items-center gap-2">
                 <InputNumber v-model.number="globalDiscount" placeholder="0.00"
                     class="flex-1 bg-gray-50 border-none" />
-                <span class="text-success-500 text-sm font-bold" v-if="currency !== baseCurrency">-{{ baseCurrency }} {{ discountBase.toFixed(2) }}</span>
+                <span class="text-success-600 text-sm font-bold" v-if="currency !== baseCurrency">-{{ baseCurrency }} {{ discountBase.toFixed(2) }}</span>
             </div>
         </div>
 
@@ -65,7 +67,7 @@ const discountBase = computed(() => (Number(globalDiscount.value) || 0) * props.
             </div>
             <div class="flex justify-between items-end mb-1" v-if="currency !== baseCurrency">
                 <span class="text-left text-gray-500 font-light text-base">{{ $t('summary.includeAllTaxes') }}</span>
-                <span class="text-right text-success-500 text-sm font-medium">{{ baseCurrency }} {{ grandTotalBase.toFixed(2) }}</span>
+                <span class="text-right text-success-600 text-sm font-bold">{{ baseCurrency }} {{ grandTotalBase.toFixed(2) }}</span>
             </div>
         </div>
     </div>
