@@ -270,14 +270,6 @@ const removeItem = (data: any) => {
                     <span class="text-gray-600">{{ data.name }}</span>
                 </template>
 
-                <!-- <template #col-quantity="{ data }">
-                    <div class="flex items-center gap-2">
-                        <BaseButton v-if="!disabled" :label="t('itemsList.add')" variant="outline-primary"
-                            @click="openQtyDialog(data)" />
-                        <span class="text-gray-500">({{ data.quantity }})</span>
-                    </div>
-                </template> -->
-
                 <template #col-unitId="{ data }">
                     <FormDropdown :modelValue="data.unitId" :options="UnitsLookups" optionLabel="label"
                         optionValue="value" class="w-34 p-inputtext-sm text-sm" :disabled="disabled" @update:modelValue="(v: any) => {
@@ -291,7 +283,7 @@ const removeItem = (data: any) => {
                 <template #col-warehouseId="{ data }">
                     <FormDropdown :modelValue="data.warehouseId"
                         @update:modelValue="handleWarehouseChange($event, data)" :options="WarehouseLookups"
-                        optionLabel="label" optionValue="value" class="w-34 p-inputtext-sm text-sm"
+                        optionLabel="label" optionValue="value" class="w-36 p-inputtext-sm text-sm"
                         :placeholder="t('items.warehouse')" :disabled="disabled" />
                 </template>
 
@@ -319,7 +311,7 @@ const removeItem = (data: any) => {
                         </template>
                         <template v-else-if="data.warehouseId">
                             <FormDropdown v-model="data.zoneId" :options="ZonesLookups" optionLabel="label"
-                                optionValue="value" class="w-30 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
+                                optionValue="value" class="w-38 p-inputtext-sm text-sm" :placeholder="t('items.zone')"
                                 :disabled="disabled" />
                         </template>
                     </div>

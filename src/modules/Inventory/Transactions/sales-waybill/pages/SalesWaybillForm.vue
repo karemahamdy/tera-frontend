@@ -182,7 +182,7 @@ const mapApiToForm = (apiData: any) => {
       currencyCode:     pt.currencyCode ?? "",
       exchangeRate:     pt.exchangeRate ?? 1,
       rateDate:         pt.rateDate ? new Date(pt.rateDate) : new Date(),
-      baseCurrencyCode: pt.baseCurrencyCode ?? "USD",
+      baseCurrencyCode: pt.baseCurrencyCode ?? "SAR",
     },
     warehouseDetails: {
       warehouseId:   wd.warehouseId ?? "",
@@ -227,7 +227,6 @@ const mapApiToForm = (apiData: any) => {
       paymentType:    pi.paymentType ?? "Payable",
       paymentTermId:  pi.paymentTermId ?? null,
       paymentTermName:pi.paymentTermName ?? "",
-      purchaseType:   pi.purchaseType ?? null,
       incoterm:       pi.incoterm ?? null,
       subTotal:       pi.subTotal ?? 0,
       totalTax:       pi.totalTax ?? 0,
