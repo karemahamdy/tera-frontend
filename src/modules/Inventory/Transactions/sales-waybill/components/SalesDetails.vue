@@ -71,7 +71,7 @@ function buildLocalData() {
       exchangeRate:     paymentTerms?.exchangeRate ?? 1,
       rateDate:         toDate(paymentTerms?.rateDate),
       currencyCode:     paymentTerms?.currencyCode ?? "",
-      baseCurrencyCode: paymentTerms?.baseCurrencyCode ?? "USD",
+      baseCurrencyCode: paymentTerms?.baseCurrencyCode ?? "SAR",
     },
   };
 }
@@ -112,10 +112,9 @@ watch(
   (newId) => {
     const curr = CurrenciesLookups.value.find(c => c.value === newId);
     if (curr) {
-      // استخدم nextTick لتأجيل التغيير خارج loop الحالي
       nextTick(() => {
         localData.value.paymentTerms.currencyCode = curr.label.split('(')[1]?.split(')')[0] || curr.label;
-        localData.value.paymentTerms.baseCurrencyCode = "USD";
+        localData.value.paymentTerms.baseCurrencyCode = "SAR";
         emitUpdate();
       });
     }
