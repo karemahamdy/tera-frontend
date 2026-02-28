@@ -56,12 +56,17 @@ function buildLocalData() {
 const localData = ref(buildLocalData());
 
 // Re-initialize when the parent passes data (for view/edit mode)
-watch(() => props.salesDetails, () => {
-  if (props.salesDetails) {
-    localData.value = buildLocalData();
-    emitUpdate();
-  }
-}, { deep: true });
+// rebuild local copy when parent passes new data, but don't emit back immediately
+watch(
+  () => props.salesDetails,
+  (newVal, oldVal) => {
+    if (newVal && newVal !== oldVal) {
+      localData.value = buildLocalData();
+      // no emitUpdate here: parent already supplied the source data
+    }
+  },
+  { deep: true }
+);
 
 onMounted(async () => {
   await Promise.all([

@@ -73,12 +73,13 @@ const grandTotalValue = computed(() => {
     return subTotal.value + totalTax.value - (Number(form.globalDiscount) || 0);
 });
 
-// Watch totals and update reactive form
+// Watch totals and update reactive form only — do NOT emit here.
+// Emitting from this watcher causes the parent to update formData → lineItems
+// flows back down → computeds re-run → watcher fires again → infinite loop.
 watch([subTotal, totalTax, grandTotalValue], ([newSub, newTax, newGrand]) => {
     form.subTotal = newSub;
     form.totalTax = newTax;
     form.grandTotal = newGrand;
-    emitUpdate();
 }, { immediate: true });
 
 watch(() => form.globalDiscount, () => {
