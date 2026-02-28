@@ -9,7 +9,7 @@ import { useInventoryLookups } from "@/composables/useInventoryLookups";
 const { t } = useI18n();
 const {
     getWarehouseLookups, WarehouseLookups,
-    getZonesLookups, ZonesLookups,
+    getZonesLookups,
     getUnitsLookups, UnitsLookups,
     getItemsLookups, itemsLookups,
     getWarehouseHierarchyLookups, WarehouseHierarchyLookups,
