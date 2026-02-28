@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-
 import { useInventoryLookups } from '@/composables/useInventoryLookups';
+import { OpeningBalanceService } from "../services/OpeningBalance.service";
 const { getItemsLookups, itemsLookups, getWarehouseHierarchyLookups, WarehouseHierarchyLookups } = useInventoryLookups();
 import type { SelectedItem } from "../types/OpeningBalance";
 import ItemSelectionDialog from "@/modules/Inventory/shared/components/ItemSelectionDialog.vue";
@@ -28,7 +28,8 @@ const {
     serials,
     itemName,
     isSerial,
-    fetchOpeningBalanceById
+    fetchOpeningBalanceById,
+    exportTemplate
 } = useOpeningBalance();
 
 defineProps({
@@ -62,9 +63,11 @@ const currentLocations = computed(() => {
     locationName.value = null;
     if (!warehouseId.value) return [];
     const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === warehouseId.value);
-    warehouseName.value = wh?.label || null;
+    warehouseName.value = wh?.warehouseName || null;
     return wh?.locations || [];
 });
+
+
 
 const handleSelectItem = (item: SelectedItem) => {
     itemId.value = item.id;
@@ -201,7 +204,8 @@ onMounted(async () => {
             :locations="currentLocations" :selectedLocationId="locationId" />
 
         <QuantitySerialDialog v-if="isVisibleSerial && currentItem" v-model:visible="isVisibleSerial"
-            :item="currentItem" :initialSerials="initialSerials"
+            :item="currentItem" :initialSerials="initialSerials" :exportTemplateFunc="() => exportTemplate()"
+            :parseSerialsFunc="OpeningBalanceService.parseSerials"
             @save="handleSaveSerials" />
     </div>
 </template>

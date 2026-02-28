@@ -1037,7 +1037,10 @@
     "unitCost": "تكلفة الوحدة",
     "quantity": "الكمية",
     "notes": "ملاحظات",
-    "serials": "أرقام تسلسلية"
+    "serials": "أرقام تسلسلية",
+    "OpeningBalanceCreatedSuccessfully": "تم إنشاء الرصيد الافتتاحي بنجاح",
+    "OpeningBalanceUpdatedSuccessfully": "تم تحديث الرصيد الافتتاحي بنجاح",
+    "OpeningBalanceDeletedSuccessfully": "تم حذف الرصيد الافتتاحي بنجاح"
   },
   "inventoryRequest": {
     "allTypes": "جميع الأنواع",

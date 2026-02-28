@@ -66,7 +66,7 @@ export function useItemHold() {
     loading.value = true;
     try {
       await ItemHoldService.create(payload);
-      toastService.success(t("ItemHold.ItemHoldCreatedSuccessfully"));
+      toastService.success(t("itemHold.ItemHoldCreatedSuccessfully"));
       await fetchItemHold(pageIndex.value);
       router.replace({ name: "ItemHold" });
     } catch (err: any) {
@@ -81,7 +81,7 @@ export function useItemHold() {
     loading.value = true;
     try {
       const response = await ItemHoldService.update(id, payload);
-      toastService.success(t("ItemHold.ItemHoldUpdatedSuccessfully"));
+      toastService.success(t("itemHold.ItemHoldUpdatedSuccessfully"));
       await fetchItemHold(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -96,7 +96,7 @@ export function useItemHold() {
     loading.value = true;
     try {
       await ItemHoldService.delete(id);
-      toastService.success(t("ItemHold.ItemHoldDeletedSuccessfully"));
+      toastService.success(t("itemHold.ItemHoldDeletedSuccessfully"));
       apiItemHold.value = apiItemHold.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);
@@ -110,7 +110,7 @@ export function useItemHold() {
     loading.value = true;
     try {
       await ItemHoldService.releaseItem(data);
-      toastService.success(t("ItemHold.itemReleasedSuccessfully"));
+      toastService.success(t("itemHold.itemReleasedSuccessfully"));
       if (apiItemHold.value.length === 1 && pageIndex.value > 1) {
         await fetchItemHold(pageIndex.value - 1);
       } else {
@@ -128,7 +128,7 @@ export function useItemHold() {
     loading.value = true;
     try {
       await ItemHoldService.toggleActive(id, isActive);
-      toastService.success(t("ItemHold.ItemHoldUpdatedSuccessfully"));
+      toastService.success(t("itemHold.ItemHoldUpdatedSuccessfully"));
       await fetchItemHold(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);

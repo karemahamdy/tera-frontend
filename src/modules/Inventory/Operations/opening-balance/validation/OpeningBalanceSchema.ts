@@ -9,6 +9,6 @@ export const OpeningBalanceSchema = yup.object({
   code: yup.string().required("form.fieldRequired"),
   unitCost: yup.number().required("form.fieldRequired"),
   quantity: yup.number().required("form.fieldRequired"),
-  notes: yup.string().required("form.fieldRequired"),
+  notes: yup.string().nullable(),
   serials: yup.array().nullable(),
 });
