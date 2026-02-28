@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted } from "vue"
+import { reactive, onMounted, watch, nextTick } from "vue"
 import { useI18n } from "vue-i18n"
 import { usePurchaseWaybill } from "../composables/usePurshace";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
@@ -32,6 +32,8 @@ const form = reactive({
   currencyId:          props.paymentTerms?.currencyId ?? null as string | null,
   exchangeRate:        props.paymentTerms?.exchangeRate ?? null as number | null,
   rateDate:            props.paymentTerms?.rateDate ? new Date(props.paymentTerms.rateDate) : null as Date | null,
+  currencyCode:        props.paymentTerms?.currencyCode ?? "",
+  baseCurrencyCode:    props.paymentTerms?.baseCurrencyCode ?? "SAR",
 });
 
 const errors = reactive({
@@ -62,11 +64,13 @@ function emitUpdate() {
       expectedDeliveryDate: toDateStr(form.expectedDeliveryDate),
     },
     paymentTerms: {
-      currencyId:   form.currencyId,
+      currencyId:       form.currencyId,
       exchangeRate: form.exchangeRate !== null && form.exchangeRate !== undefined
         ? Number(form.exchangeRate)
         : null,
       rateDate: toDateStr(form.rateDate),
+      currencyCode:     form.currencyCode,
+      baseCurrencyCode: form.baseCurrencyCode,
     }
   });
 }
@@ -81,6 +85,20 @@ onMounted(async () => {
     }
   }
 });
+
+watch(
+  () => form.currencyId,
+  (newId) => {
+    const curr = CurrenciesLookups.value.find(c => c.value === newId);
+    if (curr) {
+      nextTick(() => {
+        form.currencyCode = curr.label.split('(')[1]?.split(')')[0] || curr.label;
+        form.baseCurrencyCode = "SAR";
+        emitUpdate();
+      });
+    }
+  }
+);
 </script>
 
 <template>
