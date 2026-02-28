@@ -6,6 +6,7 @@ import { OpeningBalanceService } from "../services/OpeningBalance.service";
 import { useForm } from "vee-validate";
 import { OpeningBalanceSchema } from "../validation/OpeningBalanceSchema";
 import router from "@/app/router";
+import { FileService } from "@/app/services/file.service";
 
 const { handleSubmit, errors, defineField, resetForm, setValues } = useForm({
   validationSchema: OpeningBalanceSchema,
@@ -13,6 +14,7 @@ const { handleSubmit, errors, defineField, resetForm, setValues } = useForm({
 
 const [itemId] = defineField("itemId");
 const [warehouseId] = defineField("warehouseId");
+const [warehouseName] = defineField("warehouseName");
 const [locationId] = defineField("locationId");
 const [date] = defineField("date");
 const [uomId] = defineField("uomId");
@@ -24,7 +26,6 @@ const [serials] = defineField("serials");
 
 const itemName = ref<string>("");
 const isSerial = ref<boolean>(false);
-const warehouseName = ref<null | string>(null);
 const locationName = ref<null | string>(null);
 
 export function useOpeningBalance() {
@@ -184,6 +185,15 @@ export function useOpeningBalance() {
     locationName.value = null;
   };
 
+  const exportTemplate = async () => {
+    try {
+      const blob = await OpeningBalanceService.downloadImportTemplate();
+      FileService.downloadBlob(blob, "SerialImportTemplate.xlsx");
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     loading,
     apiOpeningBalance,
@@ -202,7 +212,7 @@ export function useOpeningBalance() {
     onSearch,
     onFilterChange,
     onSort,
-
+    exportTemplate,
     resetFormToInitialValues,
     handleSubmit,
     errors,

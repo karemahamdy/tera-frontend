@@ -1,12 +1,16 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, OpeningBalanceResponse  } from "../types/OpeningBalance";
+import type {
+  Pagination,
+  OpeningBalanceResponse,
+} from "../types/OpeningBalance";
 
+import type { ApiResponse } from "@/app/types/lookups"
 
 export const OpeningBalanceService = {
   async getAll(params: Pagination) {
-
     const resp = await axiosWrapper.get<OpeningBalanceResponse>(
-      `/OpeningBalances`, { params }
+      `/OpeningBalances`,
+      { params },
     );
     return resp.data;
   },
@@ -34,23 +38,34 @@ export const OpeningBalanceService = {
       `/purchase-waybill/Status/${id}`,
       null,
       {
-        params: { isActive }
-      }
+        params: { isActive },
+      },
     );
     return data.data;
   },
 
   async exportData(payload: any) {
-    const data = await axiosWrapper.get<Blob>(
-      `/purchase-waybill/export-LDCs`,
-      {
-        params: payload,
-        responseType: "blob",
-      }
-    );
+    const data = await axiosWrapper.get<Blob>(`/purchase-waybill/export-LDCs`, {
+      params: payload,
+      responseType: "blob",
+    });
 
     return data;
-    ;
-  }
+  },
 
+  async downloadImportTemplate(): Promise<Blob> {
+    const data = await axiosWrapper.get<Blob>(
+      `/OpeningBalances/serial-template`,
+      {
+        responseType: "blob",
+      },
+    );
+    return data;
+  },
+
+  parseSerials(file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return axiosWrapper.post<ApiResponse<any[]>>(`/OpeningBalances/get-serials-from-file`, formData);
+  },
 };

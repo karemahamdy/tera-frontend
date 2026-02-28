@@ -1039,7 +1039,10 @@
     "unitCost": "Unit Cost",
     "quantity": "Quantity",
     "notes": "Notes",
-    "serials": "Serials"
+    "serials": "Serials",
+    "OpeningBalanceCreatedSuccessfully": "Opening Balance Created Successfully",
+    "OpeningBalanceUpdatedSuccessfully": "Opening Balance Updated Successfully",
+    "OpeningBalanceDeletedSuccessfully": "Opening Balance Deleted Successfully"
   },
   "inventoryRequest": {
     "allTypes": "All Types",
