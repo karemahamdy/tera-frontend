@@ -24,7 +24,6 @@ const {
   otherReason,
   warehouseId,
   zoneId,
-  id,
 } = usePurchaseReturnForm();
 
 const { t } = useI18n();
