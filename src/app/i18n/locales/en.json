@@ -1039,7 +1039,10 @@
     "unitCost": "Unit Cost",
     "quantity": "Quantity",
     "notes": "Notes",
-    "serials": "Serials"
+    "serials": "Serials",
+    "OpeningBalanceCreatedSuccessfully": "Opening Balance Created Successfully",
+    "OpeningBalanceUpdatedSuccessfully": "Opening Balance Updated Successfully",
+    "OpeningBalanceDeletedSuccessfully": "Opening Balance Deleted Successfully"
   },
   "inventoryRequest": {
     "allTypes": "All Types",
@@ -1232,7 +1235,8 @@
   "RequestRules": {
     "department": "Department submits Issue Request for required materials",
     "items": "Items are validated against available stock and holds",
-    "serialLot": "Serial/Lot tracking items require number assignment"
+    "serialLot": "Serial/Lot tracking items require number assignment",
+    "ruleHeader": "Workflow:"
   },
   "itemHold": {
     "holdItem": "Hold Item",
