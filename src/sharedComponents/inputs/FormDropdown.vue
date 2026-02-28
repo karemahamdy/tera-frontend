@@ -4,6 +4,7 @@ const props = withDefaults(defineProps<{
   modelValue: any;
   options: any[];
   error?: string;
+  invalid?: boolean;
   optionValue?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -27,6 +28,7 @@ const emit = defineEmits(["update:modelValue"]);
       :optionValue="props.optionValue"
       :options="props.options"
       :modelValue="props.modelValue"
+      :invalid="!!props.invalid"
       :placeholder="props.placeholder"
       :disabled="props.disabled"
       @update:modelValue="(v: any) => emit('update:modelValue', v)"
