@@ -1200,7 +1200,8 @@
     "items": "Items",
     "selected": "selected",
     "Showing": "Showing",
-    "zoneDisabled": "Zone is disabled"
+    "zoneDisabled": "Zone is disabled",
+    "numSelected": "{count} selected"
   },
   "itemDialog": {
     "selectItem": "Select Item",

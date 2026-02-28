@@ -40,6 +40,10 @@ export const PurchaseReturnService = {
 
     return data;
     ;
-  }
+  },
 
+  async getNextNumber(): Promise<any> {
+    const data = await axiosWrapper.get<any>(`/PurchaseReturns/next-number`);
+    return data.data;
+  },
 };

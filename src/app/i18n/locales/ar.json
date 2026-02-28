@@ -1200,7 +1200,8 @@
     "items": "عنصر",
     "Showing": "عرض",
     "selected": "محدد",
-    "zoneDisabled":"اختيار المنطقة معطل"
+    "zoneDisabled":"اختيار المنطقة معطل",
+    "numSelected": "{count} محدد"
   },
   "itemDialog": {
     "selectItem": "اختيار صنف",

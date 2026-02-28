@@ -4,23 +4,23 @@ import { useI18n } from "vue-i18n";
 import type { PurchaseReturn } from "../types/PurchaseReturn";
 import { PurchaseReturnService } from "../services/PurchaseReturn.service"
 
-const loading = ref(false);
-const apiPurchaseReturn = ref<PurchaseReturn[]>([]);
-const tableData = ref<any[]>([]);
-
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
-
-const searchTerm = ref('');
-const orderBy = ref('');
-const StatusFilter = ref<string | null>(null);
-const SupplierId = ref<string | null>(null);
-const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function usePurchaseReturn() {
   const { t } = useI18n();
+  const loading = ref(false);
+  const apiPurchaseReturn = ref<PurchaseReturn[]>([]);
+  const tableData = ref<any[]>([]);
+  
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
+  
+  const searchTerm = ref('');
+  const orderBy = ref('');
+  const StatusFilter = ref<string | null>(null);
+  const SupplierId = ref<string | null>(null);
+  const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const fetchPurchaseReturn = async (page = 1) => {
     loading.value = true;

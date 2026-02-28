@@ -32,3 +32,15 @@ export interface Pagination {
   SupplierId?: string | null;
 
 }
+
+
+export interface PurchaseReturnForm {
+  documentNumber: string;
+  originalWaybillIds: string[];
+  supplierId: string;
+  returnDate: Date | string;
+  returnReason: string;
+  otherReason?: string;
+  warehouseId: string;
+  zoneId: string;
+}
