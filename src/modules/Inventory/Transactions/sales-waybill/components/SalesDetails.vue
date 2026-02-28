@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue"
+import { ref, onMounted, watch, nextTick } from "vue"
 import { useI18n } from "vue-i18n"
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import { useSalesWaybill } from "../composables/useSales";
@@ -24,6 +24,26 @@ const props = defineProps<{
 
 const emit = defineEmits(['update']);
 
+const defaultSalesDetails = {
+  documentNumber: "",
+  customerId: null,
+  customerName: "",
+  salesOrderRef: "",
+  trackingNumber: "",
+  shippingAddress: "",
+  invoiceNumber: "",
+  waybillDate: new Date(),
+  deliveryDate: new Date(),
+};
+
+const defaultPaymentTerms = {
+  currencyId: null,
+  exchangeRate: 1,
+  rateDate: new Date(),
+  currencyCode: "",
+  baseCurrencyCode: "USD",
+};
+
 function toDate(val: any): Date {
   if (!val) return new Date();
   const d = val instanceof Date ? val : new Date(val);
@@ -31,24 +51,27 @@ function toDate(val: any): Date {
 }
 
 function buildLocalData() {
+  const salesDetails = props.salesDetails || defaultSalesDetails;
+  const paymentTerms = props.paymentTerms || defaultPaymentTerms;
+  
   return {
     customerDetails: {
-      documentNumber:  props.salesDetails?.documentNumber ?? "",
-      customerId:      props.salesDetails?.customerId ?? null as string | null,
-      customerName:    props.salesDetails?.customerName ?? "",
-      salesOrderRef:   props.salesDetails?.salesOrderRef ?? "",
-      trackingNumber:  props.salesDetails?.trackingNumber ?? "",
-      shippingAddress: props.salesDetails?.shippingAddress ?? "",
-      invoiceNumber:   props.salesDetails?.invoiceNumber ?? "",
-      waybillDate:     toDate(props.salesDetails?.waybillDate),
-      deliveryDate:    toDate(props.salesDetails?.deliveryDate),
+      documentNumber:  salesDetails?.documentNumber ?? "",
+      customerId:      salesDetails?.customerId ?? null as string | null,
+      customerName:    salesDetails?.customerName ?? "",
+      salesOrderRef:   salesDetails?.salesOrderRef ?? "",
+      trackingNumber:  salesDetails?.trackingNumber ?? "",
+      shippingAddress: salesDetails?.shippingAddress ?? "",
+      invoiceNumber:   salesDetails?.invoiceNumber ?? "",
+      waybillDate:     toDate(salesDetails?.waybillDate),
+      deliveryDate:    toDate(salesDetails?.deliveryDate),
     },
     paymentTerms: {
-      currencyId:       props.paymentTerms?.currencyId ?? null as string | null,
-      exchangeRate:     props.paymentTerms?.exchangeRate ?? 1,
-      rateDate:         toDate(props.paymentTerms?.rateDate),
-      currencyCode:     props.paymentTerms?.currencyCode ?? "",
-      baseCurrencyCode: props.paymentTerms?.baseCurrencyCode ?? "USD",
+      currencyId:       paymentTerms?.currencyId ?? null as string | null,
+      exchangeRate:     paymentTerms?.exchangeRate ?? 1,
+      rateDate:         toDate(paymentTerms?.rateDate),
+      currencyCode:     paymentTerms?.currencyCode ?? "",
+      baseCurrencyCode: paymentTerms?.baseCurrencyCode ?? "USD",
     },
   };
 }
@@ -89,13 +112,26 @@ watch(
   (newId) => {
     const curr = CurrenciesLookups.value.find(c => c.value === newId);
     if (curr) {
-      localData.value.paymentTerms.currencyCode = curr.label.split('(')[1]?.split(')')[0] || curr.label;
-      localData.value.paymentTerms.baseCurrencyCode = "USD";
+      // استخدم nextTick لتأجيل التغيير خارج loop الحالي
+      nextTick(() => {
+        localData.value.paymentTerms.currencyCode = curr.label.split('(')[1]?.split(')')[0] || curr.label;
+        localData.value.paymentTerms.baseCurrencyCode = "USD";
+        emitUpdate();
+      });
     }
   }
 );
 
+// Emit update when customer selection changes
+watch(
+  () => localData.value.customerDetails.customerId,
+  () => {
+    emitUpdate();
+  }
+);
+
 function emitUpdate() {
+  console.log('SalesDetails emitting update with customerId:', localData.value.customerDetails.customerId);
   emit('update', {
     customerDetails: { ...localData.value.customerDetails },
     paymentTerms: { ...localData.value.paymentTerms }
