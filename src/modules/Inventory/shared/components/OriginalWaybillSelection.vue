@@ -19,9 +19,9 @@ const isVisible = computed({
   set: (value) => emit("update:visible", value),
 });
 
-const selectItem = (item: any) => {
+const selectItem = () => {
   isVisible.value = false;
-  emit("select", item);
+  emit("select", selectedRowsLocal.value);
 };
 
 const selectedRowsLocal = computed({
@@ -82,6 +82,20 @@ const filteredItems = computed(() => {
           hasSelection
         >
         </DynamicTable>
+      </div>
+      <div class="col-span-2 flex gap-1 mt-5">
+        <BaseButton
+          label="button.cancel"
+          variant="ghost"
+          block
+          @click="isVisible = false"
+        />
+        <BaseButton
+          label="locationPicker.confirmSelection"
+          variant="primary"
+          block
+          @click="selectItem"
+        />
       </div>
     </div>
   </Dialog>
