@@ -7,7 +7,6 @@ const { t } = useI18n();
 const props = defineProps<{
   visible: boolean;
   items: any[];
-  selectedRows: any[];
 }>();
 
 const emit = defineEmits(["update:visible", "select"]);
@@ -24,28 +23,24 @@ const selectItem = () => {
   emit("select", selectedRowsLocal.value);
 };
 
-const selectedRowsLocal = computed({
-  get: () => props.selectedRows,
-  set: (value) => emit("select", value),
-});
+const selectedRowsLocal = ref<any[]>([]);
 
 const columns = computed(() => {
   return [
     {
-      field: "WaybillId",
+      field: "documentNumber",
       header: t("purchaseWaybill.WaybillId"),
       sortable: true,
     },
-    { field: "customer", header: t("salesWaybill.customer"), sortable: true },
+    { field: "supplierName", header: t("salesWaybill.customer"), sortable: true },
     {
-      field: "date",
+      field: "waybillDate",
       header: t("salesWaybill.date"),
       sortable: true,
       type: "date",
     },
-    { field: "items", header: t("salesWaybill.items"), sortable: true },
-    { field: "Returned", header: t("purchaseReturn.returned"), sortable: true },
-    { field: "action", header: "" },
+    { field: "itemCount", header: t("salesWaybill.items"), sortable: true },
+    { field: "returnedCount", header: t("purchaseReturn.returned"), sortable: true },
   ];
 });
 
@@ -57,6 +52,14 @@ const filteredItems = computed(() => {
       item.code?.toLowerCase().includes(query) ||
       item.name?.toLowerCase().includes(query),
   );
+});
+
+const setSelectedRows = (rows: any[]) => {
+  selectedRowsLocal.value = rows;
+};
+
+defineExpose({
+  setSelectedRows,
 });
 </script>
 

@@ -12,6 +12,8 @@ const {
   ZonesLookups,
   getZonesLookups,
   getWarehouseLookups,
+  getInventoryLookupsPurchaseWaybills,
+  purchaseWaybills,
 } = useInventoryLookups();
 
 const { getReasonLookups, reasonsLookups } = useLookups();
@@ -36,12 +38,30 @@ const isProf = computed(() => {
   return isProfessional;
 });
 
+const hasOriginalWaybill = computed(() => {
+  if (supplierId.value) {
+    getInventoryLookupsPurchaseWaybills(supplierId.value);
+    return true;
+  }
+  return false;
+});
+
 const isVisible = ref<boolean>(false);
+const originalWaybillSelectionRef = ref<InstanceType<typeof OriginalWaybillSelection> | null>(null);
+
+const openOriginalWaybillSelection = () => {
+  let data = purchaseWaybills.value.filter((pb) =>
+    originalWaybillIds.value.includes(pb.id),
+  );
+  if(originalWaybillSelectionRef.value) {
+    originalWaybillSelectionRef.value.setSelectedRows(data);
+  }
+  isVisible.value = true;
+
+};
 
 const handleOriginalWaybillSelection = (item: any) => {
-  // Handle the selected original waybill item here
-  console.log("Selected Original Waybill:", item);
-  // You can update the form state with the selected item details if needed
+  originalWaybillIds.value = item.map((i: any) => i.id);
 };
 
 onMounted(() => {
@@ -82,8 +102,13 @@ onMounted(() => {
           "
         />
         <a
-          class="w-1/5 rounded-xl p-3 text-center cursor-pointer border border-primary-500 text-primary-500 bg-white hover:bg-primary-25"
-          @click="isVisible = true"
+          @click="hasOriginalWaybill && (openOriginalWaybillSelection)"
+          class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500"
+          :class="{
+            'cursor-not-allowed bg-gray-50': !hasOriginalWaybill,
+            'cursor-pointer bg-white hover:bg-primary-25': hasOriginalWaybill,
+          }"
+          :disabled="!hasOriginalWaybill"
         >
           {{ $t("LDC.select") }}
         </a>
@@ -150,8 +175,8 @@ onMounted(() => {
     </div>
     <OriginalWaybillSelection
       v-model:visible="isVisible"
-      :selectedRows="originalWaybillIds"
-      :items="[]"
+      ref="originalWaybillSelectionRef"
+      :items="purchaseWaybills"
       @select="handleOriginalWaybillSelection"
     />
   </div>
