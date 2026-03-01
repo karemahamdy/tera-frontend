@@ -1141,7 +1141,8 @@
     "net30": "30 يوم",
     "immediate": "فوري",
     "import": "استيراد",
-    "local": "محلي"
+    "local": "محلي",
+    "export":   "تصدير"
   },
   "summary": {
     "title": "الملخص",

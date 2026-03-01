@@ -1141,6 +1141,7 @@
     "payable": "Payable",
     "payViaInvoice": "Pay via invoice",
     "cash": "Cash",
+    "export": "Export",
     "immediatePayment": "Immediate Payment"
   },
   "summary": {
