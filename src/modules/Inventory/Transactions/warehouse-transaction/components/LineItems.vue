@@ -82,7 +82,6 @@ watch(
   () => props.lineItems,
   (newVal) => {
     items.value = (newVal ?? []).map(mapApiItem);
-    emitUpdate();
   },
   { immediate: false }
 );
