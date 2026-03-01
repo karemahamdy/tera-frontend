@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, watch } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
@@ -41,7 +41,7 @@ function mapApiItem(item: any) {
     conversionFactor: 1
   }];
   return {
-    // id: item.id || Date.now() + Math.random(),
+    id: item.id || Date.now() + Math.random(),
     itemId: item.itemId,
     trackingType: item.trackingType || null,
     code: item.itemCode,
@@ -61,14 +61,7 @@ function mapApiItem(item: any) {
     column: item.column ?? '',
     rack: item.rack ?? '',
     serials: (item.serialLots || []).map((s: any) => ({
-      id: s.id, 
-      mainSerial: s.mainSerial, 
-      qty: s.availableQuantity, 
-      batchNumber: s.batchNumber, 
-      expireDate: s.expireDate,
-      serialNumber2: s.serialNumber2,
-      serialNumber3: s.serialNumber3,
-      comment: s.comment
+      id: s.id, serial: s.mainSerial, qty: s.availableQuantity, batch: s.batchNumber, expire: s.expireDate
     })),
     balance: item.balance || 0,
     tracked: true,
@@ -76,15 +69,6 @@ function mapApiItem(item: any) {
 }
 
 const items = ref<any[]>((props.lineItems ?? []).map(mapApiItem));
-
-// keep internal items in sync if parent updates the prop (e.g. loading existing record)
-watch(
-  () => props.lineItems,
-  (newVal) => {
-    items.value = (newVal ?? []).map(mapApiItem);
-  },
-  { immediate: false }
-);
 const itemsError = ref("");
 
 function emitUpdate() {
@@ -297,10 +281,10 @@ const fetchItemBalance = async (item: any) => {
         <template #col-code="{ data }">
           <div class="flex items-center gap-2 rounded">
             <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
-              <VsxIcon iconName="Brodcast" :size="20" type="linear" />
+              <VsxIcon iconName="Airdrop" :size="20" type="linear" />
             </Badge>
             <Badge v-else severity="transparent" class="circle-badge">
-              <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
+              <VsxIcon iconName="Airdrop" :size="20" type="linear" class="icon-transparent" />
             </Badge>
             <div class="text-base text-gray-700">{{ data.code }}</div>
           </div>
@@ -413,7 +397,7 @@ const fetchItemBalance = async (item: any) => {
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
     <template v-if="showQtyDialog && currentItem">
-      <SalesQuantitySerialDialog v-if="direction === 'Transfare' || direction === 'Outbound'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
+      <SalesQuantitySerialDialog v-if="direction === 'Transfare'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
         :item="currentItem" :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId"
         :zoneId="currentItem.zoneId" :locationId="currentItem.locationId" :disabled="disabled"
         @save="handleSaveSerials" />
