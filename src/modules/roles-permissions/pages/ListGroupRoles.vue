@@ -72,7 +72,7 @@ const handleActionMenu = (payload: any) => {
 };
 
 const goToAddRole = () => {
-    router.push({ name: "RolesPermissions" });
+    router.push({ name: "AddGroupRoles", params: { id: groupId.value } });
 };
 
 const handleDialogCancel = () => {
