@@ -34,7 +34,7 @@ const routes = [
   {
     path: "/",
     name: "Layout",
-    redirect: "/home",
+    redirect: "home",
     component: () => import("@/app/layouts/DefaultLayout.vue"),
     meta: { requiresAuth: true, permission: null },
     children: [

@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
       responsiveLayout="scroll"
     >
       <template #paginatorstart>
-        <div class="text-gray-600 font-medium">
+        <div class="text-gray-600 font-medium" v-if="lazy">
           {{ $t("showing") }} <strong>{{ first }}–{{ last }}</strong>
           {{ $t("of") }} <strong>{{ totalRecords }}</strong>
           {{ $t("records") }}

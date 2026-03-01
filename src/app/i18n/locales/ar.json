@@ -873,7 +873,9 @@
     "LineItem": "أصناف المرتجع",
     "serial": "السيريال",
     "unitPrice": "سعر الوحدة",
-    "tax": "الضريبة %"
+    "tax": "الضريبة %",
+    "returned": "المرتجعات",
+    "selectOriginalWaybill": "اختر إذن الاستلام الأصلي لربط المرتجع"
   },
   "purchaseRules": {
     "ruleHeader": "خطوات عملية مرتجع المشتريات:",
@@ -1139,7 +1141,8 @@
     "net30": "30 يوم",
     "immediate": "فوري",
     "import": "استيراد",
-    "local": "محلي"
+    "local": "محلي",
+    "export":   "تصدير"
   },
   "summary": {
     "title": "الملخص",
