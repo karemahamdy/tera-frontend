@@ -49,9 +49,7 @@ const hasOriginalWaybill = computed(() => {
 const isVisible = ref<boolean>(false);
 
 const handleOriginalWaybillSelection = (item: any) => {
-  // Handle the selected original waybill item here
-  console.log("Selected Original Waybill:", item);
-  // You can update the form state with the selected item details if needed
+  originalWaybillIds.value = item.map((i: any) => i.id);
 };
 
 onMounted(() => {
