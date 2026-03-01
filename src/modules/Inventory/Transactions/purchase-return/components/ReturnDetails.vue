@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { usePurchaseReturnForm } from "../composables/usePurchasReturnForm";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useLookups } from "@/composables/useLookups";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
+import OriginalWaybillSelection from "@/modules/Inventory/shared/components/OriginalWaybillSelection.vue";
 const {
   supplierLookups,
   getSupplierLookups,
@@ -34,6 +35,14 @@ const isProf = computed(() => {
   if (isProfessional) getZonesLookups(warehouseId.value);
   return isProfessional;
 });
+
+const isVisible = ref<boolean>(false);
+
+const handleOriginalWaybillSelection = (item: any) => {
+  // Handle the selected original waybill item here
+  console.log("Selected Original Waybill:", item);
+  // You can update the form state with the selected item details if needed
+};
 
 onMounted(() => {
   Promise.all([
@@ -66,10 +75,15 @@ onMounted(() => {
           class="w-9/10"
           disabled
           :error="errors.originalWaybillIds"
-          :placeholder="$t('itemsList.numSelected', { count: originalWaybillIds?.length ?? 0 })"
+          :placeholder="
+            $t('itemsList.numSelected', {
+              count: originalWaybillIds?.length ?? 0,
+            })
+          "
         />
         <a
           class="w-1/5 rounded-xl p-3 text-center cursor-pointer border border-primary-500 text-primary-500 bg-white hover:bg-primary-25"
+          @click="isVisible = true"
         >
           {{ $t("LDC.select") }}
         </a>
@@ -134,5 +148,11 @@ onMounted(() => {
         </small>
       </div>
     </div>
+    <OriginalWaybillSelection
+      v-model:visible="isVisible"
+      :selectedRows="originalWaybillIds"
+      :items="[]"
+      @select="handleOriginalWaybillSelection"
+    />
   </div>
 </template>
