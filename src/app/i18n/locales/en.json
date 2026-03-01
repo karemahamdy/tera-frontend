@@ -880,7 +880,9 @@
     "LineItem": "Line Items",
     "serial": "Serial",
     "unitPrice": "Unit Price",
-    "tax": "Tax %"
+    "tax": "Tax %",
+    "returned": "Returned",
+    "selectOriginalWaybill": "Select Original Waybill"
   },
   "rules": {
     "ruleHeader": "Sales Waybill Business Rules:",
@@ -998,7 +1000,7 @@
     "counted": "Counted",
     "variance": "Variance",
     "createNewAdjustment": "Create New Adjustment",
-    "selectItemToAdjustment": "Select ItemToAdjustment",
+    "selectItemToAdjustment": "Select Item To Adjustment",
     "adjustmentNumber": "Adjustment Number",
     "createAdjustment": "Create Adjustment",
     "newAdjustment": "New Adjustment",
