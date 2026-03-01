@@ -47,6 +47,18 @@ const hasOriginalWaybill = computed(() => {
 });
 
 const isVisible = ref<boolean>(false);
+const originalWaybillSelectionRef = ref<InstanceType<typeof OriginalWaybillSelection> | null>(null);
+
+const openOriginalWaybillSelection = () => {
+  let data = purchaseWaybills.value.filter((pb) =>
+    originalWaybillIds.value.includes(pb.id),
+  );
+  if(originalWaybillSelectionRef.value) {
+    originalWaybillSelectionRef.value.setSelectedRows(data);
+  }
+  isVisible.value = true;
+
+};
 
 const handleOriginalWaybillSelection = (item: any) => {
   originalWaybillIds.value = item.map((i: any) => i.id);
@@ -90,7 +102,7 @@ onMounted(() => {
           "
         />
         <a
-          @click="hasOriginalWaybill && (isVisible = true)"
+          @click="hasOriginalWaybill && (openOriginalWaybillSelection)"
           class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500"
           :class="{
             'cursor-not-allowed bg-gray-50': !hasOriginalWaybill,
@@ -163,7 +175,7 @@ onMounted(() => {
     </div>
     <OriginalWaybillSelection
       v-model:visible="isVisible"
-      :selectedRows="originalWaybillIds"
+      ref="originalWaybillSelectionRef"
       :items="purchaseWaybills"
       @select="handleOriginalWaybillSelection"
     />

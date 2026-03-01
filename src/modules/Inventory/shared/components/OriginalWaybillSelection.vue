@@ -7,7 +7,6 @@ const { t } = useI18n();
 const props = defineProps<{
   visible: boolean;
   items: any[];
-  selectedRows: any[];
 }>();
 
 const emit = defineEmits(["update:visible", "select"]);
@@ -53,6 +52,14 @@ const filteredItems = computed(() => {
       item.code?.toLowerCase().includes(query) ||
       item.name?.toLowerCase().includes(query),
   );
+});
+
+const setSelectedRows = (rows: any[]) => {
+  selectedRowsLocal.value = rows;
+};
+
+defineExpose({
+  setSelectedRows,
 });
 </script>
 
