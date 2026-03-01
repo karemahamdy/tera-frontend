@@ -56,7 +56,7 @@ const columns = computed(() => {
         { field: 'customerName', header: t('salesWaybill.customer'), sortable: true },
         { field: 'waybillDate', header: t('salesWaybill.date'), type: 'date', sortable: true },
         { field: 'itemCount', header: t('salesWaybill.items'), type: 'slot', sortable: true },
-        { field: 'grandTotal', header: t('salesWaybill.total'), sortable: true },
+        { field: 'grandTotalBase', header: t('salesWaybill.total'), sortable: true },
         { field: 'trackingNumber', header: t('salesWaybill.tracking'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
