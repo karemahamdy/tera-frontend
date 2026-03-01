@@ -49,7 +49,7 @@ const columns = computed(() => {
         { field: 'supplierName', header: t('purchaseWaybill.supplier'), type: 'slot', sortable: true },
         { field: 'waybillDate', header: t('purchaseWaybill.date'), type: 'date', sortable: true },
          { field: 'purchaseOrder', header: t('purchaseWaybill.purchaseOrder'), sortable: true },
-        { field: 'grandTotal', header: t('purchaseWaybill.totalValues'), type: 'slot', sortable: true },
+        { field: 'grandTotalBase', header: t('purchaseWaybill.totalValues'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
