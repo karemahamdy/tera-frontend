@@ -4,6 +4,11 @@ import { ref, onMounted, watch, nextTick, computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import { useSalesWaybill } from "../composables/useSales";
+import { useRoute } from "vue-router";
+
+
+const route = useRoute();
+const id = route.params.id ? String(route.params.id) : null;
 
 const { t } = useI18n()
 
@@ -98,11 +103,13 @@ onMounted(async () => {
   ]);
 
   // For create mode: fetch next document number
-  if (!props.disabled && !localData.value.customerDetails.documentNumber) {
-    const result = await fetchNextNumber();
-    if (result) {
-      localData.value.customerDetails.documentNumber = typeof result === 'string' ? result : (result.documentNumber ?? "");
-      emitUpdate();
+  if(!id){
+    if (!props.disabled && !localData.value.customerDetails.documentNumber) {
+      const result = await fetchNextNumber();
+      if (result) {
+        localData.value.customerDetails.documentNumber = typeof result === 'string' ? result : (result.documentNumber ?? "");
+        emitUpdate();
+      }
     }
   }
 });

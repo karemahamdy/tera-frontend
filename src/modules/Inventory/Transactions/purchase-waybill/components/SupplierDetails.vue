@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n"
 import { usePurchaseWaybill } from "../composables/usePurshace";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import type { SupplierDetailsData, PaymentTermsData } from "../types/PurchaseWaybill";
+import { useRoute } from "vue-router";
 
 const props = withDefaults(defineProps<{
   supplierDetails?: SupplierDetailsData | null;
@@ -14,6 +15,9 @@ const props = withDefaults(defineProps<{
   paymentTerms: null,
   disabled: false,
 });
+
+const route = useRoute();
+const id = route.params.id ? String(route.params.id) : null;
 
 const { t } = useI18n()
 const emit = defineEmits(["update"])
@@ -75,11 +79,13 @@ function emitUpdate() {
 
 onMounted(async () => {
   await Promise.all([getCurrenciesLookups(), getSupplierLookups()]);
-  if (!props.supplierDetails) {
-    const result = await fetchNextNumber();
-    if (result?.documentNumber) {
-      form.waybillNumber = result.documentNumber;
-      emitUpdate();
+  if(!id){
+    if (!props.supplierDetails) {
+      const result = await fetchNextNumber();
+      if (result?.documentNumber) {
+        form.waybillNumber = result.documentNumber;
+        emitUpdate();
+      }
     }
   }
 });
