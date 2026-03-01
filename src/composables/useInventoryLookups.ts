@@ -21,6 +21,8 @@ export function useInventoryLookups() {
 
   const ItemsSerialsLookups = ref<any[]>([]);
 
+  const purchaseWaybills = ref<any[]>([]);
+
   const getItemSerialsLookups = async (params: {
     itemId: string;
     warehouseId: string;
@@ -172,6 +174,16 @@ export function useInventoryLookups() {
     }
   };
 
+
+  const getInventoryLookupsPurchaseWaybills = async (supplierId: string) => {
+    try {
+      const res = await InventoryLookupsService.getInventoryLookupsPurchaseWaybills(supplierId);
+      purchaseWaybills.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     getSupplierLookups,
     getCurrenciesLookups,
@@ -187,6 +199,8 @@ export function useInventoryLookups() {
     getItemBalance,
     getItemSerialsLookups,
     getCustomerLookups,
+    getInventoryLookupsPurchaseWaybills,
+    purchaseWaybills,
     customerLookups,
     ItemsSerialsLookups,
     ZonesLookups,
