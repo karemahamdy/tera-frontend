@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from "vue"
+import { ref, onMounted, watch, nextTick, computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import { useSalesWaybill } from "../composables/useSales";
@@ -107,6 +107,14 @@ onMounted(async () => {
   }
 });
 
+// true when the selected currency is USD
+const isUsdCurrency = computed(() => {
+  const curr = CurrenciesLookups.value.find(c => c.value === localData.value.paymentTerms.currencyId);
+  if (!curr) return false;
+  const code = curr.label.split('(')[1]?.split(')')[0] || curr.label;
+  return code.toUpperCase() === 'USD';
+});
+
 watch(
   () => localData.value.paymentTerms.currencyId,
   (newId) => {
@@ -115,6 +123,10 @@ watch(
       nextTick(() => {
         localData.value.paymentTerms.currencyCode = curr.label.split('(')[1]?.split(')')[0] || curr.label;
         localData.value.paymentTerms.baseCurrencyCode = "SAR";
+        // If USD, fix exchange rate to 1
+        if (isUsdCurrency.value) {
+          localData.value.paymentTerms.exchangeRate = 1;
+        }
         emitUpdate();
       });
     }
@@ -124,6 +136,14 @@ watch(
 // Emit update when customer selection changes
 watch(
   () => localData.value.customerDetails.customerId,
+  () => {
+    emitUpdate();
+  }
+);
+
+// Emit when exchange rate changes so parent Payment component reacts
+watch(
+  () => localData.value.paymentTerms.exchangeRate,
   () => {
     emitUpdate();
   }
@@ -271,7 +291,7 @@ function emitUpdate() {
     
         :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')" 
         type="number"
-        :disabled="disabled" 
+        :disabled="disabled || isUsdCurrency" 
       />
     </div>
   </div>

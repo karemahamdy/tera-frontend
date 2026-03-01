@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted } from "vue"
+import {  reactive, computed, watch, onMounted } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const { t } = useI18n()
-const { getPaymentTermsLookups, PaymentTerms } = useInventoryLookups();
+const { PaymentTerms, IncotermsLookups, getIncotermsLookups, getPaymentTermsLookups } = useInventoryLookups();
+
 
 const props = defineProps<{
     lineItems?: any[];
@@ -34,7 +35,7 @@ const form = reactive({
     note: props.notes?.note ?? ""
 });
 
-const incotermsOptions = ref([{ label: 'EXW', value: 'EXW' }, { label: 'FOB', value: 'FOB' }]);
+
 
 // Re-initialize form when parent props arrive (view/edit mode)
 watch(() => props.paymentInfo, (pi) => {
@@ -136,9 +137,8 @@ const salesTypeOptions = [
 ];
 
 onMounted(async () => {
-    await getPaymentTermsLookups();
+  await Promise.all([getIncotermsLookups(), getPaymentTermsLookups()]);
 });
-
 </script>
 
 <template>
@@ -204,7 +204,7 @@ onMounted(async () => {
                         <FormDropdown 
                             :label="t('payment.incoterms')" 
                             v-model="form.incoterm" 
-                            :options="incotermsOptions"
+                            :options="IncotermsLookups"
                             optionLabel="label"
                             optionValue="value"
                             :placeholder="t('payment.selectIncoterms')" 
