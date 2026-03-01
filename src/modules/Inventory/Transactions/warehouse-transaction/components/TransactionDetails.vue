@@ -4,12 +4,16 @@ import { useI18n } from "vue-i18n"
 import { useWarehouseTransaction } from "../composables/useWarehouseTransaction";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import StorageLocationPicker from "@/modules/Inventory/shared/components/StorageLocationPicker.vue";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n()
 const props = defineProps<{
   modelValue: any;
   disabled?: boolean;
 }>()
+const route = useRoute();
+const id = route.params.id ? String(route.params.id) : null;
+
 const emit = defineEmits(['update:modelValue'])
 const { fetchNextNumber } = useWarehouseTransaction();
 const { 
@@ -116,13 +120,14 @@ onMounted(async () => {
     getWarehouseLookups(),
     getWarehouseHierarchyLookups()
   ]);
-  
-  if (!modelValue.value.documentNumber) {
-    const nextNumber = await fetchNextNumber()
-    if (nextNumber && typeof nextNumber === 'string') {
-      modelValue.value.documentNumber = nextNumber;
-    } else if (nextNumber && nextNumber.documentNumber) {
-      modelValue.value.documentNumber = nextNumber.documentNumber;
+  if(!id){
+    if (!modelValue.value.documentNumber) {
+      const nextNumber = await fetchNextNumber()
+      if (nextNumber && typeof nextNumber === 'string') {
+        modelValue.value.documentNumber = nextNumber;
+      } else if (nextNumber && nextNumber.documentNumber) {
+        modelValue.value.documentNumber = nextNumber.documentNumber;
+      }
     }
   }
 })
