@@ -102,10 +102,10 @@ const onSubmit = handleSubmit(async (values) => {
       <template #content>
         <form @submit.prevent="onSubmit" class="space-y-6 px-20">
           <div class="flex gap-8">
-            <FormInput class="w-1/2" :label="$t('branch.branchName')" v-model="nameAr" :error="errors.nameAr"
-              placeholder="e.g., Head Office" :invalid="!!errors.nameAr" />
-            <FormInput class="w-1/2" :label="$t('branch.branchNameAr')" v-model="nameEn" :error="errors.nameEn"
-              placeholder=" المكتب الرئيسي" :invalid="!!errors.nameEn" />
+            <FormInput class="w-1/2" :label="$t('branch.branchName')" v-model="nameEn" :error="errors.nameEn"
+              placeholder="e.g., Head Office" :invalid="!!errors.nameEn" />
+            <FormInput class="w-1/2" :label="$t('branch.branchNameAr')" v-model="nameAr" :error="errors.nameAr"
+              placeholder=" المكتب الرئيسي" :invalid="!!errors.nameAr" />
           </div>
           <div class="flex gap-8">
             <div class="w-1/2">
