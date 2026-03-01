@@ -366,7 +366,7 @@ const removeItem = (data: any) => {
                 {{ t('itemsList.subtotal') }} ({{ items.length }} {{ t('itemsList.items') }})
             </span>
             <span class="text-xl font-bold text-primary-600">
-                ${{ subtotal.toFixed(2) }}
+                {{ subtotal.toFixed(2) }}
             </span>
         </div>
 
@@ -386,17 +386,14 @@ const removeItem = (data: any) => {
     border-color: #f3f4f6;
     background-color: #f9fafb;
 }
-
 :deep(.p-inputtext) {
     border-color: #e5e7eb;
     background-color: #f9fafb;
 }
-
 :deep(.p-inputtext:focus) {
     border-color: #2563eb;
     box-shadow: 0 0 0 1px #2563eb;
 }
-
 .circle-badge-sm {
     width: 30px;
     height: 30px;
@@ -407,11 +404,9 @@ const removeItem = (data: any) => {
     justify-content: center;
     flex-wrap: nowrap;
 }
-
 .circle-badge {
     background-color: transparent;
 }
-
 .icon-transparent {
     color: transparent;
 }

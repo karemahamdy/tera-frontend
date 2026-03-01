@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted, watch, nextTick } from "vue"
+import { reactive, onMounted, watch, nextTick, computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { usePurchaseWaybill } from "../composables/usePurshace";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
@@ -30,8 +30,8 @@ const form = reactive({
   waybillDate:         props.supplierDetails?.waybillDate ? new Date(props.supplierDetails.waybillDate) : null as Date | null,
   expectedDeliveryDate:props.supplierDetails?.expectedDeliveryDate ? new Date(props.supplierDetails.expectedDeliveryDate) : null as Date | null,
   currencyId:          props.paymentTerms?.currencyId ?? null as string | null,
-  exchangeRate:        props.paymentTerms?.exchangeRate ?? null as number | null,
-  rateDate:            props.paymentTerms?.rateDate ? new Date(props.paymentTerms.rateDate) : null as Date | null,
+  exchangeRate:        props.paymentTerms?.exchangeRate ?? 1,
+  rateDate:            props.paymentTerms?.rateDate ? new Date(props.paymentTerms.rateDate) : new Date(),
   currencyCode:        props.paymentTerms?.currencyCode ?? "",
   baseCurrencyCode:    props.paymentTerms?.baseCurrencyCode ?? "SAR",
 });
@@ -65,10 +65,8 @@ function emitUpdate() {
     },
     paymentTerms: {
       currencyId:       form.currencyId,
-      exchangeRate: form.exchangeRate !== null && form.exchangeRate !== undefined
-        ? Number(form.exchangeRate)
-        : null,
-      rateDate: toDateStr(form.rateDate),
+      exchangeRate:     form.exchangeRate !== null && form.exchangeRate !== undefined ? Number(form.exchangeRate) : null,
+      rateDate:         toDateStr(form.rateDate),
       currencyCode:     form.currencyCode,
       baseCurrencyCode: form.baseCurrencyCode,
     }
@@ -86,6 +84,14 @@ onMounted(async () => {
   }
 });
 
+// true when the selected currency is USD
+const isUsdCurrency = computed(() => {
+  const curr = CurrenciesLookups.value.find(c => c.value === form.currencyId);
+  if (!curr) return false;
+  const code = curr.label.split('(')[1]?.split(')')[0] || curr.label;
+  return code.toUpperCase() === 'USD';
+});
+
 watch(
   () => form.currencyId,
   (newId) => {
@@ -94,9 +100,21 @@ watch(
       nextTick(() => {
         form.currencyCode = curr.label.split('(')[1]?.split(')')[0] || curr.label;
         form.baseCurrencyCode = "SAR";
+        // If USD, fix exchange rate to 1
+        if (isUsdCurrency.value) {
+          form.exchangeRate = 1;
+        }
         emitUpdate();
       });
     }
+  }
+);
+
+// Emit when exchange rate changes to update Payment component
+watch(
+  () => form.exchangeRate,
+  () => {
+    emitUpdate();
   }
 );
 </script>
@@ -166,7 +184,7 @@ watch(
       </div>
       <FormInput :label="t('purchaseWaybill.ExchangeValue')" v-model="form.exchangeRate" type="number"
         :error="errors.exchangeRate" :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')"
-        :disabled="disabled" @blur="emitUpdate" />
+        :disabled="disabled || isUsdCurrency" @blur="emitUpdate" />
     </div>
   </div>
 </template>

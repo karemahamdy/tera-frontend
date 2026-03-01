@@ -55,6 +55,14 @@ const grandTotal = computed(() => {
   return subTotal.value + totalTax.value - (Number(form.globalDiscount) || 0);
 });
 
+// exchange rate from parent terms (default 1)
+const exchangeRate = computed(() => props.paymentTerms?.exchangeRate || 1);
+
+// base-currency equivalents
+const subTotalBase = computed(() => Number((subTotal.value * exchangeRate.value).toFixed(2)));
+const discountAmountBase = computed(() => Number(((Number(form.globalDiscount) || 0) * exchangeRate.value).toFixed(2)));
+const grandTotalBase = computed(() => Number((grandTotal.value * exchangeRate.value).toFixed(2)));
+
 watch([subTotal, totalTax, grandTotal], ([newSub, newTax, newGrand]) => {
   form.subTotal = newSub;
   form.totalTax = newTax;
@@ -64,6 +72,11 @@ watch([subTotal, totalTax, grandTotal], ([newSub, newTax, newGrand]) => {
 
 watch(() => form.globalDiscount, () => {
   form.grandTotal = grandTotal.value;
+  emitUpdate();
+});
+
+// when exchange rate changes re-emit so parent can react
+watch(exchangeRate, () => {
   emitUpdate();
 });
 
@@ -81,6 +94,16 @@ function emitUpdate() {
       totalTax:        form.totalTax,
       globalDiscount:  form.globalDiscount,
       grandTotal:      form.grandTotal,
+      // base amounts depend on exchange rate / total base
+      subTotalBase: subTotalBase.value,
+      discountAmountBase: discountAmountBase.value,
+      grandTotalBase: grandTotalBase.value,
+    },
+    paymentTerms: {
+      exchangeRate: props.paymentTerms?.exchangeRate,
+      currencyId: props.paymentTerms?.currencyId,
+      currencyCode: props.paymentTerms?.currencyCode,
+      baseCurrencyCode: props.paymentTerms?.baseCurrencyCode,
     },
     notes: {
       comment1: form.comment1,
