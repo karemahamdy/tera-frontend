@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {  reactive, computed, watch, onMounted } from "vue"
+import {  reactive, computed, watch, onMounted, watchEffect } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
@@ -77,6 +77,14 @@ const grandTotalValue = computed(() => {
 // exchange rate from parent terms (default 1)
 const exchangeRate = computed(() => props.paymentTerms?.exchangeRate || 1);
 
+// disable & clear incoterm when purchase type is Local
+const isLocal = computed(() => form.purchaseType === 'Local');
+watchEffect(() => {
+  if (isLocal.value) {
+    form.incoterm = null;
+  }
+});
+
 // base-currency equivalents
 const subTotalBase = computed(() => Number((subTotal.value * exchangeRate.value).toFixed(2)));
 const discountAmountBase = computed(() => Number(((Number(form.globalDiscount) || 0) * exchangeRate.value).toFixed(2)));
@@ -132,7 +140,7 @@ function emitUpdate() {
 }
 
 const salesTypeOptions = [
-    { label: t("payment.import"), value: "Import" },
+    { label: t("payment.export"), value: "Export" },
     { label: t("payment.local"), value: "Local" },
 ];
 
@@ -208,7 +216,7 @@ onMounted(async () => {
                             optionLabel="label"
                             optionValue="value"
                             :placeholder="t('payment.selectIncoterms')" 
-                            :disabled="disabled" 
+                            :disabled="disabled || isLocal" 
                             @update:modelValue="emitUpdate"
                         />
                     </div>

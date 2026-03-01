@@ -22,9 +22,8 @@ const { getItemsLookups, itemsLookups, getUnitsLookups, getWarehouseHierarchyLoo
 
 const unitOptionsMap = ref<Record<number | string, any[]>>({});
 
-function calcTotal(qty: number, price: number, tax: number) {
-  const sub = (qty || 0) * (price || 0);
-  return sub + (sub * (tax || 0)) / 100;
+function calcTotal(qty: number, price: number, _tax?: number) {
+  return (qty || 0) * (price || 0);
 }
 
 function mapApiItem(item: LineItem) {

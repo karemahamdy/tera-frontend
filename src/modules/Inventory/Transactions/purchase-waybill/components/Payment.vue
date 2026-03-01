@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted, computed, watch } from "vue"
+import { reactive, onMounted, computed, watch, watchEffect } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
 import type { PaymentInfoData, NotesData, PaymentTermsData } from '../types/PurchaseWaybill';
@@ -57,6 +57,14 @@ const grandTotal = computed(() => {
 
 // exchange rate from parent terms (default 1)
 const exchangeRate = computed(() => props.paymentTerms?.exchangeRate || 1);
+
+// disable & clear incoterm when purchase type is Local
+const isLocal = computed(() => form.purchaseType === 'Local');
+watchEffect(() => {
+  if (isLocal.value) {
+    form.incoterm = null;
+  }
+});
 
 // base-currency equivalents
 const subTotalBase = computed(() => Number((subTotal.value * exchangeRate.value).toFixed(2)));
@@ -185,6 +193,7 @@ onMounted(async () => {
           <div class="md:col-span-2">
             <FormDropdown v-if="!disabled" :label="t('payment.incoterms')" :modelValue="form.incoterm"
               :options="IncotermsLookups" :placeholder="t('payment.selectIncoterms')"
+              :disabled="isLocal"
               @update:modelValue="(v: string) => { form.incoterm = v; emitUpdate(); }" />
             <FormInput v-else :label="t('payment.incoterms')"
               :modelValue="props.paymentInfo?.incoterm ?? '—'" disabled />

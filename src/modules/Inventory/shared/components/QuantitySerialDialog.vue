@@ -23,9 +23,9 @@ const isVisible = computed({
   set: (value) => emit("update:visible", value),
 });
 
-const serialInput = ref("");
-const qtyInput = ref<string>("");
-const batchInput = ref("");
+const serialInput = ref<number>(1);
+const qtyInput = ref<number>(1);
+const batchInput = ref<number>(1);
 const expireDateInput = ref();
 const commentInput = ref("");
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -59,9 +59,9 @@ const addSerial = () => {
     comment: commentInput.value,
   });
 
-  serialInput.value = "";
-  qtyInput.value = "";
-  batchInput.value = "";
+  serialInput.value = 1;
+  qtyInput.value = 1;
+  batchInput.value = 1;
   expireDateInput.value = undefined;
   commentInput.value = "";
 };
@@ -98,10 +98,10 @@ const handleFileUpload = async (event: Event) => {
       }));
       serialList.value = [...serialList.value, ...newSerials];
       toastService.success(
-        t("serial.importSuccess") || "Serials imported successfully",
+        t("serial.importSuccess")
       );
     } else {
-      toastService.error(response.message || "Failed to parse serials");
+      toastService.error(response.message);
     }
   } catch (error) {
     toastService.error(error as string);
@@ -191,7 +191,7 @@ watch(
             <label class="text-xs text-gray-600 font-medium">
               {{ t("serial.serialNumber") }}
             </label>
-            <InputText
+            <InputNumber
               v-model="serialInput"
               :placeholder="t('serial.selectSerial')"
               class="w-full"
@@ -203,7 +203,7 @@ watch(
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.batch") }}
               </label>
-              <InputText
+              <InputNumber
                 v-model="batchInput"
                 :placeholder="t('serial.batch')"
                 class="w-full"
@@ -214,8 +214,8 @@ watch(
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.quantity") }}
               </label>
-              <InputText
-                v-model.number="qtyInput"
+              <InputNumber
+                v-model="qtyInput"
                 :placeholder="t('serial.enterQuantity')"
                 class="w-full"
               />
@@ -239,14 +239,14 @@ watch(
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.serialNumber2") }}
               </label>
-              <InputText :placeholder="t('serial.enterSN2')" class="w-full" />
+              <InputNumber :placeholder="t('serial.enterSN2')" class="w-full" />
             </div>
 
             <div class="flex flex-col gap-1 w-1/2">
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.serialNumber3") }}
               </label>
-              <InputText :placeholder="t('serial.enterSN3')" class="w-full" />
+              <InputNumber :placeholder="t('serial.enterSN3')" class="w-full" />
             </div>
           </div>
 
