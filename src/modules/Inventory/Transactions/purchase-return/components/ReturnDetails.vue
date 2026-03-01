@@ -50,14 +50,14 @@ const isVisible = ref<boolean>(false);
 const originalWaybillSelectionRef = ref<InstanceType<typeof OriginalWaybillSelection> | null>(null);
 
 const openOriginalWaybillSelection = () => {
-  let data = purchaseWaybills.value.filter((pb) =>
-    originalWaybillIds.value.includes(pb.id),
+  if(!hasOriginalWaybill.value) return;
+  let data = purchaseWaybills.value?.filter((pb) =>
+    originalWaybillIds.value?.includes(pb.id),
   );
   if(originalWaybillSelectionRef.value) {
     originalWaybillSelectionRef.value.setSelectedRows(data);
   }
   isVisible.value = true;
-
 };
 
 const handleOriginalWaybillSelection = (item: any) => {
@@ -102,7 +102,7 @@ onMounted(() => {
           "
         />
         <a
-          @click="hasOriginalWaybill && (openOriginalWaybillSelection)"
+          @click="openOriginalWaybillSelection"
           class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500"
           :class="{
             'cursor-not-allowed bg-gray-50': !hasOriginalWaybill,
