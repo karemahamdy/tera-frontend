@@ -47,7 +47,8 @@ const subTotal = computed(() => {
 const totalTax = computed(() => {
   return (props.lineItems ?? []).reduce((sum, item) => {
     const itemSub = Number(item.quantity) * Number(item.unitPrice) || 0;
-    return sum + (itemSub * (Number(item.tax) || 0)) / 100;
+    const taxRate = Number(item.tax ?? item.unitTaxPercent) || 0;
+    return sum + (itemSub * taxRate) / 100;
   }, 0);
 });
 

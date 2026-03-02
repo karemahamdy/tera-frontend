@@ -12,16 +12,15 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const {apiPurchaseWaybill, fetchPurchaseWaybill, loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deletePurchaseWaybill, onFilterChange } = usePurchaseWaybill();
+const { apiPurchaseWaybill, fetchPurchaseWaybill, loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deletePurchaseWaybill, onFilterChange } = usePurchaseWaybill();
 
 const customItems = [
-   
-     {
-      slot: true,
-      label: t("button.view"),
-      icon: "Eye",
-      color: "#3F5FAC",
-      action: 'view',
+    {
+        slot: true,
+        label: t("button.view"),
+        icon: "Eye",
+        color: "#3F5FAC",
+        action: 'view',
     },
 ];
 onMounted(() => {
@@ -34,36 +33,35 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-                  { label: t("usersManagement.allStatus"), value: null },
+                { label: t("usersManagement.allStatus"), value: null },
                 { label: t("button.Pending"), value: 1 },
-                { label: t("button.Posted"), value: 2},
+                { label: t("button.Posted"), value: 2 },
             ],
         }
     ]
 });
 
 const columns = computed(() => {
-    const Columns = [ 
+    const Columns = [
         { field: 'documentNumber', header: t('purchaseWaybill.WaybillId'), sortable: true },
         { field: 'invoiceId', header: t('purchaseWaybill.invioceId'), sortable: true },
         { field: 'supplierName', header: t('purchaseWaybill.supplier'), type: 'slot', sortable: true },
         { field: 'waybillDate', header: t('purchaseWaybill.date'), type: 'date', sortable: true },
-         { field: 'purchaseOrder', header: t('purchaseWaybill.purchaseOrder'), sortable: true },
+        { field: 'purchaseOrder', header: t('purchaseWaybill.purchaseOrder'), sortable: true },
         { field: 'grandTotalBase', header: t('purchaseWaybill.totalValues'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
-
     return Columns;
 });
 
 const firstRecord = computed(() => {
-     if (!totalCount.value || totalCount.value === 0) return 0;
+    if (!totalCount.value || totalCount.value === 0) return 0;
     return ((pageIndex.value - 1) * pageSize.value) + 1;
 });
 
 const lastRecord = computed(() => {
-     if (!totalCount.value || totalCount.value === 0) return 0;
+    if (!totalCount.value || totalCount.value === 0) return 0;
     const last = pageIndex.value * pageSize.value;
     return Math.min(last, totalCount.value || last);
 });
@@ -104,45 +102,46 @@ const handleDeleteConfirm = async () => {
 };
 
 const addPurchaseWaybill = () => {
-    router.push({name: 'PurchaseWaybillCreate' });
+    router.push({ name: 'PurchaseWaybillCreate' });
 };
 const getStatusBadge = (status: any) => {
-  return status === "Posted" ? "status-active" : "status-inactive";
+    return status === "Posted" ? "status-active" : "status-inactive";
 }
 const getStatusText = (status: any) => {
-  return status === "Posted" ? "status-text-active" : "status-text-inactive";
+    return status === "Posted" ? "status-text-active" : "status-text-inactive";
 }
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="purchaseWaybill.purchaseWaybill" />
+        <ScreenHeader title="inventory" subtitle="operation.transactions"
+            actionName="purchaseWaybill.purchaseWaybill" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="purchaseWaybill.purchaseWaybill" subtitle="purchaseWaybill.subtitle" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="purchaseWaybill.addNew" :showFilter="true"
-               :filters="filtersOperation" @filter-change="onFilterChange"
-                    searchPlaceholder="purchaseWaybill.searchPlaceholder" @search="onSearch" :onMainBtnClick="addPurchaseWaybill" 
-                    />
+                <PageHeader title="purchaseWaybill.purchaseWaybill" subtitle="purchaseWaybill.subtitle"
+                    :showExport="false" :showImport="false" :mainBtn="true" mainBtnText="purchaseWaybill.addNew"
+                    :showFilter="true" :filters="filtersOperation" @filter-change="onFilterChange"
+                    searchPlaceholder="purchaseWaybill.searchPlaceholder" @search="onSearch"
+                    :onMainBtnClick="addPurchaseWaybill" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="apiPurchaseWaybill" :loading="loading" :customItems="customItems"
-                :canEdit="(row: any) => row.status !== 'Posted'"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
-                    <template  v-slot:["col-status"]="{ data }">
-            <div class="flex  align-items-center gap-2">
-                        <Badge :class="getStatusBadge(data.status)"
-                        style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
-                        <span :class="getStatusText(data.status)">
-                            {{ data.status }}
-                        </span>
+                <DynamicTable :columns="columns" :data="apiPurchaseWaybill" :loading="loading"
+                    :customItems="customItems" :canEdit="(row: any) => row.status !== 'Posted'"
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
+                    @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
+                    <template v-slot:["col-status"]="{ data }">
+                        <div class="flex  align-items-center gap-2">
+                            <Badge :class="getStatusBadge(data.status)"
+                                style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
+                            <span :class="getStatusText(data.status)">
+                                {{ data.status }}
+                            </span>
                         </div>
                     </template>
-                    </DynamicTable>
-              
+                </DynamicTable>
             </template>
         </card>
 
@@ -160,7 +159,6 @@ const getStatusText = (status: any) => {
     padding: 16px;
     color: var(--color-gray-500);
 }
-
 :deep(.p-datatable .p-datatable-thead > tr > th) {
     background: #FAF9F9;
     font-weight: 600;
@@ -169,20 +167,17 @@ const getStatusText = (status: any) => {
     padding: 20px 16px;
 }
 .status-active {
-  background: var(--color-success-500);
-  outline: 1px solid var(--color-success-500);
+    background: var(--color-success-500);
+    outline: 1px solid var(--color-success-500);
 }
-
 .status-inactive {
-  background: var(--color-warning-500);
-  outline: 1px solid var(--color-warning-500);
+    background: var(--color-warning-500);
+    outline: 1px solid var(--color-warning-500);
 }
-
 .status-text-active {
-  color: var(--color-success-500);
+    color: var(--color-success-500);
 }
-
 .status-text-inactive {
-  color: var(--color-warning-500);
+    color: var(--color-warning-500);
 }
 </style>
