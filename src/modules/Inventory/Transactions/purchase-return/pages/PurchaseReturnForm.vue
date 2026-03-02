@@ -13,6 +13,7 @@ const {
   handleSubmit,
   id,
   errors,
+  documentNumber,
   createSalesReturn,
   updateSalesReturn,
 } = usePurchaseReturnForm();
@@ -53,9 +54,9 @@ onMounted(() => {
     <ScreenHeader
       title="inventory"
       subtitle="operation.transactions"
-      actionName="purchaseWaybill.purchaseWaybill"
+      actionName="purchaseReturn.purchaseReturn"
     />
-    <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
+    <BaseStepper v-model="activeStep" :steps="steps" :code="documentNumber">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
           <div v-if="Object.keys(errors).length > 0"
