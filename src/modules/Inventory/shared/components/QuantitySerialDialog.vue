@@ -23,9 +23,9 @@ const isVisible = computed({
   set: (value) => emit("update:visible", value),
 });
 
-const serialInput = ref<number>(1);
+const serialInput = ref<string>("");
 const qtyInput = ref<number>(1);
-const batchInput = ref<number>(1);
+const batchInput = ref<string>("");
 const expireDateInput = ref();
 const commentInput = ref("");
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -59,9 +59,9 @@ const addSerial = () => {
     comment: commentInput.value,
   });
 
-  serialInput.value = 1;
+  serialInput.value = "";
   qtyInput.value = 1;
-  batchInput.value = 1;
+  batchInput.value = "";
   expireDateInput.value = undefined;
   commentInput.value = "";
 };
@@ -191,7 +191,7 @@ watch(
             <label class="text-xs text-gray-600 font-medium">
               {{ t("serial.serialNumber") }}
             </label>
-            <InputNumber
+            <InputText
               v-model="serialInput"
               :placeholder="t('serial.selectSerial')"
               class="w-full"
@@ -203,7 +203,7 @@ watch(
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.batch") }}
               </label>
-              <InputNumber
+              <InputText
                 v-model="batchInput"
                 :placeholder="t('serial.batch')"
                 class="w-full"
@@ -239,14 +239,14 @@ watch(
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.serialNumber2") }}
               </label>
-              <InputNumber :placeholder="t('serial.enterSN2')" class="w-full" />
+              <InputText :placeholder="t('serial.enterSN2')" class="w-full" />
             </div>
 
             <div class="flex flex-col gap-1 w-1/2">
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.serialNumber3") }}
               </label>
-              <InputNumber :placeholder="t('serial.enterSN3')" class="w-full" />
+              <InputText :placeholder="t('serial.enterSN3')" class="w-full" />
             </div>
           </div>
 
