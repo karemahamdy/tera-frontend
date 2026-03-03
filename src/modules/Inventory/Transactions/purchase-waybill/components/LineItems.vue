@@ -46,7 +46,7 @@ function mapApiItem(item: LineItem) {
     tax: Number(item.unitTaxPercent) || 0,
     total: item.lineTotal,
     serials: (item.serials ?? []).map((s: any) => ({
-      id: s.id, serial: s.mainSerial, qty: s.quantity, batch: s.batchNumber, expire: s.expireDate
+      id: s.id, mainSerial: s.mainSerial, qty: s.quantity, batchNumber: s.batchNumber, expireDate: s.expireDate
     })),
     isBlocked: item.isBlocked,
     tracked: (item.serials && item.serials.length > 0) || item.quantity > 0,

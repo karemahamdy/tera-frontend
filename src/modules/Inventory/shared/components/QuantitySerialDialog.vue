@@ -304,19 +304,19 @@ watch(
               :showDelete="false"
               class="h-full bg-transparent"
             >
-              <template #col-batch="{ data }">
+              <template #col-batchNumber="{ data }">
                 <span
                   class="text-xs uppercase bg-white border border-gray-200 px-2 py-1 rounded text-gray-600"
                 >
-                  {{ data.batch }}
+                  {{ data.batchNumber || '-' }}
                 </span>
               </template>
 
-              <template #col-expire="{ data }">
+              <template #col-expireDate="{ data }">
                 <span class="text-gray-500">
                   {{
-                    data.expire
-                      ? new Date(data.expire).toLocaleDateString()
+                    data.expireDate
+                      ? new Date(data.expireDate).toLocaleDateString()
                       : "-"
                   }}
                 </span>
