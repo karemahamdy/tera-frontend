@@ -1,16 +1,21 @@
 import { toastService } from "@/app/services/toastService";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { PurchaseReturnForm } from "../types/PurchaseReturn";
+import type { PurchaseReturnForm, Item } from "../types/PurchaseReturn";
 import { PurchaseReturnService } from "../services/PurchaseReturn.service";
 import { useRoute } from "vue-router";
 
 import { PurchaseReturnSchema } from "../validation/PurchaseReturnSchema";
 import router from "@/app/router";
 import { useForm } from "vee-validate";
-const { handleSubmit, errors, defineField, resetForm, setValues } = useForm<PurchaseReturnForm>({
-  validationSchema: PurchaseReturnSchema,
-});
+const { handleSubmit, errors, defineField, resetForm, setValues } =
+  useForm<PurchaseReturnForm>({
+    validationSchema: PurchaseReturnSchema,
+    initialValues: {
+      originalWaybillIds: [],
+      lineItems: [],
+    },
+  });
 
 // returnHeader payload
 const [documentNumber] = defineField("documentNumber");
@@ -21,6 +26,12 @@ const [returnReason] = defineField("returnReason");
 const [otherReason] = defineField("otherReason");
 const [warehouseId] = defineField("warehouseId");
 const [zoneId] = defineField("zoneId");
+// line items
+const [lineItems] = defineField("lineItems");
+const totalUnits = computed(() => {
+  return lineItems.value.reduce((sum: number, item: Item) => sum + item.quantity, 0);
+});
+
 
 export function usePurchaseReturnForm() {
   const { t } = useI18n();
@@ -114,5 +125,9 @@ export function usePurchaseReturnForm() {
     otherReason,
     warehouseId,
     zoneId,
+
+    // line items
+    lineItems,
+    totalUnits
   };
 }

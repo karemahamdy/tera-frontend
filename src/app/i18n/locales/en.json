@@ -882,7 +882,10 @@
     "unitPrice": "Unit Price",
     "tax": "Tax %",
     "returned": "Returned",
-    "selectOriginalWaybill": "Select Original Waybill"
+    "selectOriginalWaybill": "Select Original Waybill",
+    "selectedReturnItems": "Showing {count} Items selected for return",
+    "totalReturnItems": "Total Return Items: ",
+    "units": "{count} Units"
   },
   "rules": {
     "ruleHeader": "Sales Waybill Business Rules:",

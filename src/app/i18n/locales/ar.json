@@ -875,7 +875,10 @@
     "unitPrice": "سعر الوحدة",
     "tax": "الضريبة %",
     "returned": "المرتجعات",
-    "selectOriginalWaybill": "اختر إذن الاستلام الأصلي لربط المرتجع"
+    "selectOriginalWaybill": "اختر إذن الاستلام الأصلي لربط المرتجع",
+    "selectedReturnItems": "عرض {count} أصناف مختارة للمرتجع",
+    "totalReturnItems": "إجمالي أصناف المرتجع: ",
+    "units": "{count} وحدة/وحدات"
   },
   "purchaseRules": {
     "ruleHeader": "خطوات عملية مرتجع المشتريات:",
