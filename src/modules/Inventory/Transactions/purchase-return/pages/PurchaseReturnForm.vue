@@ -10,12 +10,13 @@ import Review from "../components/Review.vue";
 import { usePurchaseReturnForm } from "../composables/usePurchasReturnForm";
 const {
   initializeForm,
+  fetchLookupsData,
   handleSubmit,
   id,
   errors,
   documentNumber,
-  createSalesReturn,
-  updateSalesReturn,
+  createReturn,
+  updateReturn,
 } = usePurchaseReturnForm();
 
 const activeStep = ref(0);
@@ -32,9 +33,9 @@ const onSubmit = handleSubmit(async (values) => {
   console.log(`values: ${values}`);
   
   if (id) {
-    await updateSalesReturn(id, values);
+    await updateReturn(id, values);
   } else {
-    await createSalesReturn(values);
+    await createReturn(values);
   }
 });
 
@@ -46,6 +47,7 @@ const steps = [
 
 onMounted(() => {
   initializeForm();
+  fetchLookupsData();
 });
 </script>
 

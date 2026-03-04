@@ -4,9 +4,28 @@ import { useI18n } from "vue-i18n";
 import type { PurchaseReturnForm, Item } from "../types/PurchaseReturn";
 import { PurchaseReturnService } from "../services/PurchaseReturn.service";
 import { useRoute } from "vue-router";
+import type { Unit } from "../types/PurchaseReturn";
 
 import { PurchaseReturnSchema } from "../validation/PurchaseReturnSchema";
 import router from "@/app/router";
+
+import { useLookups } from "@/composables/useLookups";
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
+const {
+  supplierLookups,
+  WarehouseLookups,
+  itemsLookups,
+  WarehouseHierarchyLookups,
+  getSupplierLookups,
+  getWarehouseLookups,
+  getItemsLookups,
+  getWarehouseHierarchyLookups,
+  getInventoryLookupsPurchaseWaybillsItems,
+  purchaseWaybillsItems,
+} = useInventoryLookups();
+
+const { getReasonLookups, reasonsLookups } = useLookups();
+
 import { useForm } from "vee-validate";
 const { handleSubmit, errors, defineField, resetForm, setValues } =
   useForm<PurchaseReturnForm>({
@@ -29,9 +48,13 @@ const [zoneId] = defineField("zoneId");
 // line items
 const [lineItems] = defineField("lineItems");
 const totalUnits = computed(() => {
-  return lineItems.value.reduce((sum: number, item: Item) => sum + item.quantity, 0);
+  return lineItems.value.reduce(
+    (sum: number, item: Item) => sum + item.quantity,
+    0,
+  );
 });
 
+const zones = ref<any[] | null>(null);
 
 export function usePurchaseReturnForm() {
   const { t } = useI18n();
@@ -43,7 +66,10 @@ export function usePurchaseReturnForm() {
     loading.value = true;
     try {
       const resp = await PurchaseReturnService.getById(id);
-      setValues(resp);
+      setValues({
+        ...resp.returnHeader,
+        lineItems: resp.lineItems,
+      });
     } catch (err: any) {
       toastService.error(err);
       return null;
@@ -52,10 +78,29 @@ export function usePurchaseReturnForm() {
     }
   };
 
-  const createSalesReturn = async (payload: PurchaseReturnForm) => {
+  const getFormPayload = (payload: PurchaseReturnForm) => {
+    return {
+      returnHeader: {
+        documentNumber: payload.documentNumber,
+        originalWaybillIds: payload.originalWaybillIds,
+        supplierId: payload.supplierId,
+        returnDate: payload.returnDate,
+        returnReason: payload.returnReason,
+        otherReason: payload.otherReason,
+        warehouseId: payload.warehouseId,
+        zoneId: payload.zoneId,
+      },
+      lineItems: payload.lineItems,
+      notes: {
+        returnNotes: payload.otherReason,
+      },
+    };
+  };
+  const createReturn = async (payload: PurchaseReturnForm) => {
     loading.value = true;
     try {
-      const response = await PurchaseReturnService.create(payload);
+      const createPayload = getFormPayload(payload);
+      const response = await PurchaseReturnService.create(createPayload);
       toastService.success(
         t("PurchaseReturn.PurchaseReturnCreatedSuccessfully"),
       );
@@ -69,10 +114,11 @@ export function usePurchaseReturnForm() {
     }
   };
 
-  const updateSalesReturn = async (id: string, payload: PurchaseReturnForm) => {
+  const updateReturn = async (id: string, payload: PurchaseReturnForm) => {
     loading.value = true;
     try {
-      await PurchaseReturnService.update(id, payload);
+      const updatePayload = getFormPayload(payload);
+      await PurchaseReturnService.update(id, updatePayload);
       toastService.success(
         t("PurchaseReturn.PurchaseReturnUpdatedSuccessfully"),
       );
@@ -106,16 +152,105 @@ export function usePurchaseReturnForm() {
       fetchPurchaseReturnNextNumber();
     }
   };
+
+  const fetchLookupsData = async () => {
+    Promise.all([
+      getReasonLookups(),
+      getSupplierLookups(),
+      getWarehouseLookups(),
+      getItemsLookups(),
+      getWarehouseHierarchyLookups(),
+    ]);
+  };
+
+  const getWarehouseName = (id: string = warehouseId.value) => {
+    const wh = WarehouseLookups.value.find((w) => w.value === id);
+    return wh?.label;
+  };
+
+  const getLocationName = (WarehouseID: string, LocationID: string) => {
+    const wh = WarehouseHierarchyLookups.value.find(
+      (w) => w.warehouseId === WarehouseID,
+    );
+    if (wh) {
+      const loc = wh.locations.find((l: any) => l.locationId === LocationID);
+      if (loc) return `${loc.zoneName} - ${loc.locationCode}`;
+    }
+    return "";
+  };
+
+  const getZoneName = (WarehouseID: string, ZoneID: string) => {
+    const wh = WarehouseHierarchyLookups.value.find(
+      (w) => w.warehouseId === WarehouseID,
+    );
+
+    if (wh) {
+      const loc = wh.locations.find((l: any) => l.zoneId === ZoneID);
+      if (loc) return loc.zoneName;
+    }
+    return "";
+  };
+
+  const getOriginalWaybillItems = async () => {
+    if (originalWaybillIds.value?.length > 0) {
+      await getInventoryLookupsPurchaseWaybillsItems(originalWaybillIds.value);
+
+      const originalWaybillItems =
+        purchaseWaybillsItems.value?.map((item) => ({
+          itemId: item.id,
+          itemName: item.name,
+          itemCode: item.code,
+          unitId: item.unitId,
+          documentNumber: item.docNumber,
+          quantity: item.purchasedQuantity,
+          purchased: item.purchasedQuantity,
+          warehouseId: item.warehouseId,
+          zoneId: item.zoneId,
+          locationId: getLocationName(item.warehouseId, item.locationId),
+          sourceLineId: item.lineId,
+          originalWaybillId: item.waybillId,
+          trackingType: item.trackingType,
+          units:
+            item?.units.map((unit: Unit) => ({
+              label: `${unit.unitName} (${unit.unitCode})`,
+              value: unit.unitId,
+            })) || [],
+          serials:
+            item?.itemSerialDtos.map((serial: any) => ({
+              ...serial,
+              qty:
+                serial.qty || serial.quantity || serial.availableQuantity || 0,
+              quantity:
+                serial.qty || serial.quantity || serial.availableQuantity || 0,
+            })) || [],
+        })) || [];
+
+      lineItems.value = lineItems.value.filter((item) => !item.documentNumber);
+      lineItems.value = [...lineItems.value, ...originalWaybillItems];
+    }
+  };
+
   return {
     loading,
     fetchPurchaseReturnById,
-    createSalesReturn,
-    updateSalesReturn,
+    createReturn,
+    updateReturn,
     resetFormToInitialValues,
     initializeForm,
+    getWarehouseName,
+    getLocationName,
+    getZoneName,
+    getOriginalWaybillItems,
+    reasonsLookups,
+    supplierLookups,
+    WarehouseLookups,
+    itemsLookups,
+    WarehouseHierarchyLookups,
+    fetchLookupsData,
     handleSubmit,
     id,
     errors,
+    zones,
     // returnHeader payload
     documentNumber,
     originalWaybillIds,
@@ -128,6 +263,6 @@ export function usePurchaseReturnForm() {
 
     // line items
     lineItems,
-    totalUnits
+    totalUnits,
   };
 }

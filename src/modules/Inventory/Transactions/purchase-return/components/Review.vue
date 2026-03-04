@@ -2,47 +2,27 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import DynamicTable from "@/sharedComponents/DynamicTable.vue";
-
+import { usePurchaseReturnForm } from "../composables/usePurchasReturnForm";
+import { formatDateTimeLang } from "@/app/utils/dates";
+import SerialTableDialog from "@/modules/Inventory/shared/components/SerialTableDialog.vue";
+import type { UnitLookup } from "../types/PurchaseReturn";
 const { t } = useI18n();
 
-const data = ref({
-  returnNumber: "PR-012",
-  originalWaybill: "PW-2024-05",
-  returnDate: "2025-01-01",
-  returnReason: "Quality Issues",
-  receivingWarehouse: "WH-001",
-  zoneLocation: "Zone A",
+const {
+  getWarehouseName,
+  getLocationName,
+  getZoneName,
+  documentNumber,
+  originalWaybillIds,
+  returnDate,
+  returnReason,
+  warehouseId,
+  zoneId,
+  lineItems
+} = usePurchaseReturnForm();
 
-  items: [
-    {
-      id: 1,
-      code: 'ITM-001',
-      name: 'Hydraulic Pump',
-      quantity: 0,
-      uom: 'PCS',
-      warehouse: 'WH-011',
-      zone: 'Zone A',
-      unitPrice: "450",
-      tax: "5",
-      total: 450.00,
-      serials: ""
-    },
-    {
-      id: 2,
-      code: 'ITM-045',
-      name: 'Industrial 6205',
-      quantity: 0,
-      uom: 'PCS',
-      warehouse: 'WH-011',
-      zone: 'Zone A',
-      unitPrice: "85",
-      tax: "11",
-      total: 85.00,
-      serials: ""
-    }
-  ]
-});
-
+const selectedSerial = ref<any[]>([])
+const showSerialDialog = ref<boolean>(false)
 
 const columns = computed(() => [
   { field: "code", header: t("itemsList.itemCode") },
@@ -51,9 +31,19 @@ const columns = computed(() => [
   { field: "warehouse", header: t("ReturnItems.warehouse") },
   { field: "zone", header: t("itemsList.zone") },
   { field: "purchased", header: t("purchaseReturn.Purchased") },
-  { field: 'returnedQty', header: t('ReturnItems.ReturnQTY') },
+  { field: 'quantity', header: t('ReturnItems.ReturnQTY') },
   { field: "serial", header: t("purchaseReturn.serial") },
 ]);
+
+const getSerialTableDialog = (data: any) => {
+  selectedSerial.value = data.serials;
+  showSerialDialog.value = true;
+}
+
+const getUOMName = (units: UnitLookup[], id: string) => {
+  const unit = units.find((u: UnitLookup) => u.value === id);
+  if (unit) return unit.label;
+}
 </script>
 
 <template>
@@ -69,7 +59,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ReturnNumber") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ data.returnNumber }}
+            {{ documentNumber }}
           </p>
         </div>
         <div>
@@ -77,7 +67,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.OriginalWaybill") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ data.originalWaybill }}
+            {{ $t('itemsList.numSelected', { count: originalWaybillIds?.length ?? 0 }) }}
           </p>
         </div>
         <div>
@@ -85,7 +75,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ReturnDate") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ data.returnDate }}
+            {{ formatDateTimeLang(returnDate) }}
           </p>
         </div>
         <div>
@@ -93,7 +83,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ReturnReason") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ data.returnReason }}
+            {{ returnReason }}
           </p>
         </div>
         <div>
@@ -101,7 +91,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ReceivingWarehouse") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ data.receivingWarehouse }}
+            {{ getWarehouseName() }}
           </p>
         </div>
         <div>
@@ -109,7 +99,7 @@ const columns = computed(() => [
             {{ t("purchaseReturn.ZoneLocation") }}
           </p>
           <p class="text-base font-semibold text-gray-700">
-            {{ data.zoneLocation }}
+            {{ getZoneName(warehouseId, zoneId) }}
           </p>
         </div>
       </div>
@@ -120,28 +110,42 @@ const columns = computed(() => [
       <h3 class="text-lg font-bold text-gray-800 mb-4">
         {{ t("purchaseReturn.LineItem") }}
       </h3>
-      <DynamicTable :columns="columns"  :data="data.items" :paginator="false" :showView="false"
-        :showEdit="false" :showDelete="false">
-        <template  v-slot:["col-code"]="{ data }">
+      <DynamicTable :columns="columns" :data="lineItems" :paginator="false" :showView="false" :showEdit="false"
+        :showDelete="false">
+        <template v-slot:["col-code"]="{ data }">
           <div class="flex items-center gap-2 rounded">
-            <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
+            <Badge v-if="data.trackingType == 'Serial'" severity="success" class="circle-badge-sm">
               <VsxIcon iconName="Brodcast" :size="20" type="linear" />
             </Badge>
             <Badge v-else severity="transparent" class="circle-badge">
               <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
             </Badge>
-            <div class="text-base text-gray-700">{{ data.code }}</div>
+            <div class="text-base text-gray-700">{{ data.itemCode }}</div>
           </div>
         </template>
-        <template  v-slot:["col-name"]="{ data }">
-          <span class="text-gray-600">{{ data.name }}</span>
+        <template v-slot:["col-name"]="{ data }">
+          <span class="text-gray-600">{{ data.itemName }}</span>
         </template>
-        <template  v-slot:["col-serial"]="{ data }">
-          <VsxIcon iconName="Eye" :size="20" type="linear" color="#3F5FAC" class="cursor-pointer" />
-          <span class="text-gray-600">{{ data.serials }}</span>
+        <template v-slot:["col-warehouse"]="{ data }">
+          <span class="text-gray-600">{{ getWarehouseName(data?.warehouseId) }}</span>
+        </template>
+        <template v-slot:["col-uom"]="{ data }">
+          <span class="text-gray-600">{{ getUOMName(data.units, data.unitId) }}</span>
+        </template>
+
+        <template v-slot:["col-zone"]="{ data }">
+          <span v-if="data?.warehouseId && data?.locationId" class="text-gray-600">{{ getLocationName(data?.warehouseId,
+            data?.locationId) }}</span>
+        </template>
+        <template v-slot:["col-serial"]="{ data }">
+          <VsxIcon v-if="data.trackingType == 'Serial' && data.serials.length > 0" iconName="Eye" :size="20"
+            type="linear" color="#3F5FAC" class="cursor-pointer" @click="getSerialTableDialog(data)" />
         </template>
       </DynamicTable>
     </div>
+
+    <SerialTableDialog v-model:visible="showSerialDialog" :initialSerials="selectedSerial" />
+
   </div>
 </template>
 

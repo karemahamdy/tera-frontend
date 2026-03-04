@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import ItemSelectionDialog from "@/modules/Inventory/shared/components/ItemSelectionDialog.vue";
 import SalesQuantitySerialDialog from "@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue";
@@ -7,23 +7,15 @@ import SalesQuantitySerialDialog from "@/modules/Inventory/shared/components/Sal
 const { t } = useI18n();
 const emit = defineEmits(["next", "prev"]);
 
-import { useInventoryLookups } from "@/composables/useInventoryLookups";
-const {
-  getInventoryLookupsPurchaseWaybillsItems,
-  purchaseWaybillsItems,
-  getItemsLookups,
-  itemsLookups,
-  getWarehouseHierarchyLookups, WarehouseHierarchyLookups
-} = useInventoryLookups();
-
 import { usePurchaseReturnForm } from "../composables/usePurchasReturnForm";
 import type { Item, Unit } from "../types/PurchaseReturn";
 import StorageLocationPicker from "@/modules/Inventory/shared/components/StorageLocationPicker.vue";
+import ItemBalance from "../../sales-waybill/components/ItemBalance.vue";
 const {
-  originalWaybillIds,
+  itemsLookups,
+  WarehouseHierarchyLookups,
   lineItems,
-  totalUnits,
-  id
+  totalUnits
 } = usePurchaseReturnForm();
 
 // --- Computed ---
@@ -61,7 +53,7 @@ const warehouseLookups = computed(() =>
 const locationPickerFlag = ref<boolean>(false);
 const currentLocations = ref<any[]>([]);
 const selectedLocationId = ref<string | null>(null);
-const selectedItemId = ref<string | null>(null);
+const selectedItem = ref<Item | null>(null);
 
 const getCurrentLocations = (warehouseId: string) => {
   currentLocations.value = [];
@@ -72,7 +64,7 @@ const getCurrentLocations = (warehouseId: string) => {
 };
 
 const showlocationPicker = (data: Item) => {
-  selectedItemId.value = data.itemId;
+  selectedItem.value = data;
   locationPickerFlag.value = true;
   selectedLocationId.value = data.locationId || null;
   getCurrentLocations(data.warehouseId as string);
@@ -80,21 +72,23 @@ const showlocationPicker = (data: Item) => {
 };
 
 const handleSelectLocation = (location: any) => {
-  let item = lineItems.value.find(li => li.itemId === selectedItemId.value);
+  let item: Item | null | undefined = null;
+  if (selectedItem.value?.sourceLineId) {
+    item = lineItems.value.find(li => li.sourceLineId === selectedItem.value?.sourceLineId);
+  } else {
+    item = lineItems.value.find(li => li.itemId === selectedItem.value?.itemId);
+  }
   if (item) {
-    item.locationId = location.id;
+    item.locationId = location.locationId;
     item.zoneId = location.zoneId;
     item.locationName = `${location.zoneName} - ${location.locationCode}`;
   }
   locationPickerFlag.value = false;
 };
 
-const getLocationName = (locationId: string) => {
-  for (const wh of WarehouseHierarchyLookups.value) {
-    const loc = wh.locations.find((l: any) => l.id === locationId);
-    if (loc) return `${loc.zoneName} - ${loc.locationCode}`;
-  }
-  return "";
+const isProf = (warehouseId: string) => {
+  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === warehouseId);
+  return wh?.warehouseType === "Professional";
 };
 
 const openItemDialog = () => {
@@ -135,7 +129,10 @@ const openQtyDialog = (item: any) => {
 
 const handleSaveSerials = (payload: any) => {
   if (currentItem.value) {
-    currentItem.value.serials = payload.serials;
+    currentItem.value.serials = payload.serials?.map((serial: any) => ({
+      ...serial,
+      quantity: serial.qty || 0,
+    }));
     currentItem.value.quantity = payload.totalQty;
   }
 };
@@ -147,34 +144,6 @@ const removeItem = (data: any) => {
   }
 };
 
-onMounted(async () => {
-  Promise.all([getItemsLookups(), getWarehouseHierarchyLookups()]);
-  if (!id) {
-    if (originalWaybillIds.value?.length > 0 && lineItems.value.length === 0) {
-      await getInventoryLookupsPurchaseWaybillsItems(originalWaybillIds.value);
-      lineItems.value = purchaseWaybillsItems.value?.map(item => ({
-        itemId: item.id,
-        itemName: item.name,
-        itemCode: item.code,
-        unitId: item.unitId,
-        documentNumber: item.docNumber,
-        quantity: item.purchasedQuantity,
-        purchased: item.purchasedQuantity,
-        warehouseId: item.warehouseId,
-        zoneId: item.zoneId,
-        locationId: getLocationName(item.locationId),
-        sourceLineId: item.sourceLineId,
-        originalWaybillId: item.waybillId,
-        trackingType: item.trackingType,
-        units: item?.units.map((unit: Unit) => ({
-          label: `${unit.unitName} (${unit.unitCode})`,
-          value: unit.unitId,
-        })) || [],
-        serials: item.itemSerialDtos || [],
-      })) || [];
-    }
-  }
-});
 </script>
 
 <template>
@@ -207,16 +176,16 @@ onMounted(async () => {
             <Badge v-else severity="transparent" class="circle-badge">
               <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
             </Badge>
-            <div class="text-base text-gray-700">{{ data.itemCode }}</div>
+            <div v-tooltip="data.itemCode" class="text-base text-gray-700 truncate w-16">{{ data.itemCode }}</div>
           </div>
         </template>
 
         <template #col-itemName="{ data }">
-          <div class="text-gray-600 truncate w-16">{{ data.itemName }}</div>
+          <div v-tooltip="data.itemName" class="text-gray-600 truncate w-16">{{ data.itemName }}</div>
         </template>
         <!-- documentNumber -->
         <template #col-documentNumber="{ data }">
-          <div class="truncate w-16">{{ data.documentNumber }}</div>
+          <div v-tooltip="data.documentNumber" class="truncate w-16">{{ data.documentNumber }}</div>
         </template>
 
         <template #col-uom="{ data }">
@@ -239,14 +208,19 @@ onMounted(async () => {
 
         <template #col-zone="{ data }">
           <div>
-            <div @click="showlocationPicker(data)"
+            <div v-if="data.warehouseId && isProf(data.warehouseId)" @click="showlocationPicker(data)"
               class="w-28 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
               <span class="text-black" v-if="data.locationName">{{ data.locationName }}</span>
               <span v-else>{{ $t("SalesReturn.ZonePlaceholder") }}</span>
             </div>
+            <div v-else class="text-gray-500 text-sm">{{ $t("itemsList.zoneDisabled") }}</div>
           </div>
         </template>
 
+        <template #col-Balance="{ data }">
+          <ItemBalance v-if="data.itemId && data.warehouseId" :itemId="data.itemId" :warehouseId="data.warehouseId"
+            :zoneId="data.zoneId" :locationId="data.locationId" />
+        </template>
         <template #col-action="{ data }">
           <button class="text-red-400 hover:text-red-600" @click="removeItem(data)">
             <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
@@ -270,6 +244,7 @@ onMounted(async () => {
     <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
 
     <SalesQuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
+      :warehouseId="currentItem.warehouseId" :zoneId="currentItem.zoneId" :locationId="currentItem.locationId"
       :initialSerials="currentItem.serials" @save="handleSaveSerials" />
 
 
