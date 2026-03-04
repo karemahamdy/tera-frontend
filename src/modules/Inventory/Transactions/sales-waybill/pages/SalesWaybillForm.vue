@@ -204,6 +204,7 @@ const mapApiToForm = (apiData: any) => {
       warehouseId:  item.warehouseId,
       warehouseName:item.warehouseName,
       zoneId:       item.zoneId,
+      zone:         item.zoneName,
       zoneName:     item.zoneName,
       locationId:   item.locationId,
       locationCode: item.locationCode,

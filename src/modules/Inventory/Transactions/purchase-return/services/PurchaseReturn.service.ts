@@ -17,6 +17,8 @@ export const PurchaseReturnService = {
   },
 
   async create(payload: any) {
+    console.log(payload);
+    
     const data = await axiosWrapper.post<any>(`/PurchaseReturns`, payload);
     return data.data;
   },

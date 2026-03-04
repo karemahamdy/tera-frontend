@@ -296,12 +296,12 @@ const removeItem = (data: any) => {
                                 <ProgressSpinner style="width:14px;height:14px" strokeWidth="6" />
                                 <span>Loading...</span>
                             </div>
-                            <BaseButton v-else-if="!disabled" :label="data.locationCode || t('itemList.selectZone')"
+                            <BaseButton v-else-if="!disabled" :label="data.locationCode || data.zone || t('itemList.selectZone')"
                                 variant="outline-primary"
                                 class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200 min-w-28 text-center justify-center flex"
                                 @click="openLocationPicker(data)" />
 
-                            <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
+                            <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || data.zone || '—' }}</span>
 
                             <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
                                 {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{
@@ -314,8 +314,9 @@ const removeItem = (data: any) => {
                                 :disabled="disabled" />
                         </template> -->
                          <template v-else-if="data.warehouseId">
-              <span class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
-            </template>
+                            <span v-if="disabled && data.zone" class="text-gray-700">{{ data.zone }}</span>
+                            <span v-else-if="!disabled" class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
+                        </template>
                     </div>
                 </template>
 
@@ -372,7 +373,7 @@ const removeItem = (data: any) => {
         <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
         <SalesQuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
             :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId" :zoneId="currentItem.zoneId"
-            :locationId="currentItem.locationId" @save="handleSaveSerials" />
+            :locationId="currentItem.locationId" :disabled="disabled" @save="handleSaveSerials" />
         <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker"
             :locations="currentLocations" :selectedLocationId="locationPickerTarget?.locationId"
             @select="handleSelectLocation" />

@@ -875,7 +875,19 @@
     "unitPrice": "سعر الوحدة",
     "tax": "الضريبة %",
     "returned": "المرتجعات",
-    "selectOriginalWaybill": "اختر إذن الاستلام الأصلي لربط المرتجع"
+    "selectOriginalWaybill": "اختر إذن الاستلام الأصلي لربط المرتجع",
+    "selectedReturnItems": "عرض {count} أصناف مختارة للمرتجع",
+    "totalReturnItems": "إجمالي أصناف المرتجع: ",
+    "units": "{count} وحدة/وحدات",
+    "documentNumber": "رقم المستند",
+    "originalWaybillIds": "إذن الاستلام الأصلي",
+    "supplierId": "المورد",
+    "returnDate": "تاريخ المرتجع",
+    "returnReason": "سبب المرتجع",
+    "otherReason": "ملاحظات المرتجع",
+    "warehouseId": "المخزن",
+    "zoneId": "المنطقة",
+    "lineItems": "بنود الفاتورة"
   },
   "purchaseRules": {
     "ruleHeader": "خطوات عملية مرتجع المشتريات:",

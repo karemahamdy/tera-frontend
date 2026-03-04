@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { usePurchaseReturnForm } from "../composables/usePurchasReturnForm";
-import { computed, onMounted, ref } from "vue";
-import { useLookups } from "@/composables/useLookups";
+import { computed, ref } from "vue";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import OriginalWaybillSelection from "@/modules/Inventory/shared/components/OriginalWaybillSelection.vue";
 const {
-  supplierLookups,
-  getSupplierLookups,
-  WarehouseLookups,
   ZonesLookups,
   getZonesLookups,
-  getWarehouseLookups,
-  getInventoryLookupsPurchaseWaybills,
   purchaseWaybills,
+  getInventoryLookupsPurchaseWaybills,
 } = useInventoryLookups();
 
-const { getReasonLookups, reasonsLookups } = useLookups();
 const {
+  reasonsLookups,
+  supplierLookups,
+  WarehouseLookups,
   errors,
   documentNumber,
   originalWaybillIds,
@@ -27,6 +24,7 @@ const {
   otherReason,
   warehouseId,
   zoneId,
+  getOriginalWaybillItems
 } = usePurchaseReturnForm();
 
 const { t } = useI18n();
@@ -35,6 +33,7 @@ const isProf = computed(() => {
   const wh = WarehouseLookups.value.find((w) => w.value === warehouseId.value);
   const isProfessional = wh?.type === "Professional";
   if (isProfessional) getZonesLookups(warehouseId.value);
+  // zones.value = ZonesLookups.value
   return isProfessional;
 });
 
@@ -50,11 +49,11 @@ const isVisible = ref<boolean>(false);
 const originalWaybillSelectionRef = ref<InstanceType<typeof OriginalWaybillSelection> | null>(null);
 
 const openOriginalWaybillSelection = () => {
-  if(!hasOriginalWaybill.value) return;
+  if (!hasOriginalWaybill.value) return;
   let data = purchaseWaybills.value?.filter((pb) =>
     originalWaybillIds.value?.includes(pb.id),
   );
-  if(originalWaybillSelectionRef.value) {
+  if (originalWaybillSelectionRef.value) {
     originalWaybillSelectionRef.value.setSelectedRows(data);
   }
   isVisible.value = true;
@@ -62,15 +61,9 @@ const openOriginalWaybillSelection = () => {
 
 const handleOriginalWaybillSelection = (item: any) => {
   originalWaybillIds.value = item.map((i: any) => i.id);
+  getOriginalWaybillItems()
 };
 
-onMounted(() => {
-  Promise.all([
-    getReasonLookups(),
-    getSupplierLookups(),
-    getWarehouseLookups(),
-  ]);
-});
 </script>
 
 <template>
@@ -79,105 +72,55 @@ onMounted(() => {
       {{ t("purchaseReturn.ReturnInformation") }}
     </p>
 
-    <FormInput
-      :label="t('purchaseReturn.PurchaseReturnNumber')"
-      v-model="documentNumber"
-      :error="errors.documentNumber"
-      :placeholder="t('purchaseReturn.PurchaseReturnNumberPlaceholder')"
-      :invalid="!!errors.documentNumber"
-      :disabled="true"
-    />
+    <FormInput :label="t('purchaseReturn.PurchaseReturnNumber')" v-model="documentNumber" :error="errors.documentNumber"
+      :placeholder="t('purchaseReturn.PurchaseReturnNumberPlaceholder')" :invalid="!!errors.documentNumber"
+      :disabled="true" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+      <FormDropdown :label="t('purchaseReturn.Supplier')" v-model="supplierId" :error="errors.supplierId"
+        :options="supplierLookups" :placeholder="t('purchaseReturn.SupplierPlaceholder')" />
+
+      <FormDropdown :label="t('purchaseReturn.ReturnReason')" v-model="returnReason" :error="errors.returnReason"
+        :options="reasonsLookups" :placeholder="t('purchaseReturn.ReturnReasonPlaceholder')" />
+
       <div class="flex justify-center items-end gap-2 w-full">
-        <FormInput
-          :label="$t('purchaseReturn.OriginalPurchaseWaybill')"
-          class="w-9/10"
-          disabled
-          :error="errors.originalWaybillIds"
-          :placeholder="
-            $t('itemsList.numSelected', {
-              count: originalWaybillIds?.length ?? 0,
-            })
-          "
-        />
-        <a
-          @click="openOriginalWaybillSelection"
-          class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500"
-          :class="{
+        <FormInput :label="$t('purchaseReturn.OriginalPurchaseWaybill')" class="w-9/10" disabled
+          :error="errors.originalWaybillIds" :placeholder="$t('itemsList.numSelected', {
+            count: originalWaybillIds?.length ?? 0,
+          })
+            " />
+        <a @click="openOriginalWaybillSelection"
+          class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500" :class="{
             'cursor-not-allowed bg-gray-50': !hasOriginalWaybill,
             'cursor-pointer bg-white hover:bg-primary-25': hasOriginalWaybill,
-          }"
-          :disabled="!hasOriginalWaybill"
-        >
+          }" :disabled="!hasOriginalWaybill">
           {{ $t("LDC.select") }}
         </a>
       </div>
 
-      <FormInput
-        :label="t('purchaseReturn.ReturnDate')"
-        v-model="returnDate"
-        type="date"
-        :error="errors.returnDate"
-        :placeholder="t('purchaseReturn.ReturnDatePlaceholder')"
-        :invalid="!!errors.returnDate"
-      />
+      <FormInput :label="t('purchaseReturn.ReturnDate')" v-model="returnDate" type="date" :error="errors.returnDate"
+        :placeholder="t('purchaseReturn.ReturnDatePlaceholder')" :invalid="!!errors.returnDate" />
 
-      <FormDropdown
-        :label="t('purchaseReturn.Supplier')"
-        v-model="supplierId"
-        :error="errors.supplierId"
-        :options="supplierLookups"
-        :placeholder="t('purchaseReturn.SupplierPlaceholder')"
-      />
+      <FormDropdown :label="t('purchaseReturn.Warehouse')" v-model="warehouseId" :error="errors.warehouseId"
+        :options="WarehouseLookups" :placeholder="t('purchaseReturn.WarehousePlaceholder')" />
 
-      <FormDropdown
-        :label="t('purchaseReturn.ReturnReason')"
-        v-model="returnReason"
-        :error="errors.returnReason"
-        :options="reasonsLookups"
-        :placeholder="t('purchaseReturn.ReturnReasonPlaceholder')"
-      />
-
-      <FormDropdown
-        :label="t('purchaseReturn.Warehouse')"
-        v-model="warehouseId"
-        :error="errors.warehouseId"
-        :options="WarehouseLookups"
-        :placeholder="t('purchaseReturn.WarehousePlaceholder')"
-      />
-
-      <FormDropdown
-        :label="t('purchaseReturn.Zone')"
-        v-model="zoneId"
-        :error="errors.zoneId"
-        :options="ZonesLookups"
-        :disabled="!isProf"
-        :placeholder="t('purchaseReturn.ZonePlaceholder')"
-      />
+      <FormDropdown :label="t('purchaseReturn.Zone')" v-model="zoneId" :error="errors.zoneId" :options="ZonesLookups"
+        :disabled="!isProf" :placeholder="t('purchaseReturn.ZonePlaceholder')" />
       <div class="md:col-span-2">
         <label class="text-gray-700 font-bold mb-2 block">
           {{ $t("purchaseReturn.ReturnNotes") }}
         </label>
 
-        <Textarea
-          v-model="otherReason"
-          :placeholder="$t('purchaseReturn.ReturnNotesPlaceholder')"
-          class="mt-1 w-full p-3 border rounded-lg"
-          rows="4"
-          :class="{ 'border-danger-500': errors.otherReason }"
-        />
+        <Textarea v-model="otherReason" :placeholder="$t('purchaseReturn.ReturnNotesPlaceholder')"
+          class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.otherReason }" />
 
         <small v-if="errors.otherReason" class="text-danger-500">
           {{ $t(errors.otherReason) }}
         </small>
       </div>
     </div>
-    <OriginalWaybillSelection
-      v-model:visible="isVisible"
-      ref="originalWaybillSelectionRef"
-      :items="purchaseWaybills"
-      @select="handleOriginalWaybillSelection"
-    />
+    <OriginalWaybillSelection v-model:visible="isVisible" ref="originalWaybillSelectionRef" :items="purchaseWaybills"
+      @select="handleOriginalWaybillSelection" />
   </div>
 </template>

@@ -46,7 +46,7 @@ function mapApiItem(item: LineItem) {
     tax: Number(item.unitTaxPercent) || 0,
     total: item.lineTotal,
     serials: (item.serials ?? []).map((s: any) => ({
-      id: s.id, serial: s.mainSerial, qty: s.quantity, batch: s.batchNumber, expire: s.expireDate
+      id: s.id, mainSerial: s.mainSerial, qty: s.quantity, batchNumber: s.batchNumber, expireDate: s.expireDate
     })),
     isBlocked: item.isBlocked,
     tracked: (item.serials && item.serials.length > 0) || item.quantity > 0,
@@ -312,17 +312,21 @@ const handleWarehouseChange = async (item: any) => {
               </div>
               <BaseButton
                 v-else-if="!disabled"
-                :label="data.locationCode || t('itemList.selectZone')"
+                :label="data.locationCode || data.zone || t('itemList.selectZone')"
                 variant="outline-primary" class="!px-3 !py-1.5 !text-xs !rounded-lg !border-primary-200"
                 @click="openLocationPicker(data)" />
-              <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || '—' }}</span>
-              <div v-if="data.locationCode" class="text-[10px] text-gray-400 font-medium leading-tight">
+              <span v-else-if="disabled" class="text-gray-700">{{ data.locationCode || data.zone || '—' }}</span>
+              <!-- <div v-if="data.locationCode || data.zone" class="text-[10px] text-gray-400 font-medium leading-tight">
                 {{ data.zone }} <template v-if="data.row">(R:{{ data.row }} C:{{ data.column }} R:{{ data.rack
                   }})</template>
-              </div>
+                  
+                </div> -->
+                <span v-else-if="!disabled" class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
             </template>
             <template v-else-if="data.warehouseId">
-              <span class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
+              <!-- In view mode show zone name if available; in edit mode show disabled hint -->
+              <span v-if="disabled && data.zone" class="text-gray-700">{{ data.zone }}</span>
+              <span v-else-if="!disabled" class="text-gray-400 italic text-xs">{{ t('itemList.zoneDisabled') }}</span>
             </template>
           </div>
         </template>
