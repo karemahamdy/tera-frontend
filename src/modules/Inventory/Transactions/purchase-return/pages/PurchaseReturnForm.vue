@@ -68,7 +68,7 @@ onMounted(() => {
           <div v-if="Object.keys(errors).length > 0"
             class="w-full p-5 border border-dashed border-danger-500 bg-danger-200 my-5 rounded-xl">
             <div v-for="(errorList, field) in errors" :key="field" class="mb-2 text-black">
-              <strong>{{ $t(`PurchaseReturn.${field}`) }}:</strong> {{ $t(errorList as string) }}
+              <strong>{{ $t(`purchaseReturn.${field}`) }}:</strong> {{ $t(errorList as string) }}
             </div>
           </div>
           <ReturnDetails v-if="activeStep === 0" />

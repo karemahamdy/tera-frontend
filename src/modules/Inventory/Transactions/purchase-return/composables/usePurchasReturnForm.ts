@@ -66,6 +66,7 @@ export function usePurchaseReturnForm() {
     loading.value = true;
     try {
       const resp = await PurchaseReturnService.getById(id);
+      resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate)
       setValues({
         ...resp.returnHeader,
         lineItems: resp.lineItems,
