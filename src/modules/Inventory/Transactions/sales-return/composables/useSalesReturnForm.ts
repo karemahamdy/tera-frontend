@@ -21,6 +21,8 @@ const {
   getWarehouseHierarchyLookups,
   getInventoryLookupsSalesWaybillsItems,
   salesWaybillsItems,
+  getInspectionResultsLookups,
+  inspectionResultsLookups,
 } = useInventoryLookups();
 
 const { getReasonLookups, reasonsLookups } = useLookups();
@@ -168,6 +170,7 @@ export function useSalesReturnForm() {
       getWarehouseLookups(),
       getItemsLookups(),
       getWarehouseHierarchyLookups(),
+      getInspectionResultsLookups(),
     ]);
   };
 
@@ -255,6 +258,7 @@ export function useSalesReturnForm() {
     itemsLookups,
     WarehouseHierarchyLookups,
     fetchLookupsData,
+    inspectionResultsLookups,
     handleSubmit,
     id,
     errors,

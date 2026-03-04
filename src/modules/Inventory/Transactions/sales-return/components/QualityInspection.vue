@@ -10,6 +10,7 @@ const {
   inspectionDate,
   inspectionResult,
   inspectionNotes,
+  inspectionResultsLookups,
   id
 } = useSalesReturnForm();
 </script>
@@ -31,6 +32,7 @@ const {
         :invalid="!!errors.inspectionDate" />
 
       <FormDropdown :label="t('purchaseReturn.InspectionResult')" v-model="inspectionResult"
+        :options="inspectionResultsLookups"
         :error="errors.inspectionResult" :placeholder="t('purchaseReturn.InspectionResultPlaceholder')"
         :invalid="!!errors.inspectionResult" :disabled="!!id" class="md:col-span-2" />
 

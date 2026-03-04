@@ -146,4 +146,10 @@ export const InventoryLookupsService = {
       },
     );
   },
+
+  getInspectionResultsLookups() {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/inspection-results`,
+    );
+  },
 };

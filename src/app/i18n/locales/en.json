@@ -840,7 +840,8 @@
     "inspector": "Inspector",
     "inspectionDate": "Inspection Date",
     "inspectionResult": "Inspection Result",
-    "inspectionNotes": "Inspection Notes"
+    "inspectionNotes": "Inspection Notes",
+    "customerId": "Customer"
   },
   "purchaseReturn": {
     "purchaseReturn": "Purchase Return ",

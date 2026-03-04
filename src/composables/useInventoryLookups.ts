@@ -27,6 +27,8 @@ export function useInventoryLookups() {
   const salesWaybills = ref<any[]>([]);
   const salesWaybillsItems = ref<any[]>([]);
 
+  const inspectionResultsLookups = ref<any[]>([]);
+
   const getItemSerialsLookups = async (params: {
     itemId: string;
     warehouseId: string;
@@ -253,6 +255,19 @@ export function useInventoryLookups() {
     }
   };
 
+  const getInspectionResultsLookups = async () => {
+    try {
+      const res = await InventoryLookupsService.getInspectionResultsLookups();
+      inspectionResultsLookups.value = res.data.map((inspection) => ({
+        ...inspection,
+        label: inspection.name,
+        value: inspection.name,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
   return {
     getSupplierLookups,
     getCurrenciesLookups,
@@ -272,6 +287,8 @@ export function useInventoryLookups() {
     getInventoryLookupsPurchaseWaybillsItems,
     getInventoryLookupsSalesWaybills,
     getInventoryLookupsSalesWaybillsItems,
+    getInspectionResultsLookups,
+    inspectionResultsLookups,
     salesWaybills,
     salesWaybillsItems,
     purchaseWaybillsItems,

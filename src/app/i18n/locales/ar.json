@@ -834,7 +834,8 @@
     "inspector": "المفتش",
     "inspectionDate": "تاريخ الفحص",
     "inspectionResult": "نتيجة الفحص",
-    "inspectionNotes": "ملاحظات الفحص"
+    "inspectionNotes": "ملاحظات الفحص",
+    "customerId": "العميل"
   },
   "purchaseReturn": {
     "purchaseReturn": "مرتجع مشتريات",
