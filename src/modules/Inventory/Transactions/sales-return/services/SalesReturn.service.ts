@@ -40,6 +40,11 @@ export const SalesReturnService = {
 
     return data;
     ;
-  }
+  },
+
+  async getNextNumber(): Promise<any> {
+    const data = await axiosWrapper.get<any>(`/salesreturns/next-number`);
+    return data.data;
+  },
 
 };

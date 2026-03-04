@@ -1,35 +1,36 @@
 import { toastService } from "@/app/services/toastService";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { PurchaseReturnForm, Item } from "../types/PurchaseReturn";
-import { PurchaseReturnService } from "../services/PurchaseReturn.service";
+import type { SalesReturnForm, Item, Unit } from "../types/SalesReturn";
+import { SalesReturnService } from "../services/SalesReturn.service";
 import { useRoute } from "vue-router";
-import type { Unit } from "../types/PurchaseReturn";
 
-import { PurchaseReturnSchema } from "../validation/PurchaseReturnSchema";
+import { SalesReturnSchema } from "../validation/SalesReturnSchema";
 import router from "@/app/router";
 
 import { useLookups } from "@/composables/useLookups";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 const {
-  supplierLookups,
+  customerLookups,
   WarehouseLookups,
   itemsLookups,
   WarehouseHierarchyLookups,
-  getSupplierLookups,
+  getCustomerLookups,
   getWarehouseLookups,
   getItemsLookups,
   getWarehouseHierarchyLookups,
-  getInventoryLookupsPurchaseWaybillsItems,
-  purchaseWaybillsItems,
+  getInventoryLookupsSalesWaybillsItems,
+  salesWaybillsItems,
+  getInspectionResultsLookups,
+  inspectionResultsLookups,
 } = useInventoryLookups();
 
 const { getReasonLookups, reasonsLookups } = useLookups();
 
 import { useForm } from "vee-validate";
 const { handleSubmit, errors, defineField, resetForm, setValues } =
-  useForm<PurchaseReturnForm>({
-    validationSchema: PurchaseReturnSchema,
+  useForm<SalesReturnForm>({
+    validationSchema: SalesReturnSchema,
     initialValues: {
       originalWaybillIds: [],
       lineItems: [],
@@ -39,7 +40,7 @@ const { handleSubmit, errors, defineField, resetForm, setValues } =
 // returnHeader payload
 const [documentNumber] = defineField("documentNumber");
 const [originalWaybillIds] = defineField("originalWaybillIds");
-const [supplierId] = defineField("supplierId");
+const [customerId] = defineField("customerId");
 const [returnDate] = defineField("returnDate");
 const [returnReason] = defineField("returnReason");
 const [otherReason] = defineField("otherReason");
@@ -54,10 +55,15 @@ const totalUnits = computed(() => {
   );
 });
 
-const zones = ref<any[] | null>(null);
-const isView = ref<boolean>(false)
+const [inspector] = defineField("inspector");
+const [inspectionDate] = defineField("inspectionDate");
+const [inspectionResult] = defineField("inspectionResult");
+const [inspectionNotes] = defineField("inspectionNotes");
 
-export function usePurchaseReturnForm() {
+const zones = ref<any[] | null>(null);
+const isView = ref<boolean>(false);
+
+export function useSalesReturnForm() {
   const { t } = useI18n();
   const loading = ref(false);
   const route = useRoute();
@@ -82,14 +88,16 @@ export function usePurchaseReturnForm() {
   const fetchPurchaseReturnById = async (id: string) => {
     loading.value = true;
     try {
-      const resp = await PurchaseReturnService.getById(id);
+      const resp = await SalesReturnService.getById(id);
       resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate);
+
       setValues({
         ...resp.returnHeader,
         lineItems: resp.lineItems.map((item: any) => ({
           ...item,
           ...getItemInfo(item?.itemId as string),
         })),
+        ...resp.inspection,
       });
     } catch (err: any) {
       toastService.error(err);
@@ -99,12 +107,12 @@ export function usePurchaseReturnForm() {
     }
   };
 
-  const getFormPayload = (payload: PurchaseReturnForm) => {
+  const getFormPayload = (payload: SalesReturnForm) => {
     return {
       returnHeader: {
         documentNumber: payload.documentNumber,
         originalWaybillIds: payload.originalWaybillIds,
-        supplierId: payload.supplierId,
+        customerIdyy: payload.customerId,
         returnDate: payload.returnDate,
         returnReason: payload.returnReason,
         otherReason: payload.otherReason,
@@ -112,16 +120,19 @@ export function usePurchaseReturnForm() {
         zoneId: payload.zoneId,
       },
       lineItems: payload.lineItems,
-      notes: {
-        returnNotes: payload.otherReason,
+      inspection: {
+        inspector: payload.inspector,
+        inspectionDate: payload.inspectionDate,
+        inspectionResult: payload.inspectionResult,
+        inspectionNotes: payload.inspectionNotes,
       },
     };
   };
-  const createReturn = async (payload: PurchaseReturnForm) => {
+  const createReturn = async (payload: SalesReturnForm) => {
     loading.value = true;
     try {
       const createPayload = getFormPayload(payload);
-      const response = await PurchaseReturnService.create(createPayload);
+      const response = await SalesReturnService.create(createPayload);
       toastService.success(
         t("PurchaseReturn.PurchaseReturnCreatedSuccessfully"),
       );
@@ -135,11 +146,11 @@ export function usePurchaseReturnForm() {
     }
   };
 
-  const updateReturn = async (id: string, payload: PurchaseReturnForm) => {
+  const updateReturn = async (id: string, payload: SalesReturnForm) => {
     loading.value = true;
     try {
       const updatePayload = getFormPayload(payload);
-      await PurchaseReturnService.update(id, updatePayload);
+      await SalesReturnService.update(id, updatePayload);
       toastService.success(
         t("PurchaseReturn.PurchaseReturnUpdatedSuccessfully"),
       );
@@ -158,7 +169,7 @@ export function usePurchaseReturnForm() {
 
   const fetchPurchaseReturnNextNumber = async () => {
     try {
-      const resp = await PurchaseReturnService.getNextNumber();
+      const resp = await SalesReturnService.getNextNumber();
       documentNumber.value = resp.documentNumber;
     } catch (err: any) {
       toastService.error(err);
@@ -177,10 +188,11 @@ export function usePurchaseReturnForm() {
   const fetchLookupsData = async () => {
     Promise.all([
       getReasonLookups(),
-      getSupplierLookups(),
+      getCustomerLookups(),
       getWarehouseLookups(),
       getItemsLookups(),
       getWarehouseHierarchyLookups(),
+      getInspectionResultsLookups(),
     ]);
   };
 
@@ -214,30 +226,30 @@ export function usePurchaseReturnForm() {
 
   const getOriginalWaybillItems = async () => {
     if (originalWaybillIds.value?.length > 0) {
-      await getInventoryLookupsPurchaseWaybillsItems(originalWaybillIds.value);
+      await getInventoryLookupsSalesWaybillsItems(originalWaybillIds.value);
 
-      const originalWaybillItems =
-        purchaseWaybillsItems.value?.map((item) => ({
-          itemId: item.id,
-          itemName: item.name,
-          itemCode: item.code,
+      const originalWaybillItems: Item[] =
+        salesWaybillsItems.value?.map((item) => ({
+          itemId: item.itemId,
+          itemName: item.itemName,
+          itemCode: item.itemCode,
           unitId: item.unitId,
-          documentNumber: item.docNumber,
-          quantity: item.purchasedQuantity,
-          purchased: item.purchasedQuantity,
+          documentNumber: item.waybillDocumentNumber,
+          quantity: item.alreadyReturnedQuantity,
+          shipped: item.shippedQuantity,
           warehouseId: item.warehouseId,
           zoneId: item.zoneId,
           locationId: getLocationName(item.warehouseId, item.locationId),
           sourceLineId: item.lineId,
           originalWaybillId: item.waybillId,
-          trackingType: item.trackingType,
+          trackingType: item.isSerialTracked ? "Serial" : "None",
           units:
-            item?.units.map((unit: Unit) => ({
+            item?.units?.map((unit: Unit) => ({
               label: `${unit.unitName} (${unit.unitCode})`,
               value: unit.unitId,
             })) || [],
           serials:
-            item?.itemSerialDtos.map((serial: any) => ({
+            item?.itemSerialDtos?.map((serial: any) => ({
               ...serial,
               qty:
                 serial.qty || serial.quantity || serial.availableQuantity || 0,
@@ -264,11 +276,12 @@ export function usePurchaseReturnForm() {
     getZoneName,
     getOriginalWaybillItems,
     reasonsLookups,
-    supplierLookups,
+    customerLookups,
     WarehouseLookups,
     itemsLookups,
     WarehouseHierarchyLookups,
     fetchLookupsData,
+    inspectionResultsLookups,
     handleSubmit,
     id,
     errors,
@@ -276,7 +289,7 @@ export function usePurchaseReturnForm() {
     // returnHeader payload
     documentNumber,
     originalWaybillIds,
-    supplierId,
+    customerId,
     returnDate,
     returnReason,
     otherReason,
@@ -286,5 +299,11 @@ export function usePurchaseReturnForm() {
     // line items
     lineItems,
     totalUnits,
+
+    // inspection
+    inspector,
+    inspectionDate,
+    inspectionResult,
+    inspectionNotes,
   };
 }
