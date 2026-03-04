@@ -31,12 +31,9 @@ const isProf = computed(() => selectedWarehouse.value?.type === 'Professional');
 
 function emitUpdate() {
   if (props.disabled) return;
-  // const selectedZone = ZonesLookups.value.find(z => z.value === form.zoneId);
   emit("update", {
     warehouseId: form.warehouseId,
-    // warehouseName: selectedWarehouse.value?.label ?? (props.warehouseDetails?.warehouseName ?? ""),
     zoneId: form.zoneId,
-    // zoneName: selectedZone?.label ?? (props.warehouseDetails?.zoneName ?? ""),
   });
 }
 
