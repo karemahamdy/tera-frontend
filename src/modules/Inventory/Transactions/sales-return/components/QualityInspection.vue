@@ -1,23 +1,17 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue"
 import { useI18n } from "vue-i18n"
 
 const { t } = useI18n()
 
-const InspectionResult = ref("")
-const Inspector = ref(null)
-const InspectionDate = ref()
-const InspectionNotes = ref()
-
-const id = ref(null)
-
-
-const errors = reactive({
-  SalesReturnNumber: "",
-  Inspector: "",
-  InspectionNotes: "",
-  InspectionResult: ""
-})
+import { useSalesReturnForm } from "../composables/useSalesReturnForm";
+const {
+  errors,
+  inspector,
+  inspectionDate,
+  inspectionResult,
+  inspectionNotes,
+  id
+} = useSalesReturnForm();
 </script>
 
 <template>
@@ -29,30 +23,27 @@ const errors = reactive({
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-      <FormInput :label="t('purchaseReturn.Inspector')" v-model="Inspector" :error="errors.Inspector"
-        :placeholder="t('purchaseReturn.InspectorPlaceholder')" :invalid="!!errors.Inspector" />
+      <FormInput :label="t('purchaseReturn.Inspector')" v-model="inspector" :error="errors.inspector"
+        :placeholder="t('SalesReturn.InspectorPlaceholder')" :invalid="!!errors.inspector" />
 
-      <div>
-        <label class="block text-gray-600 text-lg">
-          {{ t("purchaseReturn.InspectionDate") }}
-        </label>
-        <DatePicker v-model="InspectionDate" showIcon fluid iconDisplay="input"
-          :placeholder="t('purchaseReturn.InspectionDatePlaceholder')" />
-      </div>
-<FormDropdown :label="t('purchaseReturn.InspectionResult')" v-model="InspectionResult"
-      :error="errors.InspectionResult" :placeholder="t('purchaseReturn.InspectionResultPlaceholder')"
-      :invalid="!!errors.InspectionResult" :disabled="!!id" class="md:col-span-2"/>
+      <FormInput :label="t('purchaseReturn.InspectionDate')" type="date" v-model="inspectionDate"
+        :error="errors.inspectionDate" :placeholder="t('purchaseReturn.InspectionDatePlaceholder')"
+        :invalid="!!errors.inspectionDate" />
+
+      <FormDropdown :label="t('purchaseReturn.InspectionResult')" v-model="inspectionResult"
+        :error="errors.inspectionResult" :placeholder="t('purchaseReturn.InspectionResultPlaceholder')"
+        :invalid="!!errors.inspectionResult" :disabled="!!id" class="md:col-span-2" />
 
       <div class="md:col-span-2">
         <label class="text-gray-700 font-medium mb-2 block">
           {{ $t("purchaseReturn.InspectionNotes") }}
         </label>
 
-        <Textarea v-model="InspectionNotes" :placeholder="$t('purchaseReturn.InspectionNotesPlaceholder')"
-          class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.InspectionNotes }" />
+        <Textarea v-model="inspectionNotes" :placeholder="$t('purchaseReturn.InspectionNotesPlaceholder')"
+          class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.inspectionNotes }" />
 
-        <small v-if="errors.InspectionNotes" class="text-danger-500">
-          {{ $t(errors.InspectionNotes) }}
+        <small v-if="errors.inspectionNotes" class="text-danger-500">
+          {{ $t(errors.inspectionNotes) }}
         </small>
       </div>
     </div>

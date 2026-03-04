@@ -24,6 +24,9 @@ export function useInventoryLookups() {
   const purchaseWaybills = ref<any[]>([]);
   const purchaseWaybillsItems = ref<any[]>([]);
 
+  const salesWaybills = ref<any[]>([]);
+  const salesWaybillsItems = ref<any[]>([]);
+
   const getItemSerialsLookups = async (params: {
     itemId: string;
     warehouseId: string;
@@ -222,6 +225,34 @@ export function useInventoryLookups() {
     }
   };
 
+
+  const getInventoryLookupsSalesWaybills = async (customerId: string) => {
+    try {
+      const res =
+        await InventoryLookupsService.getInventoryLookupsSalesWaybills(
+          customerId,
+        );
+      salesWaybills.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
+
+  const getInventoryLookupsSalesWaybillsItems = async (
+    waybillIds: string[],
+  ) => {
+    try {
+      const res =
+        await InventoryLookupsService.getInventoryLookupsSalesWaybillsItems(
+          waybillIds,
+        );
+      salesWaybillsItems.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+      return [];
+    }
+  };
+
   return {
     getSupplierLookups,
     getCurrenciesLookups,
@@ -239,6 +270,10 @@ export function useInventoryLookups() {
     getCustomerLookups,
     getInventoryLookupsPurchaseWaybills,
     getInventoryLookupsPurchaseWaybillsItems,
+    getInventoryLookupsSalesWaybills,
+    getInventoryLookupsSalesWaybillsItems,
+    salesWaybills,
+    salesWaybillsItems,
     purchaseWaybillsItems,
     purchaseWaybills,
     customerLookups,

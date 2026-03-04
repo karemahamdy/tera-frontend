@@ -827,7 +827,20 @@
     "InspectionResult": "Inspection Result",
     "InspectionResultPlaceholder": "Select inspection result",
     "InspectionNotes": "Inspection Notes",
-    "InspectionNotesPlaceholder": "Detailed inspection findings..."
+    "InspectionNotesPlaceholder": "Detailed inspection findings...",
+    "documentNumber": "Document Number",
+    "originalWaybillIds": "Original Waybill",
+    "supplierId": "Supplier",
+    "returnDate": "Return Date",
+    "returnReason": "Return Reason",
+    "otherReason": "Return Notes",
+    "warehouseId": "Warehouse",
+    "zoneId": "Zone",
+    "lineItems": "Line Items",
+    "inspector": "Inspector",
+    "inspectionDate": "Inspection Date",
+    "inspectionResult": "Inspection Result",
+    "inspectionNotes": "Inspection Notes"
   },
   "purchaseReturn": {
     "purchaseReturn": "Purchase Return ",

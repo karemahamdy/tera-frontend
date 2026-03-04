@@ -821,7 +821,20 @@
     "Zone": "المنطقة",
     "ZonePlaceholder": "اختر المنطقة",
     "CustomerNotes": "ملاحظات العميل",
-    "CustomerNotesPlaceholder": "أدخل ملاحظات العميل"
+    "CustomerNotesPlaceholder": "أدخل ملاحظات العميل",
+    "documentNumber": "رقم المستند",
+    "originalWaybillIds": "إذن الاستلام الأصلي",
+    "supplierId": "المورد",
+    "returnDate": "تاريخ المرتجع",
+    "returnReason": "سبب المرتجع",
+    "otherReason": "ملاحظات المرتجع",
+    "warehouseId": "المخزن",
+    "zoneId": "المنطقة",
+    "lineItems": "بنود الفاتورة",
+    "inspector": "المفتش",
+    "inspectionDate": "تاريخ الفحص",
+    "inspectionResult": "نتيجة الفحص",
+    "inspectionNotes": "ملاحظات الفحص"
   },
   "purchaseReturn": {
     "purchaseReturn": "مرتجع مشتريات",

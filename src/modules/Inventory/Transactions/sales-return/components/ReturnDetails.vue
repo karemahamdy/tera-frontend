@@ -1,82 +1,126 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue"
-import { useI18n } from "vue-i18n"
+import { useI18n } from "vue-i18n";
+import { useSalesReturnForm } from "../composables/useSalesReturnForm";
+import { computed, ref } from "vue";
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
+import OriginalWaybillSelection from "@/modules/Inventory/shared/components/OriginalWaybillSelection.vue";
+const {
+  ZonesLookups,
+  getZonesLookups,
+  salesWaybills,
+  getInventoryLookupsSalesWaybills,
+} = useInventoryLookups();
 
-const { t } = useI18n()
+const {
+  reasonsLookups,
+  customerLookups,
+  WarehouseLookups,
+  errors,
+  documentNumber,
+  originalWaybillIds,
+  customerId,
+  returnDate,
+  returnReason,
+  otherReason,
+  warehouseId,
+  zoneId,
+  getOriginalWaybillItems
+} = useSalesReturnForm();
 
-const SalesReturnNumber = ref("")
-const OriginalSalesWaybill = ref(null)
-const Zone = ref(null)
-const Customer = ref("")
-const waybillDate = ref()
-const ReturnReason = ref()
-const ReceivingWarehouse = ref()
-const CustomerNotes = ref()
+const { t } = useI18n();
 
-const id = ref(null)
+const isProf = computed(() => {
+  const wh = WarehouseLookups.value.find((w) => w.value === warehouseId.value);
+  const isProfessional = wh?.type === "Professional";
+  if (isProfessional) getZonesLookups(warehouseId.value);
+  // zones.value = ZonesLookups.value
+  return isProfessional;
+});
 
+const hasOriginalWaybill = computed(() => {
+  if (customerId.value) {
+    getInventoryLookupsSalesWaybills(customerId.value);
+    return true;
+  }
+  return false;
+});
 
-const errors = reactive({
-  SalesReturnNumber: "",
-  OriginalSalesWaybill: "",
-  Customer: "",
-  Zone: "",
-  Reference: "",
-  Currency: "",
-  ExchangeValue: "",
-  ReturnReason: "",
-  ReceivingWarehouse: "",
-  CustomerNotes: ""
-})
+const isVisible = ref<boolean>(false);
+const originalWaybillSelectionRef = ref<InstanceType<typeof OriginalWaybillSelection> | null>(null);
+
+const openOriginalWaybillSelection = () => {
+  if (!hasOriginalWaybill.value) return;
+  let data = salesWaybills.value?.filter((pb) =>
+    originalWaybillIds.value?.includes(pb.id),
+  );
+  if (originalWaybillSelectionRef.value) {
+    originalWaybillSelectionRef.value.setSelectedRows(data);
+  }
+  isVisible.value = true;
+};
+
+const handleOriginalWaybillSelection = (item: any) => {
+  originalWaybillIds.value = item.map((i: any) => i.id);
+  getOriginalWaybillItems()
+};
+
 </script>
 
 <template>
   <div>
-
     <p class="font-bold mb-5 text-lg">
       {{ t("SalesReturn.ReturnInformation") }}
     </p>
 
-    <FormInput :label="t('SalesReturn.SalesReturnNumber')" v-model="SalesReturnNumber"
-      :error="errors.SalesReturnNumber" :placeholder="t('SalesReturn.SalesReturnNumberPlaceholder')"
-      :invalid="!!errors.SalesReturnNumber" :disabled="!!id" />
+    <FormInput :label="t('SalesReturn.SalesReturnNumber')" v-model="documentNumber" :error="errors.documentNumber"
+      :placeholder="t('SalesReturn.SalesReturnNumberPlaceholder')" :invalid="!!errors.documentNumber"
+      :disabled="true" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-      <FormDropdown :label="t('SalesReturn.OriginalSalesWaybill')" v-model="OriginalSalesWaybill" :error="errors.OriginalSalesWaybill"
-        :placeholder="t('SalesReturn.OriginalSalesWaybillPlaceholder')" :invalid="!!errors.OriginalSalesWaybill" />
+      <FormDropdown :label="t('SalesReturn.Customer')" v-model="customerId" :error="errors.customerId"
+        :options="customerLookups" :placeholder="t('SalesReturn.CustomerPlaceholder')" />
 
-      <div>
-        <label class="block text-gray-600 text-lg">
-          {{ t("SalesReturn.ReturnDate") }}
-        </label>
-        <DatePicker v-model="waybillDate" showIcon fluid iconDisplay="input"
-          :placeholder="t('SalesReturn.ReturnDatePlaceholder')" />
+      <FormDropdown :label="t('SalesReturn.ReturnReason')" v-model="returnReason" :error="errors.returnReason"
+        :options="reasonsLookups" :placeholder="t('SalesReturn.ReturnReasonPlaceholder')" />
+
+      <div class="flex justify-center items-end gap-2 w-full">
+        <FormInput :label="$t('SalesReturn.originalWaybill')" class="w-9/10" disabled
+          :error="errors.originalWaybillIds" :placeholder="$t('itemsList.numSelected', {
+            count: originalWaybillIds?.length ?? 0,
+          })
+            " />
+        <a @click="openOriginalWaybillSelection"
+          class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500" :class="{
+            'cursor-not-allowed bg-gray-50': !hasOriginalWaybill,
+            'cursor-pointer bg-white hover:bg-primary-25': hasOriginalWaybill,
+          }" :disabled="!hasOriginalWaybill">
+          {{ $t("LDC.select") }}
+        </a>
       </div>
 
-      <FormDropdown :label="t('SalesReturn.Customer')" v-model="Customer" :error="errors.Customer"
-        :placeholder="t('SalesReturn.CustomerPlaceholder')" />
+      <FormInput :label="t('SalesReturn.ReturnDate')" v-model="returnDate" type="date" :error="errors.returnDate"
+        :placeholder="t('SalesReturn.ReturnDatePlaceholder')" :invalid="!!errors.returnDate" />
 
-        <FormDropdown :label="t('SalesReturn.ReturnReason')" v-model="ReturnReason" :error="errors.ReturnReason"
-          :placeholder="t('SalesReturn.ReturnReasonPlaceholder')" />
+      <FormDropdown :label="t('purchaseReturn.Warehouse')" v-model="warehouseId" :error="errors.warehouseId"
+        :options="WarehouseLookups" :placeholder="t('purchaseReturn.WarehousePlaceholder')" />
 
-      <FormDropdown :label="t('SalesReturn.ReceivingWarehouse')" v-model="ReceivingWarehouse" :error="errors.ReceivingWarehouse"
-        :placeholder="t('SalesReturn.ReceivingWarehousePlaceholder')" />
-
-      <FormDropdown :label="t('SalesReturn.Zone')" v-model="Zone" :error="errors.Zone"
-        :placeholder="t('SalesReturn.ZonePlaceholder')" />
+      <FormDropdown :label="t('SalesReturn.Zone')" v-model="zoneId" :error="errors.zoneId" :options="ZonesLookups"
+        :disabled="!isProf" :placeholder="t('SalesReturn.ZonePlaceholder')" />
       <div class="md:col-span-2">
-        <label class="text-gray-700 font-medium mb-2 block">
-          {{ $t("SalesReturn.CustomerNotes") }}
+        <label class="text-gray-700 font-bold mb-2 block">
+          {{ $t("purchaseReturn.ReturnNotes") }}
         </label>
 
-        <Textarea v-model="CustomerNotes" :placeholder="$t('SalesReturn.CustomerNotesPlaceholder')"
-          class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.CustomerNotes }" />
+        <Textarea v-model="otherReason" :placeholder="$t('SalesReturn.ReturnNotesPlaceholder')"
+          class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.otherReason }" />
 
-        <small v-if="errors.CustomerNotes" class="text-danger-500">
-          {{ $t(errors.CustomerNotes) }}
+        <small v-if="errors.otherReason" class="text-danger-500">
+          {{ $t(errors.otherReason) }}
         </small>
       </div>
     </div>
+    <OriginalWaybillSelection v-model:visible="isVisible" ref="originalWaybillSelectionRef" :items="salesWaybills"
+      @select="handleOriginalWaybillSelection" />
   </div>
 </template>
