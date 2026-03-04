@@ -36,7 +36,6 @@ const filtersOperation = computed(() => {
                 { label: t("button.all"), value: null },
                 { label: t("button.Pending"), value: "Pending" },
                 { label: t("button.Posted"), value: "Posted" },
-                { label: t("PhysicalCount.Adjusted"), value: "Adjusted" },
             ],
         }
     ]
@@ -150,7 +149,6 @@ onMounted(() => {
                             <span :class="getStatusText(data.status)">
                                 <span v-if="data.status == 'Pending'">{{ $t("button.Pending") }}</span>
                                 <span v-else-if="data.status == 'Posted'">{{ $t("button.Posted") }}</span>
-                                <span v-else>{{ $t("PhysicalCount.Adjusted") }}</span>
                             </span>
                         </div>
                     </template>
