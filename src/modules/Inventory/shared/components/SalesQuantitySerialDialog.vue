@@ -45,6 +45,8 @@ const totalQty = computed(() =>
 );
 
 const addSerial = () => {
+    console.log(serialInput.value);
+    
     if (!serialInput.value) return;
     
     const found = serialsLookups.value.find(s => s.mainSerial === serialInput.value);

@@ -98,7 +98,7 @@ export const InventoryLookupsService = {
       `/InventoryLookups/purchase-waybills?supplierId=${supplierId}`,
     );
   },
-  
+
   getInventoryLookupsPurchaseWaybillsItems(waybillIds: string[]) {
     const params = { waybillIds };
     return axiosWrapper.get<ApiResponse<any[]>>(
@@ -106,17 +106,50 @@ export const InventoryLookupsService = {
       {
         params,
         paramsSerializer: (params) => {
-        const queryParams = new URLSearchParams();
-        Object.entries(params).forEach(([key, value]) => {
-          if (Array.isArray(value)) {
-            value.forEach((item) => queryParams.append(key, item));
-          } else if (value !== undefined && value !== null) {
-            queryParams.append(key, value as string);
-          }
-        });
-        return queryParams.toString();
+          const queryParams = new URLSearchParams();
+          Object.entries(params).forEach(([key, value]) => {
+            if (Array.isArray(value)) {
+              value.forEach((item) => queryParams.append(key, item));
+            } else if (value !== undefined && value !== null) {
+              queryParams.append(key, value as string);
+            }
+          });
+          return queryParams.toString();
+        },
       },
+    );
+  },
+
+  getInventoryLookupsSalesWaybills(customerId: string) {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/sales-waybills?customerId=${customerId}`,
+    );
+  },
+
+  getInventoryLookupsSalesWaybillsItems(waybillIds: string[]) {
+    const params = { waybillIds };
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/sales-waybills/items`,
+      {
+        params,
+        paramsSerializer: (params) => {
+          const queryParams = new URLSearchParams();
+          Object.entries(params).forEach(([key, value]) => {
+            if (Array.isArray(value)) {
+              value.forEach((item) => queryParams.append(key, item));
+            } else if (value !== undefined && value !== null) {
+              queryParams.append(key, value as string);
+            }
+          });
+          return queryParams.toString();
+        },
       },
+    );
+  },
+
+  getInspectionResultsLookups() {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/inspection-results`,
     );
   },
 };
