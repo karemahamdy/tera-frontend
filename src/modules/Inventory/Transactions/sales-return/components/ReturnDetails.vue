@@ -24,6 +24,7 @@ const {
   otherReason,
   warehouseId,
   zoneId,
+  isView,
   getOriginalWaybillItems
 } = useSalesReturnForm();
 
@@ -79,18 +80,18 @@ const handleOriginalWaybillSelection = (item: any) => {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
       <FormDropdown :label="t('SalesReturn.Customer')" v-model="customerId" :error="errors.customerId"
-        :options="customerLookups" :placeholder="t('SalesReturn.CustomerPlaceholder')" />
+        :disabled="isView" :options="customerLookups" :placeholder="t('SalesReturn.CustomerPlaceholder')" />
 
       <FormDropdown :label="t('SalesReturn.ReturnReason')" v-model="returnReason" :error="errors.returnReason"
-        :options="reasonsLookups" :placeholder="t('SalesReturn.ReturnReasonPlaceholder')" />
+        :disabled="isView" :options="reasonsLookups" :placeholder="t('SalesReturn.ReturnReasonPlaceholder')" />
 
       <div class="flex justify-center items-end gap-2 w-full">
-        <FormInput :label="$t('SalesReturn.originalWaybill')" class="w-9/10" disabled
+        <FormInput :label="$t('SalesReturn.originalWaybill')" disabled :class="{ 'w-full': isView, 'w-9/10': !isView }"
           :error="errors.originalWaybillIds" :placeholder="$t('itemsList.numSelected', {
             count: originalWaybillIds?.length ?? 0,
           })
             " />
-        <a @click="openOriginalWaybillSelection"
+        <a v-if="!isView" @click="openOriginalWaybillSelection"
           class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500" :class="{
             'cursor-not-allowed bg-gray-50': !hasOriginalWaybill,
             'cursor-pointer bg-white hover:bg-primary-25': hasOriginalWaybill,
@@ -100,19 +101,19 @@ const handleOriginalWaybillSelection = (item: any) => {
       </div>
 
       <FormInput :label="t('SalesReturn.ReturnDate')" v-model="returnDate" type="date" :error="errors.returnDate"
-        :placeholder="t('SalesReturn.ReturnDatePlaceholder')" :invalid="!!errors.returnDate" />
+        :disabled="isView" :placeholder="t('SalesReturn.ReturnDatePlaceholder')" :invalid="!!errors.returnDate" />
 
       <FormDropdown :label="t('purchaseReturn.Warehouse')" v-model="warehouseId" :error="errors.warehouseId"
-        :options="WarehouseLookups" :placeholder="t('purchaseReturn.WarehousePlaceholder')" />
+        :disabled="isView" :options="WarehouseLookups" :placeholder="t('purchaseReturn.WarehousePlaceholder')" />
 
       <FormDropdown :label="t('SalesReturn.Zone')" v-model="zoneId" :error="errors.zoneId" :options="ZonesLookups"
-        :disabled="!isProf" :placeholder="t('SalesReturn.ZonePlaceholder')" />
+        :disabled="!isProf || isView" :placeholder="t('SalesReturn.ZonePlaceholder')" />
       <div class="md:col-span-2">
         <label class="text-gray-700 font-bold mb-2 block">
           {{ $t("purchaseReturn.ReturnNotes") }}
         </label>
 
-        <Textarea v-model="otherReason" :placeholder="$t('SalesReturn.ReturnNotesPlaceholder')"
+        <Textarea v-model="otherReason" :placeholder="$t('SalesReturn.ReturnNotesPlaceholder')" :disabled="isView"
           class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.otherReason }" />
 
         <small v-if="errors.otherReason" class="text-danger-500">

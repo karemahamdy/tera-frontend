@@ -55,6 +55,7 @@ const totalUnits = computed(() => {
 });
 
 const zones = ref<any[] | null>(null);
+const isView = ref<boolean>(false)
 
 export function usePurchaseReturnForm() {
   const { t } = useI18n();
@@ -252,6 +253,7 @@ export function usePurchaseReturnForm() {
 
   return {
     loading,
+    isView,
     fetchPurchaseReturnById,
     createReturn,
     updateReturn,

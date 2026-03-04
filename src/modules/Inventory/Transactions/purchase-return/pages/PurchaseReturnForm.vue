@@ -11,9 +11,15 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 import { usePurchaseReturnForm } from "../composables/usePurchasReturnForm";
+
+const props = defineProps<{
+  mode: "edit" | "create" | "view";
+}>();
+
 const {
   initializeForm,
   fetchLookupsData,
+  isView,
   handleSubmit,
   id,
   errors,
@@ -50,6 +56,7 @@ const steps = computed(() => {
 });
 
 onMounted(() => {
+  isView.value = props.mode === "view"
   initializeForm();
   fetchLookupsData();
 });
@@ -57,11 +64,7 @@ onMounted(() => {
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <ScreenHeader
-      title="inventory"
-      subtitle="operation.transactions"
-      actionName="purchaseReturn.purchaseReturn"
-    />
+    <ScreenHeader title="inventory" subtitle="operation.transactions" actionName="purchaseReturn.purchaseReturn" />
     <BaseStepper v-model="activeStep" :steps="steps" :code="documentNumber">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
@@ -72,28 +75,12 @@ onMounted(() => {
             </div>
           </div>
           <ReturnDetails v-if="activeStep === 0" />
-          <LineItems
-            v-else-if="activeStep === 1"
-            @next="nextTab"
-            @prev="previousTab"
-          />
-          <Review
-            v-else-if="activeStep === 2"
-            @prev="previousTab"
-            @submit="onSubmit"
-          />
+          <LineItems v-else-if="activeStep === 1" @next="nextTab" @prev="previousTab" />
+          <Review v-else-if="activeStep === 2" @prev="previousTab" @submit="onSubmit" />
         </template>
       </Card>
-      <StepperActions
-        :current="activeStep"
-        :total="steps.length"
-        nextText="Next"
-        prevText="Back"
-        finishText="Create"
-        @next="nextTab"
-        @previous="previousTab"
-        @finish="onSubmit"
-      />
+      <StepperActions :current="activeStep" :total="steps.length" :isView="isView" nextText="Next" prevText="Back"
+        finishText="Create" @next="nextTab" @previous="previousTab" @finish="onSubmit" />
     </BaseStepper>
   </div>
 </template>

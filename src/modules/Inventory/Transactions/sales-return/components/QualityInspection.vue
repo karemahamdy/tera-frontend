@@ -11,7 +11,8 @@ const {
   inspectionResult,
   inspectionNotes,
   inspectionResultsLookups,
-  id
+  id,
+  isView
 } = useSalesReturnForm();
 </script>
 
@@ -24,17 +25,17 @@ const {
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-      <FormInput :label="t('purchaseReturn.Inspector')" v-model="inspector" :error="errors.inspector"
+      <FormInput :label="t('purchaseReturn.Inspector')" v-model="inspector" :error="errors.inspector" :disabled="isView"
         :placeholder="t('SalesReturn.InspectorPlaceholder')" :invalid="!!errors.inspector" />
 
-      <FormInput :label="t('purchaseReturn.InspectionDate')" type="date" v-model="inspectionDate"
+      <FormInput :label="t('purchaseReturn.InspectionDate')" type="date" v-model="inspectionDate" :disabled="isView"
         :error="errors.inspectionDate" :placeholder="t('purchaseReturn.InspectionDatePlaceholder')"
         :invalid="!!errors.inspectionDate" />
 
       <FormDropdown :label="t('purchaseReturn.InspectionResult')" v-model="inspectionResult"
-        :options="inspectionResultsLookups"
-        :error="errors.inspectionResult" :placeholder="t('purchaseReturn.InspectionResultPlaceholder')"
-        :invalid="!!errors.inspectionResult" :disabled="!!id" class="md:col-span-2" />
+        :options="inspectionResultsLookups" :error="errors.inspectionResult"
+        :placeholder="t('purchaseReturn.InspectionResultPlaceholder')" :invalid="!!errors.inspectionResult"
+        :disabled="!!id || isView" class="md:col-span-2" />
 
       <div class="md:col-span-2">
         <label class="text-gray-700 font-medium mb-2 block">
@@ -42,7 +43,8 @@ const {
         </label>
 
         <Textarea v-model="inspectionNotes" :placeholder="$t('purchaseReturn.InspectionNotesPlaceholder')"
-          class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.inspectionNotes }" />
+          :disabled="isView" class="mt-1 w-full p-3 border rounded-lg" rows="4"
+          :class="{ 'border-danger-500': errors.inspectionNotes }" />
 
         <small v-if="errors.inspectionNotes" class="text-danger-500">
           {{ $t(errors.inspectionNotes) }}

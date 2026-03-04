@@ -61,6 +61,7 @@ const [inspectionResult] = defineField("inspectionResult");
 const [inspectionNotes] = defineField("inspectionNotes");
 
 const zones = ref<any[] | null>(null);
+const isView = ref<boolean>(false);
 
 export function useSalesReturnForm() {
   const { t } = useI18n();
@@ -264,6 +265,7 @@ export function useSalesReturnForm() {
 
   return {
     loading,
+    isView,
     fetchPurchaseReturnById,
     createReturn,
     updateReturn,

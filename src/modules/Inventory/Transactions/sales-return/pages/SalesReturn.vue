@@ -15,15 +15,15 @@ const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
 const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesReturn, onFilterChange, fetchSalesReturn, apiSalesReturn } = useSalesReturn();
-const { reasonsSalesLookups, getSalesReasonLookups } = useLookups();  
+const { reasonsSalesLookups, getSalesReasonLookups } = useLookups();
 
 const rules = [
-  "salesRules.stockAvailable",    
-  "salesRules.serialLot",         
-  "salesRules.multiUoM",          
-  "salesRules.shippingStock",    
-  "salesRules.carrierIntegration" ,
-  "salesRules.serialIntegration" 
+    "salesRules.stockAvailable",
+    "salesRules.serialLot",
+    "salesRules.multiUoM",
+    "salesRules.shippingStock",
+    "salesRules.carrierIntegration",
+    "salesRules.serialIntegration"
 ];
 
 const customItems = [
@@ -36,9 +36,9 @@ const customItems = [
     },
 ];
 onMounted(() => {
-   Promise.all([
-        getSalesReasonLookups(), 
-         fetchSalesReturn()
+    Promise.all([
+        getSalesReasonLookups(),
+        fetchSalesReturn()
     ]);
 });
 const filtersOperation = computed(() => {
@@ -54,14 +54,14 @@ const filtersOperation = computed(() => {
                 { label: t("button.Posted"), value: 2 },
             ],
         },
-         {
+        {
             placeholder: "SalesReturn.allreason",
             value: null,
             field: "ReturnReason",
-             isSingle: true,
+            isSingle: true,
             options: [
-                   { label: t("button.all"), value: null },
-                 ...reasonsSalesLookups.value
+                { label: t("button.all"), value: null },
+                ...reasonsSalesLookups.value
             ],
         }
     ]
@@ -105,13 +105,13 @@ const handleActionMenu = async (payload: any) => {
     const data = payload.data || payload.row || payload;
     if (action === 'edit') {
         router.push({
-            name: "PurchaseWaybillFormEdit",
+            name: "SalesReturnEdit",
             params: { id: data.id },
         });
     }
     if (action === 'view') {
         router.push({
-            name: "PurchaseWaybillFormView",
+            name: "SalesReturnView",
             params: { id: data.id },
         });
     }
@@ -143,12 +143,12 @@ const getStatusText = (status: any) => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="SalesReturn.salesReturn" />
+        <ScreenHeader title="inventory" subtitle="operation.transactions" actionName="SalesReturn.salesReturn" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="SalesReturn.salesReturn" subtitle="SalesReturn.subtitle" :showExport="false"
-                :showImport="false" :mainBtn="true" mainBtnText="SalesReturn.addNew"  :showMultiFilter="true"
+                    :showImport="false" :mainBtn="true" mainBtnText="SalesReturn.addNew" :showMultiFilter="true"
                     :filters="filtersOperation" @filter-change="onFilterChange"
                     searchPlaceholder="SalesReturn.searchPlaceholder" @search="onSearch"
                     :onMainBtnClick="addPurchaseWaybill" />
@@ -156,7 +156,8 @@ const getStatusText = (status: any) => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiSalesReturn" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" :canEdit="(row: any) => row.status !== 'Posted'"
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
+                    :canEdit="(row: any) => row.status !== 'Posted'"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
                     <template v-slot:["col-status"]="{ data }">
@@ -168,10 +169,10 @@ const getStatusText = (status: any) => {
                             </span>
                         </div>
                     </template>
-                      <template  v-slot:["col-documentNumber"]="{ data }">
+                    <template v-slot:["col-documentNumber"]="{ data }">
                         <span class="text-primary-500 cursor-pointer underline">{{ data.documentNumber }}</span>
                     </template>
-                      <template  v-slot:["col-originalWaybillNumbers"]="{ data }">
+                    <template v-slot:["col-originalWaybillNumbers"]="{ data }">
                         <span class="text-primary-500 cursor-pointer underline">{{ data.originalWaybillNumbers }}</span>
                     </template>
                 </DynamicTable>

@@ -15,7 +15,8 @@ const {
   itemsLookups,
   WarehouseHierarchyLookups,
   lineItems,
-  totalUnits
+  totalUnits,
+  isView
 } = useSalesReturnForm();
 
 // --- Computed ---
@@ -64,6 +65,7 @@ const getCurrentLocations = (warehouseId: string) => {
 };
 
 const showlocationPicker = (data: Item) => {
+  if (isView.value) return;
   selectedItem.value = data;
   locationPickerFlag.value = true;
   selectedLocationId.value = data.locationId || null;
@@ -158,7 +160,7 @@ const removeItem = (data: any) => {
           {{ t("ReturnItems.description") }}
         </p>
       </div>
-      <BaseButton :label="t('itemsList.addItem')" icon="AddSquare"
+      <BaseButton :label="t('itemsList.addItem')" icon="AddSquare" v-if="!isView"
         class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
         @click="openItemDialog" />
     </div>
@@ -189,21 +191,23 @@ const removeItem = (data: any) => {
         </template>
 
         <template #col-uom="{ data }">
-          <FormDropdown v-model="data.unitId" :options="data.units" class="w-32 p-inputtext-sm text-sm" />
+          <FormDropdown :disabled="isView" v-model="data.unitId" :options="data.units"
+            class="w-32 p-inputtext-sm text-sm" />
         </template>
 
         <template #col-ReturnQTY="{ data }">
           <div v-if="data.trackingType === 'Serial'" class="flex items-center gap-2">
-            <BaseButton :label="t('itemsList.add')" variant="outline-primary" @click="openQtyDialog(data)" />
+            <BaseButton v-if="!isView" :label="t('itemsList.add')" variant="outline-primary" @click="openQtyDialog(data)" />
             <span class="text-gray-500">({{ data.quantity }})</span>
           </div>
           <div v-else>
-            <InputNumber v-model="data.quantity" :min="0" :max="data.shipped" />
+            <InputNumber :disabled="isView" v-model="data.quantity" :min="0" :max="data.shipped" />
           </div>
         </template>
 
         <template #col-warehouse="{ data }">
-          <FormDropdown v-model="data.warehouseId" :options="warehouseLookups" class="w-32 p-inputtext-sm text-sm" />
+          <FormDropdown :disabled="isView" v-model="data.warehouseId" :options="warehouseLookups"
+            class="w-32 p-inputtext-sm text-sm" />
         </template>
 
         <template #col-zone="{ data }">
@@ -222,7 +226,7 @@ const removeItem = (data: any) => {
             :zoneId="data.zoneId" :locationId="data.locationId" />
         </template>
         <template #col-action="{ data }">
-          <button class="text-red-400 hover:text-red-600" @click="removeItem(data)">
+          <button v-if="!isView" class="text-red-400 hover:text-red-600" @click="removeItem(data)">
             <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
           </button>
         </template>
