@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import ReturnDetails from "../components/ReturnDetails.vue";
 
 import BaseStepper from "@/sharedComponents/stepper/BaseStepper.vue";
@@ -7,19 +7,24 @@ import StepperActions from "@/sharedComponents/stepper/StepperActions.vue";
 import LineItems from "../components/LineItems.vue";
 import Review from "../components/Review.vue";
 
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { usePurchaseReturnForm } from "../composables/usePurchasReturnForm";
 const {
   initializeForm,
+  fetchLookupsData,
   handleSubmit,
   id,
   errors,
-  createSalesReturn,
-  updateSalesReturn,
+  documentNumber,
+  createReturn,
+  updateReturn,
 } = usePurchaseReturnForm();
 
 const activeStep = ref(0);
 const nextTab = () => {
-  if (activeStep.value < steps.length - 1) activeStep.value++;
+  if (activeStep.value < steps.value.length - 1) activeStep.value++;
 };
 
 const previousTab = () => {
@@ -28,23 +33,25 @@ const previousTab = () => {
 
 
 const onSubmit = handleSubmit(async (values) => {
-  console.log(`values: ${values}`);
-  
   if (id) {
-    await updateSalesReturn(id, values);
+    await updateReturn(id, values);
   } else {
-    await createSalesReturn(values);
+    await createReturn(values);
   }
 });
 
-const steps = [
-  { label: "Return Information" },
-  { label: "Return Items" },
-  { label: "Review" },
-];
+
+const steps = computed(() => {
+  return [
+    { label: t("purchaseReturn.ReturnInformation") },
+    { label: t("ReturnItems.title") },
+    { label: t("PhysicalCount.Review") }
+  ]
+});
 
 onMounted(() => {
   initializeForm();
+  fetchLookupsData();
 });
 </script>
 
@@ -53,9 +60,9 @@ onMounted(() => {
     <ScreenHeader
       title="inventory"
       subtitle="operation.transactions"
-      actionName="purchaseWaybill.purchaseWaybill"
+      actionName="purchaseReturn.purchaseReturn"
     />
-    <BaseStepper v-model="activeStep" :steps="steps" code="PW-2026-001">
+    <BaseStepper v-model="activeStep" :steps="steps" :code="documentNumber">
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
           <div v-if="Object.keys(errors).length > 0"

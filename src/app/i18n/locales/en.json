@@ -882,7 +882,19 @@
     "unitPrice": "Unit Price",
     "tax": "Tax %",
     "returned": "Returned",
-    "selectOriginalWaybill": "Select Original Waybill"
+    "selectOriginalWaybill": "Select Original Waybill",
+    "selectedReturnItems": "Showing {count} Items selected for return",
+    "totalReturnItems": "Total Return Items: ",
+    "units": "{count} Units",
+    "documentNumber": "Document Number",
+    "originalWaybillIds": "Original Waybill",
+    "supplierId": "Supplier",
+    "returnDate": "Return Date",
+    "returnReason": "Return Reason",
+    "otherReason": "Return Notes",
+    "warehouseId": "Warehouse",
+    "zoneId": "Zone",
+    "lineItems": "Line Items"
   },
   "rules": {
     "ruleHeader": "Sales Waybill Business Rules:",

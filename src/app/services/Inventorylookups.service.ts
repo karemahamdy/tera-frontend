@@ -98,4 +98,25 @@ export const InventoryLookupsService = {
       `/InventoryLookups/purchase-waybills?supplierId=${supplierId}`,
     );
   },
+  
+  getInventoryLookupsPurchaseWaybillsItems(waybillIds: string[]) {
+    const params = { waybillIds };
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/purchase-waybills/items`,
+      {
+        params,
+        paramsSerializer: (params) => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+          if (Array.isArray(value)) {
+            value.forEach((item) => queryParams.append(key, item));
+          } else if (value !== undefined && value !== null) {
+            queryParams.append(key, value as string);
+          }
+        });
+        return queryParams.toString();
+      },
+      },
+    );
+  },
 };

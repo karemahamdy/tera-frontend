@@ -22,6 +22,7 @@ export function useInventoryLookups() {
   const ItemsSerialsLookups = ref<any[]>([]);
 
   const purchaseWaybills = ref<any[]>([]);
+  const purchaseWaybillsItems = ref<any[]>([]);
 
   const getItemSerialsLookups = async (params: {
     itemId: string;
@@ -155,18 +156,38 @@ export function useInventoryLookups() {
     }
   };
 
-  const getItemSerials = async (itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) => {
+  const getItemSerials = async (
+    itemId: string,
+    warehouseId: string,
+    zoneId?: string | null,
+    locationId?: string | null,
+  ) => {
     try {
-      const res = await InventoryLookupsService.getItemSerials(itemId, warehouseId, zoneId, locationId);
+      const res = await InventoryLookupsService.getItemSerials(
+        itemId,
+        warehouseId,
+        zoneId,
+        locationId,
+      );
       serialsLookups.value = res.data;
     } catch (error) {
       toastService.error(error as string);
     }
   };
 
-  const getItemBalance = async (itemId: string, warehouseId: string, zoneId?: string | null, locationId?: string | null) => {
+  const getItemBalance = async (
+    itemId: string,
+    warehouseId: string,
+    zoneId?: string | null,
+    locationId?: string | null,
+  ) => {
     try {
-      const res = await InventoryLookupsService.getItemBalance(itemId, warehouseId, zoneId, locationId);
+      const res = await InventoryLookupsService.getItemBalance(
+        itemId,
+        warehouseId,
+        zoneId,
+        locationId,
+      );
       return res.data?.totalBalance ?? res.data ?? 0;
     } catch (error) {
       toastService.error(error as string);
@@ -174,13 +195,30 @@ export function useInventoryLookups() {
     }
   };
 
-
   const getInventoryLookupsPurchaseWaybills = async (supplierId: string) => {
     try {
-      const res = await InventoryLookupsService.getInventoryLookupsPurchaseWaybills(supplierId);
+      const res =
+        await InventoryLookupsService.getInventoryLookupsPurchaseWaybills(
+          supplierId,
+        );
       purchaseWaybills.value = res.data;
     } catch (error) {
       toastService.error(error as string);
+    }
+  };
+
+  const getInventoryLookupsPurchaseWaybillsItems = async (
+    waybillIds: string[],
+  ) => {
+    try {
+      const res =
+        await InventoryLookupsService.getInventoryLookupsPurchaseWaybillsItems(
+          waybillIds,
+        );
+      purchaseWaybillsItems.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+      return [];
     }
   };
 
@@ -200,6 +238,8 @@ export function useInventoryLookups() {
     getItemSerialsLookups,
     getCustomerLookups,
     getInventoryLookupsPurchaseWaybills,
+    getInventoryLookupsPurchaseWaybillsItems,
+    purchaseWaybillsItems,
     purchaseWaybills,
     customerLookups,
     ItemsSerialsLookups,
@@ -214,7 +254,6 @@ export function useInventoryLookups() {
     costCenterLookups,
     WarehouseHierarchyLookups,
     serialsLookups,
-    itemBalance
-
+    itemBalance,
   };
 }
