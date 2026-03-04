@@ -27,6 +27,7 @@ const {
 const { getReasonLookups, reasonsLookups } = useLookups();
 
 import { useForm } from "vee-validate";
+import { label } from "@primeuix/themes/aura/metergroup";
 const { handleSubmit, errors, defineField, resetForm, setValues } =
   useForm<PurchaseReturnForm>({
     validationSchema: PurchaseReturnSchema,
@@ -62,14 +63,33 @@ export function usePurchaseReturnForm() {
   const route = useRoute();
   const id = route.params.id ? String(route.params.id) : null;
 
+  const getItemInfo = (id: string) => {
+    const item = itemsLookups.value.find((i) => i.id === id);
+    if (item) {
+      return {
+        itemCode: item.code,
+        itemName: item.name,
+        trackingType: item.trackingType,
+        units: item.units?.map((unit: Unit) => ({
+          label: unit.unitName,
+          value: unit.unitId,
+        })),
+      };
+    }
+    return {};
+  };
+
   const fetchPurchaseReturnById = async (id: string) => {
     loading.value = true;
     try {
       const resp = await PurchaseReturnService.getById(id);
-      resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate)
+      resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate);
       setValues({
         ...resp.returnHeader,
-        lineItems: resp.lineItems,
+        lineItems: resp.lineItems.map((item: any) => ({
+          ...item,
+          ...getItemInfo(item?.itemId as string),
+        })),
       });
     } catch (err: any) {
       toastService.error(err);

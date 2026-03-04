@@ -68,14 +68,34 @@ export function useSalesReturnForm() {
   const route = useRoute();
   const id = route.params.id ? String(route.params.id) : null;
 
+  const getItemInfo = (id: string) => {
+    const item = itemsLookups.value.find((i) => i.id === id);
+    if (item) {
+      return {
+        itemCode: item.code,
+        itemName: item.name,
+        trackingType: item.trackingType,
+        units: item.units?.map((unit: Unit) => ({
+          label: unit.unitName,
+          value: unit.unitId,
+        })),
+      };
+    }
+    return {};
+  };
+
   const fetchPurchaseReturnById = async (id: string) => {
     loading.value = true;
     try {
       const resp = await SalesReturnService.getById(id);
-      resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate)
+      resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate);
+
       setValues({
         ...resp.returnHeader,
-        lineItems: resp.lineItems,
+        lineItems: resp.lineItems.map((item: any) => ({
+          ...item,
+          ...getItemInfo(item?.itemId as string),
+        })),
         ...resp.inspection,
       });
     } catch (err: any) {
