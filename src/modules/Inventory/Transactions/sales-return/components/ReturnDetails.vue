@@ -113,7 +113,7 @@ const handleOriginalWaybillSelection = (item: any) => {
           {{ $t("purchaseReturn.ReturnNotes") }}
         </label>
 
-        <Textarea v-model="otherReason" :placeholder="$t('SalesReturn.ReturnNotesPlaceholder')" :disabled="isView"
+        <Textarea v-model="otherReason" :placeholder="$t('purchaseReturn.ReturnNotesPlaceholder')" :disabled="isView"
           class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.otherReason }" />
 
         <small v-if="errors.otherReason" class="text-danger-500">
