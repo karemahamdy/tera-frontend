@@ -40,29 +40,29 @@ defineProps({
         <p class="text-base font-semibold text-gray-800">{{ data.direction }}</p>
       </div>
 
-      <div v-if="data.direction !== 'Transfare'">
+      <div v-if="data.direction !== 'Transfer'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.warehouse') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.warehouse }}</p>
       </div>
 
-      <div v-if="data.direction !== 'Transfare'">
+      <div v-if="data.direction !== 'Transfer'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.zone') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.zone }}</p>
       </div>
 
-      <div v-if="data.direction !== 'Transfare'">
+      <div v-if="data.direction !== 'Transfer'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.type') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.type }}</p>
       </div>
 
-      <div class="md:col-span-3" v-if="data.direction !== 'Transfare'">
+      <div class="md:col-span-3" v-if="data.direction !== 'Transfer'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.costCenter') }}</p>
         <p class="text-base font-semibold text-gray-800">{{ data.costCenter }}</p>
       </div>
     </div>
 
 
-    <div v-if="data.direction === 'Transfare'" class="mt-8 pt-6 border-t border-gray-100">
+    <div v-if="data.direction === 'Transfer'" class="mt-8 pt-6 border-t border-gray-100">
       <h3 class="text-sm font-semibold text-gray-800 mb-4">
         {{ t('transaction.transferDetails') }}
       </h3>
