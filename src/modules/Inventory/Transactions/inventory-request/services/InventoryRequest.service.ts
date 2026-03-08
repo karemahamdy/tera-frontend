@@ -6,32 +6,32 @@ export const InventoryRequestService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<InventoryRequestResponse>(
-      `/purchase-waybill`, { params }
+      `/inventory-request`, { params }
     );
-    return resp.data;
+    return resp;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/purchase-waybill/${id}`);
+    const data = await axiosWrapper.get<any>(`/inventory-request/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
+    const data = await axiosWrapper.post<any>(`/inventory-request`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/purchase-waybill/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/inventory-request/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/purchase-waybill/${id}`);
+    await axiosWrapper.delete(`/inventory-request/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/purchase-waybill/Status/${id}`,
+      `/inventory-request/Status/${id}`,
       null,
       {
         params: { isActive }
@@ -42,7 +42,7 @@ export const InventoryRequestService = {
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/purchase-waybill/export-LDCs`,
+      `/inventory-request/export-LDCs`,
       {
         params: payload,
         responseType: "blob",
