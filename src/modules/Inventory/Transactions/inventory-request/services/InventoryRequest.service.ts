@@ -29,14 +29,8 @@ export const InventoryRequestService = {
     await axiosWrapper.delete(`/inventory-request/${id}`);
   },
 
-  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(
-      `/inventory-request/Status/${id}`,
-      null,
-      {
-        params: { isActive }
-      }
-    );
+  async getNextNumber() {
+    const data = await axiosWrapper.get<any>(`/inventory-request/next-number`);
     return data.data;
   },
 

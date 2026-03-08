@@ -784,7 +784,9 @@
     "editSalesWaybill": "Edit Sales Waybill",
     "viewSalesWaybill": "View Sales Waybill",
     "InvoiceNumber": "Invoice Number",
-    "InvoiceNumberPlaceholder": "Enter Invoice Number"
+    "InvoiceNumberPlaceholder": "Enter Invoice Number",
+    "SalesType": "Sales Type",
+    "SalesTypePlaceholder": "Select Sales Type"
   },
   "SalesReturn": {
     "salesReturn": "Sales Return",

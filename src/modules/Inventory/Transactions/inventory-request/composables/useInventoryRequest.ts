@@ -102,19 +102,18 @@ export function useInventoryRequest() {
     }
   };
 
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await InventoryRequestService.toggleActive(id, isActive);
-      toastService.success((t("inventoryRequest.InventoryRequestUpdatedSuccessfully")));
-      await fetchInventoryRequest(pageIndex.value);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
+ const fetchNextNumber = async () => {
+      loading.value = true;
+      try {
+        const resp = await InventoryRequestService.getNextNumber();
+        return resp;
+      } catch (err: any) {
+        toastService.error(err);
+        return null;
+      } finally {
+        loading.value = false;
+      }
+    };
 
   const onFilterChange = (filter: {
     filter: { field: string };
@@ -148,7 +147,7 @@ export function useInventoryRequest() {
     createInventoryRequest,
     updateInventoryRequest,
     deleteInventoryRequest,
-    toggleActive,
+    fetchNextNumber,
     pageIndex,
     pageSize,
     totalCount,
