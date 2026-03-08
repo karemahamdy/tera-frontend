@@ -100,7 +100,7 @@ function emitUpdate() {
       incoterm:        form.incoterm,
       subTotal:        form.subTotal,
       totalTax:        form.totalTax,
-      globalDiscount:  form.globalDiscount,
+      globalDiscount:  Number(form.globalDiscount) || 0,
       grandTotal:      form.grandTotal,
       // base amounts depend on exchange rate / total base
       subTotalBase: subTotalBase.value,
