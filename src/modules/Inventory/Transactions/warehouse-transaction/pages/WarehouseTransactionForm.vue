@@ -35,7 +35,7 @@ const activeStep = ref(0);
 
 const formData = reactive({
   details: {
-    direction: 'Transfare',
+    direction: 'Transfer',
     documentNumber: '',
     waybillDate: new Date(),
     inventoryRequest: '',
@@ -118,9 +118,9 @@ const submit = async () => {
       zoneId: det.zone || null,
       locationId: det.locationId || null,
 
-      destinationWarehouseId: det.direction === 'Transfare' ? (det.destination?.warehouse || null) : null,
-      destinationZoneId: det.direction === 'Transfare' ? (det.destination?.zone || null) : null,
-      destinationLocationId: det.direction === 'Transfare' ? (det.destination?.locationId || null) : null,
+      destinationWarehouseId: det.direction === 'Transfer' ? (det.destination?.warehouse || null) : null,
+      destinationZoneId: det.direction === 'Transfer' ? (det.destination?.zone || null) : null,
+      destinationLocationId: det.direction === 'Transfer' ? (det.destination?.locationId || null) : null,
 
       lineItems: formData.lineItems.map((item: any) => ({
         itemId: item.itemId,

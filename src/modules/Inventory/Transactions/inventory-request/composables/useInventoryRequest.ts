@@ -15,7 +15,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const StatusFilter = ref('');
+const TransactionType = ref<string | null>(null);
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
 export function useInventoryRequest() {
@@ -30,7 +30,7 @@ export function useInventoryRequest() {
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        TransactionType: TransactionType.value as string | null,
       });
       const payload = response && response.data ? response.data : response;
       apiInventoryRequest.value = payload.items ?? [];
@@ -123,7 +123,7 @@ export function useInventoryRequest() {
     const field = filter.filter.field;
     const value = filter.value;
     if (field === "status") {
-      StatusFilter.value = value;
+      TransactionType.value = value;
     }
     fetchInventoryRequest(1);
   };

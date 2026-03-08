@@ -23,7 +23,7 @@ const {
 } = useInventoryLookups();
 
 const directions = [
-  { value: 'Transfare', labelKey: 'direction.transfer' },
+  { value: 'Transfer', labelKey: 'direction.transfer' },
   { value: 'Inbound', labelKey: 'direction.inbound' },
   { value: 'Outbound', labelKey: 'direction.outbound' },
 ]
@@ -200,7 +200,7 @@ onMounted(async () => {
       </div>
 
       <!-- Warehouse/Zone for Inbound/Outbound -->
-      <template v-if="modelValue.direction !== 'Transfare'">
+      <template v-if="modelValue.direction !== 'Transfer'">
 
         <FormDropdown 
           :label="t('items.costCenter')" 
@@ -249,8 +249,8 @@ onMounted(async () => {
 
       </template>
 
-      <!-- Transfare Source/Target Grid -->
-      <div v-if="modelValue.direction === 'Transfare'" class="mt-5 md:col-span-2">
+      <!-- Transfer Source/Target Grid -->
+      <div v-if="modelValue.direction === 'Transfer'" class="mt-5 md:col-span-2">
         <p><strong>{{ $t("itemTransaction.sourceTargetItems") }}</strong></p>
         <div class="grid grid-cols-9 justify-center items-center gap-2 mt-2">
 
