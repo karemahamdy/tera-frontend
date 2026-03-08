@@ -46,8 +46,6 @@ const columns = computed(() => {
     const Columns = [ 
         { field: 'code', header: t('PhysicalCount.CountID'), sortable: true },
         { field: 'countDate', header: t('PhysicalCount.CountDate'), type: 'date', sortable: true },
-        { field: 'warehouseName', header: t('PhysicalCount.warehouse'), type: 'slot', sortable: true },
-        { field: 'zoneName', header: t('PhysicalCount.zone'), type: 'date', sortable: true },
         { field: 'totalItems', header: t('PhysicalCount.total'), sortable: true },
         { field: 'countedItems', header: t('PhysicalCount.Counted'), type: 'slot', sortable: true },
         { field: 'totalVariance', header: t('PhysicalCount.Variances'), type: 'slot', sortable: true },

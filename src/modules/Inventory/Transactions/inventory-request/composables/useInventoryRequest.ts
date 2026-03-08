@@ -62,7 +62,7 @@ export function useInventoryRequest() {
     loading.value = true;
     try {
       const response = await InventoryRequestService.create(payload);
-      toastService.success(t("InventoryRequest.InventoryRequestCreatedSuccessfully"));
+      toastService.success(t("inventoryRequest.InventoryRequestCreatedSuccessfully"));
       await fetchInventoryRequest(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -77,7 +77,7 @@ export function useInventoryRequest() {
     loading.value = true;
     try {
       const response = await InventoryRequestService.update(id, payload);
-      toastService.success(t("InventoryRequest.InventoryRequestUpdatedSuccessfully"));
+      toastService.success(t("inventoryRequest.InventoryRequestUpdatedSuccessfully"));
       await fetchInventoryRequest(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -92,7 +92,7 @@ export function useInventoryRequest() {
     loading.value = true;
     try {
       await InventoryRequestService.delete(id);
-      toastService.success((t("InventoryRequest.InventoryRequestDeletedSuccessfully")));
+      toastService.success((t("inventoryRequest.InventoryRequestDeletedSuccessfully")));
       apiInventoryRequest.value = apiInventoryRequest.value.filter((b) => b.id !== id);
     } catch (err: any) {
       toastService.error(err);
@@ -106,7 +106,7 @@ export function useInventoryRequest() {
     loading.value = true;
     try {
       await InventoryRequestService.toggleActive(id, isActive);
-      toastService.success((t("InventoryRequest.InventoryRequestUpdatedSuccessfully")));
+      toastService.success((t("inventoryRequest.InventoryRequestUpdatedSuccessfully")));
       await fetchInventoryRequest(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
