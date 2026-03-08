@@ -314,10 +314,8 @@ onMounted(async () => {
       <StepperActions 
         v-if="mode !== 'view'"
         :current="activeStep" 
-        :total="steps.length" 
-        nextText="Next" 
-        prevText="Back" 
-        :finishText="mode === 'edit' ? 'Update' : 'Create'"
+        :total="steps.length"    
+        :finishText="mode === t('edit') ? t('button.update') : t('button.create')"
         @next="nextTab" 
         @previous="previousTab" 
         @finish="submit" 

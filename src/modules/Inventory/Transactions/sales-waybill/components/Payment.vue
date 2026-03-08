@@ -198,7 +198,7 @@ onMounted(async () => {
                     </div>
                     <div class="md:col-span-2">
                         <FormDropdown 
-                            :label="t('salesWaybill.SalesType', 'Sales Type')" 
+                            :label="t('salesWaybill.SalesType')" 
                             v-model="form.purchaseType" 
                             :options="salesTypeOptions"
                             optionLabel="label"
