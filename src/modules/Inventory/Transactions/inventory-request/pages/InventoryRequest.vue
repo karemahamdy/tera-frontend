@@ -4,13 +4,15 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useInventoryRequest } from "../composables/useInventoryRequest";
 import RulesCard from "@/sharedComponents/RulesCard.vue";
-
+import StatusDialog from "@/sharedComponents/StatusDialog.vue";
+import alertIcon from '@/assets/images/alert.png';
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
-const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange } = useInventoryRequest();
+const isDeleting = ref(false);
+const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, onFilterChange , apiInventoryRequest, fetchInventoryRequest, deleteInventoryRequest} = useInventoryRequest();
 
 const rules = [
   "RequestRules.department",    
@@ -60,14 +62,14 @@ const customItems = [
     },
 ];
 onMounted(() => {
-    // fetchInventoryRequest();
+    fetchInventoryRequest();
 });
 const filtersOperation = computed(() => {
     return [
         {
             placeholder: "inventoryRequest.allTypes",
             value: null,
-            field: "type",
+            field: "status",
             options: [
                 { label: t("inventoryRequest.allTypes"), value: null },
                 { label: t("inventoryRequest.inbound"), value: "inbound" },
@@ -81,11 +83,11 @@ const filtersOperation = computed(() => {
 const columns = computed(() => {
     const Columns = [ 
         { field: 'requestId', header: t('inventoryRequest.requestId'), sortable: true },
-        { field: 'requestedBy', header: t('inventoryRequest.requestedBy'), sortable: true },
+        { field: 'requestedByName', header: t('inventoryRequest.requestedBy'), sortable: true },
         { field: 'type', header: t('inventoryRequest.type'), type: 'slot', sortable: true },
         { field: 'date', header: t('inventoryRequest.date'), type: 'date', sortable: true },
         { field: 'items', header: t('inventoryRequest.items'), sortable: true },
-        { field: 'reason', header: t('inventoryRequest.reason'), sortable: true },
+        { field: 'resone', header: t('inventoryRequest.reason'), sortable: true },
         { field: 'action', header: t('inventoryRequest.action'), type: 'action', sortable: false },
     ];
 
@@ -107,7 +109,15 @@ const confirmDelete = (row: any) => {
     rowToDelete.value = row;
     showDeleteDialog.value = true;
 };
-
+const handleDeleteConfirm = async () => {
+    if (!rowToDelete.value) return;
+    isDeleting.value = true;
+    await deleteInventoryRequest(rowToDelete.value.id).finally(() => {
+        isDeleting.value = false;
+        showDeleteDialog.value = false;
+        rowToDelete.value = null;
+    });
+};
 const handleActionMenu = async (payload: any) => {
     const action = payload.action || payload;
     const data = payload.data || payload.row || payload;
@@ -147,7 +157,7 @@ const addInventoryRequest = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiInventoryRequest" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
                     <template  v-slot:["col-type"]="{ data }">
@@ -169,7 +179,12 @@ const addInventoryRequest = () => {
                     </template>
                     </DynamicTable>
                 <RulesCard title="RequestRules.ruleHeader" :items="rules" color="primary" />
-              
+               <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('inventoryRequest.deleteConfirm')"
+            :buttons="[
+                { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
+                { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
+            ]" @confirm="handleDeleteConfirm" />
+
             </template>
         </card>
 

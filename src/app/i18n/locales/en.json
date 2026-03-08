@@ -1062,7 +1062,10 @@
     "description": "Manage material requisition requests from departments",
     "searchPlaceholder": "Search inventory requests...",
     "newRequest": "New Request",
-    "transaction": "Transaction"
+    "transaction": "Transaction",
+    "deleteConfirm": "Are you sure you want to delete this Request?",
+    "InventoryRequestDeletedSuccessfully": "Inventory Request Deleted Successfully",
+    "InventoryRequestCreatedSuccessfully": "Inventory Request Created Successfully"
   },
   "warehouseTransaction": {
     "waybillId": "Waybill ID",

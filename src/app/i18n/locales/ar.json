@@ -1061,7 +1061,10 @@
     "description": "إدارة طلبات المواد المطلوبة من الأقسام",
     "searchPlaceholder": "ابحث عن طلبات المخزون...",
     "newRequest": "طلب جديد",
-    "transaction": "معاملة"
+    "transaction": "معاملة",
+     "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+    "InventoryRequestDeletedSuccessfully": "تم حذف هذا الطلب بنجاح"
+
   },
   "warehouseTransaction": {
     "waybillId": "رقم الإذن",
