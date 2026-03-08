@@ -93,6 +93,10 @@ const submit = async () => {
         const rate = Number(formData.value.paymentTerms?.exchangeRate) || 1;
         return {
           ...pi,
+          subTotal: Number(pi?.subTotal) || 0,
+          totalTax: Number(pi?.totalTax) || 0,
+          globalDiscount: Number(pi?.globalDiscount) || 0,
+          grandTotal: Number(pi?.grandTotal) || 0,
           subTotalBase: Number((pi?.subTotal ?? 0)) * rate,
           taxAmountBase: Number((pi?.totalTax ?? 0)) * rate,
           discountAmountBase: Number((pi?.globalDiscount ?? 0)) * rate,
