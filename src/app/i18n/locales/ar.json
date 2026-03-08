@@ -787,7 +787,9 @@
     "addSalesWaybill": "إضافة بوليصة شحن جديدة",
     "viewSalesWaybill": "عرض بوليصة الشحن",
     "InvoiceNumber": "رقم الفاتورة",
-    "InvoiceNumberPlaceholder": "أدخل رقم الفاتورة"
+    "InvoiceNumberPlaceholder": "أدخل رقم الفاتورة",
+    "SalesType": "نوع المبيعات",
+    "SalesTypePlaceholder": "اختر نوع المبيعات"
   },
   "SalesReturn": {
     "salesReturn": "مرتجع المبيعات",
