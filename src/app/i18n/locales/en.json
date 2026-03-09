@@ -843,7 +843,9 @@
     "inspectionDate": "Inspection Date",
     "inspectionResult": "Inspection Result",
     "inspectionNotes": "Inspection Notes",
-    "customerId": "Customer"
+    "customerId": "Customer",
+    "SalesReturnCreatedSuccessfully": "Sales Return created successfully",
+    "SalesReturnUpdatedSuccessfully": "Sales Return updated successfully"
   },
   "purchaseReturn": {
     "purchaseReturn": "Purchase Return ",
