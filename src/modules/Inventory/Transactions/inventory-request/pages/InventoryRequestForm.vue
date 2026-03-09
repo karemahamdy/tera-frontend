@@ -18,7 +18,7 @@ const formData = reactive({
   documentNumber: "",
   requestedBy: "",
   requestDate: new Date(),
-  type: "PurchaseWaybill", // Default value
+  type: "", // Default value
   warehouseId: "",
   destinationWarehouseId: "",
   reason: "",
