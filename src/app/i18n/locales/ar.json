@@ -1091,8 +1091,10 @@
     "newRequest": "طلب جديد",
     "transaction": "معاملة",
      "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
-    "InventoryRequestDeletedSuccessfully": "تم حذف هذا الطلب بنجاح"
-
+    "InventoryRequestDeletedSuccessfully": "تم حذف هذا الطلب بنجاح",
+    "requestInfoStep": "معلومات الطلب",
+    "lineItemsStep": "عناصر الفاتورة",
+    "reviewStep": "مراجعة"
   },
   "warehouseTransaction": {
     "waybillId": "رقم الإذن",
