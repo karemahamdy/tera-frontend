@@ -1092,11 +1092,15 @@
     "searchPlaceholder": "ابحث عن طلبات المخزون...",
     "newRequest": "طلب جديد",
     "transaction": "معاملة",
-     "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
     "InventoryRequestDeletedSuccessfully": "تم حذف هذا الطلب بنجاح",
+    "InventoryRequestCreatedSuccessfully": "تم إنشاء هذا الطلب بنجاح",
+    "InventoryRequestUpdatedSuccessfully": "تم تحديث هذا الطلب بنجاح",
     "requestInfoStep": "معلومات الطلب",
     "lineItemsStep": "عناصر الفاتورة",
-    "reviewStep": "مراجعة"
+    "reviewStep": "مراجعة",
+    "view": "عرض الطلب",
+    "edit": "تعديل الطلب"
   },
   "warehouseTransaction": {
     "waybillId": "رقم الإذن",
@@ -1126,7 +1130,7 @@
     "WarehouseTransactionUpdatedSuccessfully": "تم التعديل بنجاح",
     "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح",
     "review": "مراجعة",
-    "transactionDetails"  : "تفاصيل المعاملة"
+    "transactionDetails": "تفاصيل المعاملة"
   },
   "itemTransaction": {
     "createNewTransaction": "إنشاء معاملة جديدة",
@@ -1177,7 +1181,7 @@
     "immediate": "فوري",
     "import": "استيراد",
     "local": "محلي",
-    "export":   "تصدير"
+    "export": "تصدير"
   },
   "summary": {
     "title": "الملخص",
@@ -1238,7 +1242,7 @@
     "items": "عنصر",
     "Showing": "عرض",
     "selected": "محدد",
-    "zoneDisabled":"اختيار المنطقة معطل",
+    "zoneDisabled": "اختيار المنطقة معطل",
     "numSelected": "{count} محدد"
   },
   "itemDialog": {

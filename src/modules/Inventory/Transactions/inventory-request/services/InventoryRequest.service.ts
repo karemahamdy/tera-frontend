@@ -1,5 +1,5 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, InventoryRequestResponse,  } from "../types/InventoryRequest";
+import type { Pagination, InventoryRequestResponse, } from "../types/InventoryRequest";
 
 
 export const InventoryRequestService = {
@@ -13,7 +13,7 @@ export const InventoryRequestService = {
 
   async getById(id: string): Promise<any> {
     const data = await axiosWrapper.get<any>(`/inventory-request/${id}`);
-    return data.data;
+    return data.data ?? data;
   },
 
   async create(payload: any) {

@@ -21,7 +21,7 @@ const {
   updateWarehouseTransaction,
 } = useWarehouseTransaction();
 
-const { WarehouseLookups, getWarehouseLookups } = useInventoryLookups();
+const { WarehouseLookups, getWarehouseLookups, costCenterLookups, getCostCenterLookups } = useInventoryLookups();
 
 const id = computed(() => route.params.id as string | undefined);
 const mode = computed(() => {
@@ -84,6 +84,8 @@ const summaryData = computed(() => {
   const wh = WarehouseLookups.value.find(w => w.value === d.warehouse);
   const dstWh = WarehouseLookups.value.find(w => w.value === d.destination?.warehouse);
   
+  const cc = costCenterLookups.value.find(c => c.value === d.costCenter);
+  
   return {
     waybillDate: toDateStr(d.waybillDate) || '',
     inventoryRequest: d.inventoryRequest || '—',
@@ -91,7 +93,7 @@ const summaryData = computed(() => {
     warehouse: wh?.label || '—',
     zone: d.locationCode || d.zoneName || '—',
     type: d.type || '—',
-    costCenter: d.costCenter || '—',
+    costCenter: cc?.label || d.costCenter || '—',
     source: {
       warehouse: wh?.label || '—',
       zone: d.locationCode || d.zoneName || '—'
@@ -155,7 +157,10 @@ const submit = async () => {
 };
 
 onMounted(async () => {
-  await getWarehouseLookups();
+  await Promise.all([
+    getWarehouseLookups(),
+    getCostCenterLookups()
+  ]);
   if (id.value) {
     const result = await fetchWarehouseTransactionById(id.value);
     console.log(result);
