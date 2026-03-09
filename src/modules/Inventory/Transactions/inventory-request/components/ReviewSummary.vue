@@ -11,11 +11,12 @@ const { formData } = defineProps<{
 }>()
 
 const { usersLookups, getUsersLookups } = useLookups();
-const { WarehouseLookups, getWarehouseLookups } = useInventoryLookups()
+const { WarehouseLookups, getWarehouseLookups, UnitsLookups, getUnitsLookups } = useInventoryLookups()
 
 onMounted(() => {
   getUsersLookups();
   getWarehouseLookups();
+  getUnitsLookups();
 });
 
 const requestedByName = computed(() => {
@@ -31,6 +32,27 @@ const sourceWarehouseName = computed(() => {
 const targetWarehouseName = computed(() => {
   const wh = WarehouseLookups.value?.find(w => w.value === formData.destinationWarehouseId);
   return wh ? wh.label : formData.destinationWarehouseId;
+});
+
+const mappedItems = computed(() => {
+  return (formData.lineItems || []).map((item: any) => {
+    const unitId = item.unitId || item.unitOfMeasureId;
+    let uomName = item.uom || item.unitName || item.unitOfMeasureName;
+    
+    // Resolve from lookups if missing
+    if (!uomName && unitId && UnitsLookups.value.length > 0) {
+      const found = UnitsLookups.value.find(u => u.value === unitId);
+      if (found) uomName = found.label;
+    }
+    
+    return {
+      ...item,
+      code: item.code || item.itemCode,
+      name: item.name || item.itemName,
+      uom: uomName || unitId, // Fallback to ID if name still missing
+      quantity: item.quantity
+    };
+  });
 });
 
 const columns = computed(() => [
@@ -130,7 +152,7 @@ const columns = computed(() => [
       </div>
     </div>
 
-    <DynamicTable :columns="columns" :data="formData.lineItems" :paginator="false" :showView="false" :showEdit="false"
+    <DynamicTable :columns="columns" :data="mappedItems" :paginator="false" :showView="false" :showEdit="false"
       :showDelete="false">
       <template #col-code="{ data }">
         <div class="flex items-center gap-2 rounded">
