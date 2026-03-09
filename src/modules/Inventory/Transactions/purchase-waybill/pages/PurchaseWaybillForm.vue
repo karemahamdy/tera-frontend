@@ -198,9 +198,8 @@ onMounted(async () => {
         v-if="mode !== 'view'"
         :current="activeStep"
         :total="steps.length"
-        nextText="Next"
-        prevText="Back"
-        :finishText="mode === 'edit' ? 'Update' : 'Create'"
+       
+        :finishText="mode === 'edit' ? t('button.update') : t('button.create')"
         @next="nextTab"
         @previous="previousTab"
         @finish="submit"
