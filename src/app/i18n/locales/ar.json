@@ -837,7 +837,9 @@
     "inspectionDate": "تاريخ الفحص",
     "inspectionResult": "نتيجة الفحص",
     "inspectionNotes": "ملاحظات الفحص",
-    "customerId": "العميل"
+    "customerId": "العميل",
+    "SalesReturnCreatedSuccessfully": "تم إنشاء مرتجع البيع بنجاح",
+    "SalesReturnUpdatedSuccessfully": "تم تحديث مرتجع البيع بنجاح"
   },
   "purchaseReturn": {
     "purchaseReturn": "مرتجع مشتريات",

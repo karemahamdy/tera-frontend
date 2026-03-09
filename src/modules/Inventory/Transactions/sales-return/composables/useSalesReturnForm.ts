@@ -112,7 +112,7 @@ export function useSalesReturnForm() {
       returnHeader: {
         documentNumber: payload.documentNumber,
         originalWaybillIds: payload.originalWaybillIds,
-        customerIdyy: payload.customerId,
+        customerId: payload.customerId,
         returnDate: payload.returnDate,
         returnReason: payload.returnReason,
         otherReason: payload.otherReason,
@@ -134,9 +134,9 @@ export function useSalesReturnForm() {
       const createPayload = getFormPayload(payload);
       const response = await SalesReturnService.create(createPayload);
       toastService.success(
-        t("PurchaseReturn.PurchaseReturnCreatedSuccessfully"),
+        t("SalesReturn.SalesReturnCreatedSuccessfully"),
       );
-      router.push({ name: "PurchaseReturn" });
+      router.push({ name: "Sales Return" });
       return response;
     } catch (err: any) {
       toastService.error(err);
