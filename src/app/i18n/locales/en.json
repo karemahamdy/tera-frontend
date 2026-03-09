@@ -1093,7 +1093,10 @@
     "transaction": "Transaction",
     "deleteConfirm": "Are you sure you want to delete this Request?",
     "InventoryRequestDeletedSuccessfully": "Inventory Request Deleted Successfully",
-    "InventoryRequestCreatedSuccessfully": "Inventory Request Created Successfully"
+    "InventoryRequestCreatedSuccessfully": "Inventory Request Created Successfully",
+    "requestInfoStep": "Request Info",
+    "lineItemsStep": "Line Items",
+    "reviewStep": "Review"
   },
   "warehouseTransaction": {
     "waybillId": "Waybill ID",

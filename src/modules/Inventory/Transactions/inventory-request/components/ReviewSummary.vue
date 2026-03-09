@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useI18n } from "vue-i18n"
+import { useLookups } from "@/composables/useLookups";
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const { t } = useI18n()
 
-const props = defineProps<{
-  requestBy: string
-  sourceWarehouse: string
-  type: string
-  requestDate: string
-  sourceWhCode: string
-  targetWhCode: string
+const { formData } = defineProps<{
+  formData: any
 }>()
 
-const items = ref([
-  {
-    id: 1,
-    code: 'ITM-001',
-    name: 'Hydraulic Pump',
-    quantity: 0,
-    uom: 'PCS'
-  },
-  {
-    id: 2,
-    code: 'ITM-045',
-    name: 'Industrial 6205',
-    quantity: 0,
-    uom: 'PCS'
-  }
-])
+const { usersLookups, getUsersLookups } = useLookups();
+const { WarehouseLookups, getWarehouseLookups } = useInventoryLookups()
+
+onMounted(() => {
+  getUsersLookups();
+  getWarehouseLookups();
+});
+
+const requestedByName = computed(() => {
+  const user = usersLookups.value?.find(u => u.value === formData.requestedBy);
+  return user ? user.label : formData.requestedBy;
+});
+
+const sourceWarehouseName = computed(() => {
+  const wh = WarehouseLookups.value?.find(w => w.value === formData.warehouseId);
+  return wh ? wh.label : formData.warehouseId;
+});
+
+const targetWarehouseName = computed(() => {
+  const wh = WarehouseLookups.value?.find(w => w.value === formData.destinationWarehouseId);
+  return wh ? wh.label : formData.destinationWarehouseId;
+});
 
 const columns = computed(() => [
   { field: 'code', header: t('itemsList.itemCode') },
@@ -61,50 +64,41 @@ const columns = computed(() => [
             {{ t('RequestInformation.RequestBy') }}
           </span>
           <span class="text-gray-700 font-medium text-right">
-            {{ props.requestBy }}
-          </span>
-
-          <span class="text-gray-500">
-            {{ t('RequestInformation.SourceWarehouse') }}
-          </span>
-          <span class="text-gray-700 font-medium text-right">
-            {{ props.sourceWarehouse }}
+            {{ requestedByName }}
           </span>
 
           <span class="text-gray-500">
             {{ t('RequestInformation.Type') }}
           </span>
 
-          <!-- النوع بدون تغيير قيمته -->
-          <span
-            v-if="props.type === 'Transfer'"
-            class="flex justify-end rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500"
-          >
+          <span v-if="formData.type === 'Transfer'"
+            class="flex justify-end w-24 mx-30 rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
             <VsxIcon iconName="ArrowSwapHorizontal" type="linear" />
             <span>Transfer</span>
           </span>
 
-          <span
-            v-else-if="props.type === 'Inbound'"
-            class="flex justify-end rounded gap-1 p-1 text-sm bg-success-50 text-success-500"
-          >
+          <span v-else-if="formData.type === 'Inbound'"
+            class="flex justify-end w-24 mx-30 rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
             <VsxIcon iconName="ArrowDown" type="linear" />
             <span>Inbound</span>
           </span>
 
-          <span
-            v-else
-            class="flex justify-end rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500"
-          >
+          <span v-else-if="formData.type === 'Outbound'"
+            class="flex justify-end  w-24 mx-30 rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
             <VsxIcon iconName="ArrowUp" type="linear" />
-            <span>Inbound</span>
+            <span>Outbound</span>
+          </span>
+
+          <span v-else class="flex justify-end rounded gap-1 p-1 text-sm  text-primary-500">
+
+            <span>--</span>
           </span>
 
           <span class="text-gray-500">
             {{ t('RequestInformation.RequestDate') }}
           </span>
           <span class="text-gray-700 font-medium text-right">
-            {{ props.requestDate }}
+            {{ formData.requestDate.toLocaleDateString() }}
           </span>
 
         </div>
@@ -122,39 +116,53 @@ const columns = computed(() => [
             {{ t('RequestInformation.SourceWarehouse') }}
           </span>
           <span class="text-gray-700 font-medium text-right">
-            {{ props.sourceWhCode }}
+            {{ sourceWarehouseName }}
           </span>
 
           <span class="text-gray-500">
             {{ t('RequestInformation.TargetWarehouse') }}
           </span>
           <span class="text-gray-700 font-medium text-right">
-            {{ props.targetWhCode }}
+            {{ targetWarehouseName }}
           </span>
 
         </div>
       </div>
     </div>
 
-    <DynamicTable
-      :columns="columns"
-      :data="items"
-      :paginator="false"
-      :showView="false"
-      :showEdit="false"
-      :showDelete="false"
-    >
-    <template #col-code="{ data }">
-                    <div class="flex items-center gap-2 rounded">
-                        <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
-                            <VsxIcon iconName="Brodcast" :size="20" type="linear" />
-                        </Badge>
-                        <Badge v-else severity="transparent" class="circle-badge">
-                            <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
-                        </Badge>
-                        <div class="text-base text-gray-700">{{ data.code }}</div>
-                    </div>
-                </template>
-</DynamicTable>
+    <DynamicTable :columns="columns" :data="formData.lineItems" :paginator="false" :showView="false" :showEdit="false"
+      :showDelete="false">
+      <template #col-code="{ data }">
+        <div class="flex items-center gap-2 rounded">
+          <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
+           <VsxIcon iconName="Brodcast" :size="20" type="linear" />
+          </Badge>
+          <Badge v-else severity="transparent" class="circle-badge">
+            <VsxIcon iconName="Brodcast" :size="20" type="linear" />
+          </Badge>
+          <div class="text-base text-gray-700">{{ data.code }}</div>
+        </div>
+      </template>
+    </DynamicTable>
   </div>
 </template>
+<style scoped>
+.circle-badge-sm {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.circle-badge {
+    background-color: transparent;
+}
+
+.icon-transparent {
+    color: transparent;
+}
+</style>
