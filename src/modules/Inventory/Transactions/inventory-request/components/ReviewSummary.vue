@@ -24,13 +24,13 @@ const requestedByName = computed(() => {
 });
 
 const sourceWarehouseName = computed(() => {
-  const wh = WarehouseLookups.value?.find(w => w.id === formData.warehouseId);
-  return wh ? wh.name : formData.warehouseId;
+  const wh = WarehouseLookups.value?.find(w => w.value === formData.warehouseId);
+  return wh ? wh.label : formData.warehouseId;
 });
 
 const targetWarehouseName = computed(() => {
-  const wh = WarehouseLookups.value?.find(w => w.id === formData.destinationWarehouseId);
-  return wh ? wh.name : formData.destinationWarehouseId;
+  const wh = WarehouseLookups.value?.find(w => w.value === formData.destinationWarehouseId);
+  return wh ? wh.label : formData.destinationWarehouseId;
 });
 
 const columns = computed(() => [
@@ -68,30 +68,23 @@ const columns = computed(() => [
           </span>
 
           <span class="text-gray-500">
-            {{ t('RequestInformation.SourceWarehouse') }}
-          </span>
-          <span class="text-gray-700 font-medium text-right">
-            {{ sourceWarehouseName }}
-          </span>
-
-          <span class="text-gray-500">
             {{ t('RequestInformation.Type') }}
           </span>
 
           <span v-if="formData.type === 'Transfer'"
-            class="flex justify-end rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
+            class="flex justify-end w-24 mx-30 rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
             <VsxIcon iconName="ArrowSwapHorizontal" type="linear" />
             <span>Transfer</span>
           </span>
 
           <span v-else-if="formData.type === 'Inbound'"
-            class="flex justify-end rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
+            class="flex justify-end w-24 mx-30 rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
             <VsxIcon iconName="ArrowDown" type="linear" />
             <span>Inbound</span>
           </span>
 
           <span v-else-if="formData.type === 'Outbound'"
-            class="flex justify-end rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
+            class="flex justify-end  w-24 mx-30 rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
             <VsxIcon iconName="ArrowUp" type="linear" />
             <span>Outbound</span>
           </span>

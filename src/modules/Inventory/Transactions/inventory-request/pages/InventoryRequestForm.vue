@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
 import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import LineItems from '../components/LineItems.vue';
@@ -7,6 +9,8 @@ import RequestInfo from '../components/RequestInfo.vue';
 import ReviewSummary from '../components/ReviewSummary.vue';
 import { useInventoryRequest } from '../composables/useInventoryRequest';
 
+const { t } = useI18n();
+const router = useRouter();
 const activeStep = ref(0);
 const { fetchNextNumber, createInventoryRequest } = useInventoryRequest();
 
@@ -56,15 +60,16 @@ const submit = async () => {
   
   try {
     await createInventoryRequest(payload);
+    router.push({ name: 'InventoryRequest' });
   } catch (error) {
     console.error("Submission failed", error);
   }
 };
 
 const steps = [
-  { label: "Request Info" },
-  { label: "Line Items" },
-  { label: "Review" },
+  { label: t('inventoryRequest.requestInfoStep') },
+  { label: t('inventoryRequest.lineItemsStep') },
+  { label: t('inventoryRequest.reviewStep') },
 ];
 </script>
 
