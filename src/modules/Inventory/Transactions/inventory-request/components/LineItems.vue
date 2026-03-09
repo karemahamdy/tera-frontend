@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import { useInventoryLookups } from '@/composables/useInventoryLookups';
@@ -14,23 +14,38 @@ const props = withDefaults(defineProps<{
 
 const { t } = useI18n();
 const emit = defineEmits(['next', 'prev', 'update']);
-const { getItemsLookups, itemsLookups, getUnitsLookups } = useInventoryLookups();
+const { getItemsLookups, itemsLookups, getUnitsLookups, UnitsLookups } = useInventoryLookups();
 
 const unitOptionsMap = ref<Record<number | string, any[]>>({});
 
 function mapApiItem(item: any) {
-    if (!unitOptionsMap.value[item.id]) {
-        unitOptionsMap.value[item.id] = [{ label: item.unitName || item.uom, value: item.unitName || item.uom, unitId: item.unitId, conversionFactor: 1 }];
+    const rowId = item.id || Date.now() + Math.random();
+    const unitId = item.unitId || item.unitOfMeasureId;
+    let uomName = item.unitName || item.unitOfMeasureName || item.uom || '';
+
+    // Try to resolve name from lookups if missing
+    if (!uomName && unitId && UnitsLookups.value.length > 0) {
+        const found = UnitsLookups.value.find(u => u.value === unitId);
+        if (found) uomName = found.label;
+    }
+
+    if (!unitOptionsMap.value[rowId]) {
+        unitOptionsMap.value[rowId] = [{
+            label: uomName,
+            value: uomName,
+            unitId: unitId,
+            conversionFactor: 1
+        }];
     }
     return {
-        id: item.id || Date.now() + Math.random(),
+        id: rowId,
         lineNumber: item.lineNumber,
         itemId: item.itemId,
         code: item.itemCode || item.code,
         name: item.itemName || item.name,
         quantity: item.quantity || 0,
-        uom: item.unitName || item.uom,
-        unitId: item.unitId,
+        uom: uomName,
+        unitId: unitId,
         itemType: item.itemType || '',
         isBlocked: item.isBlocked || false,
         tracked: item.trackingType === 'Serial' || item.trackingType === 'None' || item.tracked,
@@ -39,6 +54,31 @@ function mapApiItem(item: any) {
 }
 
 const items = ref<any[]>((props.lineItems ?? []).map(mapApiItem));
+
+watch(() => props.lineItems, (newVal) => {
+    if (newVal) {
+        items.value = newVal.map(mapApiItem);
+    }
+}, { deep: true });
+
+// Also watch UnitsLookups to update names if they were missing initially
+watch(UnitsLookups, (newUnits) => {
+    if (newUnits.length > 0) {
+        items.value.forEach(item => {
+            if (!item.uom && item.unitId) {
+                const found = newUnits.find(u => u.value === item.unitId);
+                if (found) {
+                    item.uom = found.label;
+                    const opts = unitOptionsMap.value[item.id];
+                    if (opts && opts[0]) {
+                        opts[0].label = found.label;
+                        opts[0].value = found.label;
+                    }
+                }
+            }
+        });
+    }
+}, { deep: true });
 
 function emitUpdate() {
     emit('update', [...items.value]);
@@ -196,9 +236,11 @@ onMounted(async () => {
     border-radius: 0.5rem;
     font-size: 0.875rem;
 }
+
 :deep(.warehouse-dropdown label) {
     display: none;
 }
+
 :deep(.p-select) {
     border-color: #f3f4f6;
     background-color: #f9fafb;
@@ -207,7 +249,6 @@ onMounted(async () => {
     border-color: #e5e7eb;
     background-color: #f9fafb;
 }
-
 :deep(.p-inputtext:focus) {
     border-color: #2563eb;
     box-shadow: 0 0 0 1px #2563eb;

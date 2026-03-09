@@ -6,8 +6,9 @@ import { useI18n } from "vue-i18n"
 
 const { t } = useI18n()
 
-const { modelValue: formData } = defineProps<{
-  modelValue: any
+const { modelValue: formData, disabled } = defineProps<{
+  modelValue: any;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -46,39 +47,39 @@ const errors = reactive({
     </p>
 
     <FormInput :label="t('RequestInformation.InventoryRequestNumber')" v-model="formData.documentNumber"
-      :error="errors.inventoryRequestNumber" :placeholder="t('RequestInformation.inventoryRequestNumberPlaceholder')"
+      :error="errors.inventoryRequestNumber" :placeholder="t('RequestInformation.InventoryRequestNumberPlaceholder')"
       :invalid="!!errors.inventoryRequestNumber" :disabled="true" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <FormDropdown :label="t('RequestInformation.RequestedBy')" v-model="formData.requestedBy" :options="usersLookups"
         :error="errors.RequestedBy" :placeholder="t('RequestInformation.RequestedByPlaceholder')"
-        :invalid="!!errors.RequestedBy" />
+        :invalid="!!errors.RequestedBy" :disabled="disabled" />
       <div class="">
         <label class="block text-gray-600 text-lg">
           {{ t("RequestInformation.RequestDate") }}
         </label>
         <DatePicker v-model="formData.requestDate" showIcon fluid iconDisplay="input"
-          :placeholder="t('RequestInformation.RequestDatePlaceholder')" />
+          :placeholder="t('RequestInformation.RequestDatePlaceholder')" :disabled="disabled" />
       </div>
 
     </div>
 
     <FormDropdown class="w-full pt-8" :label="t('RequestInformation.type')" :options="TypesOptions"
       optionLabel="label" optionValue="value" v-model="formData.type" :error="errors.type"
-      :placeholder="t('RequestInformation.typePlaceholder')" />
+      :placeholder="t('RequestInformation.typePlaceholder')" :disabled="disabled" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <FormDropdown :label="t('RequestInformation.SourceWarehouse')" v-model="formData.warehouseId" :options="WarehouseLookups"
-        :error="errors.SourceWarehouse" :placeholder="t('RequestInformation.SourceWarehousePlaceholder')" />
+        :error="errors.SourceWarehouse" :placeholder="t('RequestInformation.SourceWarehousePlaceholder')" :disabled="disabled" />
       <FormDropdown :label="t('RequestInformation.TargetWarehouse')" v-model="formData.destinationWarehouseId" :options="WarehouseLookups"
-        :error="errors.TargetWarehouse" :placeholder="t('RequestInformation.TargetWarehousePlaceholder')" />
+        :error="errors.TargetWarehouse" :placeholder="t('RequestInformation.TargetWarehousePlaceholder')" :disabled="disabled" />
     </div>
     <div>
       <label class="text-gray-700 font-medium mb-2 block">
         {{ $t("RequestInformation.Reason") }}
       </label>
       <Textarea v-model="formData.reason" :placeholder="$t('RequestInformation.ReasonPlaceholder')"
-        class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.Reason }" />
+        class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.Reason }" :disabled="disabled" />
       <small v-if="errors.Reason" class="text-danger-500">
         {{ $t(errors.Reason) }}
       </small>

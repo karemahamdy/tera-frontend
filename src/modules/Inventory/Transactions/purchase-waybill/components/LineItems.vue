@@ -123,7 +123,7 @@ const handleSelectItem = (selectedItem: any) => {
     tax: tax,
     total: calcTotal(qty, price, tax),
     serials: [],
-    tracked: true  // Always show qty/serial dialog for all items
+    tracked: true  
   };
   items.value.push(newItem);
   emitUpdate();
