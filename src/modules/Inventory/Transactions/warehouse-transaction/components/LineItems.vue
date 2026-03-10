@@ -194,8 +194,30 @@ onMounted(async () => {
   await Promise.all([
     getUnitsLookups(),
     getWarehouseLookups(),
-    getWarehouseHierarchyLookups()
+    getWarehouseHierarchyLookups(),
+    getItemsLookups()
   ]);
+
+  // For existing items in edit mode, sync their units from itemsLookups
+  if (items.value.length > 0) {
+    items.value.forEach(item => {
+      const originalItem = itemsLookups.value.find(i => i.id === item.itemId);
+      if (originalItem?.units) {
+        unitOptionsMap.value[item.id] = originalItem.units.map((u: any) => ({
+          label: u.unitCode ? `${u.unitName} (${u.unitCode})` : u.unitName,
+          value: u.unitName,
+          unitId: u.unitId || u.id,
+          conversionFactor: u.conversionFactor
+        }));
+
+        // If uom name is missing, try to resolve it from the newly synced options
+        if (!item.uom && item.unitId) {
+          const opt = unitOptionsMap.value[item.id]?.find((o: any) => o.unitId === item.unitId);
+          if (opt) item.uom = opt.value;
+        }
+      }
+    });
+  }
 });
 
 const showLocationPicker = ref(false);
@@ -336,8 +358,8 @@ const fetchItemBalance = async (item: any) => {
                   data.unitId = opt.unitId;
                 } else {
                   // Fallback: resolve unitId from UnitsLookups by matching label
-                  const unitFromLookup = UnitsLookups.value.find((u: any) => u.label === v);
-                  if (unitFromLookup) data.unitId = unitFromLookup.value;
+                    const unitFromLookup = UnitsLookups.find((u: any) => u.label === v);
+                    if (unitFromLookup) data.unitId = unitFromLookup.value;
                 }
                 emitUpdate();
               }" />
