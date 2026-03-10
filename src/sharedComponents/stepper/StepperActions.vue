@@ -10,7 +10,9 @@ const props = defineProps<{
   nextText?: string;
   prevText?: string;
   finishText?: string;
-  isView?: boolean
+  isView?: boolean;
+  disableNext?: boolean;
+  disableFinish?: boolean;
 }>();
 
 const emit = defineEmits(["next", "previous", "finish"]);
@@ -26,13 +28,27 @@ const isLast = computed(() => props.current === props.total - 1);
       <VsxIcon :iconName="locale === 'ar' ? 'ArrowRight' : 'ArrowLeft'" :size="18" />
       {{ prevText ||  t("items.previous")}}
     </button>
-    <button v-if="!isLast" @click="$emit('next')" class="min-w-25 bg-primary-500 hover:bg-primary-600 text-white
-             rounded-lg px-5 py-2 flex items-center gap-2 transition">
+    <button v-if="!isLast" @click="$emit('next')" 
+      :disabled="disableNext"
+      :class="[
+        'min-w-25 text-white rounded-lg px-5 py-2 flex items-center gap-2 transition',
+        disableNext
+          ? 'bg-primary-300 cursor-not-allowed opacity-60'
+          : 'bg-primary-500 hover:bg-primary-600 cursor-pointer'
+      ]"
+    >
       {{ nextText || t("items.next") }}
       <VsxIcon :iconName="locale === 'ar' ? 'ArrowLeft' : 'ArrowRight'" :size="18" />
     </button>
-    <button v-if="isLast && !isView" @click="$emit('finish')" class="min-w-25 bg-primary-600 hover:bg-primary-700 text-white
-             rounded-lg px-5 py-2 transition">
+    <button v-if="isLast && !isView" @click="$emit('finish')"
+      :disabled="disableFinish"
+      :class="[
+        'min-w-25 text-white rounded-lg px-5 py-2 transition',
+        disableFinish
+          ? 'bg-primary-300 cursor-not-allowed opacity-60'
+          : 'bg-primary-600 hover:bg-primary-700 cursor-pointer'
+      ]"
+    >
       {{ finishText || t("button.save") }}
     </button>
 
