@@ -229,6 +229,7 @@ const mapApiToForm = (apiData: any) => {
       paymentTermId:  pi.paymentTermId ?? null,
       paymentTermName:pi.paymentTermName ?? "",
       incoterm:       pi.incoterm ?? null,
+      purchaseType:   pi.purchaseType ?? null,
       subTotal:       pi.subTotal ?? 0,
       totalTax:       pi.totalTax ?? 0,
       globalDiscount: pi.globalDiscount ?? 0,
