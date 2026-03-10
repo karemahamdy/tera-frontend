@@ -15,6 +15,8 @@ const props = defineProps<{
 
 import { useSalesReturnForm } from "../composables/useSalesReturnForm";
 import QualityInspection from "../components/QualityInspection.vue";
+
+const form = useSalesReturnForm();
 const {
   initializeForm,
   fetchLookupsData,
@@ -25,9 +27,9 @@ const {
   documentNumber,
   createReturn,
   updateReturn,
-} = useSalesReturnForm();
+} = form;
 
-const activeStep = ref(0);
+const activeStep = ref<number>(0);
 const nextTab = () => {
   if (activeStep.value < steps.value.length - 1) activeStep.value++;
 };
@@ -50,7 +52,7 @@ const steps = computed(() => {
   return [
     { label: t("SalesReturn.ReturnInformation") },
     { label: t("ReturnItems.title") },
-    { label: t("SalesReturn.QualityInspection") }
+    { label: t("purchaseReturn.QualityInspection") },
   ]
 });
 
@@ -74,9 +76,9 @@ onMounted(() => {
               <strong>{{ $t(`SalesReturn.${field}`) }}:</strong> {{ $t(errorList as string) }}
             </div>
           </div>
-          <ReturnDetails v-if="activeStep === 0" />
-          <LineItems v-else-if="activeStep === 1" @next="nextTab" @prev="previousTab" />
-          <QualityInspection v-else-if="activeStep === 2" @prev="previousTab" @submit="onSubmit" />
+          <ReturnDetails v-if="activeStep === 0" :form="form" />
+          <LineItems v-else-if="activeStep === 1" :form="form" @next="nextTab" @prev="previousTab" />
+          <QualityInspection v-else-if="activeStep === 2" :form="form" @prev="previousTab" @submit="onSubmit" />
         </template>
       </Card>
       <StepperActions :current="activeStep" :total="steps.length" nextText="Next" prevText="Back" finishText="Create"

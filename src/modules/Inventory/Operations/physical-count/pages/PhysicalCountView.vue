@@ -13,7 +13,7 @@ const isVisible = ref(false);
 const selectedItem = ref<null | InventoryCountLine>(null)
 const columns = computed(() => {
   const Columns = [
-    { field: 'countedId', header: t('PhysicalCount.CountID') },
+    { field: 'countId', header: t('PhysicalCount.CountID') },
     { field: 'itemName', header: t('table.item') },
     { field: 'warehouseName', header: t('PhysicalCount.warehouse') },
     { field: 'actualQty', header: t('InventoryAdjustment.availableBalance') },
@@ -80,7 +80,7 @@ onMounted(() => {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <p class="text-gray-500">{{ $t('PhysicalCount.CountNumber') }}</p>
-            <p>{{ physicalCount?.adjustmentDocumentNumber }}</p>
+            <p>{{ physicalCount?.code }}</p>
           </div>
           <div class="mb-5">
             <p class="text-gray-500">{{ $t("itemTransaction.notes") }}</p>
