@@ -55,10 +55,10 @@ const steps = computed(() => {
   ]
 });
 
-onMounted(() => {
+onMounted(async () => {
   isView.value = props.mode === "view"
+  await fetchLookupsData();
   initializeForm();
-  fetchLookupsData();
 });
 </script>
 
@@ -79,8 +79,9 @@ onMounted(() => {
           <Review v-else-if="activeStep === 2" @prev="previousTab" @submit="onSubmit" />
         </template>
       </Card>
-      <StepperActions :current="activeStep" :total="steps.length" :isView="isView" nextText="Next" prevText="Back"
-        finishText="Create" @next="nextTab" @previous="previousTab" @finish="onSubmit" />
+      <StepperActions :current="activeStep" :total="steps.length" :isView="isView" :nextText="$t('items.next')"
+        :prevText="$t('items.previous')" :finishText="id ? t('button.update') : t('button.create')" @next="nextTab" @previous="previousTab"
+        @finish="onSubmit" />
     </BaseStepper>
   </div>
 </template>
