@@ -27,8 +27,11 @@ const isVisible = computed({
 const serialInput = ref<string>("");
 const qtyInput = ref<number>(1);
 const batchInput = ref<string>("");
+const serialNumber2 = ref<string>("");
+const serialNumber3 = ref<string>("");
 const expireDateInput = ref();
 const commentInput = ref("");
+
 const fileInput = ref<HTMLInputElement | null>(null);
 const isProcessing = ref(false);
 
@@ -57,12 +60,16 @@ const addSerial = () => {
     qty: qtyInput.value || "0",
     batchNumber: batchInput.value,
     expireDate: expireDateInput.value,
+    serialNumber2: serialNumber2.value,
+    serialNumber3: serialNumber3.value,
     comment: commentInput.value,
   });
 
   serialInput.value = "";
   qtyInput.value = 1;
   batchInput.value = "";
+  serialNumber2.value = "";
+  serialNumber3.value = "";
   expireDateInput.value = undefined;
   commentInput.value = "";
 };
@@ -240,14 +247,14 @@ watch(
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.serialNumber2") }}
               </label>
-              <InputText :placeholder="t('serial.enterSN2')" class="w-full" />
+              <InputText v-model="serialNumber2" :placeholder="t('serial.enterSN2')" class="w-full" />
             </div>
 
             <div class="flex flex-col gap-1 w-1/2">
               <label class="text-xs text-gray-600 font-medium">
                 {{ t("serial.serialNumber3") }}
               </label>
-              <InputText :placeholder="t('serial.enterSN3')" class="w-full" />
+              <InputText v-model="serialNumber3" :placeholder="t('serial.enterSN3')" class="w-full" />
             </div>
           </div>
 
