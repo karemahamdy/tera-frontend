@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n";
 import type { SalesReturnForm, Item, Unit } from "../types/SalesReturn";
 import { SalesReturnService } from "../services/SalesReturn.service";
 import { useRoute } from "vue-router";
+import { formatDate } from "@/app/utils/dates";
 
 import { SalesReturnSchema } from "../validation/SalesReturnSchema";
 import router from "@/app/router";
@@ -90,7 +91,11 @@ export function useSalesReturnForm() {
     try {
       const resp = await SalesReturnService.getById(id);
       resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate);
-
+      if (resp.inspection?.inspectionDate) {
+        resp.inspection.inspectionDate = new Date(
+          resp.inspection.inspectionDate,
+        );
+      }
       setValues({
         ...resp.returnHeader,
         lineItems: resp.lineItems.map((item: any) => ({
@@ -113,7 +118,7 @@ export function useSalesReturnForm() {
         documentNumber: payload.documentNumber,
         originalWaybillIds: payload.originalWaybillIds,
         customerId: payload.customerId,
-        returnDate: payload.returnDate,
+        returnDate: formatDate(payload.returnDate as Date),
         returnReason: payload.returnReason,
         otherReason: payload.otherReason,
         warehouseId: payload.warehouseId,
@@ -122,7 +127,7 @@ export function useSalesReturnForm() {
       lineItems: payload.lineItems,
       inspection: {
         inspector: payload.inspector,
-        inspectionDate: payload.inspectionDate,
+        inspectionDate: formatDate(new Date(payload.inspectionDate)),
         inspectionResult: payload.inspectionResult,
         inspectionNotes: payload.inspectionNotes,
       },
@@ -133,9 +138,7 @@ export function useSalesReturnForm() {
     try {
       const createPayload = getFormPayload(payload);
       const response = await SalesReturnService.create(createPayload);
-      toastService.success(
-        t("SalesReturn.SalesReturnCreatedSuccessfully"),
-      );
+      toastService.success(t("SalesReturn.SalesReturnCreatedSuccessfully"));
       router.push({ name: "Sales Return" });
       return response;
     } catch (err: any) {

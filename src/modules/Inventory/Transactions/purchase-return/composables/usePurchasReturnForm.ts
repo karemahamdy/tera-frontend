@@ -5,6 +5,7 @@ import type { PurchaseReturnForm, Item } from "../types/PurchaseReturn";
 import { PurchaseReturnService } from "../services/PurchaseReturn.service";
 import { useRoute } from "vue-router";
 import type { Unit } from "../types/PurchaseReturn";
+import { formatDate } from "@/app/utils/dates";
 
 import { PurchaseReturnSchema } from "../validation/PurchaseReturnSchema";
 import router from "@/app/router";
@@ -105,7 +106,7 @@ export function usePurchaseReturnForm() {
         documentNumber: payload.documentNumber,
         originalWaybillIds: payload.originalWaybillIds,
         supplierId: payload.supplierId,
-        returnDate: payload.returnDate,
+        returnDate: formatDate(payload.returnDate as Date),
         returnReason: payload.returnReason,
         otherReason: payload.otherReason,
         warehouseId: payload.warehouseId,
@@ -175,7 +176,7 @@ export function usePurchaseReturnForm() {
   };
 
   const fetchLookupsData = async () => {
-    Promise.all([
+    await Promise.all([
       getReasonLookups(),
       getSupplierLookups(),
       getWarehouseLookups(),

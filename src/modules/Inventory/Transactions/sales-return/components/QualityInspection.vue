@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n"
-
-const { t } = useI18n()
-
 import { useSalesReturnForm } from "../composables/useSalesReturnForm";
 const {
   errors,
@@ -20,21 +16,20 @@ const {
   <div>
 
     <p class="font-bold mb-5 text-lg">
-      {{ t("purchaseReturn.QualityInspection") }}
+      {{ $t("purchaseReturn.QualityInspection") }}
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-      <FormInput :label="t('purchaseReturn.Inspector')" v-model="inspector" :error="errors.inspector" :disabled="isView"
-        :placeholder="t('SalesReturn.InspectorPlaceholder')" :invalid="!!errors.inspector" />
+      <FormInput :label="$t('purchaseReturn.Inspector')" v-model="inspector" :error="errors.inspector" :disabled="isView"
+        :placeholder="$t('SalesReturn.InspectorPlaceholder')" :invalid="!!errors.inspector" />
 
-      <FormInput :label="t('purchaseReturn.InspectionDate')" type="date" v-model="inspectionDate" :disabled="isView"
-        :error="errors.inspectionDate" :placeholder="t('purchaseReturn.InspectionDatePlaceholder')"
-        :invalid="!!errors.inspectionDate" />
+      <FormInput :label="$t('purchaseReturn.InspectionDate')" v-model="inspectionDate" type="date" :error="errors.inspectionDate"
+        :disabled="isView" :placeholder="$t('purchaseReturn.InspectionDatePlaceholder')" :invalid="!!errors.inspectionDate" />  
 
-      <FormDropdown :label="t('purchaseReturn.InspectionResult')" v-model="inspectionResult"
+      <FormDropdown :label="$t('purchaseReturn.InspectionResult')" v-model="inspectionResult"
         :options="inspectionResultsLookups" :error="errors.inspectionResult"
-        :placeholder="t('purchaseReturn.InspectionResultPlaceholder')" :invalid="!!errors.inspectionResult"
+        :placeholder="$t('purchaseReturn.InspectionResultPlaceholder')" :invalid="!!errors.inspectionResult"
         :disabled="!!id || isView" class="md:col-span-2" />
 
       <div class="md:col-span-2">

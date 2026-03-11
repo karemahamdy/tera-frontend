@@ -106,13 +106,13 @@ const handleActionMenu = async (payload: any) => {
     if (action === 'edit') {
         router.push({
             name: "SalesReturnEdit",
-            params: { id: data.id },
+            params: { id: String(data.id) },
         });
     }
     if (action === 'view') {
         router.push({
             name: "SalesReturnView",
-            params: { id: data.id },
+            params: { id: String(data.id) },
         });
     }
     if (action === 'delete') {
