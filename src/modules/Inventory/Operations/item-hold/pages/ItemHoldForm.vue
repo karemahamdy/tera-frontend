@@ -124,20 +124,40 @@ const handleSelectSerials = (serials: any[]) => {
                 <!-- DynamicTable component -->
                 <template #content>
                     <div>
-                        <div class="flex justify-center items-end gap-2 w-full">
-                            <FormInput :label="$t('itemHold.item')" v-model="itemName" class="w-9/10" disabled
-                                :placeholder="$t('itemHold.itemPlaceholder')" :error="errors.itemId" />
-                            <a @click="isVisible = true"
-                                class="w-1/10 rounded-xl p-3 text-center cursor-pointer border border-primary-500 text-primary-500 bg-white hover:bg-primary-25">
-                                {{ $t("LDC.select") }}
-                            </a>
-                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-2">
-
+                            <!-- hold date -->
+                            <FormInput :label="$t('itemHold.holdDate')" v-model="date" type="date" class="mt-5"
+                                :error="errors.holdDate" :placeholder="$t('itemHold.holdDatePlaceholder')" />
+                            <!-- item -->
+                            <div class="flex justify-center items-end gap-2 w-full mt-5">
+                                <FormInput :label="$t('itemHold.item')" v-model="itemName" class="w-4/5" disabled
+                                    :placeholder="$t('itemHold.itemPlaceholder')" :error="errors.itemId" />
+                                <a @click="isVisible = true"
+                                    class="w-1/5 rounded-xl p-3 text-center cursor-pointer border border-primary-500 text-primary-500 bg-white hover:bg-primary-25">
+                                    {{ $t("LDC.select") }}
+                                </a>
+                            </div>
+                            <!-- hold type -->
+                            <FormDropdown class="w-full mt-5" :label="$t('itemHold.holdType')" :options="holdTypes"
+                                v-model="holdType" optionValue="value" :error="errors.itemHoldStatus"
+                                :placeholder="$t('itemHold.holdTypePlaceholder')" />
+                            <!-- quantity -->
+                            <div class="flex justify-center items-end gap-2 w-full mt-5">
+                                <FormInput :label="$t('itemHold.quantity')" v-model="quantity" class="w-4/5"
+                                    type="number" :error="errors.holdQuantity" :disabled="isSerial" :key="hasSerial"
+                                    :placeholder="$t('itemHold.quantityPlaceholder')" />
+                                <a @click="hasSerial && (isVisibleSerial = true)"
+                                    class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500"
+                                    :class="{ 'cursor-not-allowed bg-gray-50': !hasSerial, 'cursor-pointer bg-white hover:bg-primary-25': hasSerial }"
+                                    :disabled="!hasSerial">
+                                    {{ $t("itemHold.add") }}
+                                </a>
+                            </div>
+                            <!-- warehouse -->
                             <FormDropdown class="w-full mt-5" :label="$t('items.warehouse')" :options="WarehouseOptions"
                                 v-model="warehouseID" :error="errors.warehouseId" optionValue="value"
                                 :placeholder="$t('items.warehousePlaceholder')" />
-
+                            <!-- zone -->
                             <div class="w-full mt-5">
                                 <label class="block font-bold">
                                     {{ $t('OpeningBalance.zone') }}
@@ -151,24 +171,7 @@ const handleSelectSerials = (serials: any[]) => {
                                     }}</small>
                             </div>
 
-                            <div class="col-span-2 flex justify-center items-end gap-2 w-full mt-5">
-                                <FormInput :label="$t('itemHold.quantity')" v-model="quantity" class="w-4/5"
-                                    type="number" :error="errors.holdQuantity" :disabled="isSerial" :key="hasSerial"
-                                    :placeholder="$t('itemHold.quantityPlaceholder')" />
-                                <a @click="hasSerial && (isVisibleSerial = true)"
-                                    class="w-1/5 rounded-xl p-3 text-center border border-primary-500 text-primary-500"
-                                    :class="{ 'cursor-not-allowed bg-gray-50': !hasSerial, 'cursor-pointer bg-white hover:bg-primary-25': hasSerial }"
-                                    :disabled="!hasSerial">
-                                    {{ $t("itemHold.add") }}
-                                </a>
-                            </div>
 
-                            <FormDropdown class="w-full mt-5" :label="$t('itemHold.holdType')" :options="holdTypes"
-                                v-model="holdType" optionValue="value" :error="errors.itemHoldStatus"
-                                :placeholder="$t('itemHold.holdTypePlaceholder')" />
-
-                            <FormInput :label="$t('itemHold.holdDate')" v-model="date" type="date" class="mt-5"
-                                :error="errors.holdDate" :placeholder="$t('itemHold.holdDatePlaceholder')" />
                         </div>
 
                         <div class="mt-5">
