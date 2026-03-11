@@ -7,6 +7,7 @@ import { useForm } from "vee-validate";
 import { OpeningBalanceSchema } from "../validation/OpeningBalanceSchema";
 import router from "@/app/router";
 import { FileService } from "@/app/services/file.service";
+import { formatDate } from "@/app/utils/dates";
 
 const { handleSubmit, errors, defineField, resetForm, setValues } = useForm({
   validationSchema: OpeningBalanceSchema,
@@ -85,6 +86,7 @@ export function useOpeningBalance() {
   };
 
   const createOpeningBalance = async (payload: any) => {
+    payload.date = formatDate(payload.date as Date)
     loading.value = true;
     try {
       await OpeningBalanceService.create(payload);
@@ -102,6 +104,7 @@ export function useOpeningBalance() {
 
   const updateOpeningBalance = async (id: string, payload: any) => {
     loading.value = true;
+    payload.date = formatDate(payload.date as Date)
     try {
       await OpeningBalanceService.update(id, payload);
       toastService.success(
