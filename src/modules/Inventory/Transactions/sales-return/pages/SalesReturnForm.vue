@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import ReturnDetails from "../components/ReturnDetails.vue";
+import { useLoadingStore } from "@/app/store/useLoadingStore";
+const loadingStore = useLoadingStore();
 
 import BaseStepper from "@/sharedComponents/stepper/BaseStepper.vue";
 import StepperActions from "@/sharedComponents/stepper/StepperActions.vue";
@@ -56,11 +58,10 @@ const steps = computed(() => {
   ]
 });
 
-onMounted(() => {
+onMounted(async () => {
   isView.value = props.mode === "view"
-
+  await fetchLookupsData();
   initializeForm();
-  fetchLookupsData();
 });
 </script>
 
@@ -81,8 +82,9 @@ onMounted(() => {
           <QualityInspection v-else-if="activeStep === 2" :form="form" @prev="previousTab" @submit="onSubmit" />
         </template>
       </Card>
-      <StepperActions :current="activeStep" :total="steps.length" nextText="Next" prevText="Back" finishText="Create"
-        :isView="isView" @next="nextTab" @previous="previousTab" @finish="onSubmit" />
+      <StepperActions :current="activeStep" :total="steps.length" :nextText="$t('items.next')"
+        :prevText="$t('items.previous')" :finishText="id ? t('button.update') : t('button.create')" :isView="isView"
+        @next="nextTab" @previous="previousTab" @finish="onSubmit" />
     </BaseStepper>
   </div>
 </template>

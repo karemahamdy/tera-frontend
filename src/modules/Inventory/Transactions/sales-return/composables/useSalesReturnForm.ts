@@ -96,10 +96,11 @@ export function useSalesReturnForm() {
           resp.inspection.inspectionDate,
         );
       }
-      setValues({
+      await setValues({
         ...resp.returnHeader,
         lineItems: resp.lineItems.map((item: any) => ({
           ...item,
+          locationName: getLocationName(item.warehouseId, item.locationId),
           ...getItemInfo(item?.itemId as string),
         })),
         ...resp.inspection,
@@ -190,7 +191,7 @@ export function useSalesReturnForm() {
   };
 
   const fetchLookupsData = async () => {
-    Promise.all([
+    await Promise.all([
       getReasonLookups(),
       getCustomerLookups(),
       getWarehouseLookups(),
@@ -243,7 +244,8 @@ export function useSalesReturnForm() {
           shipped: item.shippedQuantity,
           warehouseId: item.warehouseId,
           zoneId: item.zoneId,
-          locationId: getLocationName(item.warehouseId, item.locationId),
+          locationId: item.locationId,
+          locationName: getLocationName(item.warehouseId, item.locationId),
           sourceLineId: item.lineId,
           originalWaybillId: item.waybillId,
           trackingType: item.isSerialTracked ? "Serial" : "None",

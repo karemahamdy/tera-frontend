@@ -125,6 +125,10 @@ const showQtyDialog = ref(false);
 const currentItem = ref<any>(null);
 
 const openQtyDialog = (item: any) => {
+  item.serials = item.serials.map((serial: any) => ({
+    ...serial,
+    qty: serial.quantity,
+  }))
   currentItem.value = item;
   showQtyDialog.value = true;
 };
@@ -251,7 +255,7 @@ const removeItem = (data: any) => {
       :initialSerials="currentItem.serials" @save="handleSaveSerials" />
 
 
-    <StorageLocationPicker v-model:visible="locationPickerFlag" @select="handleSelectLocation"
+    <StorageLocationPicker v-if="locationPickerFlag" v-model:visible="locationPickerFlag" @select="handleSelectLocation"
       :locations="currentLocations" :selectedLocationId="selectedLocationId" />
   </div>
 </template>

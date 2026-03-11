@@ -65,6 +65,7 @@ const getCurrentLocations = (warehouseId: string) => {
 };
 
 const showlocationPicker = (data: Item) => {
+  
   if (isView.value) return;
   selectedItem.value = data;
   locationPickerFlag.value = true;
@@ -125,6 +126,10 @@ const showQtyDialog = ref(false);
 const currentItem = ref<any>(null);
 
 const openQtyDialog = (item: any) => {
+  item.serials = item.serials.map((serial: any) => ({
+    ...serial,
+    qty: serial.quantity,
+  }))
   currentItem.value = item;
   showQtyDialog.value = true;
 };
@@ -197,7 +202,8 @@ const removeItem = (data: any) => {
 
         <template #col-ReturnQTY="{ data }">
           <div v-if="data.trackingType === 'Serial'" class="flex items-center gap-2">
-            <BaseButton v-if="!isView" :label="t('itemsList.add')" variant="outline-primary" @click="openQtyDialog(data)" />
+            <BaseButton v-if="!isView" :label="t('itemsList.add')" variant="outline-primary"
+              @click="openQtyDialog(data)" />
             <span class="text-gray-500">({{ data.quantity }})</span>
           </div>
           <div v-else>
@@ -214,7 +220,7 @@ const removeItem = (data: any) => {
           <div>
             <div v-if="data.warehouseId && isProf(data.warehouseId)" @click="showlocationPicker(data)"
               class="w-28 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
-              <span class="text-black" v-if="data.locationName">{{ data.locationName }}</span>
+              <span class="text-black" v-if="data.locationName" v-tooltip="data.locationName">{{ data.locationName }}</span>
               <span v-else>{{ $t("SalesReturn.ZonePlaceholder") }}</span>
             </div>
             <div v-else class="text-gray-500 text-sm">{{ $t("itemsList.zoneDisabled") }}</div>
@@ -252,7 +258,7 @@ const removeItem = (data: any) => {
       :initialSerials="currentItem.serials" @save="handleSaveSerials" />
 
 
-    <StorageLocationPicker v-model:visible="locationPickerFlag" @select="handleSelectLocation"
+    <StorageLocationPicker v-if="locationPickerFlag" v-model:visible="locationPickerFlag" @select="handleSelectLocation"
       :locations="currentLocations" :selectedLocationId="selectedLocationId" />
   </div>
 </template>
