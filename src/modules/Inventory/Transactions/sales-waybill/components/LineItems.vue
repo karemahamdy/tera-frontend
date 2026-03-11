@@ -188,7 +188,6 @@ const showQtyDialog = ref(false);
 const currentItem = ref<any>(null);
 
 const openQtyDialog = (item: any) => {
-    if (props.disabled) return;
     currentItem.value = item;
     showQtyDialog.value = true;
 };
@@ -248,7 +247,8 @@ const removeItem = (data: any) => {
 
                      <template #col-quantity="{ data }">
           <div class="flex items-center gap-2">
-            <template v-if="data.trackingType === 'Serial'">
+            <!-- Show button when: serial-tracked (create/edit) OR has serials (view) -->
+            <template v-if="data.trackingType === 'Serial' || (disabled && data.serials?.length > 0)">
               <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
                 @click="openQtyDialog(data)" />
               <span class="text-gray-500">({{ data.quantity }})</span>
