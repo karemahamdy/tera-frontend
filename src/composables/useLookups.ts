@@ -342,7 +342,7 @@ export function useLookups() {
       const res = await LookupsService.getReasonLookups();
       reasonsLookups.value = res.data.map((group) => ({
         label: group.name,
-        value: group.name,
+        value: group.value,
       }));
     } catch (error) {
       toastService.error(error as string);

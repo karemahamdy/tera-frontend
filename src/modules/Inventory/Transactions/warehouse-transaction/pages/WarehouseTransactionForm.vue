@@ -10,6 +10,7 @@ import TransactionSummary from '../components/TransactionSummary.vue';
 import { useWarehouseTransaction } from '../composables/useWarehouseTransaction';
 import { useInventoryLookups } from '@/composables/useInventoryLookups';
 import { toastService } from '../../../../../app/services/toastService';
+import { WarehouseTransactionSchema } from '../validation/WarehouseTransactionSchema';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -32,6 +33,7 @@ const mode = computed(() => {
 const isDisabled = computed(() => mode.value === 'view');
 
 const activeStep = ref(0);
+const transactionDetailsRef = ref<any>(null);
 
 const formData = reactive({
   details: {
@@ -68,8 +70,37 @@ const steps = [
   { label: t('warehouseTransaction.review') },
 ];
 
-const nextTab = () => { if (activeStep.value < steps.length - 1) activeStep.value++; };
+
+const nextTab = async () => {
+  // Validate step 0 (TransactionDetails) before advancing
+  if (activeStep.value === 0 && transactionDetailsRef.value) {
+    const isValid = await transactionDetailsRef.value.validate();
+    if (!isValid) return;
+  }
+  if (activeStep.value < steps.length - 1) activeStep.value++;
+};
 const previousTab = () => { if (activeStep.value > 0) activeStep.value--; };
+
+// Reactively disable Next button when required fields are missing
+const isNextDisabled = computed(() => {
+  if (activeStep.value !== 0) return false;
+  const d = formData.details;
+  return !WarehouseTransactionSchema.isValidSync({
+    warehouseId: d.warehouse,
+    destinationWarehouseId: d.destination?.warehouse || null,
+    direction: d.direction,
+  });
+});
+
+// Reactively disable Create/Save button when required fields are missing
+const isFinishDisabled = computed(() => {
+  const d = formData.details;
+  return !WarehouseTransactionSchema.isValidSync({
+    warehouseId: d.warehouse,
+    destinationWarehouseId: d.destination?.warehouse || null,
+    direction: d.direction,
+  });
+});
 
 function toDateStr(d: any): string | null {
   if (!d) return null;
@@ -237,6 +268,7 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
           <template v-else>
             <div v-show="activeStep === 0">
               <TransactionDetails
+                ref="transactionDetailsRef"
                 v-model="formData.details"
                 :disabled="isDisabled"
               />
@@ -265,7 +297,8 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
         v-if="mode !== 'view'"
         :current="activeStep"
         :total="steps.length"
-       
+        :disableNext="isNextDisabled"
+        :disableFinish="isFinishDisabled"
         @next="nextTab"
         @previous="previousTab"
         @finish="submit"

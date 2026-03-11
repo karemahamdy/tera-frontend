@@ -6,7 +6,9 @@ import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const { t } = useI18n()
 const { PaymentTerms, IncotermsLookups, getIncotermsLookups, getPaymentTermsLookups } = useInventoryLookups();
-
+onMounted(async () => {
+  await Promise.all([getIncotermsLookups(), getPaymentTermsLookups()]);
+});
 
 const props = defineProps<{
     lineItems?: any[];
@@ -97,6 +99,7 @@ watch([subTotal, totalTax, grandTotalValue], ([newSub, newTax, newGrand]) => {
     form.subTotal = newSub;
     form.totalTax = newTax;
     form.grandTotal = newGrand;
+    // emitUpdate();
 }, { immediate: true });
 
 watch(() => form.globalDiscount, () => {
@@ -144,9 +147,7 @@ const salesTypeOptions = [
     { label: t("payment.local"), value: "Local" },
 ];
 
-onMounted(async () => {
-  await Promise.all([getIncotermsLookups(), getPaymentTermsLookups()]);
-});
+
 </script>
 
 <template>
@@ -161,7 +162,7 @@ onMounted(async () => {
                     <div 
                         class="flex-1 border rounded-lg p-4 flex items-center justify-between cursor-pointer hover:border-primary-500 transition-colors"
                         :class="[form.paymentType === 'Payable' ? 'border-primary-500 bg-primary-50' : 'border-gray-200', disabled ? 'opacity-50 pointer-events-none' : '']" 
-                        @click="!disabled && (form.paymentType = 'Payable', emitUpdate())"
+                        @click="!disabled && (form.paymentType = 'Payable')"
                     >
                         <div>
                             <div class="font-bold text-gray-700">{{ t("payment.payable") }}</div>
@@ -173,7 +174,7 @@ onMounted(async () => {
                     <div 
                         class="flex-1 border rounded-lg p-4 flex items-center justify-between cursor-pointer hover:border-primary-500 transition-colors"
                         :class="[form.paymentType === 'Cash' ? 'border-primary-500 bg-primary-50' : 'border-gray-200', disabled ? 'opacity-50 pointer-events-none' : '']" 
-                        @click="!disabled && (form.paymentType = 'Cash', emitUpdate())"
+                        @click="!disabled && (form.paymentType = 'Cash')"
                     >
                         <div>
                             <div class="font-bold text-gray-700">{{ t("payment.cash") }}</div>

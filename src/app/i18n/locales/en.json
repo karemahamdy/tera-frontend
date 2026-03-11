@@ -1038,7 +1038,8 @@
     "DamagedItem": "Damaged Item",
     "ExpiredItem": "Expired Item",
     "CountVariance": "Count Variance",
-    "InventoryAdjustmentDeletedSuccessfully": "Inventory Adjustment Deleted Successfully"
+    "InventoryAdjustmentDeletedSuccessfully": "Inventory Adjustment Deleted Successfully",
+    "InventoryAdjustmentCreatedSuccessfully": "Inventory Adjustment Created Successfully"
   },
   "OpeningBalance": {
     "OpeningBalance": "Opening Balance",
@@ -1129,7 +1130,8 @@
     "WarehouseTransactionUpdatedSuccessfully": "WarehouseTransaction Updated Successfully",
     "Zone": "Zone",
     "review": "Review",
-    "transactionDetails": "Transaction Details"
+    "transactionDetails": "Transaction Details",
+    "selectZone": "Select Zone"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",
@@ -1221,7 +1223,8 @@
   },
   "common": {
     "cancel": "Cancel",
-    "import": "Import"
+    "import": "Import",
+    "close": "Close"
   },
   "itemsList": {
     "title": "Line Items",
@@ -1354,5 +1357,8 @@
     "warehouseDetails": "Warehouse Details",
     "lineItems": "Line Items",
     "payment": "Payment"
+  },
+  "validation": {
+    "required": "This field is required"
   }
 }

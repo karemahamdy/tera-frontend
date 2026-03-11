@@ -261,7 +261,7 @@ export function useInventoryLookups() {
       inspectionResultsLookups.value = res.data.map((inspection) => ({
         ...inspection,
         label: inspection.name,
-        value: inspection.name,
+        value: inspection.value,
       }));
     } catch (error) {
       toastService.error(error as string);
