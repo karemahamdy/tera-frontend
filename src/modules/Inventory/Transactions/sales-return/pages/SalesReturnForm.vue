@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import ReturnDetails from "../components/ReturnDetails.vue";
-import { useLoadingStore } from "@/app/store/useLoadingStore";
-const loadingStore = useLoadingStore();
 
 import BaseStepper from "@/sharedComponents/stepper/BaseStepper.vue";
 import StepperActions from "@/sharedComponents/stepper/StepperActions.vue";
