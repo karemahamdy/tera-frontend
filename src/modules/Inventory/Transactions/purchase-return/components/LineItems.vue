@@ -201,7 +201,7 @@ const removeItem = (data: any) => {
 
         <template #col-ReturnQTY="{ data }">
           <div v-if="data.trackingType === 'Serial'" class="flex items-center gap-2">
-            <BaseButton v-if="!isView" :label="t('itemsList.add')" variant="outline-primary" @click="openQtyDialog(data)" />
+            <BaseButton :label="isView ? t('button.view') : t('itemsList.add')" variant="outline-primary" @click="openQtyDialog(data)" />
             <span class="text-gray-500">({{ data.quantity }})</span>
           </div>
           <div v-else>
@@ -252,6 +252,7 @@ const removeItem = (data: any) => {
 
     <SalesQuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
       :warehouseId="currentItem.warehouseId" :zoneId="currentItem.zoneId" :locationId="currentItem.locationId"
+      :disabled="isView"
       :initialSerials="currentItem.serials" @save="handleSaveSerials" />
 
 
