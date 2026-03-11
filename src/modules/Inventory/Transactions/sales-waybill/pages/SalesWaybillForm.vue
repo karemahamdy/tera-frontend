@@ -49,7 +49,14 @@ const defaultFormData = {
   warehouseDetails: null,
   lineItems: [],
   paymentInfo: null,
-  notes: null
+  notes: {
+    comment1: "",
+    comment2: "",
+    comment3: "",
+    comment4: "",
+    comment5: "",
+    note: ""
+  }
 };
 
 const formData = ref<any>({ ...defaultFormData });
@@ -254,7 +261,14 @@ const mapApiToForm = (apiData: any) => {
       globalDiscount: pi.globalDiscount ?? 0,
       grandTotal:     pi.grandTotal ?? 0,
     },
-    notes: apiData.notes ?? null,
+    notes: {
+      comment1: apiData.notes?.comment1 ?? apiData.comment1 ?? "",
+      comment2: apiData.notes?.comment2 ?? apiData.comment2 ?? "",
+      comment3: apiData.notes?.comment3 ?? apiData.comment3 ?? "",
+      comment4: apiData.notes?.comment4 ?? apiData.comment4 ?? "",
+      comment5: apiData.notes?.comment5 ?? apiData.comment5 ?? "",
+      note:     apiData.notes?.note     ?? apiData.note     ?? "",
+    }
   };
 };
 

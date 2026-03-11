@@ -86,7 +86,12 @@ watchEffect(() => {
     form.incoterm = null;
   }
 });
-
+watch(
+  () => [form.comment1, form.comment2, form.comment3, form.comment4, form.comment5, form.note],
+  () => {
+    emitUpdate();
+  }
+);
 // base-currency equivalents
 const subTotalBase = computed(() => Number((subTotal.value * exchangeRate.value).toFixed(2)));
 const discountAmountBase = computed(() => Number(((Number(form.globalDiscount) || 0) * exchangeRate.value).toFixed(2)));
