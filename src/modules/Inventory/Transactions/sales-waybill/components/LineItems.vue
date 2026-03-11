@@ -325,7 +325,6 @@ const removeItem = (data: any) => {
                         <span>
                             {{ data.balance || 0 }}
                         </span>
-                        <span class="text-[10px] text-gray-400 font-medium uppercase">{{ data.uom || 'PCS' }}</span>
                     </div>
                 </template>
 

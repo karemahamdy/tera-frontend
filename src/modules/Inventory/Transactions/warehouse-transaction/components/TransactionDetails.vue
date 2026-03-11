@@ -5,6 +5,7 @@ import { useWarehouseTransaction } from "../composables/useWarehouseTransaction"
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import StorageLocationPicker from "@/modules/Inventory/shared/components/StorageLocationPicker.vue";
 import { useRoute } from "vue-router";
+import { WarehouseTransactionSchema } from "../validation/WarehouseTransactionSchema";
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -42,6 +43,7 @@ const errors = reactive({
   documentNumber: "",
   InventoryRequest: "",
   warehouse: "",
+  destinationWarehouse: "",
   Zone: "",
   type: "",
   costCenter: "",
@@ -131,6 +133,34 @@ onMounted(async () => {
     }
   }
 })
+
+async function validate(): Promise<boolean> {
+  // Clear all errors first
+  errors.warehouse = '';
+  errors.destinationWarehouse = '';
+
+  try {
+    await WarehouseTransactionSchema.validate(
+      {
+        warehouseId: modelValue.value.warehouse,
+        destinationWarehouseId: modelValue.value.destination?.warehouse || null,
+        direction: modelValue.value.direction,
+      },
+      { abortEarly: false }
+    );
+    return true;
+  } catch (err: any) {
+    if (err.inner) {
+      err.inner.forEach((e: any) => {
+        if (e.path === 'warehouseId') errors.warehouse = t('validation.required');
+        if (e.path === 'destinationWarehouseId') errors.destinationWarehouse = t('validation.required');
+      });
+    }
+    return false;
+  }
+}
+
+defineExpose({ validate });
 </script>
 
 <template>
@@ -224,6 +254,7 @@ onMounted(async () => {
           :label="t('warehouseTransaction.warehouse')" 
           v-model="modelValue.warehouse"
           :error="errors.warehouse" 
+          :invalid="!!errors.warehouse"
           :placeholder="t('itemList.warehousePlaceholder')"
           :options="WarehouseLookups"
           :disabled="disabled"
@@ -260,6 +291,8 @@ onMounted(async () => {
             <FormDropdown 
               :label="t('warehouseTransaction.warehouse')" 
               v-model="modelValue.warehouse"
+              :error="errors.warehouse"
+              :invalid="!!errors.warehouse"
               :placeholder="t('warehouseTransaction.warehousePlaceholder')" 
               :options="WarehouseLookups"
               :disabled="disabled"
@@ -295,6 +328,8 @@ onMounted(async () => {
             <FormDropdown 
               :label="t('warehouseTransaction.warehouse')" 
               v-model="modelValue.destination.warehouse"
+              :error="errors.destinationWarehouse"
+              :invalid="!!errors.destinationWarehouse"
               :placeholder="t('warehouseTransaction.warehousePlaceholder')" 
               :options="WarehouseLookups"
               :disabled="disabled"

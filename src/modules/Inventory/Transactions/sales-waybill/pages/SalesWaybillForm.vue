@@ -94,6 +94,21 @@ const submit = async () => {
             ? Number(formData.value.paymentTerms.exchangeRate) 
             : 1;
 
+    // Always recalculate totals from the latest lineItems at submit time
+    // This ensures that even if the Payment tab wasn't visited after line item changes,
+    // the submitted payload has correct totals.
+    const lineItems = formData.value.lineItems || [];
+    const freshSubTotal = lineItems.reduce((sum: number, item: any) => {
+      return sum + (Number(item.quantity) * Number(item.unitPrice) || 0);
+    }, 0);
+    const freshTotalTax = lineItems.reduce((sum: number, item: any) => {
+      const itemSub = Number(item.quantity) * Number(item.unitPrice) || 0;
+      const taxRate = Number(item.tax ?? item.unitTaxPercent) || 0;
+      return sum + (itemSub * taxRate / 100);
+    }, 0);
+    const globalDiscount = Number(formData.value.paymentInfo?.globalDiscount) || 0;
+    const freshGrandTotal = Number((freshSubTotal + freshTotalTax - globalDiscount).toFixed(2));
+
     const payload = {
       customerDetails: formData.value.customerDetails,
       paymentTerms: {
@@ -101,13 +116,17 @@ const submit = async () => {
         exchangeRate
       },
       warehouseDetails: formData.value.warehouseDetails,
-      paymentInfo: formData.value.paymentInfo ? {
-        ...formData.value.paymentInfo,
-        subTotalBase: Number(((formData.value.paymentInfo.subTotal || 0) * exchangeRate).toFixed(2)),
-        taxAmountBase: Number(((formData.value.paymentInfo.totalTax || 0) * exchangeRate).toFixed(2)),
-        globalDiscountBase: Number(((formData.value.paymentInfo.globalDiscount || 0) * exchangeRate).toFixed(2)),
-        grandTotalBase: Number(((formData.value.paymentInfo.grandTotal || 0) * exchangeRate).toFixed(2))
-      } : null,
+      paymentInfo: {
+        ...(formData.value.paymentInfo || {}),
+        subTotal:          Number(freshSubTotal.toFixed(2)),
+        totalTax:          Number(freshTotalTax.toFixed(2)),
+        globalDiscount:    globalDiscount,
+        grandTotal:        freshGrandTotal,
+        subTotalBase:      Number((freshSubTotal * exchangeRate).toFixed(2)),
+        taxAmountBase:     Number((freshTotalTax * exchangeRate).toFixed(2)),
+        globalDiscountBase:Number((globalDiscount * exchangeRate).toFixed(2)),
+        grandTotalBase:    Number((freshGrandTotal * exchangeRate).toFixed(2))
+      },
       notes: formData.value.notes
     };
     
@@ -229,6 +248,7 @@ const mapApiToForm = (apiData: any) => {
       paymentTermId:  pi.paymentTermId ?? null,
       paymentTermName:pi.paymentTermName ?? "",
       incoterm:       pi.incoterm ?? null,
+      purchaseType:   pi.purchaseType ?? null,
       subTotal:       pi.subTotal ?? 0,
       totalTax:       pi.totalTax ?? 0,
       globalDiscount: pi.globalDiscount ?? 0,

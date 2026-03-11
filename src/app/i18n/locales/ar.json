@@ -1130,7 +1130,8 @@
     "WarehouseTransactionUpdatedSuccessfully": "تم التعديل بنجاح",
     "WarehouseTransactionCreatedSuccessfully": "تم انشاء الحركة بنجاح",
     "review": "مراجعة",
-    "transactionDetails": "تفاصيل المعاملة"
+    "transactionDetails": "تفاصيل المعاملة",
+    "selectZone": "اختر المنطقة"
   },
   "itemTransaction": {
     "createNewTransaction": "إنشاء معاملة جديدة",
@@ -1221,7 +1222,8 @@
   },
   "common": {
     "cancel": "إلغاء",
-    "import": "استيراد"
+    "import": "استيراد",
+    "close": "إغلاق"
   },
   "itemsList": {
     "title": "عناصر الفاتورة",
@@ -1348,5 +1350,8 @@
     "warehouseDetails": "بيانات المخازن",
     "lineItems": "بنود الفاتورة",
     "payment": "الدفع"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب"
   }
 }

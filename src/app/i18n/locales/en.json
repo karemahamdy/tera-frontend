@@ -1129,7 +1129,8 @@
     "WarehouseTransactionUpdatedSuccessfully": "WarehouseTransaction Updated Successfully",
     "Zone": "Zone",
     "review": "Review",
-    "transactionDetails": "Transaction Details"
+    "transactionDetails": "Transaction Details",
+    "selectZone": "Select Zone"
   },
   "itemTransaction": {
     "createNewTransaction": "Create New Transaction",
@@ -1221,7 +1222,8 @@
   },
   "common": {
     "cancel": "Cancel",
-    "import": "Import"
+    "import": "Import",
+    "close": "Close"
   },
   "itemsList": {
     "title": "Line Items",
@@ -1354,5 +1356,8 @@
     "warehouseDetails": "Warehouse Details",
     "lineItems": "Line Items",
     "payment": "Payment"
+  },
+  "validation": {
+    "required": "This field is required"
   }
 }

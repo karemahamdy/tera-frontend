@@ -21,7 +21,7 @@ const { t } = useI18n();
 const emit = defineEmits(['update']);
 const {
   getItemsLookups, itemsLookups,
-  getUnitsLookups,
+  getUnitsLookups, UnitsLookups,
   getWarehouseHierarchyLookups, WarehouseHierarchyLookups,
   getWarehouseLookups, WarehouseLookups,
   getItemBalance
@@ -40,10 +40,13 @@ function mapApiItem(item: any) {
     unitId: item.unitOfMeasure || item.unitOfMeasureId,
     conversionFactor: 1
   }];
+  // Infer trackingType from serialLots if not explicitly provided
+  const hasSerials = (item.serialLots || []).length > 0;
+  const trackingType = item.trackingType || (hasSerials ? 'Serial' : null);
   return {
     id: item.id || Date.now() + Math.random(),
     itemId: item.itemId,
-    trackingType: item.trackingType || null,
+    trackingType,
     code: item.itemCode,
     name: item.itemName,
     quantity: item.quantity,
@@ -61,7 +64,14 @@ function mapApiItem(item: any) {
     column: item.column ?? '',
     rack: item.rack ?? '',
     serials: (item.serialLots || []).map((s: any) => ({
-      id: s.id, serial: s.mainSerial, qty: s.availableQuantity, batch: s.batchNumber, expire: s.expireDate
+      id: s.id,
+      mainSerial: s.mainSerial,
+      qty: s.availableQuantity ?? s.qty ?? 0,
+      batchNumber: s.batchNumber ?? s.batch ?? null,
+      expireDate: s.expireDate ?? s.expire ?? null,
+      serialNumber2: s.serialNumber2 ?? null,
+      serialNumber3: s.serialNumber3 ?? null,
+      comment: s.comment ?? null,
     })),
     balance: item.balance || 0,
     tracked: true,
@@ -115,13 +125,13 @@ const handleSelectItem = (selectedItem: any) => {
   unitOptionsMap.value[rowId] = units.map((u: any) => ({
     label: u.unitCode ? `${u.unitName} (${u.unitCode})` : u.unitName,
     value: u.unitName,
-    unitId: u.id,
+    unitId: u.unitId || u.id,
     conversionFactor: u.conversionFactor
   }));
 
   // Get the first unit as fallback if no base unit found
   const defaultUnit = baseUnit || units[0];
-  const unitIdValue = defaultUnit?.id || selectedItem.baseUnitId || null;
+  const unitIdValue = defaultUnit?.unitId || defaultUnit?.id || selectedItem.baseUnitId || null;
 
   const newItem = {
     id: rowId,
@@ -184,8 +194,30 @@ onMounted(async () => {
   await Promise.all([
     getUnitsLookups(),
     getWarehouseLookups(),
-    getWarehouseHierarchyLookups()
+    getWarehouseHierarchyLookups(),
+    getItemsLookups()
   ]);
+
+  // For existing items in edit mode, sync their units from itemsLookups
+  if (items.value.length > 0) {
+    items.value.forEach(item => {
+      const originalItem = itemsLookups.value.find(i => i.id === item.itemId);
+      if (originalItem?.units) {
+        unitOptionsMap.value[item.id] = originalItem.units.map((u: any) => ({
+          label: u.unitCode ? `${u.unitName} (${u.unitCode})` : u.unitName,
+          value: u.unitName,
+          unitId: u.unitId || u.id,
+          conversionFactor: u.conversionFactor
+        }));
+
+        // If uom name is missing, try to resolve it from the newly synced options
+        if (!item.uom && item.unitId) {
+          const opt = unitOptionsMap.value[item.id]?.find((o: any) => o.unitId === item.unitId);
+          if (opt) item.uom = opt.value;
+        }
+      }
+    });
+  }
 });
 
 const showLocationPicker = ref(false);
@@ -292,7 +324,8 @@ const fetchItemBalance = async (item: any) => {
 
         <template #col-quantity="{ data }">
           <div class="flex items-center gap-2">
-            <template v-if="data.trackingType === 'Serial'">
+            <!-- Show button when: serial-tracked (create/edit) OR has serials (view) -->
+            <template v-if="data.trackingType === 'Serial' || (disabled && data.serials?.length > 0)">
               <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
                 @click="openQtyDialog(data)" />
               <span class="text-gray-500">({{ data.quantity }})</span>
@@ -321,8 +354,12 @@ const fetchItemBalance = async (item: any) => {
                 data.uom = v;
                 const opt = (unitOptionsMap[data.id] ?? [])
                   .find((o: any) => o.value === v);
-                if (opt) {
+                if (opt?.unitId) {
                   data.unitId = opt.unitId;
+                } else {
+                  // Fallback: resolve unitId from UnitsLookups by matching label
+                    const unitFromLookup = UnitsLookups.find((u: any) => u.label === v);
+                    if (unitFromLookup) data.unitId = unitFromLookup.value;
                 }
                 emitUpdate();
               }" />

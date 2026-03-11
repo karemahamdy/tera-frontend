@@ -14,6 +14,7 @@ const props = defineProps<{
   initialSerials?: any[];
   exportTemplateFunc?: Function;
   parseSerialsFunc?: Function;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits(["update:visible", "save"]);
@@ -41,7 +42,7 @@ const columns = computed(() => [
   { field: "batchNumber", header: t("serial.batch") },
   { field: "expireDate", header: t("serial.expire") },
   { field: "comment", header: t("serial.comment") },
-  { field: "action", header: "" },
+  ...(props.disabled ? [] : [{ field: "action", header: "" }]),
 ]);
 
 const totalQty = computed(() =>
@@ -150,8 +151,8 @@ watch(
 <template>
   <Dialog v-model:visible="isVisible" modal :closable="false">
     <div class="grid grid-cols-1 md:grid-cols-2">
-      <!-- Left Form Panel -->
-      <div class="md:col-span-1 w-full flex flex-col gap-5 p-2 h-full">
+      <!-- Left Form Panel — hidden in view mode -->
+      <div v-if="!disabled" class="md:col-span-1 w-full flex flex-col gap-5 p-2 h-full">
         <div class="flex justify-between items-center">
           <h3 class="font-bold text-lg text-gray-900">
             {{ t("serial.selectQuantity") }}
@@ -357,7 +358,18 @@ watch(
             </span>
           </div>
 
-          <div class="flex gap-3">
+          <!-- View mode: Close only -->
+          <div v-if="disabled" class="flex gap-3">
+            <BaseButton
+              :label="t('common.close')"
+              variant="ghost"
+              class="w-24 border-gray-300 text-gray-700 hover:bg-gray-50 bg-white"
+              @click="close"
+            />
+          </div>
+
+          <!-- Edit mode: Cancel + Save -->
+          <div v-else class="flex gap-3">
             <BaseButton
               :label="t('common.cancel')"
               variant="ghost"
