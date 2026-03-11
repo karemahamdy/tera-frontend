@@ -85,7 +85,7 @@ export function usePurchaseReturnForm() {
     try {
       const resp = await PurchaseReturnService.getById(id);
       resp.returnHeader.returnDate = new Date(resp.returnHeader.returnDate);
-      setValues({
+      await setValues({
         ...resp.returnHeader,
         lineItems: resp.lineItems.map((item: any) => ({
           ...item,
