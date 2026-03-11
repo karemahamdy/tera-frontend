@@ -125,10 +125,8 @@ const handleSelectSerials = (serials: any[]) => {
                 <template #content>
                     <div>
                         <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-2">
-                            <!-- hold date -->
                             <FormInput :label="$t('itemHold.holdDate')" v-model="date" type="date" class="mt-5"
                                 :error="errors.holdDate" :placeholder="$t('itemHold.holdDatePlaceholder')" />
-                            <!-- item -->
                             <div class="flex justify-center items-end gap-2 w-full mt-5">
                                 <FormInput :label="$t('itemHold.item')" v-model="itemName" class="w-4/5" disabled
                                     :placeholder="$t('itemHold.itemPlaceholder')" :error="errors.itemId" />
@@ -137,11 +135,9 @@ const handleSelectSerials = (serials: any[]) => {
                                     {{ $t("LDC.select") }}
                                 </a>
                             </div>
-                            <!-- hold type -->
                             <FormDropdown class="w-full mt-5" :label="$t('itemHold.holdType')" :options="holdTypes"
                                 v-model="holdType" optionValue="value" :error="errors.itemHoldStatus"
                                 :placeholder="$t('itemHold.holdTypePlaceholder')" />
-                            <!-- quantity -->
                             <div class="flex justify-center items-end gap-2 w-full mt-5">
                                 <FormInput :label="$t('itemHold.quantity')" v-model="quantity" class="w-4/5"
                                     type="number" :error="errors.holdQuantity" :disabled="isSerial" :key="hasSerial"
@@ -153,11 +149,9 @@ const handleSelectSerials = (serials: any[]) => {
                                     {{ $t("itemHold.add") }}
                                 </a>
                             </div>
-                            <!-- warehouse -->
                             <FormDropdown class="w-full mt-5" :label="$t('items.warehouse')" :options="WarehouseOptions"
                                 v-model="warehouseID" :error="errors.warehouseId" optionValue="value"
                                 :placeholder="$t('items.warehousePlaceholder')" />
-                            <!-- zone -->
                             <div class="w-full mt-5">
                                 <label class="block font-bold">
                                     {{ $t('OpeningBalance.zone') }}
@@ -170,8 +164,6 @@ const handleSelectSerials = (serials: any[]) => {
                                 <small v-if="errors.locationId" class="text-danger-500">{{ $t(errors.locationId)
                                     }}</small>
                             </div>
-
-
                         </div>
 
                         <div class="mt-5">
