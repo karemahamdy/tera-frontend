@@ -99,6 +99,8 @@ export interface SelectedItem {
 export interface ItemHoldPayload {
   itemId: string;
   warehouseId: string;
+  zoneId: string | null;
+  locationId: string | null;
   holdQuantity: number;
   reason: string | null;
   holdDate: string; // consider using Date type if you will parse it
