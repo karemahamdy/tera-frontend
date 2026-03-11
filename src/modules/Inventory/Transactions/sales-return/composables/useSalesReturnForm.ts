@@ -139,7 +139,7 @@ export function useSalesReturnForm() {
       const createPayload = getFormPayload(payload);
       const response = await SalesReturnService.create(createPayload);
       toastService.success(t("SalesReturn.SalesReturnCreatedSuccessfully"));
-      router.push({ name: "Sales Return" });
+      router.push({ name: "SalesReturn" });
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -157,7 +157,7 @@ export function useSalesReturnForm() {
       toastService.success(
         t("PurchaseReturn.PurchaseReturnUpdatedSuccessfully"),
       );
-      router.push({ name: "PurchaseReturn" });
+      router.push({ name: "SalesReturn" });
     } catch (err: any) {
       toastService.error(err);
       throw err;
