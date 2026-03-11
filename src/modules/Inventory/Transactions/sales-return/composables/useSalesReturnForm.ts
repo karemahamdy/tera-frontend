@@ -181,6 +181,7 @@ export function useSalesReturnForm() {
   };
 
   const initializeForm = () => {
+    resetFormToInitialValues();
     if (id) {
       fetchPurchaseReturnById(id);
     } else {
