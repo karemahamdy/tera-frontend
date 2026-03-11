@@ -82,10 +82,10 @@ const handleSelectLocation = (location: any) => {
 
 const handleSaveSerials = (selectedSerials: { serials: any[], totalQty: number }) => {
     serials.value = selectedSerials.serials.map(serial => ({
-        "serial": serial.serial,
+        "serial": serial.mainSerial,
         "quantity": serial.qty,
-        "batchNumber": serial.batch,
-        "expireDate": serial.expire,
+        "batchNumber": serial.batchNumber,
+        "expireDate": serial.expireDate,
         "serialNumber2": serial.serialNumber2,
         "serialNumber3": serial.serialNumber3,
         "comment": serial.comment
