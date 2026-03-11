@@ -85,7 +85,7 @@ const submit = async () => {
         warehouseId: item.warehouseId || formData.value.warehouseDetails?.warehouseId || null,
         zoneId: item.zoneId || formData.value.warehouseDetails?.zoneId || null,
         unitPrice: Number(item.unitPrice) || 0,
-        unitTaxPercent: Number(item.tax) || 0,
+        unitTaxPercent: Number(item.tax ?? item.unitTaxPercent) || 0,
         lineTotal: Number(item.total) || 0
       })),
       paymentInfo: (() => {
