@@ -167,7 +167,7 @@ const handleSelectSerials = (serials: any[]) => {
                         </div>
 
                         <div class="mt-5">
-                            <label class="block font-medium">
+                            <label class="block font-bold">
                                 {{ $t("itemHold.notes") }}
                             </label>
                             <Textarea v-model="notes" rows="2" class="w-full p-3 border rounded-lg"
