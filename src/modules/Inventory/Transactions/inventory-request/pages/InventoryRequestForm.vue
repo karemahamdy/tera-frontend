@@ -31,7 +31,15 @@ const formData = reactive({
   requestDate: new Date(),
   type: "",
   warehouseId: "",
+  zoneId: "",
+  locationId: null as string | null,
+  locationCode: "",
+  zoneName: "",
   destinationWarehouseId: "",
+  destinationZoneId: "",
+  destinationLocationId: null as string | null,
+  destinationLocationCode: "",
+  destinationZoneName: "",
   reason: "",
   lineItems: [] as any[]
 });
@@ -45,7 +53,15 @@ onMounted(async () => {
       formData.requestDate = result.requestDate || result.date ? new Date(result.requestDate || result.date) : new Date();
       formData.type = result.type;
       formData.warehouseId = result.warehouseId || result.sourceWarehouseId;
+      formData.zoneId = result.zoneId || '';
+      formData.locationId = result.locationId || null;
+      formData.locationCode = result.locationName || result.locationCode || '';
+      formData.zoneName = result.zoneName || '';
       formData.destinationWarehouseId = result.destinationWarehouseId || result.targetWarehouseId;
+      formData.destinationZoneId = result.destinationZoneId || '';
+      formData.destinationLocationId = result.destinationLocationId || null;
+      formData.destinationLocationCode = result.destinationLocationName || result.destinationLocationCode || '';
+      formData.destinationZoneName = result.destinationZoneName || '';
       formData.reason = result.reason || result.resone;
       formData.lineItems = result.lineItems || result.items || [];
     }
@@ -73,8 +89,12 @@ const submit = async () => {
     requestedBy: formData.requestedBy,
     requestDate: formData.requestDate.toISOString(),
     type: formData.type,
-    warehouseId: formData.warehouseId,
-    destinationWarehouseId: formData.destinationWarehouseId,
+    warehouseId: formData.warehouseId || null,
+    zoneId: formData.zoneId || null,
+    locationId: formData.locationId || null,
+    destinationWarehouseId: formData.destinationWarehouseId || null,
+    destinationZoneId: formData.destinationZoneId || null,
+    destinationLocationId: formData.destinationLocationId || null,
     reason: formData.reason,
     lineItems: formData.lineItems.map(item => ({
       itemId: item.itemId,

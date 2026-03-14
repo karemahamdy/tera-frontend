@@ -69,7 +69,7 @@ const columns = computed(() => {
         { field: 'originalWaybillNumbers', header: t('purchaseReturn.originalPW'), sortable: true },
         { field: 'returnDate', header: t('purchaseReturn.date'), type: 'date', sortable: true },
         { field: 'itemCount', header: t('purchaseReturn.items'), type: 'slot', sortable: true },
-        { field: 'grandTotalBase', header: t('purchaseReturn.total'), sortable: true },
+        // { field: 'grandTotalBase', header: t('purchaseReturn.total'), sortable: true },
         { field: 'returnReason', header: t('purchaseReturn.reason'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
