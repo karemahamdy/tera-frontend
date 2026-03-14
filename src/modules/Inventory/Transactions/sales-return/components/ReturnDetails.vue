@@ -78,7 +78,7 @@ const handleOriginalWaybillSelection = (item: any) => {
       :disabled="true" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-
+      
       <FormDropdown :label="t('SalesReturn.Customer')" v-model="customerId" :error="errors.customerId"
         :disabled="isView" :options="customerLookups" :placeholder="t('SalesReturn.CustomerPlaceholder')" />
 
@@ -102,7 +102,7 @@ const handleOriginalWaybillSelection = (item: any) => {
 
       <FormInput :label="t('SalesReturn.ReturnDate')" v-model="returnDate" type="date" :error="errors.returnDate"
         :disabled="isView" :placeholder="t('SalesReturn.ReturnDatePlaceholder')" :invalid="!!errors.returnDate" />
-
+      
       <FormDropdown :label="t('purchaseReturn.Warehouse')" v-model="warehouseId" :error="errors.warehouseId"
         :disabled="isView" :options="WarehouseLookups" :placeholder="t('purchaseReturn.WarehousePlaceholder')" />
 
