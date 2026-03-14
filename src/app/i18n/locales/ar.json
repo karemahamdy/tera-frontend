@@ -905,7 +905,9 @@
     "otherReason": "ملاحظات المرتجع",
     "warehouseId": "المخزن",
     "zoneId": "المنطقة",
-    "lineItems": "بنود الفاتورة"
+    "lineItems": "بنود الفاتورة",
+    "PurchaseReturnCreatedSuccessfully": "تم إنشاء مرتجع الشراء بنجاح",
+    "PurchaseReturnUpdatedSuccessfully": "تم تحديث مرتجع الشراء بنجاح"
   },
   "purchaseRules": {
     "ruleHeader": "خطوات عملية مرتجع المشتريات:",
@@ -1009,7 +1011,8 @@
     "PhysicalCountDeletedSuccessfully": "تم حذف الجرد بنجاح",
     "serialItemSelection": "اختيار العنصر التسلسلي",
     "viewPhysicalCount": "عرض الجرد الفعلي",
-    "newPhysicalCount": "جرد فعلي جديد"
+    "newPhysicalCount": "جرد فعلي جديد",
+    "PhysicalCountCreatedSuccessfully": "تم إنشاء جرد فعلي بنجاح"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",
