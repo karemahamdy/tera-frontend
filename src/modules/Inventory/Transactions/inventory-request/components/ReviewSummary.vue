@@ -141,12 +141,22 @@ const columns = computed(() => [
             {{ sourceWarehouseName }}
           </span>
 
+          <template v-if="formData.locationCode">
+            <span class="text-gray-500">{{ t('itemList.zone') }}</span>
+            <span class="text-gray-700 font-medium text-right">{{ formData.locationCode }}</span>
+          </template>
+
           <span class="text-gray-500">
             {{ t('RequestInformation.TargetWarehouse') }}
           </span>
           <span class="text-gray-700 font-medium text-right">
             {{ targetWarehouseName }}
           </span>
+
+          <template v-if="formData.destinationLocationCode">
+            <span class="text-gray-500">{{ t('itemList.zone') }}</span>
+            <span class="text-gray-700 font-medium text-right">{{ formData.destinationLocationCode }}</span>
+          </template>
 
         </div>
       </div>
