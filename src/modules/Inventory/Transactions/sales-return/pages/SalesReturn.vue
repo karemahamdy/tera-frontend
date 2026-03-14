@@ -75,7 +75,7 @@ const columns = computed(() => {
         { field: 'originalWaybillNumbers', header: t('SalesReturn.originalWaybill'), sortable: true },
         { field: 'itemCount', header: t('SalesReturn.items'), type: 'slot', sortable: true },
         { field: 'returnDate', header: t('SalesReturn.date'), type: 'date', sortable: true },
-        { field: 'grandTotalBase', header: t('SalesReturn.total'), sortable: true },
+        // { field: 'grandTotalBase', header: t('SalesReturn.total'), sortable: true },
         { field: 'returnReason', header: t('SalesReturn.reason'), type: 'slot', sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
