@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { formatDate } from "@/app/utils/dates";
 
@@ -8,16 +8,6 @@ const { t } = useI18n();
 import { usePhysicalCountForm } from "../composables/usePhysicalCountForm";
 const { countDate, notes, physicalCountLines } = usePhysicalCountForm();
 
-const data = ref([
-    {
-        id: "111-111-11",
-        itemCode: "ITM-045",
-        descrption: "Steel 10mm",
-        systemBalance: "50 Pcs",
-        countedQTY: 10,
-        variances: 40
-    },
-])
 
 const columns = computed(() => {
     const Columns = [
