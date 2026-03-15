@@ -912,7 +912,9 @@
     "otherReason": "Return Notes",
     "warehouseId": "Warehouse",
     "zoneId": "Zone",
-    "lineItems": "Line Items"
+    "lineItems": "Line Items",
+    "PurchaseReturnCreatedSuccessfully": "Purchase Return Created Successfully",
+    "PurchaseReturnUpdatedSuccessfully": "Purchase Return Updated Successfully"
   },
   "rules": {
     "ruleHeader": "Sales Waybill Business Rules:",
@@ -1010,7 +1012,8 @@
     "PhysicalCountDeletedSuccessfully": "Physical Count Deleted Successfully",
     "serialItemSelection": "Serial Item Selection",
     "viewPhysicalCount": "View Physical Count",
-    "newPhysicalCount": "New Physical Count"
+    "newPhysicalCount": "New Physical Count",
+    "PhysicalCountCreatedSuccessfully": "Physical Count Created Successfully"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",

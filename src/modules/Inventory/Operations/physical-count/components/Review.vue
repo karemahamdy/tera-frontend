@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { formatDate } from "@/app/utils/dates";
 
 const { t } = useI18n();
+
+import { usePhysicalCountForm } from "../composables/usePhysicalCountForm";
+const { countDate, notes, physicalCountLines } = usePhysicalCountForm();
 
 const data = ref([
     {
@@ -33,16 +37,16 @@ const columns = computed(() => {
         <div class="grid grid-cols-2 justify-between">
             <div class="mb-5">
                 <p class="text-gray-500">{{ $t("PhysicalCount.date") }}</p>
-                <p>2025-01-01</p>
+                <p>{{ formatDate(countDate as Date) }}</p>
             </div>
             <div class="mb-5">
                 <p class="text-gray-500">{{ $t("itemTransaction.notes") }}</p>
-                <p>Revelant Notes</p>
+                <p>{{ notes }}</p>-
             </div>
         </div>
         <div>
             <p><strong>{{ $t("PhysicalCount.LineItems") }}</strong></p>
-            <DynamicTable :columns="columns" :data="data" :paginator="false">
+            <DynamicTable :columns="columns" :data="physicalCountLines" :paginator="false">
                 <template v-slot:["col-variances"]="{ data }">
                     <span class="text-danger-500">{{ data.variances }}</span>
                 </template>

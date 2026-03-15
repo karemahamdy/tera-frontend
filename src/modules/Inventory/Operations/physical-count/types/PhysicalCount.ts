@@ -47,10 +47,7 @@ export interface InventoryCountLine {
   hasSerials: boolean;
 }
 
-export type InventoryCountStatus =
-  | "Draft"
-  | "Posted"
-  | "Cancelled";
+export type InventoryCountStatus = "Draft" | "Posted" | "Cancelled";
 
 export interface PhysicalCountById {
   id: string;
@@ -72,4 +69,25 @@ export interface PhysicalCountSerial {
   actualQty: number;
   countedQty: number;
   varianceQty: number;
+}
+
+export interface Serial {
+  mainSerial: string;
+  countedQty: number;
+}
+
+export interface Line {
+  warehouseId: string;
+  zoneId: string;
+  locationId: string;
+  itemId: string;
+  countedQty: number;
+  physicalCountSerials: Serial[];
+}
+
+export interface PhysicalCountForm {
+  code: string;
+  countDate: string | Date;
+  notes: string;
+  physicalCountLines: Line[];
 }
