@@ -29,6 +29,7 @@ const columns = computed(() => [
   { field: "ReturnQTY", header: t("ReturnItems.ReturnQTY") },
   { field: "warehouse", header: t("ReturnItems.warehouse") },
   { field: "zone", header: t("itemsList.zone") },
+  { field: "unitPrice", header: t("purchaseReturn.unitPrice") },
   { field: "Balance", header: t("purchaseReturn.Balance") },
   { field: "action", header: "" },
 ]);
@@ -106,6 +107,7 @@ const handleSelectItem = (item: any) => {
     unitId: item.baseUnitId,
     documentNumber: null,
     quantity: 0,
+    unitPrice: 0,
     warehouseId: null,
     zoneId: null,
     locationId: null,
@@ -176,12 +178,12 @@ const removeItem = (data: any) => {
         :showDelete="false">
         <!-- item code -->
         <template #col-itemCode="{ data }">
-          <div class="flex items-center gap-2 rounded">
+          <div class="flex items-center gap-2 rounded text-sm">
             <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
-              <VsxIcon iconName="Brodcast" :size="20" type="linear" />
+              <VsxIcon iconName="Brodcast" :size="14" type="linear" />
             </Badge>
             <Badge v-else severity="transparent" class="circle-badge">
-              <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
+              <VsxIcon iconName="Brodcast" :size="14" type="linear" class="icon-transparent" />
             </Badge>
             <div v-tooltip="data.itemCode" class="text-base text-gray-700 truncate w-16">{{ data.itemCode }}</div>
           </div>
@@ -208,6 +210,12 @@ const removeItem = (data: any) => {
           </div>
           <div v-else>
             <InputNumber :disabled="isView" v-model="data.quantity" :min="0" :max="data.shipped" />
+          </div>
+        </template>
+
+        <template #col-unitPrice="{ data }">
+          <div>
+            <InputNumber :disabled="isView || data.documentNumber" v-model="data.unitPrice" :min="0" />
           </div>
         </template>
 
@@ -274,7 +282,7 @@ const removeItem = (data: any) => {
 :deep(.p-inputtext) {
   border-color: #e5e7eb;
   background-color: #f9fafb;
-  width: 7rem;
+  width: 4rem;
 }
 
 :deep(.p-inputtext:focus) {
