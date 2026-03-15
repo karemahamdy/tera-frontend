@@ -3,7 +3,8 @@ import type {
   Pagination,
   PhysicalCountResponse,
   PhysicalCountById,
-  PhysicalCountSerial
+  PhysicalCountSerial,
+  PhysicalCountForm
 } from "../types/PhysicalCount";
 
 export const PhysicalCountService = {
@@ -31,8 +32,8 @@ export const PhysicalCountService = {
     return data.data;
   },
 
-  async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/purchase-waybill`, payload);
+  async create(payload: PhysicalCountForm) {
+    const data = await axiosWrapper.post<any>(`/physicalcount`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
