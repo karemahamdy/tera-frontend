@@ -1402,6 +1402,21 @@
     "LaborCost/Hr": "Labor Cost/Hr",
     "Overhead": "Overhead %",
     "addNew": "Create Operation",
-    "searchPlaceholder": "Search processes..."
+    "searchPlaceholder": "Search processes...",
+    "createOperationsMasterInfoDesc": "Configure operation details, labor cost, and overhead settings",
+    "editOperationsMasterInfoDesc": "Configure operation details, labor cost, and overhead settings",
+    "createOperationsMasterInfo": "Create Operation",
+    "editOperationsMasterInfo": "Edit Operation",
+    "operationCodePlaceholder": "Enter Operation Code",
+    "operationNamePlaceholder": "Enter Operation Name",
+    "laborCostPlaceholder": "Enter Labor Cost per Hour",
+    "laborCost": "Labor Cost per Hour",
+    "overheadPlaceholder": "Enter Overhead Percentage",
+    "deleteConfirm": "Are you sure you want to delete this operation?",
+    "OperationsMasterDeletedSuccessfully": "Operation Deleted Successfully",
+    "OperationsMasterCreatedSuccessfully": "Operation Created Successfully",
+    "OperationsMasterUpdatedSuccessfully": "Operation Updated Successfully",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter operation description..."
   }
 }

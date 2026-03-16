@@ -1390,13 +1390,26 @@
     "editWorkCenterInfo": "تعديل مركز العمل"
   },
   "OperationsMaster": {
-  "operationsMaster": "إدارة العمليات",
-  "subtitle": "إدارة عمليات وعمليات الإنتاج",
-  "name": "اسم العملية",
-  "code": "كود العملية",
-  "LaborCost/Hr": "تكلفة العمالة/ساعة",
-  "Overhead": "نسبة المصاريف غير المباشرة %",
-  "addNew": "إنشاء عملية",
-  "searchPlaceholder": "البحث عن العمليات..."
-}
+    "operationsMaster": "إدارة العمليات",
+    "subtitle": "إدارة عمليات وعمليات الإنتاج",
+    "name": "اسم العملية",
+    "code": "كود العملية",
+    "description": "وصف العملية",
+    "LaborCost/Hr": "تكلفة العمالة/ساعة",
+    "Overhead": "نسبة المصاريف غير المباشرة %",
+    "addNew": "إنشاء عملية",
+    "searchPlaceholder": "البحث عن العمليات...",
+    "createOperationsMasterInfoDesc": "قم بتكوين تفاصيل العملية وتكلفة العمالة وإعدادات المصاريف غير المباشرة",
+    "editOperationsMasterInfoDesc": "قم بتكوين تفاصيل العملية وتكلفة العمالة وإعدادات المصاريف غير المباشرة",
+    "createOperationsMasterInfo": "إنشاء عملية",
+    "editOperationsMasterInfo": "تعديل عملية",
+    "operationCodePlaceholder": "أدخل كود العملية",
+    "operationNamePlaceholder": "أدخل اسم العملية",
+    "laborCostPlaceholder": "أدخل تكلفة العمالة لكل ساعة",
+    "OperationsMasterDeletedSuccessfully": "تم حذف العملية بنجاح",
+    "OperationsMasterCreatedSuccessfully": "تم إنشاء العملية بنجاح",
+    "OperationsMasterUpdatedSuccessfully": "تم تحديث العملية بنجاح",
+    "overheadPlaceholder": "أدخل نسبة المصاريف غير المباشرة",
+    "descriptionPlaceholder": "أدخل وصف العملية..."
+  }
 }

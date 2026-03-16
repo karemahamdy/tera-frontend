@@ -94,7 +94,7 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="grid grid-cols-2 gap-4">
             <FormInput :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
               :error="errors.department" :invalid="!!errors.department" :disabled="viewMode" />
-           <ToggleItem :title="$t('status')" :label="$t('status')" v-model="isActive" />
+           <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
           </div>
 
           <div>

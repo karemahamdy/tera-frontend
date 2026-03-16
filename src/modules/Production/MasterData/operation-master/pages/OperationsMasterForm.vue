@@ -67,16 +67,17 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div>
-  <ScreenHeader title="production" subtitle="masterData" :actionName="editMode ? $t('workCenter.editWorkCenterInfo') : $t('workCenter.createWorkCenterInfo')"  />
+    <ScreenHeader title="production" subtitle="masterData"
+      :actionName="editMode ? $t('OperationsMaster.editOperationsMasterInfo') : $t('OperationsMaster.createOperationsMasterInfo')" />
 
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">
           <h2 class="heading-title">
-            {{ editMode ? $t("workCenter.editWorkCenterInfo") : $t("workCenter.createWorkCenterInfo") }}
+            {{ editMode ? $t("OperationsMaster.editOperationsMasterInfo") : $t("OperationsMaster.createOperationsMasterInfo") }}
           </h2>
           <p class="subheading-title">
-            {{ editMode ? $t("workCenter.editWorkCenterInfoDesc") : $t("workCenter.createWorkCenterInfoDesc") }}
+            {{ editMode ? $t("OperationsMaster.editOperationsMasterInfoDesc") : $t("OperationsMaster.createOperationsMasterInfoDesc") }}
           </p>
         </div>
       </template>
@@ -84,33 +85,42 @@ const onSubmit = handleSubmit(async (values) => {
       <template #content>
         <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
 
-          <div class="grid grid-cols-2 gap-4">  
-            <FormInput :label="$t('workCenter.workCentercode')" v-model="code" :placeholder="$t('workCenter.codePlaceholder')"
-              :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
-               <FormInput :label="$t('workCenter.workCentername')" v-model="name" :placeholder="$t('workCenter.namePlaceholder')"
-              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
+          <div class="grid grid-cols-2 gap-4">
+            <FormInput :label="$t('OperationsMaster.code')" v-model="code"
+              :placeholder="$t('OperationsMaster.operationCodePlaceholder')" :error="errors.code" :invalid="!!errors.code"
+              :disabled="viewMode" />
+            <FormInput :label="$t('OperationsMaster.name')" v-model="name"
+              :placeholder="$t('OperationsMaster.operationNamePlaceholder')" :error="errors.name" :invalid="!!errors.name"
+              :disabled="viewMode" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormInput :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
-              :error="errors.department" :invalid="!!errors.department" :disabled="viewMode" />
-           <ToggleItem :title="$t('status')" :label="$t('status')" v-model="isActive" />
+            <FormInput :label="$t('OperationsMaster.laborCost')" v-model="department"
+              :placeholder="$t('OperationsMaster.laborCostPlaceholder')" :error="errors.department"
+              :invalid="!!errors.department" :disabled="viewMode" />
+            <FormInput :label="$t('OperationsMaster.Overhead')" v-model="name"
+              :placeholder="$t('OperationsMaster.overheadPlaceholder')" :error="errors.name" :invalid="!!errors.name"
+              :disabled="viewMode" />
           </div>
 
-          <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("workCenter.notes") }}
-            </label>
-            <Textarea v-model="notes" :placeholder="$t('workCenter.notesPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.notes }"
-              :disabled="isSubmitting" />
-            <small v-if="errors.notes" class="text-danger-500">
-              {{ $t(errors.notes) }}
-            </small>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-gray-700 font-medium mb-2 block">
+                {{ $t("OperationsMaster.description") }}
+              </label>
+              <Textarea v-model="notes" :placeholder="$t('OperationsMaster.descriptionPlaceholder')"
+                class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.notes }"
+                :disabled="isSubmitting" />
+              <small v-if="errors.notes" class="text-danger-500">
+                {{ $t(errors.notes) }}
+              </small>
+            </div>
+             <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'WorkCenters' }" :disabled="isSubmitting" />
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'OperationsMasters' }"
+              :disabled="isSubmitting" />
             <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'"
               variant="primary" block :disabled="isSubmitting" :loading="isSubmitting" />
           </div>
