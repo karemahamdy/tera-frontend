@@ -1388,5 +1388,15 @@
     "editWorkCenterInfoDesc": "تنقيح وتحديث تفاصيل مركز العمل",
     "createWorkCenterInfo": "إنشاء مركز عمل",
     "editWorkCenterInfo": "تعديل مركز العمل"
-  }
+  },
+  "OperationsMaster": {
+  "operationsMaster": "إدارة العمليات",
+  "subtitle": "إدارة عمليات وعمليات الإنتاج",
+  "name": "اسم العملية",
+  "code": "كود العملية",
+  "LaborCost/Hr": "تكلفة العمالة/ساعة",
+  "Overhead": "نسبة المصاريف غير المباشرة %",
+  "addNew": "إنشاء عملية",
+  "searchPlaceholder": "البحث عن العمليات..."
+}
 }
