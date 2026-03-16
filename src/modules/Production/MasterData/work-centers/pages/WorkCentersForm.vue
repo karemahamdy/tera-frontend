@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import type { Ref } from "vue";
+import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { LDCSchema } from "../validation/WorkCentersSchema";
-import { useLookups } from "@/composables/useLookups";
 import { useworkCenter } from "../composables/useWorkCenters";
 import router from "@/app/router";
 
@@ -15,74 +13,34 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { accountLookups, getAccountsLookups } = useLookups();
-
-const { createworkCenter, updateworkCenter, fetchworkCenterById } = useworkCenter();  
-
-interface AccountField {
-  key: string;
-  label: string;
-}
-const accountFields: AccountField[] = [
-  { key: "purchaseAccountId", label: "LDC.localPurchaseAccount" },
-  { key: "localSalesAccountId", label: "LDC.localSalesAccount" },
-  { key: "localPurchaseReturnId", label: "LDC.localPurchaseReturn" },
-  { key: "localSalesReturnAccountId", label: "LDC.localSalesReturn" },
-  { key: "importPurchaseAccountId", label: "LDC.importPurchaseAccount" },
-  { key: "importPurchaseReturnsAccountId", label: "LDC.importPurchaseReturn" },
-  { key: "exportSalesAccountId", label: "LDC.exportSalesAccount" },
-  { key: "exportSalesReturnAccountId", label: "LDC.exportSalesReturn" },
-  { key: "physicalCountAdjustmentId", label: "LDC.physicalCount" },
-  { key: "cogsAccountId", label: "LDC.cogs" },
-];
+const { createworkCenter, updateworkCenter } = useworkCenter();
 
 type LDCFormValues = {
   code: string;
-  nameAr: string;
-  nameEn: string;
-  inventoryAdjustmentId: string | null;
-} & Record<string, string | null>;
+  department: string;
+  name: string;
+  notes: string | null;
+  isActive: boolean;
+};
 
 const initialValues: LDCFormValues = {
   code: "",
-  nameAr: "",
-  nameEn: "",
-  inventoryAdjustmentId: null,
-  ...Object.fromEntries(accountFields.map(f => [f.key, null])),
+  department: "",
+  name: "",
+  notes: null,
+  isActive: true,
 };
 
-const { errors, defineField, handleSubmit, setValues } = useForm<LDCFormValues>({
+const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
   validationSchema: LDCSchema,
   initialValues,
 });
 
 const [code] = defineField("code");
-const [nameAr] = defineField("nameAr");
-const [nameEn] = defineField("nameEn");
-const [inventoryAdjustmentId] = defineField("inventoryAdjustmentId");
-
-const fields = Object.fromEntries(
-  accountFields.map(f => [f.key, defineField(f.key)[0]])
-) as Record<string, Ref<string | null>>;
-
-onMounted(async () => {
-  await getAccountsLookups();
-
-  if (editMode && props.id || viewMode && props.id) {
-    const data = await fetchworkCenterById(props.id);
-    if (data) {
-
-      const mappedValues: LDCFormValues = {
-        code: data.code ?? "",
-        nameAr: data.nameAr ?? "",
-        nameEn: data.nameEn ?? "",
-        inventoryAdjustmentId  : data.inventoryAdjustmentId   ?? null,
-        ...Object.fromEntries(accountFields.map(f => [f.key, data[f.key] ?? null])),
-      };
-      setValues(mappedValues);
-    }
-  }
-});
+const [name] = defineField("name");
+const [notes] = defineField("notes");
+const [department] = defineField("department");
+const [isActive] = defineField("isActive");
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
@@ -94,9 +52,9 @@ const onSubmit = handleSubmit(async (values) => {
     } else {
       await createworkCenter(values);
     }
-        router.push({
+    router.push({
       name: "workCenter",
-    
+
     });
   } catch (error) {
     console.error("Error submitting form:", error);
@@ -109,47 +67,52 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div>
-    <ScreenHeader title="inventory" subtitle="masterData" actionName="LDC.title" />
+  <ScreenHeader title="production" subtitle="masterData" :actionName="editMode ? $t('workCenter.editWorkCenterInfo') : $t('workCenter.createWorkCenterInfo')"  />
 
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">
           <h2 class="heading-title">
-            {{ editMode ? $t("LDC.editLDCInfo") : $t("LDC.addLDCInfo") }}
+            {{ editMode ? $t("workCenter.editWorkCenterInfo") : $t("workCenter.createWorkCenterInfo") }}
           </h2>
           <p class="subheading-title">
-          {{ editMode ? $t("LDC.editLDCInfoDesc") : $t("LDC.addLDCInfoDesc") }}
+            {{ editMode ? $t("workCenter.editWorkCenterInfoDesc") : $t("workCenter.createWorkCenterInfoDesc") }}
           </p>
         </div>
       </template>
 
       <template #content>
         <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
-         <FormInput :label="$t('LDC.code')" v-model="code" :placeholder="$t('LDC.codePlaceholder')"
-            :error="errors.code" :invalid="!!errors.code" :disabled="viewMode || editMode"/>
-          <div class="grid grid-cols-2 gap-4">        
-            <FormInput :label="$t('LDC.nameEn')" v-model="nameEn" :placeholder="$t('LDC.nameEnPlaceholder')"
-            :error="errors.nameEn" :invalid="!!errors.nameEn" :disabled="viewMode" />
-            <FormInput :label="$t('LDC.nameAr')" v-model="nameAr" :placeholder="$t('LDC.nameArPlaceholder')"
-              :error="errors.nameAr" :invalid="!!errors.nameAr" :disabled="viewMode" />
+
+          <div class="grid grid-cols-2 gap-4">  
+            <FormInput :label="$t('workCenter.workCentercode')" v-model="code" :placeholder="$t('workCenter.codePlaceholder')"
+              :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
+               <FormInput :label="$t('workCenter.workCentername')" v-model="name" :placeholder="$t('workCenter.namePlaceholder')"
+              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown v-for="field in accountFields" :key="field.key" :label="$t(field.label)" :disabled="viewMode"
-              v-model="fields[field.key]" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t(field.label)"
-               />
+            <FormInput :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
+              :error="errors.department" :invalid="!!errors.department" :disabled="viewMode" />
+           <ToggleItem :title="$t('status')" :label="$t('status')" v-model="isActive" />
           </div>
 
-          <FormDropdown :label="$t('LDC.inventoryAdjustment')"
-            v-model="inventoryAdjustmentId" :options="accountLookups" :placeholder="$t('LDC.select') + ' ' + $t('LDC.inventoryAdjustment')"
-            :error="errors.inventoryAdjustmentId" :disabled="viewMode"/>
+          <div>
+            <label class="text-gray-700 font-medium mb-2 block">
+              {{ $t("workCenter.notes") }}
+            </label>
+            <Textarea v-model="notes" :placeholder="$t('workCenter.notesPlaceholder')"
+              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.notes }"
+              :disabled="isSubmitting" />
+            <small v-if="errors.notes" class="text-danger-500">
+              {{ $t(errors.notes) }}
+            </small>
+          </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'LDC' }"
-              :disabled="isSubmitting" />
-
-            <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'" variant="primary"
-              block :disabled="isSubmitting" :loading="isSubmitting" />
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'WorkCenters' }" :disabled="isSubmitting" />
+            <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'"
+              variant="primary" block :disabled="isSubmitting" :loading="isSubmitting" />
           </div>
         </form>
       </template>

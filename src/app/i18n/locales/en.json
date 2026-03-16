@@ -1373,9 +1373,14 @@
     "workCenterId": "Work C+enter ID",
     "name": "Name",
     "namePlaceholder": "Enter Work Center Name",
+    "codePlaceholder": "Enter Work Center Code",
     "description": "Description",
     "descriptionPlaceholder": "Enter Description",
   "department": "Department",
+  "notes": "Notes",
+  "notesPlaceholder": "Add Your Notes...",
+  "workCentercode": "Work Center Code",
+  "workCentername": "Work Center Name",
     "departmentPlaceholder": "Select Department",
     "code": "Code",
     "machines": "Machines",
@@ -1383,6 +1388,10 @@
     "deleteConfirm": "Are you sure you want to delete this work center?",
     "WorkCenterDeletedSuccessfully": "Work Center Deleted Successfully",
     "WorkCenterCreatedSuccessfully": "Work Center Created Successfully",
-    "WorkCenterUpdatedSuccessfully": "Work Center Updated Successfully"
+    "WorkCenterUpdatedSuccessfully": "Work Center Updated Successfully",
+    "createWorkCenterInfoDesc": "Define and configure work center details",
+    "editWorkCenterInfoDesc": "Refine and update the details of your work center",
+    "createWorkCenterInfo": "Create Work Center",
+    "editWorkCenterInfo": "Edit Work Center"
   }
 }

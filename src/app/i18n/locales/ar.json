@@ -1359,7 +1359,7 @@
   "validation": {
     "required": "هذا الحقل مطلوب"
   },
-  "workCenter": { 
+  "workCenter": {
     "workCenter": "مركز العمل",
     "subtitle": "إدارة مراكز العمل الاقسام المرتبطة بها",
     "addNew": "إضافة مركز عمل جديد",
@@ -1371,12 +1371,22 @@
     "code": "الكود",
     "machines": "الآلات",
     "name": "الاسم",
+    "workCentercode": "كود مركز العمل",
+    "workCentername": "اسم مركز العمل",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "اضف ملاحظات...",
+    "namePlaceholder": "أدخل اسم مركز العمل",
+    "codePlaceholder": "أدخل كود مركز العمل",
     "departmentPlaceholder": "اختر القسم...",
     "machinesPlaceholder": "اختر الآلات...",
     "workCenterDeletedSuccessfully": "تم حذف مركز العمل بنجاح",
     "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا المركز؟",
     "WorkCenterDeletedSuccessfully": "تم حذف مركز العمل بنجاح",
     "WorkCenterCreatedSuccessfully": "تم إنشاء مركز العمل بنجاح",
-    "WorkCenterUpdatedSuccessfully": "تم تحديث مركز العمل بنجاح"
+    "WorkCenterUpdatedSuccessfully": "تم تحديث مركز العمل بنجاح",
+    "createWorkCenterInfoDesc": "تحديد وتهيئة تفاصيل مركز العمل",
+    "editWorkCenterInfoDesc": "تنقيح وتحديث تفاصيل مركز العمل",
+    "createWorkCenterInfo": "إنشاء مركز عمل",
+    "editWorkCenterInfo": "تعديل مركز العمل"
   }
 }
