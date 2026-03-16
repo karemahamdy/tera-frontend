@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import ItemSelectionDialog from "@/modules/Inventory/shared/components/ItemSelectionDialog.vue";
-import SalesQuantitySerialDialog from "@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue";
+import SelectSerialQuantity from "@/modules/Inventory/shared/components/SelectSerialQuantity.vue";
 
 const { t } = useI18n();
 const emit = defineEmits(["next", "prev"]);
@@ -111,24 +111,15 @@ const handleSelectItem = (item: any) => {
 const showQtyDialog = ref(false);
 const currentItem = ref<any>(null);
 
-const openQtyDialog = (item: any) => {
-  item.serials = item.serials.map((serial: any) => ({
-    ...serial,
-    qty: serial.quantity,
-  }));
-  currentItem.value = item;
+const openQtyDialog = (data: any) => {
+  selectedItem.value = data;
   showQtyDialog.value = true;
 };
 
-const handleSaveSerials = (payload: any) => {
-  if (currentItem.value) {
-    currentItem.value.serials = payload.serials?.map((serial: any) => ({
-      ...serial,
-      quantity: serial.qty || 0,
-    }));
-    currentItem.value.countedQty = payload.totalQty;
-  }
-};
+const getSelectedSerial = () => {
+  console.log("hi");
+  
+}
 
 const removeItem = (data: any) => {
   const index = physicalCountLines.value.findIndex(
@@ -212,6 +203,7 @@ const removeItem = (data: any) => {
               iconName="Eye"
               :size="24"
               type="linear"
+              @click="openQtyDialog(data)"
             />
           </div>
         </template>
@@ -273,15 +265,11 @@ const removeItem = (data: any) => {
       @select="handleSelectItem"
     />
 
-    <SalesQuantitySerialDialog
-      v-if="currentItem"
+    <SelectSerialQuantity
+      v-if="showQtyDialog"
       v-model:visible="showQtyDialog"
-      :item="currentItem"
-      :warehouseId="currentItem.warehouseId"
-      :zoneId="currentItem.zoneId"
-      :locationId="currentItem.locationId"
-      :initialSerials="currentItem.serials"
-      @save="handleSaveSerials"
+      :item="selectedItem"
+      @select="getSelectedSerial"
     />
 
     <StorageLocationPicker

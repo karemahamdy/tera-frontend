@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
+
 const { t } = useI18n();
+const { getItemSerials, serialsLookups } = useInventoryLookups();
 
 const props = defineProps<{
   visible: boolean;
-  items: any[];
+  item: any;
 }>();
 
 const emit = defineEmits(["update:visible", "select"]);
-
-const searchQuery = ref("");
 
 const isVisible = computed({
   get: () => props.visible,
@@ -27,21 +28,14 @@ const selectedRowsLocal = ref<any[]>([]);
 
 const columns = computed(() => {
   return [
-    { field: "serial", header: t("serial.serial") },
-    { field: "Balance", header: t("PhysicalCount.SystemBalance") },
+    { field: "mainSerial", header: t("serial.serial") },
+    { field: "availableQuantity", header: t("PhysicalCount.SystemBalance") },
     { field: "CountedQTY", header: t("PhysicalCount.CountedQTY") },
     { field: "variances", header: t("PhysicalCount.Variances") },
   ];
 });
-
 const filteredItems = computed(() => {
-  if (!searchQuery.value) return props.items;
-  const query = searchQuery.value.toLowerCase();
-  return props.items.filter(
-    (item: any) =>
-      item.code?.toLowerCase().includes(query) ||
-      item.name?.toLowerCase().includes(query),
-  );
+  return serialsLookups.value
 });
 
 const setSelectedRows = (rows: any[]) => {
@@ -50,6 +44,21 @@ const setSelectedRows = (rows: any[]) => {
 
 defineExpose({
   setSelectedRows,
+});
+
+const fetchSerials = async () => {
+  if (props.item?.itemId && props.item?.warehouseId) {
+    await getItemSerials(
+      props.item.itemId,
+      props.item?.warehouseId,
+      props.item?.zoneId,
+      props.item?.locationId,
+    );
+  }
+};
+
+onMounted(() => {
+  fetchSerials();
 });
 </script>
 
@@ -74,6 +83,17 @@ defineExpose({
           v-model:selectedRows="selectedRowsLocal"
           hasSelection
         >
+          <template #col-CountedQTY="{ data }">
+            <div>
+              <InputNumber v-model="data.countedQty" :min="1" />
+            </div>
+          </template>
+
+          <template #col-variances="{ data }">
+            <div :class="{'text-danger-500':  (data.countedQty -  data.availableQuantity) < 0}">
+              {{ (data.countedQty -  data.availableQuantity) || 0 }}
+            </div>
+          </template>
         </DynamicTable>
       </div>
       <div class="col-span-2 flex gap-1 mt-5">
