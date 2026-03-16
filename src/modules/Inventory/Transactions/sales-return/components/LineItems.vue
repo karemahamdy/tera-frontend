@@ -178,12 +178,12 @@ const removeItem = (data: any) => {
         :showDelete="false">
         <!-- item code -->
         <template #col-itemCode="{ data }">
-          <div class="flex items-center gap-2 rounded text-sm">
+          <div class="flex items-center gap-2 rounded">
             <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
-              <VsxIcon iconName="Brodcast" :size="14" type="linear" />
+              <VsxIcon iconName="Brodcast" :size="20" type="linear" />
             </Badge>
             <Badge v-else severity="transparent" class="circle-badge">
-              <VsxIcon iconName="Brodcast" :size="14" type="linear" class="icon-transparent" />
+              <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
             </Badge>
             <div v-tooltip="data.itemCode" class="text-base text-gray-700 truncate w-16">{{ data.itemCode }}</div>
           </div>
@@ -227,7 +227,7 @@ const removeItem = (data: any) => {
         <template #col-zone="{ data }">
           <div>
             <div v-if="data.warehouseId && isProf(data.warehouseId)" @click="showlocationPicker(data)"
-              class="w-28 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
+              class="w-14 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
               <span class="text-black" v-if="data.locationName" v-tooltip="data.locationName">{{ data.locationName }}</span>
               <span v-else>{{ $t("SalesReturn.ZonePlaceholder") }}</span>
             </div>

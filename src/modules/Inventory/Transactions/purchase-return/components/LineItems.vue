@@ -223,7 +223,7 @@ const removeItem = (data: any) => {
         <template #col-zone="{ data }">
           <div>
             <div v-if="data.warehouseId && isProf(data.warehouseId)" @click="showlocationPicker(data)"
-              class="w-28 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
+              class="w-14 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
               <span class="text-black" v-if="data.locationName">{{ data.locationName }}</span>
               <span v-else>{{ $t("SalesReturn.ZonePlaceholder") }}</span>
             </div>
