@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useForm } from "vee-validate";
-import { LDCSchema } from "../validation/WorkCentersSchema";
-import { useworkCenter } from "../composables/useWorkCenters";
+import { LDCSchema } from "../validation/MachinesSchema";
+import { useworkCenter } from "../composables/useMachines";
 import router from "@/app/router";
 
 const props = defineProps<{
@@ -53,7 +53,7 @@ const onSubmit = handleSubmit(async (values) => {
       await createworkCenter(values);
     }
     router.push({
-      name: "workCenter",
+      name: "Machines",
 
     });
   } catch (error) {
@@ -92,7 +92,7 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
+            <FormInput :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
               :error="errors.department" :invalid="!!errors.department" :disabled="viewMode" />
            <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
           </div>
