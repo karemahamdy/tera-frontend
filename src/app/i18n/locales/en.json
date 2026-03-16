@@ -13,6 +13,7 @@
   "enterUserID": "Enter User ID",
   "accessControl": "Access Control",
   "inventory": "Inventory",
+  "production": "Production",
   "masterData": "Master Data",
   "Adminstration": "Administration",
   "showing": "Showing",
@@ -1363,5 +1364,25 @@
   },
   "validation": {
     "required": "This field is required"
+  },
+  "workCenter" : {
+    "workCenter": "Work Centers",
+    "subtitle": "Manage production work centers and departments",
+    "addNew": "Create Work Order",
+    "searchPlaceholder": "Search work centers...",
+    "workCenterId": "Work C+enter ID",
+    "name": "Name",
+    "namePlaceholder": "Enter Work Center Name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter Description",
+  "department": "Department",
+    "departmentPlaceholder": "Select Department",
+    "code": "Code",
+    "machines": "Machines",
+    "machinesPlaceholder": "Select Machines",
+    "deleteConfirm": "Are you sure you want to delete this work center?",
+    "WorkCenterDeletedSuccessfully": "Work Center Deleted Successfully",
+    "WorkCenterCreatedSuccessfully": "Work Center Created Successfully",
+    "WorkCenterUpdatedSuccessfully": "Work Center Updated Successfully"
   }
 }

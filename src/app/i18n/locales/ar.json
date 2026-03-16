@@ -13,6 +13,7 @@
   "enterUserID": "أدخل معرف المستخدم",
   "accessControl": "التحكم في الوصول",
   "inventory": "المخازن",
+  "production": "الإنتاج",
   "masterData": "البيانات الرئيسية",
   "Adminstration": "الإدارة",
   "showing": "عرض",
@@ -1357,5 +1358,25 @@
   },
   "validation": {
     "required": "هذا الحقل مطلوب"
+  },
+  "workCenter": { 
+    "workCenter": "مركز العمل",
+    "subtitle": "إدارة مراكز العمل الاقسام المرتبطة بها",
+    "addNew": "إضافة مركز عمل جديد",
+    "searchPlaceholder": "ابحث عن مراكز العمل...",
+    "workCenterId": "رقم مركز العمل",
+    "description": "الوصف",
+    "operations": "العمليات",
+    "department": "القسم",
+    "code": "الكود",
+    "machines": "الآلات",
+    "name": "الاسم",
+    "departmentPlaceholder": "اختر القسم...",
+    "machinesPlaceholder": "اختر الآلات...",
+    "workCenterDeletedSuccessfully": "تم حذف مركز العمل بنجاح",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا المركز؟",
+    "WorkCenterDeletedSuccessfully": "تم حذف مركز العمل بنجاح",
+    "WorkCenterCreatedSuccessfully": "تم إنشاء مركز العمل بنجاح",
+    "WorkCenterUpdatedSuccessfully": "تم تحديث مركز العمل بنجاح"
   }
 }
