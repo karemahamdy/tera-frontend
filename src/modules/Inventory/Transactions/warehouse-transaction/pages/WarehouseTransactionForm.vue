@@ -82,15 +82,15 @@ const nextTab = async () => {
 const previousTab = () => { if (activeStep.value > 0) activeStep.value--; };
 
 // Reactively disable Next button when required fields are missing
-const isNextDisabled = computed(() => {
-  if (activeStep.value !== 0) return false;
-  const d = formData.details;
-  return !WarehouseTransactionSchema.isValidSync({
-    warehouseId: d.warehouse,
-    destinationWarehouseId: d.destination?.warehouse || null,
-    direction: d.direction,
-  });
-});
+// const isNextDisabled = computed(() => {
+//   if (activeStep.value !== 0) return false;
+//   const d = formData.details;
+//   return !WarehouseTransactionSchema.isValidSync({
+//     warehouseId: d.warehouse,
+//     destinationWarehouseId: d.destination?.warehouse || null,
+//     direction: d.direction,
+//   });
+// });
 
 // Reactively disable Create/Save button when required fields are missing
 const isFinishDisabled = computed(() => {
