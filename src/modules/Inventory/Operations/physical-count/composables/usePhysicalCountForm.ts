@@ -8,6 +8,14 @@ import { formatDate } from "@/app/utils/dates";
 import { SalesReturnSchema } from "../validation/PhysicalCountSchema";
 import router from "@/app/router";
 
+import { useInventoryLookups } from "@/composables/useInventoryLookups";
+const {
+  itemsLookups,
+  WarehouseHierarchyLookups,
+  getItemsLookups,
+  getWarehouseHierarchyLookups,
+} = useInventoryLookups();
+
 import { useForm } from "vee-validate";
 const { handleSubmit, errors, defineField, resetForm } =
   useForm<PhysicalCountForm>({
@@ -31,7 +39,7 @@ export function usePhysicalCountForm() {
   const createPhysicalCount = async (payload: PhysicalCountForm) => {
     loading.value = true;
     try {
-      payload.countDate = formatDate(payload.countDate as Date) as string
+      payload.countDate = formatDate(payload.countDate as Date) as string;
       const response = await PhysicalCountService.create(payload);
       toastService.success(t("PhysicalCount.PhysicalCountCreatedSuccessfully"));
       router.push({ name: "PhysicalCount" });
@@ -48,18 +56,23 @@ export function usePhysicalCountForm() {
     resetForm();
   };
 
+  const fetchLookupsData = async () => {
+    await Promise.all([getItemsLookups(), getWarehouseHierarchyLookups()]);
+  };
+
   return {
     loading,
     createPhysicalCount,
     resetFormToInitialValues,
+    fetchLookupsData,
+    itemsLookups,
+    WarehouseHierarchyLookups,
     handleSubmit,
     errors,
 
     code,
     countDate,
     notes,
-    physicalCountLines
-
-
+    physicalCountLines,
   };
 }

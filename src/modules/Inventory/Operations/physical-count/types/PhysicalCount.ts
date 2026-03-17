@@ -77,11 +77,15 @@ export interface Serial {
 }
 
 export interface Line {
-  warehouseId: string;
-  zoneId: string;
-  locationId: string;
+  warehouseId: string | null;
+  zoneId: string | null;
+  itemName: string;
+  itemCode: string;
+  locationId: string | null;
   itemId: string;
+  locationName: string;
   countedQty: number;
+  trackingType: string;
   physicalCountSerials: Serial[];
 }
 
@@ -90,4 +94,36 @@ export interface PhysicalCountForm {
   countDate: string | Date;
   notes: string;
   physicalCountLines: Line[];
+}
+
+
+export interface Unit {
+  unitId: string;
+  unitCode: string;
+  unitName: string;
+  conversionFactor: number;
+  isBaseUnit: boolean;
+}
+
+export interface UnitLookup {
+  label: string;
+  value: string;
+}
+
+export interface Item {
+  itemId: string;
+  itemName: string;
+  itemCode: string;
+  unitId: string;
+  quantity: number;
+  warehouseId: string | null;
+  zoneId: string | null;
+  locationId: string | null;
+  locationName?: string | null;
+  sourceLineId: string | null;
+  originalWaybillId: string | null;
+  trackingType: "Serial" | "Batch" | "None";
+  serials: Serial[] | null;
+  units?: Unit[] | null;
+  documentNumber?: string | null;
 }

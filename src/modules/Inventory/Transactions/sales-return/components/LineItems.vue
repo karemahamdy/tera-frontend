@@ -29,6 +29,7 @@ const columns = computed(() => [
   { field: "ReturnQTY", header: t("ReturnItems.ReturnQTY") },
   { field: "warehouse", header: t("ReturnItems.warehouse") },
   { field: "zone", header: t("itemsList.zone") },
+  { field: "unitPrice", header: t("purchaseReturn.unitPrice") },
   { field: "Balance", header: t("purchaseReturn.Balance") },
   { field: "action", header: "" },
 ]);
@@ -106,6 +107,7 @@ const handleSelectItem = (item: any) => {
     unitId: item.baseUnitId,
     documentNumber: null,
     quantity: 0,
+    unitPrice: 0,
     warehouseId: null,
     zoneId: null,
     locationId: null,
@@ -211,6 +213,12 @@ const removeItem = (data: any) => {
           </div>
         </template>
 
+        <template #col-unitPrice="{ data }">
+          <div>
+            <InputNumber :disabled="isView || data.documentNumber" v-model="data.unitPrice" :min="0" />
+          </div>
+        </template>
+
         <template #col-warehouse="{ data }">
           <FormDropdown :disabled="isView" v-model="data.warehouseId" :options="warehouseLookups"
             class="w-32 p-inputtext-sm text-sm" />
@@ -219,7 +227,7 @@ const removeItem = (data: any) => {
         <template #col-zone="{ data }">
           <div>
             <div v-if="data.warehouseId && isProf(data.warehouseId)" @click="showlocationPicker(data)"
-              class="w-28 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
+              class="w-14 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500 ">
               <span class="text-black" v-if="data.locationName" v-tooltip="data.locationName">{{ data.locationName }}</span>
               <span v-else>{{ $t("SalesReturn.ZonePlaceholder") }}</span>
             </div>
@@ -274,7 +282,7 @@ const removeItem = (data: any) => {
 :deep(.p-inputtext) {
   border-color: #e5e7eb;
   background-color: #f9fafb;
-  width: 7rem;
+  width: 4rem;
 }
 
 :deep(.p-inputtext:focus) {

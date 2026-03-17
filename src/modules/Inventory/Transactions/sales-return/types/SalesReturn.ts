@@ -51,6 +51,7 @@ export interface Item {
   itemCode: string;
   unitId: string;
   quantity: number;
+  unitPrice: number,
   warehouseId: string | null;
   zoneId: string | null;
   locationId: string | null;

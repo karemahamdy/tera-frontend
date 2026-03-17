@@ -245,6 +245,7 @@ export function useSalesReturnForm() {
           warehouseId: item.warehouseId,
           zoneId: item.zoneId,
           locationId: item.locationId,
+          unitPrice: item.unitPrice,
           locationName: getLocationName(item.warehouseId, item.locationId),
           sourceLineId: item.lineId,
           originalWaybillId: item.waybillId,
