@@ -67,7 +67,7 @@ const columns = computed(() => {
     const Columns = [
         { field: 'code', header: t('machines.code'), sortable: true },
         { field: 'name', header: t('machines.name'), type: 'slot', sortable: true },
-        { field: 'department', header: t('machines.workCenter'), type: 'slot', sortable: true },
+        { field: 'machines', header: t('machines.workCenter'), type: 'slot', sortable: true },
         { field: 'machines', header: t('machines.HourCost'), sortable: true },
         { field: 'department', header: t('machines.Capacity'), type: 'slot', sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
@@ -124,10 +124,8 @@ const handleDeleteConfirm = async () => {
         rowToDelete.value = null;
     });
 };
-const progressValue = 70; 
-const progressColor = computed(() => {
-    return progressValue > 60 ? 'text-success-600' : 'text-warning-600'
-})
+
+const progressColor = (val: number) => val > 60 ? '#16a34a' : '#f59e0b';
 const addmachines = () => {
     router.push({ name: 'MachinesCreate' });
 };
@@ -154,12 +152,18 @@ const addmachines = () => {
                     <template v-slot:["col-code"]="{ data }">
                         <span class="text-primary-500 cursor-pointer">{{ data.code }}</span>
                     </template>
-                    <template v-slot:["col-department"]="{ data }">
-                        <div class="flex items-center gap-2">
-                            <ProgressBar :color="progressColor"></ProgressBar>
-                            <span>{{ data.department }}</span>
-                        </div>
-                    </template>
+                   <template v-slot:["col-department"]="{ data }">
+  <div class="flex items-center gap-2 w-full">
+    <ProgressBar 
+      class="flex-1 progress-bar-small"
+      :value="data.department"
+      :show-value="false"
+      style="background-color: #E1E7F4;"
+      :class="data.department > 60 ? 'progress-green' : 'progress-orange'"
+    />
+    <span>{{ data.department }}</span>
+  </div>
+</template>
                 </DynamicTable>
             </template>
         </card>
@@ -185,5 +189,21 @@ const addmachines = () => {
     color: var(--color-gray-700);
     font-size: 13px;
     padding: 20px 16px;
+}
+:deep(.progress-bar-small) {
+  height: 8px !important; 
+  border-radius: 4px;     
+}
+:deep(.progress-green .p-progressbar-value) {
+  background-color: #16a34a !important;
+}
+
+:deep(.progress-orange .p-progressbar-value) {
+  background-color: #f59e0b !important; 
+}
+
+:deep(.progress-bar-small .p-progressbar-value) {
+  height: 8px !important;
+  border-radius: 4px;
 }
 </style>

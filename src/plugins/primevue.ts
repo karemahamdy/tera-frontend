@@ -104,6 +104,6 @@ export function setupPrimeVue(app: App) {
   app.component("StepItem", StepItem);
   app.component("StepList", StepList);
   app.component("StepPanels", StepPanels);
-  app.component("ProgressBar ", ProgressBar );
+  app.component("ProgressBar", ProgressBar );
 
 }
