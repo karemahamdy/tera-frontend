@@ -296,8 +296,7 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
       <StepperActions
         v-if="mode !== 'view'"
         :current="activeStep"
-        :total="steps.length"
-        :disableNext="isNextDisabled"
+        :total="steps.length" 
         :disableFinish="isFinishDisabled"
         @next="nextTab"
         @previous="previousTab"
