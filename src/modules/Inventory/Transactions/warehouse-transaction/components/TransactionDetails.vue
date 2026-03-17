@@ -72,6 +72,14 @@ const dstLocations = computed(() => {
 
 async function handleSrcWarehouseChange(val: string) {
   modelValue.value.warehouse = val;
+  // Always clear previously selected zone/location when warehouse changes
+  modelValue.value.zone = null;
+  modelValue.value.zoneName = null;
+  modelValue.value.locationId = null;
+  modelValue.value.locationCode = null;
+  modelValue.value.row = null;
+  modelValue.value.column = null;
+  modelValue.value.rack = null;
   const type = getWhType(val);
   if (type === 'Professional') {
     isLoadingSrc.value = true;
@@ -87,6 +95,11 @@ async function handleSrcWarehouseChange(val: string) {
 async function handleDstWarehouseChange(val: string) {
   if (!modelValue.value.destination) modelValue.value.destination = {};
   modelValue.value.destination.warehouse = val;
+  // Always clear previously selected zone/location when destination warehouse changes
+  modelValue.value.destination.zone = null;
+  modelValue.value.destination.zoneName = null;
+  modelValue.value.destination.locationId = null;
+  modelValue.value.destination.locationCode = null;
   const type = getWhType(val);
   if (type === 'Professional') {
     isLoadingDst.value = true;
