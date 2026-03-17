@@ -1,9 +1,8 @@
-// types/branches.ts
+
 export interface Branch {
   id: string;
   code: string;
-  nameAr: string;
-  nameEn: string;
+  name: string;
  addressEn?: string;
  addressAr?: string;
   isActive: boolean;
@@ -12,7 +11,6 @@ export interface Branch {
 
 export interface BranchResponse {
   data: {
-    
     items: Branch[];
     PageIndex: number;
     pageSize: number;
