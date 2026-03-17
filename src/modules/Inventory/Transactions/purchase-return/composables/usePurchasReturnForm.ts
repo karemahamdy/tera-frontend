@@ -229,6 +229,7 @@ export function usePurchaseReturnForm() {
           purchased: item.purchasedQuantity,
           warehouseId: item.warehouseId,
           zoneId: item.zoneId,
+          unitPrice: item.unitPrice,
           locationId: getLocationName(item.warehouseId, item.locationId),
           sourceLineId: item.lineId,
           originalWaybillId: item.waybillId,

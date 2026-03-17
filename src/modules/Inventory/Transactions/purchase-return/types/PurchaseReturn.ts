@@ -50,6 +50,7 @@ export interface Item {
   itemName: string;
   itemCode: string;
   unitId: string;
+  unitPrice: number;
   quantity: number;
   warehouseId: string | null;
   zoneId: string | null;
