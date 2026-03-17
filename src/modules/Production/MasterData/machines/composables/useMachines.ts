@@ -1,12 +1,12 @@
 import { toastService } from "@/app/services/toastService";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { workCenterService } from "../services/Machines.service";
-import type { workCenter } from "../types/Machines";
+import { MachinesService } from "../services/Machines.service";
+import type { Machines } from "../types/Machines";
 
-export function useworkCenter() {
+export function useMachines() {
   const loading = ref(false);
-const apiworkCenter = ref<workCenter[]>([]);
+const apiMachines = ref<Machines[]>([]);
 const tableData = ref<any[]>([]);
 
 const pageIndex = ref(1);
@@ -21,10 +21,10 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const { t } = useI18n();
 
-  const fetchworkCenter = async (page = 1) => {
+  const fetchMachines = async (page = 1) => {
     loading.value = true;
     try {
-      const response: any = await workCenterService.getAll({
+      const response: any = await MachinesService.getAll({
         pageIndex: page,
         pageSize: pageSize.value,
         searchingWord: searchTerm.value,
@@ -33,7 +33,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         StatusFilter: StatusFilter.value
       });
       const payload = response && response.data ? response.data : response;
-      apiworkCenter.value = payload.items ?? [];
+      apiMachines.value = payload.items ?? [];
       pageIndex.value = payload.pageIndex ?? page;
       pageSize.value = payload.pageSize ?? pageSize.value;
       totalCount.value = payload.totalCount ?? 0;
@@ -45,10 +45,10 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     }
   };
 
-  const fetchworkCenterById = async (id: string) => {
+  const fetchMachinesById = async (id: string) => {
     loading.value = true;
     try {
-      const resp = await workCenterService.getById(id);
+      const resp = await MachinesService.getById(id);
       return resp;
     } catch (err: any) {
       toastService.error(err);
@@ -58,12 +58,12 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     }
   };
 
-  const createworkCenter = async (payload: any) => {
+  const createMachines = async (payload: any) => {
     loading.value = true;
     try {
-      const response = await workCenterService.create(payload);
-      toastService.success(t("workCenter.workCenterCreatedSuccessfully"));
-      await fetchworkCenter(pageIndex.value);
+      const response = await MachinesService.create(payload);
+      toastService.success(t("Machines.MachinesCreatedSuccessfully"));
+      await fetchMachines(pageIndex.value);
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -73,12 +73,12 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     }
   };
 
-  const updateworkCenter = async (id: string, payload: any) => {
+  const updateMachines = async (id: string, payload: any) => {
     loading.value = true;
     try {
-      const response = await workCenterService.update(id, payload);
-      toastService.success(t("workCenter.workCenterUpdatedSuccessfully"));
-      await fetchworkCenter(pageIndex.value);
+      const response = await MachinesService.update(id, payload);
+      toastService.success(t("Machines.MachinesUpdatedSuccessfully"));
+      await fetchMachines(pageIndex.value);
       return response;
     } catch (err: any) {
       toastService.error(err);
@@ -88,13 +88,13 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     }
   };
 
-  const deleteworkCenter = async (id: string) => {
+  const deleteMachines = async (id: string) => {
     loading.value = true;
     try {
-      await workCenterService.delete(id);
-      toastService.success((t("workCenter.workCenterDeletedSuccessfully")));
-      apiworkCenter.value = apiworkCenter.value.filter((b) => b.id !== id);
-      fetchworkCenter(pageIndex.value)
+      await MachinesService.delete(id);
+      toastService.success((t("Machines.MachinesDeletedSuccessfully")));
+      apiMachines.value = apiMachines.value.filter((b) => b.id !== id);
+      fetchMachines(pageIndex.value)
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -106,9 +106,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   const toggleActive = async (id: string, isActive: boolean) => {
     loading.value = true;
     try {
-      await workCenterService.toggleActive(id, isActive);
-      toastService.success((t("workCenter.workCenterUpdatedSuccessfully")));
-      await fetchworkCenter(pageIndex.value);
+      await MachinesService.toggleActive(id, isActive);
+      toastService.success((t("Machines.MachinesUpdatedSuccessfully")));
+      await fetchMachines(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -126,35 +126,35 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     if (field === "status") {
       StatusFilter.value = value;
     }
-    fetchworkCenter(1);
+    fetchMachines(1);
   };
 
   const onSearch = (term: string) => {
     searchTerm.value = term;
-    fetchworkCenter(1);
+    fetchMachines(1);
   };
 
   const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
-    fetchworkCenter(1);
+    fetchMachines(1);
   }
 
   return {
     loading,
-    apiworkCenter,
+    apiMachines,
     tableData,
-    fetchworkCenter,
-    fetchworkCenterById,
-    createworkCenter,
-    updateworkCenter,
-    deleteworkCenter,
+    fetchMachines,
+    fetchMachinesById,
+    createMachines,
+    updateMachines,
+    deleteMachines,
     toggleActive,
     pageIndex,
     pageSize,
     totalCount,
     totalPages,
-    setPage: (p: number) => fetchworkCenter(p),
+    setPage: (p: number) => fetchMachines(p),
     onSearch,
     onFilterChange,
     onSort

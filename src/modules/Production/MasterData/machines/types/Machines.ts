@@ -1,4 +1,4 @@
-export interface workCenter {
+export interface Machines {
   id: string;
   code: string;
   name: string;
@@ -6,9 +6,9 @@ export interface workCenter {
   createAt: string;
 }
 
-export interface workCenterResponse {
+export interface MachinesResponse {
   data: {
-    items: workCenter[];
+    items: Machines[];
     PageIndex: number;
     pageSize: number;
     totalCount: number;

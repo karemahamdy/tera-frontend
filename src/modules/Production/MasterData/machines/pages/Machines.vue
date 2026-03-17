@@ -4,14 +4,14 @@ import alertIcon from '@/assets/images/alert.png';
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useworkCenter } from "../composables/useMachines";
+import { useMachines } from "../composables/useMachines";
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteworkCenter, onFilterChange } = useworkCenter();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteMachines, onFilterChange } = useMachines();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -22,30 +22,30 @@ const customItems = [
         type: "switch",
         key: "isActive",
     },
-     {
-      slot: true,
-      label: t("button.view"),
-      icon: "Eye",
-      color: "#3F5FAC",
-      action: 'view',
+    {
+        slot: true,
+        label: t("button.view"),
+        icon: "Eye",
+        color: "#3F5FAC",
+        action: 'view',
     },
 ];
 const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 'Department C', machines: "8 machines", isActive: true },
+    { id: 1, code: 'WC001', name: 'Work Center 1', department: 50, machines: "3 machines", isActive: true },
+    { id: 2, code: 'WC002', name: 'Work Center 2', department: 90, machines: "3 machines", isActive: false },
+    { id: 3, code: 'WC003', name: 'Work Center 3', department: 40, machines: "8 machines", isActive: true },
 ]);
 // onMounted(() => {
-//     fetchworkCenter();
+//     fetchmachines();
 // });
 const filtersOperation = computed(() => {
     return [
-          {
-            placeholder: "workCenter.department",
+        {
+            placeholder: "machines.machines",
             value: null,
             field: "status",
             options: [
-                  { label: t("usersManagement.allStatus"), value: null },
+                { label: t("usersManagement.allStatus"), value: null },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
@@ -55,7 +55,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-                  { label: t("usersManagement.allStatus"), value: null },
+                { label: t("usersManagement.allStatus"), value: null },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
@@ -64,11 +64,12 @@ const filtersOperation = computed(() => {
 });
 
 const columns = computed(() => {
-    const Columns = [ 
-        { field: 'code', header: t('workCenter.code'), sortable: true },
-        { field: 'name', header: t('workCenter.name'), type: 'slot', sortable: true },
-        { field: 'department', header: t('workCenter.department'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('workCenter.machines'), sortable: true },
+    const Columns = [
+        { field: 'code', header: t('machines.code'), sortable: true },
+        { field: 'name', header: t('machines.name'), type: 'slot', sortable: true },
+        { field: 'department', header: t('machines.workCenter'), type: 'slot', sortable: true },
+        { field: 'machines', header: t('machines.HourCost'), sortable: true },
+        { field: 'department', header: t('machines.Capacity'), type: 'slot', sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -95,13 +96,13 @@ const handleActionMenu = async (payload: any) => {
     const data = payload.data || payload.row || payload;
     if (action === 'edit') {
         router.push({
-            name: "workCenterFormEdit",
+            name: "machinesFormEdit",
             params: { id: data.id },
         });
     }
     if (action === 'view') {
         router.push({
-            name: "workCenterFormView",
+            name: "machinesFormView",
             params: { id: data.id },
         });
     }
@@ -117,44 +118,53 @@ const handleActionMenu = async (payload: any) => {
 const handleDeleteConfirm = async () => {
     if (!rowToDelete.value) return;
     isDeleting.value = true;
-    await deleteworkCenter(rowToDelete.value.id).finally(() => {
+    await deleteMachines(rowToDelete.value.id).finally(() => {
         isDeleting.value = false;
         showDeleteDialog.value = false;
         rowToDelete.value = null;
     });
 };
-
-const addworkCenter = () => {
-    router.push({name: 'workCenterCreate' });
+const progressValue = 70; 
+const progressColor = computed(() => {
+    return progressValue > 60 ? 'text-success-600' : 'text-warning-600'
+})
+const addmachines = () => {
+    router.push({ name: 'MachinesCreate' });
 };
 
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="production" subtitle="masterData" actionName="workCenter.workCenter" />
+        <ScreenHeader title="production" subtitle="masterData" actionName="machines.machines" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="workCenter.workCenter" subtitle="workCenter.subtitle" :showExport="false"
-                    :showImport="false" :mainBtn="true" mainBtnText="workCenter.addNew" :showFilter="true"
-               :filters="filtersOperation" @filter-change="onFilterChange"
-                    searchPlaceholder="workCenter.searchPlaceholder" @search="onSearch" :onMainBtnClick="addworkCenter" 
-                    />
+                <PageHeader title="machines.machines" subtitle="machines.subtitle" :showExport="false"
+                    :showImport="false" :mainBtn="true" mainBtnText="machines.addNew" :showFilter="true"
+                    :filters="filtersOperation" @filter-change="onFilterChange"
+                    searchPlaceholder="machines.searchPlaceholder" @search="onSearch" :onMainBtnClick="addmachines" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
-               <template  v-slot:["col-code"]="{ data }">
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
+                    @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
+                    <template v-slot:["col-code"]="{ data }">
                         <span class="text-primary-500 cursor-pointer">{{ data.code }}</span>
                     </template>
-                    </DynamicTable>
+                    <template v-slot:["col-department"]="{ data }">
+                        <div class="flex items-center gap-2">
+                            <ProgressBar :color="progressColor"></ProgressBar>
+                            <span>{{ data.department }}</span>
+                        </div>
+                    </template>
+                </DynamicTable>
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('workCenter.deleteworkCenterConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('machines.deletemachinesConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },

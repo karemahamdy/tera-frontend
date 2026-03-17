@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { LDCSchema } from "../validation/MachinesSchema";
-import { useworkCenter } from "../composables/useMachines";
+import { useMachines } from "../composables/useMachines";
 import router from "@/app/router";
 
 const props = defineProps<{
@@ -13,7 +13,7 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { createworkCenter, updateworkCenter } = useworkCenter();
+const { createMachines, updateMachines } = useMachines();
 
 type LDCFormValues = {
   code: string;
@@ -48,9 +48,9 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     if (editMode && props.id) {
-      await updateworkCenter(props.id, values);
+      await updateMachines(props.id, values);
     } else {
-      await createworkCenter(values);
+      await createMachines(values);
     }
     router.push({
       name: "Machines",
@@ -67,16 +67,16 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <div>
-  <ScreenHeader title="production" subtitle="masterData" :actionName="editMode ? $t('workCenter.editWorkCenterInfo') : $t('workCenter.createWorkCenterInfo')"  />
+  <ScreenHeader title="production" subtitle="masterData" :actionName="editMode ? $t('machines.editMachineInfo') : $t('machines.createMachineInfo')"  />
 
     <card class="p-6 bg-[#ffffff] rounded-[10px]">
       <template #title>
         <div class="flex flex-col px-20">
           <h2 class="heading-title">
-            {{ editMode ? $t("workCenter.editWorkCenterInfo") : $t("workCenter.createWorkCenterInfo") }}
+            {{ editMode ? $t("machines.editMachineInfo") : $t("machines.createMachineInfo") }}
           </h2>
           <p class="subheading-title">
-            {{ editMode ? $t("workCenter.editWorkCenterInfoDesc") : $t("workCenter.createWorkCenterInfoDesc") }}
+            {{ editMode ? $t("machines.editMachineInfoDesc") : $t("machines.createMachineInfoDesc") }}
           </p>
         </div>
       </template>
@@ -85,23 +85,44 @@ const onSubmit = handleSubmit(async (values) => {
         <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
 
           <div class="grid grid-cols-2 gap-4">  
-            <FormInput :label="$t('workCenter.workCentercode')" v-model="code" :placeholder="$t('workCenter.codePlaceholder')"
+            <FormInput :label="$t('machines.MachineCode')" v-model="code" :placeholder="$t('machines.MachineCodePlaceholder')"
               :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
-               <FormInput :label="$t('workCenter.workCentername')" v-model="name" :placeholder="$t('workCenter.namePlaceholder')"
+               <FormInput :label="$t('machines.MachineName')" v-model="name" :placeholder="$t('machines.MachineNamePlaceholder')"
               :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
           </div>
 
+           <div class="grid grid-cols-2 gap-4">  
+             <FormDropdown :label="$t('machines.workCenter')" v-model="name" :placeholder="$t('machines.workCenterPlaceholder')"
+              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
+            <FormInput :label="$t('machines.Capacity')" v-model="code" :placeholder="$t('machines.capacityPlaceholder')"
+              :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
+              
+          </div>
+
+           <div class="grid grid-cols-2 gap-4">  
+            <FormInput :label="$t('machines.CostPerHour')" v-model="code" :placeholder="$t('machines.CostPerHourPlaceholder')"
+              :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
+               <FormInput :label="$t('machines.SetupTime')" v-model="name" :placeholder="$t('machines.SetupTimePlaceholder')"
+              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
+          </div>
+
+           <div class="grid grid-cols-2 gap-4">  
+            <FormInput :label="$t('machines.SetupCostPerHour')" v-model="code" :placeholder="$t('machines.SetupCostPerHourPlaceholder')"
+              :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
+               <FormInput :label="$t('machines.Efficiency')" v-model="name" :placeholder="$t('machines.EfficiencyPlaceholder')"
+              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
+          </div>
           <div class="grid grid-cols-2 gap-4">
-            <FormInput :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
+            <FormInput :label="$t('machines.Overhead')" v-model="department" :placeholder="$t('machines.OverheadPlaceholder')"
               :error="errors.department" :invalid="!!errors.department" :disabled="viewMode" />
            <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
           </div>
 
           <div>
             <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("workCenter.notes") }}
+              {{ $t("machines.notes") }}
             </label>
-            <Textarea v-model="notes" :placeholder="$t('workCenter.notesPlaceholder')"
+            <Textarea v-model="notes" :placeholder="$t('machines.notesPlaceholder')"
               class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.notes }"
               :disabled="isSubmitting" />
             <small v-if="errors.notes" class="text-danger-500">

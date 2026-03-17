@@ -1,11 +1,11 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, workCenterResponse } from "../types/Machines";
+import type { Pagination, MachinesResponse } from "../types/Machines";
 
 
-export const workCenterService = {
+export const MachinesService = {
   async getAll(params: Pagination) {
 
-    const resp = await axiosWrapper.get<workCenterResponse>(
+    const resp = await axiosWrapper.get<MachinesResponse>(
       `/LedgerDetailCard`, { params }
     );
     return resp.data;
@@ -42,7 +42,7 @@ export const workCenterService = {
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/LedgerDetailCard/export-workCenters`,
+      `/LedgerDetailCard/export-Machiness`,
       {
         params: payload,
         responseType: "blob",
