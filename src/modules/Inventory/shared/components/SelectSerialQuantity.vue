@@ -66,11 +66,12 @@ onMounted(() => {
   <Dialog
     v-model:visible="isVisible"
     modal
-    :header="t('purchaseReturn.selectOriginalWaybill')"
+    :header="t('serial.selectSerialAndQuantity')"
     :style="{ width: '60vw' }"
     :breakpoints="{ '960px': '75vw', '641px': '90vw' }"
   >
     <div>
+      <p class="mb-3">{{ item?.itemName }}</p>
       <div class="overflow-hidden rounded-lg border border-gray-100">
         <DynamicTable
           :columns="columns"
@@ -81,6 +82,7 @@ onMounted(() => {
           :showEdit="false"
           :showDelete="false"
           v-model:selectedRows="selectedRowsLocal"
+          dataKey="mainSerial"
           hasSelection
         >
           <template #col-CountedQTY="{ data }">

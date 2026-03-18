@@ -8,11 +8,13 @@ const { t } = useI18n();
 const emit = defineEmits(["next", "prev"]);
 
 import { usePhysicalCountForm } from "../composables/usePhysicalCountForm";
-import type { Item } from "../types/PhysicalCount";
+import type { Item, Serial } from "../types/PhysicalCount";
 import StorageLocationPicker from "@/modules/Inventory/shared/components/StorageLocationPicker.vue";
 import ItemBalance from "@/modules/Inventory/Transactions/sales-waybill/components/ItemBalance.vue";
 const { itemsLookups, WarehouseHierarchyLookups, physicalCountLines } =
   usePhysicalCountForm();
+
+const SelectSerialQuantityRef = ref<InstanceType<typeof SelectSerialQuantity> | null>(null);
 
 // --- Computed ---
 const columns = computed(() => [
@@ -114,11 +116,22 @@ const currentItem = ref<any>(null);
 const openQtyDialog = (data: any) => {
   selectedItem.value = data;
   showQtyDialog.value = true;
+  if (SelectSerialQuantityRef.value) {
+    SelectSerialQuantityRef.value.setSelectedRows(selectedItem.value?.physicalCountSerials as any[])
+  }
 };
 
-const getSelectedSerial = () => {
-  console.log("hi");
-  
+const getSelectedSerial = (selectedSerials: Serial[]) => {
+  if (selectedItem.value) {
+    const index = physicalCountLines.value.findIndex(
+      (item) => item.itemId === selectedItem.value?.itemId,
+    );
+    if (physicalCountLines.value[index]) {
+      physicalCountLines.value[index].physicalCountSerials = selectedSerials
+      physicalCountLines.value[index].countedQty = physicalCountLines.value[index].physicalCountSerials.reduce((sum: number, item: Serial) => sum +
+        (item.countedQty ?? 0), 0)
+    }
+  }
 }
 
 const removeItem = (data: any) => {
@@ -133,47 +146,23 @@ const removeItem = (data: any) => {
 
 <template>
   <div class="flex flex-col h-full bg-white rounded-xl">
-    <PageHeader
-      title="PhysicalCount.LineItems"
-      subtitle="PhysicalCount.LineItemsInfo"
-      :showSearch="false"
-      :mainBtn="true"
-      :mainBtnText="t('itemsList.addItem')"
-      :onMainBtnClick="openItemDialog"
-    />
+    <PageHeader title="PhysicalCount.LineItems" subtitle="PhysicalCount.LineItemsInfo" :showSearch="false"
+      :mainBtn="true" :mainBtnText="t('itemsList.addItem')" :onMainBtnClick="openItemDialog" />
 
     <!-- Table -->
     <div class="overflow-x-auto">
-      <DynamicTable
-        :columns="columns"
-        :data="physicalCountLines"
-        :paginator="false"
-        :showView="false"
-        :showEdit="false"
-        :showDelete="false"
-      >
+      <DynamicTable :columns="columns" :data="physicalCountLines" :paginator="false" :showView="false" :showEdit="false"
+        :showDelete="false">
         <!-- item code -->
         <template #col-itemCode="{ data }">
           <div class="flex items-center gap-2 rounded">
-            <Badge
-              v-if="data.trackingType === 'Serial'"
-              severity="success"
-              class="circle-badge-sm"
-            >
+            <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
               <VsxIcon iconName="Brodcast" :size="20" type="linear" />
             </Badge>
             <Badge v-else severity="transparent" class="circle-badge">
-              <VsxIcon
-                iconName="Brodcast"
-                :size="20"
-                type="linear"
-                class="icon-transparent"
-              />
+              <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
             </Badge>
-            <div
-              v-tooltip="data.itemCode"
-              class="text-base text-gray-700 truncate w-16"
-            >
+            <div v-tooltip="data.itemCode" class="text-base text-gray-700 truncate w-16">
               {{ data.itemCode }}
             </div>
           </div>
@@ -185,10 +174,7 @@ const removeItem = (data: any) => {
           </div>
         </template>
         <template #col-CountedQTY="{ data }">
-          <div
-            v-if="data.trackingType === 'Serial'"
-            class="flex justify-center items-center gap-2"
-          >
+          <div v-if="data.trackingType === 'Serial'" class="flex justify-center items-center gap-2">
             <span class="text-gray-500">({{ data.countedQty }})</span>
           </div>
           <div v-else>
@@ -198,31 +184,19 @@ const removeItem = (data: any) => {
 
         <template #col-serial="{ data }">
           <div v-if="data.trackingType === 'Serial'">
-            <VsxIcon
-              class="cursor-pointer text-primary-500"
-              iconName="Eye"
-              :size="24"
-              type="linear"
-              @click="openQtyDialog(data)"
-            />
+            <VsxIcon class="cursor-pointer text-primary-500" iconName="Eye" :size="24" type="linear"
+              @click="openQtyDialog(data)" />
           </div>
         </template>
 
         <template #col-warehouse="{ data }">
-          <FormDropdown
-            v-model="data.warehouseId"
-            :options="warehouseLookups"
-            class="w-32 p-inputtext-sm text-sm"
-          />
+          <FormDropdown v-model="data.warehouseId" :options="warehouseLookups" class="w-32 p-inputtext-sm text-sm" />
         </template>
 
         <template #col-zone="{ data }">
           <div>
-            <div
-              v-if="data.warehouseId && isProf(data.warehouseId)"
-              @click="showlocationPicker(data)"
-              class="w-28 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500"
-            >
+            <div v-if="data.warehouseId && isProf(data.warehouseId)" @click="showlocationPicker(data)"
+              class="w-28 truncate text-sm rounded-xl p-3 cursor-pointer border border-gray-300 bg-gray-50 text-gray-500">
               <span class="text-black" v-if="data.locationName">{{
                 data.locationName
               }}</span>
@@ -235,50 +209,30 @@ const removeItem = (data: any) => {
         </template>
 
         <template #col-Balance="{ data }">
-          <ItemBalance
-            v-if="data.itemId && data.warehouseId"
-            :itemId="data.itemId"
-            :warehouseId="data.warehouseId"
-            :zoneId="data.zoneId"
-            :locationId="data.locationId"
-          />
+          <ItemBalance v-if="data.itemId && data.warehouseId" :itemId="data.itemId" :warehouseId="data.warehouseId"
+            :zoneId="data.zoneId" :locationId="data.locationId" v-model:balanceValue="data.balance" />
+        </template>
+        <!-- variances -->
+        <template #col-variances="{ data }">
+          <div :class="{ 'text-danger-500': (data.countedQty - data.balance) < 0 }">
+            {{ (data.countedQty - data.balance) || 0 }}
+          </div>
         </template>
         <template #col-action="{ data }">
-          <button
-            class="text-red-400 hover:text-red-600"
-            @click="removeItem(data)"
-          >
-            <VsxIcon
-              iconName="Trash"
-              :size="20"
-              type="linear"
-              color="#F04438"
-            />
+          <button class="text-red-400 hover:text-red-600" @click="removeItem(data)">
+            <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
           </button>
         </template>
       </DynamicTable>
     </div>
 
-    <ItemSelectionDialog
-      v-model:visible="showItemDialog"
-      :items="availableItems"
-      @select="handleSelectItem"
-    />
+    <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
 
-    <SelectSerialQuantity
-      v-if="showQtyDialog"
-      v-model:visible="showQtyDialog"
-      :item="selectedItem"
-      @select="getSelectedSerial"
-    />
+    <SelectSerialQuantity v-if="showQtyDialog" v-model:visible="showQtyDialog" :item="selectedItem"
+      ref="SelectSerialQuantityRef" @select="getSelectedSerial" />
 
-    <StorageLocationPicker
-      v-if="locationPickerFlag"
-      v-model:visible="locationPickerFlag"
-      @select="handleSelectLocation"
-      :locations="currentLocations"
-      :selectedLocationId="selectedLocationId"
-    />
+    <StorageLocationPicker v-if="locationPickerFlag" v-model:visible="locationPickerFlag" @select="handleSelectLocation"
+      :locations="currentLocations" :selectedLocationId="selectedLocationId" />
   </div>
 </template>
 
