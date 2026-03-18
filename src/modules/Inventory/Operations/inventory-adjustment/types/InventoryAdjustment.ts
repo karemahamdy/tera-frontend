@@ -75,6 +75,7 @@ export interface PhysicalCountItem {
   countedQuantity: number;
   variance: number;
   availableBalance: number;
+  physicalHeaderId: string;
 };
 export interface CreateInventoryAdjustmentPayload {
   adjustmentReason: string;
