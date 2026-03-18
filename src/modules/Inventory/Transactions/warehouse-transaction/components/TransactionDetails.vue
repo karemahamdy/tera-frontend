@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted, reactive, computed, ref } from "vue"
+import { onMounted, reactive, computed, ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import { useWarehouseTransaction } from "../composables/useWarehouseTransaction";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
+import { useInventoryRequest } from "@/modules/Inventory/Transactions/inventory-request/composables/useInventoryRequest";
 import StorageLocationPicker from "@/modules/Inventory/shared/components/StorageLocationPicker.vue";
 import { useRoute } from "vue-router";
 import { WarehouseTransactionSchema } from "../validation/WarehouseTransactionSchema";
@@ -15,13 +16,16 @@ const props = defineProps<{
 const route = useRoute();
 const id = route.params.id ? String(route.params.id) : null;
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'request-selected'])
 const { fetchNextNumber } = useWarehouseTransaction();
 const { 
   getCostCenterLookups, costCenterLookups, 
   WarehouseLookups, getWarehouseLookups,
-  getWarehouseHierarchyLookups, WarehouseHierarchyLookups
+  getWarehouseHierarchyLookups, WarehouseHierarchyLookups,
+  inventoryRequests, getInventoryRequestsLookups
 } = useInventoryLookups();
+
+const { fetchInventoryRequestById } = useInventoryRequest();
 
 const directions = [
   { value: 'Transfer', labelKey: 'direction.transfer' },
@@ -69,6 +73,60 @@ const dstLocations = computed(() => {
   const wh = WarehouseHierarchyLookups.value.find((w: any) => w.warehouseId === modelValue.value.destination?.warehouse);
   return wh?.locations || [];
 });
+
+// Watch direction to fetch filtered Inventory Requests
+watch(() => modelValue.value.direction, (newDir) => {
+  if (newDir) {
+    getInventoryRequestsLookups(newDir);
+  }
+}, { immediate: true });
+
+async function handleInventoryRequestChange(val: string) {
+  if (!val) return;
+  const details = await fetchInventoryRequestById(val);
+  if (details) {
+    // Basic fields mapping
+    modelValue.value.warehouse = details.warehouseId;
+    modelValue.value.zone = details.zoneId;
+    modelValue.value.zoneName = details.zoneName;
+    modelValue.value.locationId = details.locationId;
+    modelValue.value.locationCode = details.locationCode;
+    modelValue.value.resone = details.resone;
+
+    if (modelValue.value.direction === 'Transfer') {
+      if (!modelValue.value.destination) modelValue.value.destination = {};
+      modelValue.value.destination.warehouse = details.destinationWarehouseId;
+      modelValue.value.destination.zone = details.destinationZoneId;
+      modelValue.value.destination.zoneName = details.destinationZoneName;
+      modelValue.value.destination.locationId = details.destinationLocationId;
+      modelValue.value.destination.locationCode = details.destinationLocationCode;
+    }
+
+    // Emit line items to parent
+    const lines = (details.linesDtos || details.lineItems || []).map((item: any) => ({
+      itemId: item.itemId,
+      itemCode: item.itemCode,
+      itemName: item.itemName,
+      quantity: item.quantity,
+      unitId: item.unitOfMeasureId || item.selectedUnitOfMeasureId || item.unitId,
+      unitOfMeasureId: item.unitOfMeasureId || item.selectedUnitOfMeasureId || item.unitId,
+      unitName: item.unitName,
+      trackingType: item.trackingType,
+      serial: item.serial,
+      baseUnitId: item.baseUnitId,
+      baseUnitName: item.baseUnitName,
+      warehouseId: item.warehouseId,
+      warehouseName: item.warehouseName,
+      zoneId: item.zoneId,
+      zoneCode: item.zoneCode,
+      locationId: item.locationId,
+      locationCode: item.locationCode,
+      units: item.units || []
+    }));
+    
+    emit('request-selected', lines);
+  }
+}
 
 async function handleSrcWarehouseChange(val: string) {
   modelValue.value.warehouse = val;
@@ -236,8 +294,10 @@ defineExpose({ validate });
             v-model="modelValue.inventoryRequest"
             :error="errors.InventoryRequest" 
             :placeholder="t('warehouseTransaction.InventoryRequestPlaceholder')"
+            :options="inventoryRequests"
             :invalid="!!errors.InventoryRequest" 
             :disabled="disabled"
+            @update:modelValue="handleInventoryRequestChange"
           />
         </div>
       </div>
