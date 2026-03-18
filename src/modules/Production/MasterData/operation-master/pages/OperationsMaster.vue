@@ -5,6 +5,7 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useOperationsMaster } from "../composables/useOperationsMaster";
+import RulesCard from "@/sharedComponents/RulesCard.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -30,6 +31,12 @@ const customItems = [
       action: 'view',
     },
 ];
+const rules = [
+    "OperationsMaster.note",
+    "OperationsMaster.operation",
+    "OperationsMaster.processCode",
+];
+
 const data = ref([
     { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", isActive: true },
     { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", isActive: false },
@@ -151,6 +158,9 @@ const addOperationsMaster = () => {
                         <span class="text-primary-500 cursor-pointer underline">{{ data.code }}</span>
                     </template>
                     </DynamicTable>
+            </template>
+            <template #footer>
+                <RulesCard title="OperationsMaster.ruleHeader" :items="rules" color="primary" />
             </template>
         </card>
 

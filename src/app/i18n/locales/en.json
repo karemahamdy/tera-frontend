@@ -1417,7 +1417,11 @@
     "OperationsMasterCreatedSuccessfully": "Operation Created Successfully",
     "OperationsMasterUpdatedSuccessfully": "Operation Updated Successfully",
     "description": "Description",
-    "descriptionPlaceholder": "Enter operation description..."
+    "descriptionPlaceholder": "Enter operation description...",
+    "note": "Process Code must be unique",
+    "operation": "Operations may be linked in BOM routing",
+    "processCode": "Cannot delete if operation is used in any BOM",
+    "ruleHeader": "Business Rules"
   },
   "machines": {
     "machines": "Machines",
