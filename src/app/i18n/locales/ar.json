@@ -1012,7 +1012,11 @@
     "serialItemSelection": "اختيار العنصر التسلسلي",
     "viewPhysicalCount": "عرض الجرد الفعلي",
     "newPhysicalCount": "جرد فعلي جديد",
-    "PhysicalCountCreatedSuccessfully": "تم إنشاء جرد فعلي بنجاح"
+    "PhysicalCountCreatedSuccessfully": "تم إنشاء جرد فعلي بنجاح",
+    "code": "الكود",
+    "countDate": "تاريخ الجرد",
+    "physicalCountLines": "بنود الجرد",
+    "notes": "ملاحظات"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "تسوية المخزون",

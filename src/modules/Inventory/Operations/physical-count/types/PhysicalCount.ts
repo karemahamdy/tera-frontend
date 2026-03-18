@@ -126,4 +126,5 @@ export interface Item {
   serials: Serial[] | null;
   units?: Unit[] | null;
   documentNumber?: string | null;
+  physicalCountSerials: Serial[]; 
 }

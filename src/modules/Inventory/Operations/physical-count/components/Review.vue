@@ -12,9 +12,9 @@ const { countDate, notes, physicalCountLines } = usePhysicalCountForm();
 const columns = computed(() => {
     const Columns = [
         { field: 'itemCode', header: t('PhysicalCount.ItemCode') },
-        { field: 'descrption', header: t('PhysicalCount.Descrption') },
-        { field: 'systemBalance', header: t('PhysicalCount.SystemBalance') },
-        { field: 'countedQTY', header: t('PhysicalCount.CountedQTY') },
+        { field: 'itemName', header: t('PhysicalCount.Descrption') },
+        { field: 'balance', header: t('PhysicalCount.SystemBalance') },
+        { field: 'countedQty', header: t('PhysicalCount.CountedQTY') },
         { field: 'variances', header: t('PhysicalCount.Variances') },
     ];
     return Columns;
@@ -31,14 +31,17 @@ const columns = computed(() => {
             </div>
             <div class="mb-5">
                 <p class="text-gray-500">{{ $t("itemTransaction.notes") }}</p>
-                <p>{{ notes }}</p>-
+                <p>{{ notes }}</p>
             </div>
         </div>
         <div>
             <p><strong>{{ $t("PhysicalCount.LineItems") }}</strong></p>
             <DynamicTable :columns="columns" :data="physicalCountLines" :paginator="false">
-                <template v-slot:["col-variances"]="{ data }">
-                    <span class="text-danger-500">{{ data.variances }}</span>
+                <!-- variances -->
+                <template #col-variances="{ data }">
+                    <div :class="{ 'text-danger-500': (data.countedQty - data.balance) < 0 }">
+                        {{ (data.countedQty - data.balance) || 0 }}
+                    </div>
                 </template>
             </DynamicTable>
         </div>

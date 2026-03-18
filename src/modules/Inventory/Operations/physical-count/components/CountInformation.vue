@@ -39,7 +39,7 @@ const { errors, code, countDate, notes } = usePhysicalCountForm();
             {{ $t("itemTransaction.notes") }}
           </label>
           <Textarea
-            :v-model="notes"
+            v-model="notes"
             rows="2"
             class="w-full p-3 border rounded-lg"
             :placeholder="$t('itemTransaction.notesPlaceholder')"
