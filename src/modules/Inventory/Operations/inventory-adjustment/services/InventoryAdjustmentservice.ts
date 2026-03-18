@@ -17,7 +17,7 @@ export const InventoryAdjustmentService = {
   },
 
   async create(payload: CreateInventoryAdjustmentPayload) {
-    const physicalCountHeaderIds = payload.physicalCountHeaderIds.map(item => item.countedId);
+    const physicalCountHeaderIds = payload.physicalCountHeaderIds.map(item => item.physicalHeaderId);
     const apiPayload = { ...payload, physicalCountHeaderIds };
     const data = await axiosWrapper.post<any>(`/physicalcount/adjustment`, apiPayload);
     return data.data;

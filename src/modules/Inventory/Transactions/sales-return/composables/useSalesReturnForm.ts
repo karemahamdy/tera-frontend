@@ -249,7 +249,7 @@ export function useSalesReturnForm() {
           locationName: getLocationName(item.warehouseId, item.locationId),
           sourceLineId: item.lineId,
           originalWaybillId: item.waybillId,
-          trackingType: item.isSerialTracked ? "Serial" : "None",
+          trackingType: item.trackingType,
           units:
             item?.units?.map((unit: Unit) => ({
               label: `${unit.unitName} (${unit.unitCode})`,

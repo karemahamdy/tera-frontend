@@ -106,7 +106,12 @@ const handleSelectLocation = (location: any) => {
 
 const handleSelectSerials = (serials: any[]) => {
     quantity.value = serials.reduce((total, serial) => total + serial.availableQuantity, 0);
-    serialsForBlocking.value = serials.map(serial => serial.mainSerial);
+    serialsForBlocking.value = serials.map(serial => {
+        return {
+            mainSerial: serial.mainSerial,
+            holdQuantity: serial.availableQuantity
+        }
+    });
 };
 
 </script>
