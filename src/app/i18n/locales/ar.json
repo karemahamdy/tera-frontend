@@ -1457,5 +1457,31 @@
     "MachineNamePlaceholder": "أدخل اسم الآلة",
     "notesPlaceholder": "أضف ملاحظاتك...",
     "notes": "الملاحظات"
-}
+},
+ "BOM": {
+    "code": "كود قائمة المواد",
+    "name": "اسم قائمة المواد",
+    "Product": "المنتج",
+    "Version": "الإصدار",
+    "Material": "المادة",
+    "Operation": "العملية",
+    "TotalCost": "إجمالي التكلفة",
+    "CreatedOn": "تاريخ الإنشاء",
+    "BOM": "قائمة المواد",
+    "subtitle": "إدارة قوائم المواد وهياكل مكونات المنتجات",
+    "addNew": "إنشاء قائمة مواد",
+    "searchPlaceholder": "ابحث بكود قائمة المواد أو اسم المنتج أو كود المنتج...",
+    "BOMCodePlaceholder": "أدخل كود قائمة المواد",
+    "BOMNamePlaceholder": "أدخل اسم قائمة المواد",
+    "ProductPlaceholder": "اختر المنتج",
+    "VersionPlaceholder": "أدخل الإصدار",
+    "deleteConfirm": "هل أنت متأكد من حذف قائمة المواد؟",
+    "BOMDeletedSuccessfully": "تم حذف قائمة المواد بنجاح",
+    "BOMCreatedSuccessfully": "تم إنشاء قائمة المواد بنجاح",
+    "BOMUpdatedSuccessfully": "تم تحديث قائمة المواد بنجاح",
+    "createBOMInfoDesc": "قم بإعداد تفاصيل قائمة المواد والمكونات والتكاليف لتخطيط الإنتاج",
+    "editBOMInfoDesc": "قم بإعداد تفاصيل قائمة المواد والمكونات والتكاليف لتخطيط الإنتاج",
+    "createBOMInfo": "إضافة قائمة مواد جديدة",
+    "editBOMInfo": "تعديل قائمة المواد"
+  }
 }

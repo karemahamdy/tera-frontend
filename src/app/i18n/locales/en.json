@@ -1464,5 +1464,31 @@
      "MachineNamePlaceholder": "Enter Machine Name",
      "notesPlaceholder": "Add Your Notes...",
      "notes": "Notes"
-}
+},
+ "BOM": {
+    "code": "BOM Code",
+    "name": "BOM Name",
+    "Product": "Product",
+    "Version": "Version",
+    "Material": "Material",
+    "Operation": "Operation",
+    "TotalCost": "Total Cost",
+    "CreatedOn": "Created On",
+      "BOM": "Bill of Materials",
+    "subtitle": "Manage product BOMs and component structures",
+    "addNew": "Create BOM",
+    "searchPlaceholder": "Search by BOM code, product name, or product code...",
+    "BOMCodePlaceholder": "Enter BOM Code",
+    "BOMNamePlaceholder": "Enter BOM Name",
+    "ProductPlaceholder": "Select Product",
+    "VersionPlaceholder": "Enter Version",
+      "deleteConfirm": "Are you sure you want to delete this BOM?",
+    "BOMDeletedSuccessfully": "BOM Deleted Successfully",
+    "BOMCreatedSuccessfully": "BOM Created Successfully",
+    "BOMUpdatedSuccessfully": "BOM Updated Successfully",
+    "createBOMInfoDesc": "Configure BOM details, components, and costs for production planning",
+    "editBOMInfoDesc": "Configure BOM details, components, and costs for production planning",
+    "createBOMInfo": "Add New BOM",
+    "editBOMInfo": "Edit BOM"
+  }
 }
