@@ -41,6 +41,7 @@ const formData = reactive({
     documentNumber: '',
     waybillDate: new Date(),
     inventoryRequest: '',
+    inventoryRequestNumber: '',
     warehouse: '',
     zone: '',
     zoneName: '',
@@ -119,7 +120,7 @@ const summaryData = computed(() => {
   
   return {
     waybillDate: toDateStr(d.waybillDate) || '',
-    inventoryRequest: d.inventoryRequest || '—',
+    inventoryRequest: d.inventoryRequestNumber || d.inventoryRequest || '—',
     direction: d.direction,
     warehouse: wh?.label || '—',
     zone: d.locationCode || d.zoneName || '—',
@@ -201,6 +202,7 @@ onMounted(async () => {
       formData.details.documentNumber = result.waybillNumber || '';
       formData.details.waybillDate = result.waybillDate ? new Date(result.waybillDate) : new Date();
       formData.details.inventoryRequest = result.inventoryRequest || '';
+      formData.details.inventoryRequestNumber = result.inventoryRequestNumber || result.inventoryRequestCode || result.inventoryRequestName || '';
       formData.details.warehouse = result.warehouseId || '';
       formData.details.zone = result.zoneId || '';
       formData.details.zoneName = result.zoneName || '';
@@ -227,6 +229,7 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
   if (oldVal && newVal !== oldVal && mode.value === 'create') {
     formData.lineItems = [];
     formData.details.inventoryRequest = '';
+    formData.details.inventoryRequestNumber = '';
     formData.details.warehouse = '';
     formData.details.zone = '';
     formData.details.zoneName = '';

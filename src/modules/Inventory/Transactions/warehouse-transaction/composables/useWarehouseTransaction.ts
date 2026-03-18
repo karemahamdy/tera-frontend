@@ -123,18 +123,31 @@ const fetchWarehouseTransaction = async (page = 1) => {
       loading.value = false;
     }
   };
-     const fetchNextNumber = async () => {
-      loading.value = true;
-      try {
-        const resp = await WarehouseTransactionService.getNextNumber();
-        return resp;
-      } catch (err: any) {
-        toastService.error(err);
-        return null;
-      } finally {
-        loading.value = false;
-      }
-    };
+  const fetchNextNumber = async () => {
+    loading.value = true;
+    try {
+      const resp = await WarehouseTransactionService.getNextNumber();
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchInventoryRequestById = async (id: string) => {
+    loading.value = true;
+    try {
+      const resp = await WarehouseTransactionService.getInventoryRequestById(id);
+      return resp;
+    } catch (err: any) {
+      toastService.error(err);
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
 
   const onFilterChange = (filter: {
     filter: { field: string };
@@ -175,6 +188,7 @@ const fetchWarehouseTransaction = async (page = 1) => {
     updateWarehouseTransaction,
     deleteWarehouseTransaction,
     fetchNextNumber,
+    fetchInventoryRequestById,
     pageIndex,
     pageSize,
     totalCount,

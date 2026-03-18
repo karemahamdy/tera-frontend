@@ -58,6 +58,12 @@ export const WarehouseTransactionService = {
     );
     return data;
   },
+  async getInventoryRequestById(id: string): Promise<any> {
+    const data = await axiosWrapper.get<any>(
+      `/warehouse-transactions/Get-InventoryRequest/${id}`,
+    );
+    return data.data ?? data;
+  },
   async getNextNumber() {
     const data = await axiosWrapper.get<any>(`/warehouse-transactions/next-number`);
     return data.data;
