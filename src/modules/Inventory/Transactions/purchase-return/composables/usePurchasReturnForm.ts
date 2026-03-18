@@ -124,7 +124,7 @@ export function usePurchaseReturnForm() {
       const createPayload = getFormPayload(payload);
       const response = await PurchaseReturnService.create(createPayload);
       toastService.success(
-        t("PurchaseReturn.PurchaseReturnCreatedSuccessfully"),
+        t("purchaseReturn.PurchaseReturnCreatedSuccessfully"),
       );
       router.push({ name: "PurchaseReturn" });
       return response;
@@ -142,7 +142,7 @@ export function usePurchaseReturnForm() {
       const updatePayload = getFormPayload(payload);
       await PurchaseReturnService.update(id, updatePayload);
       toastService.success(
-        t("PurchaseReturn.PurchaseReturnUpdatedSuccessfully"),
+        t("purchaseReturn.PurchaseReturnUpdatedSuccessfully"),
       );
       router.push({ name: "PurchaseReturn" });
     } catch (err: any) {
