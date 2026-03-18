@@ -3,7 +3,6 @@ import { onMounted, reactive, computed, ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import { useWarehouseTransaction } from "../composables/useWarehouseTransaction";
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
-import { useInventoryRequest } from "@/modules/Inventory/Transactions/inventory-request/composables/useInventoryRequest";
 import StorageLocationPicker from "@/modules/Inventory/shared/components/StorageLocationPicker.vue";
 import { useRoute } from "vue-router";
 import { WarehouseTransactionSchema } from "../validation/WarehouseTransactionSchema";
@@ -17,15 +16,13 @@ const route = useRoute();
 const id = route.params.id ? String(route.params.id) : null;
 
 const emit = defineEmits(['update:modelValue', 'request-selected'])
-const { fetchNextNumber } = useWarehouseTransaction();
+const { fetchNextNumber, fetchInventoryRequestById } = useWarehouseTransaction();
 const { 
   getCostCenterLookups, costCenterLookups, 
   WarehouseLookups, getWarehouseLookups,
   getWarehouseHierarchyLookups, WarehouseHierarchyLookups,
   inventoryRequests, getInventoryRequestsLookups
 } = useInventoryLookups();
-
-const { fetchInventoryRequestById } = useInventoryRequest();
 
 const directions = [
   { value: 'Transfer', labelKey: 'direction.transfer' },
@@ -86,6 +83,7 @@ async function handleInventoryRequestChange(val: string) {
   const details = await fetchInventoryRequestById(val);
   if (details) {
     // Basic fields mapping
+    modelValue.value.inventoryRequestNumber = details.inventoryRequestNumber || details.requestNumber || details.code || details.name;
     modelValue.value.warehouse = details.warehouseId;
     modelValue.value.zone = details.zoneId;
     modelValue.value.zoneName = details.zoneName;
