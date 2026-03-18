@@ -1013,7 +1013,11 @@
     "serialItemSelection": "Serial Item Selection",
     "viewPhysicalCount": "View Physical Count",
     "newPhysicalCount": "New Physical Count",
-    "PhysicalCountCreatedSuccessfully": "Physical Count Created Successfully"
+    "PhysicalCountCreatedSuccessfully": "Physical Count Created Successfully",
+    "code": "Code",
+    "countDate": "Count Date",
+    "physicalCountLines": "Line Items",
+    "notes":"Notes"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",

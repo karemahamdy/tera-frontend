@@ -9,8 +9,9 @@ const props = defineProps<{
     warehouseId: string;
     zoneId?: string | null;
     locationId?: string | null;
+    balanceValue?: number;
 }>();
-
+const emit = defineEmits(['update:balanceValue']);
 const balance = ref<number | null>(null);
 
 watchEffect(async () => {
@@ -22,6 +23,7 @@ watchEffect(async () => {
         props.zoneId,
         props.locationId
     );
+    emit('update:balanceValue', balance.value)
 });
 </script>
 
