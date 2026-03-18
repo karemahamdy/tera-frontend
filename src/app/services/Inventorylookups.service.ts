@@ -152,4 +152,9 @@ export const InventoryLookupsService = {
       `/InventoryLookups/inspection-results`,
     );
   },
+  getInventoryRequests(transactionType: string) {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      `/InventoryLookups/InventoryRequests?transactionType=${transactionType}`,
+    );
+  },
 };
