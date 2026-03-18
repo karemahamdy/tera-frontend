@@ -84,7 +84,7 @@ onMounted(() => {
             </p>
           </div>
           <div>
-            <DynamicTable :columns="columns" :data="PhysicalCountsForAdjustmentByItem" dataKey="countedId"
+            <DynamicTable :columns="columns" :data="PhysicalCountsForAdjustmentByItem" dataKey="physicalHeaderId"
               v-model:selectedRows="physicalCountHeaderIds" :paginator="false" hasSelection />
             <div>
               <small v-if="errors.physicalCountHeaderIds" class="text-danger-500">
