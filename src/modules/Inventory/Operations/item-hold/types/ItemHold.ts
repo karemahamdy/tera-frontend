@@ -87,13 +87,16 @@ export interface ItemSerialTransactionResponse {
   id: string | null;
 }
 
-
-
 export interface SelectedItem {
   id: string;
   code: string;
   name: string;
   trackingType: string;
+}
+
+export interface SerialsForBlockingItem {
+  mainSerial: string;
+  holdQuantity: number;
 }
 
 export interface ItemHoldPayload {
@@ -105,5 +108,5 @@ export interface ItemHoldPayload {
   reason: string | null;
   holdDate: string; // consider using Date type if you will parse it
   itemHoldStatus: string | null; // consider using enum if there are fixed statuses
-  serialsForBlocking: string[] | null;
+  serialsForBlocking: SerialsForBlockingItem[] | null;
 }

@@ -7,5 +7,5 @@ export const ItemHoldSchema = yup.object({
   reason: yup.string().required("form.fieldRequired"),
   holdDate: yup.date().required("form.fieldRequired"),
   itemHoldStatus: yup.string().required("form.fieldRequired"),
-  serialsForBlocking: yup.array().of(yup.string()).nullable(),
+  serialsForBlocking: yup.array().of(yup.object({})).nullable(),
 });
