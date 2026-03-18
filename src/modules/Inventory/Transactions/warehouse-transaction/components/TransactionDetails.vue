@@ -80,10 +80,19 @@ watch(() => modelValue.value.direction, (newDir) => {
 
 async function handleInventoryRequestChange(val: string) {
   if (!val) return;
+  
+  // Try to find in lookups first for immediate name
+  const req = inventoryRequests.value.find(r => r.value === val);
+  if (req) {
+    modelValue.value.inventoryRequestNumber = req.label;
+  }
+
   const details = await fetchInventoryRequestById(val);
   if (details) {
     // Basic fields mapping
-    modelValue.value.inventoryRequestNumber = details.inventoryRequestNumber || details.requestNumber || details.code || details.name;
+    if (!modelValue.value.inventoryRequestNumber) {
+      modelValue.value.inventoryRequestNumber = details.inventoryRequestNumber || details.requestNumber || details.documentNumber || details.code || details.name;
+    }
     modelValue.value.warehouse = details.warehouseId;
     modelValue.value.zone = details.zoneId;
     modelValue.value.zoneName = details.zoneName;
