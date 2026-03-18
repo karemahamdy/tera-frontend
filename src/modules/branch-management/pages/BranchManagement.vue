@@ -30,8 +30,7 @@ const customItems = [
 
 const columns = computed(() => {
     const Columns = [
-        // { field: 'nameAr', header: t('branch.branchNameAr'), type: 'slot', sortable: true },
-        { field: 'nameEn', header: t('branch.branchName'), type: 'slot', sortable: true },
+        { field: 'name', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
         { field: 'addressEn', header: t('branch.address'), sortable: true },
         { field: 'status', header: t('status'), type: 'status', sortable: true },
@@ -108,10 +107,10 @@ const addBranch = () => {
                 <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy>
-                    <template v-slot:["col-nameEn"]="{ data }">
+                    <template v-slot:["col-name"]="{ data }">
                         <div class="flex items-start gap-2 flex-wrap">
                             <VsxIcon iconName="Building4" :size="24" color="#717680" type="linear" />
-                            <span class="break-words">{{ data.nameEn }}</span>
+                            <span class="break-words">{{ data.name }}</span>
                         </div>
                     </template>
                 </DynamicTable>

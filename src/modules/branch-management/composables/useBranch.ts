@@ -134,8 +134,7 @@ export function useBranches() {
   (branches) => {
     tableData.value = branches.map((b) => ({
       id: b.id,
-      nameAr: b.nameAr,
-      nameEn: b.nameEn,
+      name: b.name,
       code: b.code,
       addressAr: b.addressAr,
       addressEn: b.addressEn,

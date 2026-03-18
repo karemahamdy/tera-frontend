@@ -82,15 +82,15 @@ const nextTab = async () => {
 const previousTab = () => { if (activeStep.value > 0) activeStep.value--; };
 
 // Reactively disable Next button when required fields are missing
-const isNextDisabled = computed(() => {
-  if (activeStep.value !== 0) return false;
-  const d = formData.details;
-  return !WarehouseTransactionSchema.isValidSync({
-    warehouseId: d.warehouse,
-    destinationWarehouseId: d.destination?.warehouse || null,
-    direction: d.direction,
-  });
-});
+// const isNextDisabled = computed(() => {
+//   if (activeStep.value !== 0) return false;
+//   const d = formData.details;
+//   return !WarehouseTransactionSchema.isValidSync({
+//     warehouseId: d.warehouse,
+//     destinationWarehouseId: d.destination?.warehouse || null,
+//     direction: d.direction,
+//   });
+// });
 
 // Reactively disable Create/Save button when required fields are missing
 const isFinishDisabled = computed(() => {
@@ -142,7 +142,7 @@ const submit = async () => {
     const payload = {
       waybillNumber: det.documentNumber,
       waybillDate: toDateStr(det.waybillDate),
-      requestReference: det.inventoryRequest || null,
+      inventoryRequest: det.inventoryRequest || null,
       transactionType: det.direction || null,
       costCenterId: det.costCenter || null,
       warehouseTransactionType: det.type || null,
@@ -200,7 +200,7 @@ onMounted(async () => {
       formData.details.direction = result.transactionType || ' ';
       formData.details.documentNumber = result.waybillNumber || '';
       formData.details.waybillDate = result.waybillDate ? new Date(result.waybillDate) : new Date();
-      formData.details.inventoryRequest = result.requestReference || '';
+      formData.details.inventoryRequest = result.inventoryRequest || '';
       formData.details.warehouse = result.warehouseId || '';
       formData.details.zone = result.zoneId || '';
       formData.details.zoneName = result.zoneName || '';
@@ -271,6 +271,7 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
                 ref="transactionDetailsRef"
                 v-model="formData.details"
                 :disabled="isDisabled"
+                @request-selected="(lines) => formData.lineItems = lines"
               />
             </div>
 
@@ -296,8 +297,7 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
       <StepperActions
         v-if="mode !== 'view'"
         :current="activeStep"
-        :total="steps.length"
-        :disableNext="isNextDisabled"
+        :total="steps.length" 
         :disableFinish="isFinishDisabled"
         @next="nextTab"
         @previous="previousTab"

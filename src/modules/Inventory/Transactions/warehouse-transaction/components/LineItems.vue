@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue';
+import { ref, computed, onMounted, nextTick, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import QuantitySerialDialog from '@/modules/Inventory/shared/components/QuantitySerialDialog.vue';
@@ -34,27 +34,60 @@ function calcTotal(qty: number, price: number) {
 }
 
 function mapApiItem(item: any) {
-  unitOptionsMap.value[item.id || item.itemId] = [{
-    label: item.unitName || item.unitOfMeasureName,
-    value: item.unitName || item.unitOfMeasureName,
-    unitId: item.unitOfMeasure || item.unitOfMeasureId,
-    conversionFactor: 1
-  }];
+  const rowId = item.id || Date.now() + Math.random();
+  // Map units for dropdown options if available
+  let units = item.units || [];
+
+  // If units are missing but itemId is present, try finding them in itemsLookups
+  if (units.length === 0 && item.itemId) {
+    const originalItem = itemsLookups.value.find(i => i.id === item.itemId);
+    if (originalItem?.units) {
+      units = originalItem.units;
+    }
+  }
+
+  if (units.length > 0) {
+    unitOptionsMap.value[rowId] = units.map((u: any) => ({
+      label: u.unitCode ? `${u.unitName} (${u.unitCode})` : u.unitName,
+      value: u.unitName,
+      unitId: u.unitId || u.id,
+      conversionFactor: u.conversionFactor
+    }));
+    // Sync uom label if missing but ID is present
+    const targetUnitId = item.unitOfMeasureId || item.unitOfMeasure || item.unitId || item.selectedUnitOfMeasureId;
+    if (targetUnitId && !item.unitName && !item.unitOfMeasureName && !item.uom) {
+      const matchedUnit = units.find((u: any) => (u.unitId || u.id) === targetUnitId || u.value === targetUnitId);
+      if (matchedUnit) {
+        item.uom = matchedUnit.unitName || matchedUnit.label;
+      }
+    }
+  } else {
+    // Fallback if only one unit provided
+    unitOptionsMap.value[rowId] = [{
+      label: item.unitName || item.unitOfMeasureName || item.uom || '',
+      value: item.unitName || item.unitOfMeasureName || item.uom || '',
+      unitId: item.unitOfMeasureId || item.unitOfMeasure || item.unitId || item.selectedUnitOfMeasureId,
+      conversionFactor: 1
+    }];
+  }
+
   // Infer trackingType from serialLots if not explicitly provided
   const hasSerials = (item.serialLots || []).length > 0;
   const trackingType = item.trackingType || (hasSerials ? 'Serial' : null);
+  
   return {
-    id: item.id || Date.now() + Math.random(),
+    id: rowId,
     itemId: item.itemId,
     trackingType,
-    code: item.itemCode,
-    name: item.itemName,
+    code: item.itemCode || item.code,
+    name: item.itemName || item.name,
     quantity: item.quantity,
-    uom: item.unitName || item.unitOfMeasureName || '',
-    unitId: item.unitOfMeasure || item.unitOfMeasureId,
-    warehouse: item.warehouseName,
+    uom: item.unitName || item.unitOfMeasureName || item.uom || '',
+    unitId: item.unitOfMeasureId || item.unitOfMeasure || item.unitId || item.selectedUnitOfMeasureId,
+    unitOfMeasureId: item.unitOfMeasureId || item.unitOfMeasure || item.unitId || item.selectedUnitOfMeasureId,
+    warehouse: item.warehouseName || item.warehouse,
     warehouseId: item.warehouseId,
-    zone: item.zoneName ?? '',
+    zone: item.zoneName ?? item.zoneCode ?? item.zone ?? '',
     zoneId: item.zoneId ?? null,
     locationId: item.locationId ?? null,
     locationCode: item.locationCode ?? '',
@@ -77,6 +110,16 @@ function mapApiItem(item: any) {
     tracked: true,
   };
 }
+
+// Watch for prop changes from parent (e.g. from Inventory Request mapping)
+watch(() => props.lineItems, (newVal) => {
+  if (newVal && newVal.length > 0) {
+    // Basic check to update - typically when the parent replaces the whole list
+    items.value = newVal.map(mapApiItem);
+  } else if (newVal === null || newVal?.length === 0) {
+    items.value = [];
+  }
+}, { deep: false }); // deep: false since mass replacement of prop is expected for mapping
 
 const items = ref<any[]>((props.lineItems ?? []).map(mapApiItem));
 const itemsError = ref("");
@@ -142,6 +185,7 @@ const handleSelectItem = (selectedItem: any) => {
     quantity: 1,
     uom: defaultUnit ? defaultUnit.unitName : (selectedItem.baseUnitName || ''),
     unitId: unitIdValue,
+    unitOfMeasureId: unitIdValue,
     warehouse: '',
     warehouseId: '',
     zone: '',
@@ -356,10 +400,14 @@ const fetchItemBalance = async (item: any) => {
                   .find((o: any) => o.value === v);
                 if (opt?.unitId) {
                   data.unitId = opt.unitId;
+                  data.unitOfMeasureId = opt.unitId;
                 } else {
                   // Fallback: resolve unitId from UnitsLookups by matching label
                     const unitFromLookup = UnitsLookups.find((u: any) => u.label === v);
-                    if (unitFromLookup) data.unitId = unitFromLookup.value;
+                    if (unitFromLookup) {
+                        data.unitId = unitFromLookup.value;
+                        data.unitOfMeasureId = unitFromLookup.value;
+                    }
                 }
                 emitUpdate();
               }" />
@@ -434,7 +482,7 @@ const fetchItemBalance = async (item: any) => {
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
     <template v-if="showQtyDialog && currentItem">
-      <SalesQuantitySerialDialog v-if="direction === 'Transfer'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
+      <SalesQuantitySerialDialog v-if="direction === 'Transfer' || direction === 'Outbound'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
         :item="currentItem" :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId"
         :zoneId="currentItem.zoneId" :locationId="currentItem.locationId" :disabled="disabled"
         @save="handleSaveSerials" />
