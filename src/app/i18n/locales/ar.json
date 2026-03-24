@@ -1431,6 +1431,8 @@
     "workCenter": "مركز العمل",
     "workCenterPlaceholder": "اختر مركز العمل",
     "Capacity": "القدرة",
+    "MachineCapacity": "قدرة الآلة",
+    "Viewmachines": "عرض الآلات",
     "HourCost": "تكلفة الساعة",
     "capacityPlaceholder": "أدخل عدد ساعات العمل",
     "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذه الآلة؟",

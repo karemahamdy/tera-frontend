@@ -1438,6 +1438,8 @@
     "workCenter": "Work Center",
     "workCenterPlaceholder": "Select Work Center",
     "Capacity": "Capacity",
+    "MachineCapacity": "Machine Capacity",
+    "Viewmachines": "View Machines",
     "HourCost": "Hour Cost",
     "capacityPlaceholder": "Enter Number of working hours",
     "deleteConfirm": "Are you sure you want to delete this machine?",

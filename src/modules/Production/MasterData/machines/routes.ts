@@ -36,7 +36,7 @@ export const MachinesRoutes = [
   },
    {
     path: "/machines/view/:id",
-    component: () => import("@/modules/Production/MasterData/machines/pages/MachinesForm.vue"),
+    component: () => import("@/modules/Production/MasterData/machines/pages/MachinesView.vue"),
     name: "MachinesFormView",
   props: (route: any) => ({
       mode: "view",
