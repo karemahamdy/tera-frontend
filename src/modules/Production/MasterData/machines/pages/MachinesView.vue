@@ -89,7 +89,7 @@ const handleEdit = () => {
                     </div>
                 </div>
  
-                    <div class="flex flex-col gap-2">
+                    <div class="flex flex-col gap-2 p-4">
                         <span class="text-lg text-[#A4A7AE]"> {{ $t("machines.notes") }}</span>
                         <span class="text-[#101828] text-base font-medium">Main CNC machine for aluminum parts production.</span>
                 </div>

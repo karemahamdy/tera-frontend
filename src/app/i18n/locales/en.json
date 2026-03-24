@@ -1372,6 +1372,7 @@
     "searchPlaceholder": "Search work centers...",
     "workCenterId": "Work Center ID",
     "name": "Name",
+    "viewWorkCenter": "View Work Centers",
     "namePlaceholder": "Enter Work Center Name",
     "codePlaceholder": "Enter Work Center Code",
     "description": "Description",

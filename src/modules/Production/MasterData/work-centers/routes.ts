@@ -36,7 +36,7 @@ export const WorkCentersRoutes = [
   },
    {
     path: "/work-centers/view/:id",
-    component: () => import("@/modules/Production/MasterData/work-centers/pages/WorkCentersForm.vue"),
+    component: () => import("@/modules/Production/MasterData/work-centers/pages/WorkCentersView.vue"),
     name: "workCenterFormView",
   props: (route: any) => ({
       mode: "view",

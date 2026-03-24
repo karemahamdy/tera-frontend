@@ -1363,6 +1363,7 @@
     "workCenter": "مركز العمل",
     "subtitle": "إدارة مراكز العمل الاقسام المرتبطة بها",
     "addNew": "إضافة مركز عمل جديد",
+    "viewWorkCenter": "عرض مراكز العمل",
     "searchPlaceholder": "ابحث عن مراكز العمل...",
     "workCenterId": "رقم مركز العمل",
     "description": "الوصف",
