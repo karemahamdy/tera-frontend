@@ -1397,6 +1397,7 @@
   "OperationsMaster": {
     "operationsMaster": "Operations Master",
     "subtitle": "Manage production processes and operations",
+    "viewOperationsMaster": "View Operations",  
     "name": "Process Name",
     "code" : "Process Code",
     "LaborCost/Hr": "Labor Cost/Hr",

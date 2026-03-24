@@ -36,7 +36,7 @@ export const OperationsMasterRoutes = [
   },
    {
     path: "/operation-master/view/:id",
-    component: () => import("@/modules/Production/MasterData/operation-master/pages/OperationsMasterForm.vue"),
+    component: () => import("@/modules/Production/MasterData/operation-master/pages/OperationsMasterView.vue"),
     name: "OperationsMasterFormView",
   props: (route: any) => ({
       mode: "view",

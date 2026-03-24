@@ -1392,6 +1392,7 @@
   "OperationsMaster": {
     "operationsMaster": "إدارة العمليات",
     "subtitle": "إدارة عمليات وعمليات الإنتاج",
+    "viewOperationsMaster": "عرض العمليات",
     "name": "اسم العملية",
     "code": "كود العملية",
     "description": "وصف العملية",
