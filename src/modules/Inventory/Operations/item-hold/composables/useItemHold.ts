@@ -160,7 +160,9 @@ export function useItemHold() {
     orderDirection.value = direction;
     fetchItemHold(1);
   };
-
+  const fetchItemHoldLastPage = async () => {
+    await fetchItemHold(pageIndex.value);
+  }
   return {
     loading,
     apiItemHold,
@@ -180,5 +182,6 @@ export function useItemHold() {
     onFilterChange,
     onSort,
     releaseItem,
+    fetchItemHoldLastPage
   };
 }

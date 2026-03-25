@@ -24,7 +24,7 @@ export function useItemHoldSerial() {
     loading.value = true;
     try {
       await ItemHoldService.releaseSerial(data);
-      toastService.success(t("ItemHold.itemReleasedSuccessfully"));
+      toastService.success(t("itemHold.itemReleasedSuccessfully"));
       if (apiHoldingSerials.value.length === 1 && pageIndex.value > 1) {
         await fetchHoldingSerials(pageIndex.value - 1);
       } else {

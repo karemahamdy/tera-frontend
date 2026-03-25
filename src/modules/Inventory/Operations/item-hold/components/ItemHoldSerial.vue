@@ -2,6 +2,7 @@
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useItemHoldSerial } from "../composables/useItemHoldSerial";
+import { useItemHold } from "../composables/useItemHold";
 import alertIcon from "@/assets/images/alert.png";
 import type { ItemHoldTransaction } from "../types/ItemHold";
  
@@ -17,7 +18,7 @@ const confirmationTitle = computed(() => {
 
 
 const { apiHoldingSerials, loading, pageIndex, pageSize, totalCount, onSort, fetchHoldingSerials, setPage, releaseSerial } = useItemHoldSerial();
-
+const { fetchItemHoldLastPage } = useItemHold();
 const serialsColumns = computed(() => {
   const Columns = [
     { field: 'mainSerial', header: t('operation.serial') },
@@ -54,6 +55,7 @@ const handleReleaseConfirm = async () => {
         itemId: rowToRelease.value.itemId,
         mainSerial: rowToRelease.value.mainSerial
     })
+    await fetchItemHoldLastPage() 
 }
 
 const getSerailDialog = (itemTransaction: ItemHoldTransaction) => {
@@ -74,7 +76,7 @@ defineExpose({
         <div>
             <PageHeader 
               title="PhysicalCount.serialItemSelection" 
-              :subtitle="`${selectedItem?.itemName} (${selectedItem?.code})`" 
+              :subtitle="`${selectedItem?.itemName ?? ''} (${selectedItem?.code ?? ''})`" 
               :showSearch="false"                     
             />
             <DynamicTable :columns="serialsColumns" :data="apiHoldingSerials" :loading="loading"
