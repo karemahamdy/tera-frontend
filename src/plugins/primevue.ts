@@ -27,7 +27,7 @@ import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
-import { FileUpload, InputNumber } from "primevue";
+import { FileUpload, InputNumber, ProgressBar } from "primevue";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 import MultiSelect from "primevue/multiselect";
@@ -104,5 +104,6 @@ export function setupPrimeVue(app: App) {
   app.component("StepItem", StepItem);
   app.component("StepList", StepList);
   app.component("StepPanels", StepPanels);
+  app.component("ProgressBar", ProgressBar );
 
 }
