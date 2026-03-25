@@ -1397,7 +1397,8 @@
     "createWorkCenterInfoDesc": "Define and configure work center details",
     "editWorkCenterInfoDesc": "Refine and update the details of your work center",
     "createWorkCenterInfo": "Create Work Center",
-    "editWorkCenterInfo": "Edit Work Center"
+    "editWorkCenterInfo": "Edit Work Center",
+    "viewworkCenter": "View Work Center"
   },
   "OperationsMaster": {
     "operationsMaster": "Operations Master",

@@ -10,7 +10,7 @@ const handleEdit = () => {
 </script>
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-      <ScreenHeader title="production" subtitle="masterData" actionName="workCenter.workCenter" />
+      <ScreenHeader title="production" subtitle="masterData" actionName="workCenter.viewworkCenter" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <template #title>
                 <div class="flex justify-between items-start p-4 border-b border-gray-200">

@@ -41,7 +41,7 @@ const data = ref([
 const filtersOperation = computed(() => {
     return [
         {
-            placeholder: "machines.machines",
+            placeholder: "workCenter.workCenter",
             value: null,
             field: "status",
             options: [
