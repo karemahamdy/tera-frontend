@@ -84,7 +84,7 @@ const previousTab = () => {
 };
 
 const submit = async () => {
-  const payload = {
+  const payload: any = {
     inventoryRequestNumber: formData.documentNumber,
     requestedBy: formData.requestedBy,
     requestDate: formData.requestDate.toISOString(),
@@ -92,9 +92,6 @@ const submit = async () => {
     warehouseId: formData.warehouseId || null,
     zoneId: formData.zoneId || null,
     locationId: formData.locationId || null,
-    destinationWarehouseId: formData.destinationWarehouseId || null,
-    destinationZoneId: formData.destinationZoneId || null,
-    destinationLocationId: formData.destinationLocationId || null,
     reason: formData.reason,
     lineItems: formData.lineItems.map(item => ({
       itemId: item.itemId,
@@ -104,6 +101,12 @@ const submit = async () => {
       unitOfMeasureId: item.unitOfMeasureId || item.unitId
     }))
   };
+
+  if (formData.type === 'Transfer') {
+    payload.destinationWarehouseId = formData.destinationWarehouseId || null;
+    payload.destinationZoneId = formData.destinationZoneId || null;
+    payload.destinationLocationId = formData.destinationLocationId || null;
+  }
   
   try {
     if (mode.value === 'edit' && id.value) {
