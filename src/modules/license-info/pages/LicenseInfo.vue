@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import StatusCard from './components/StatusCard.vue';
+
 import { useLicenseInfo } from '../composables/useLicenseInfo';
 import { useI18n } from 'vue-i18n';
 import { formatDateTimeDetailedLang } from '../../../app/utils/dates';
+import StatusCard from '../components/StatusCard.vue';
 
 const { t } = useI18n();
 const {
