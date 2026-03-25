@@ -161,15 +161,15 @@ const addInventoryRequest = () => {
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
                     <template  v-slot:["col-type"]="{ data }">
-                        <div v-if="data.type === 'Transfer'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
+                        <div v-if="data.type === 'Transfer' || data.type === 'تحويل'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
                             <VsxIcon iconName="ArrowSwapHorizontal" type="linear" />
                             <span>{{ $t("inventoryRequest.transfer") }}</span>
                         </div>
-                        <div v-else-if="data.type === 'Inbound'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
+                        <div v-else-if="data.type === 'Inbound' || data.type === 'وارد'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
                             <VsxIcon iconName="ArrowDown" type="linear" />
                             <span>{{ $t("inventoryRequest.inbound") }}</span>
                         </div>
-                        <div v-else-if="data.type === 'Outbound'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
+                        <div v-else-if="data.type === 'Outbound' || data.type === 'صادر'" class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
                             <VsxIcon iconName="ArrowUp" type="linear" />
                             <span>{{ $t("inventoryRequest.outbound") }}</span>
                         </div>

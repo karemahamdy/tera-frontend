@@ -1392,7 +1392,8 @@
     "createWorkCenterInfoDesc": "تحديد وتهيئة تفاصيل مركز العمل",
     "editWorkCenterInfoDesc": "تنقيح وتحديث تفاصيل مركز العمل",
     "createWorkCenterInfo": "إنشاء مركز عمل",
-    "editWorkCenterInfo": "تعديل مركز العمل"
+    "editWorkCenterInfo": "تعديل مركز العمل",
+    "viewworkCenter": "عرض مركز العمل"
   },
   "OperationsMaster": {
     "operationsMaster": "إدارة العمليات",
