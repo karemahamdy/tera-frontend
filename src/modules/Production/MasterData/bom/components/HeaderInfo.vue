@@ -49,7 +49,7 @@ const data = {
                 <div :class="getStatusText(data.status)" class="flex items-center gap-2 w-fit">
                     <span :class="getStatusBadge(data.status)"></span>
                     <span class="capitalize">
-                        {{ data.status }}
+                        {{ data.status === 'active' ? $t('button.active') : $t('button.inactive') }}
                     </span>
                 </div>
             </div>

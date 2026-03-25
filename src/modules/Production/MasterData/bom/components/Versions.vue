@@ -41,14 +41,14 @@ const versions = ref([
                     <div :class="getStatusText(item.status)" class="flex items-center gap-2 w-fit">
                         <span :class="getStatusBadge(item.status)"></span>
                         <span class="capitalize">
-                            {{ item.status }}
+                            {{ item.status === 'active' ? $t('button.active') : $t('button.inactive') }}
                         </span>
                     </div>
                 </div>
 
                 <!-- Changed By -->
                 <span class="text-xl text-gray-700">
-                    Changed by: {{ item.user }}
+                    {{ $t('BOM.ChangedBy') }}: {{ item.user }}
                 </span>
 
                 <!-- Description -->

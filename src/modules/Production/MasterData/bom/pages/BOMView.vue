@@ -29,10 +29,10 @@ const handleEdit = () => {
             <div class="flex items-center gap-3 mb-3">
               <h1 class="text-2xl font-bold text-[#101828]">Sensor Kit</h1>
               <span :class="['px-8 py-0.5 rounded-lg  text-md font-medium', 'bg-[#D1FADF] text-[#027A48]']">
-                Active
+                {{ $t('button.active') }}
               </span>
               <span :class="['px-8 py-0.5 rounded-lg  text-md font-medium', 'bg-[#D6E0FF] text-[#638EFF]']">
-                Version
+                {{ $t('BOM.Version') }}
               </span>
             </div>
             <p class="text-[#667085]">Widget Type A (FG-WIDGET-A)</p>
