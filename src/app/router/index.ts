@@ -73,7 +73,7 @@ const routes = [
       ...BOMRoutes,
       {
         path: "",
-        component: () => import("@/sharedComponents/HelloWorld.vue"),
+        component: () => import("@/app/layouts/DefaultLayout.vue"),
         name: "Dashboard",
         meta: { permission: null },
       },
