@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 import { useLookups } from "@/composables/useLookups";
-import { reactive, onMounted, computed, ref } from "vue"
+import { reactive, onMounted, computed, ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import StorageLocationPicker from "@/modules/Inventory/shared/components/StorageLocationPicker.vue";
 
@@ -104,6 +104,16 @@ function handleDstLocation(location: any) {
   formData.destinationLocationCode = location.locationCode;
 }
 
+watch(() => formData.type, (newType) => {
+  if (newType !== 'Transfer') {
+    formData.destinationWarehouseId = '';
+    formData.destinationZoneId = '';
+    formData.destinationZoneName = '';
+    formData.destinationLocationId = null;
+    formData.destinationLocationCode = '';
+  }
+});
+
 onMounted(async () => {
   await Promise.all([
     getUsersLookups(),
@@ -157,7 +167,10 @@ const errors = reactive({
       <div class="grid grid-cols-9 justify-center items-start gap-2 mt-2">
 
         <!-- Source -->
-        <div class="col-span-4 bg-primary-50 rounded-xl p-5">
+        <div 
+          :class="formData.type === 'Transfer' ? 'col-span-4' : 'col-span-9'"
+          class="bg-primary-50 rounded-xl p-5"
+        >
           <p class="text-primary-500 mb-4"><strong>{{ $t("itemTransaction.sourceFrom") }}</strong></p>
 
           <FormDropdown
@@ -189,45 +202,48 @@ const errors = reactive({
           </div>
         </div>
 
-        <!-- Arrow -->
-        <div class="col-span-1 flex justify-center items-center h-full pt-8">
-          <div class="p-3 rounded-full bg-primary-500 text-white">
-            <VsxIcon iconName="ArrowRight" type="linear" />
-          </div>
-        </div>
-
-        <!-- Destination -->
-        <div class="col-span-4 bg-primary-50 rounded-xl p-5">
-          <p class="text-primary-500 mb-4"><strong>{{ $t("itemTransaction.targetTo") }}</strong></p>
-
-          <FormDropdown
-            :label="t('RequestInformation.TargetWarehouse')"
-            v-model="formData.destinationWarehouseId"
-            :options="WarehouseLookups"
-            :error="errors.TargetWarehouse"
-            :placeholder="t('RequestInformation.TargetWarehousePlaceholder')"
-            :disabled="disabled"
-            class="mb-4"
-            @update:modelValue="handleDstWarehouseChange"
-          />
-
-          <div v-if="getWhType(formData.destinationWarehouseId) === 'Professional'">
-            <label class="block text-primary-500 text-sm font-bold mb-1">{{ t('warehouseTransaction.Zone') }}</label>
-            <div v-if="isLoadingDst" class="py-2"><ProgressSpinner style="width:20px;height:20px" /></div>
-            <div v-else class="flex flex-col gap-1">
-              <BaseButton
-                :label="formData.destinationLocationCode || t('warehouseTransaction.selectZone')"
-                variant="outline-primary"
-                class="w-full text-left justify-start font-normal border-gray-300 bg-white"
-                :disabled="disabled"
-                @click="showDstPicker = true"
-              />
-              <span v-if="formData.destinationLocationCode" class="text-xs text-gray-400">
-                {{ formData.destinationZoneName }}
-              </span>
+        <!-- Arrow & Destination -->
+        <template v-if="formData.type === 'Transfer'">
+          <!-- Arrow -->
+          <div class="col-span-1 flex justify-center items-center h-full pt-8">
+            <div class="p-3 rounded-full bg-primary-500 text-white">
+              <VsxIcon iconName="ArrowRight" type="linear" />
             </div>
           </div>
-        </div>
+
+          <!-- Destination -->
+          <div class="col-span-4 bg-primary-50 rounded-xl p-5">
+            <p class="text-primary-500 mb-4"><strong>{{ $t("itemTransaction.targetTo") }}</strong></p>
+
+            <FormDropdown
+              :label="t('RequestInformation.TargetWarehouse')"
+              v-model="formData.destinationWarehouseId"
+              :options="WarehouseLookups"
+              :error="errors.TargetWarehouse"
+              :placeholder="t('RequestInformation.TargetWarehousePlaceholder')"
+              :disabled="disabled"
+              class="mb-4"
+              @update:modelValue="handleDstWarehouseChange"
+            />
+
+            <div v-if="getWhType(formData.destinationWarehouseId) === 'Professional'">
+              <label class="block text-primary-500 text-sm font-bold mb-1">{{ t('warehouseTransaction.Zone') }}</label>
+              <div v-if="isLoadingDst" class="py-2"><ProgressSpinner style="width:20px;height:20px" /></div>
+              <div v-else class="flex flex-col gap-1">
+                <BaseButton
+                  :label="formData.destinationLocationCode || t('warehouseTransaction.selectZone')"
+                  variant="outline-primary"
+                  class="w-full text-left justify-start font-normal border-gray-300 bg-white"
+                  :disabled="disabled"
+                  @click="showDstPicker = true"
+                />
+                <span v-if="formData.destinationLocationCode" class="text-xs text-gray-400">
+                  {{ formData.destinationZoneName }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
 
