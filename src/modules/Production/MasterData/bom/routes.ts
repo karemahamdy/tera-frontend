@@ -36,7 +36,7 @@ export const BOMRoutes = [
   },
    {
     path: "/bom/view/:id",
-    component: () => import("@/modules/Production/MasterData/bom/pages/BOMForm.vue"),
+    component: () => import("@/modules/Production/MasterData/bom/pages/BOMView.vue"),
     name: "BOMFormView",
   props: (route: any) => ({
       mode: "view",
