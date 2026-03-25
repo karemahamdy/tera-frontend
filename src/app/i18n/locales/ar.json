@@ -1407,6 +1407,7 @@
     "editOperationsMasterInfo": "تعديل عملية",
     "operationCodePlaceholder": "أدخل كود العملية",
     "operationNamePlaceholder": "أدخل اسم العملية",
+    "laborCost": "تكلفة العمالة لكل ساعة",
     "laborCostPlaceholder": "أدخل تكلفة العمالة لكل ساعة",
     "OperationsMasterDeletedSuccessfully": "تم حذف العملية بنجاح",
     "OperationsMasterCreatedSuccessfully": "تم إنشاء العملية بنجاح",
