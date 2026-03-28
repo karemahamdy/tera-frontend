@@ -9,11 +9,9 @@ import { useItemHold } from "../composables/useItemHold";
 const { createItemHold } = useItemHold();
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-// import { useLookups } from "@/composables/useLookups";
-// const {
-//     warehouseLookup,
-//     getWarehouseLookups
-// } = useLookups();
+import { useRoute } from "vue-router";
+const route = useRoute();
+
 
 import { useForm } from "vee-validate";
 import SerialSelectionDialog from "@/modules/Inventory/shared/components/SerialSelectionDialog.vue";
@@ -90,6 +88,13 @@ onMounted(async () => {
     ]);
     WarehouseOptions.value = WarehouseHierarchyLookups.value.map(wh => ({ label: wh.warehouseName, value: wh.warehouseId }));
 
+    if (route.query.itemId) {
+        itemId.value = route.query.itemId as string;
+        const selectedItem = itemsLookups.value.find(item => item.id === itemId.value);
+        if (selectedItem) {
+            handleSelectItem(selectedItem)
+        }
+    }
 });
 
 const handleSelectItem = (item: SelectedItem) => {

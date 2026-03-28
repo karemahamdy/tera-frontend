@@ -137,6 +137,12 @@ const handleActionMenu = async (payload: any) => {
         if (loading.value) return;
         await toggleActive(data.id, !data.isActive);
     }
+    if (action === 'hold') {
+        router.push({
+            name: "ItemHoldCreate",
+            query: { itemId: data.id },
+        });
+    }
 };
 
 const handleDeleteConfirm = async () => {
