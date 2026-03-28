@@ -56,7 +56,7 @@ export function useItemTransactions() {
     try {
       await ItemTransactionsService.create(payload);
       toastService.success(
-        t("ItemTransactions.ItemTransactionsCreatedSuccessfully"),
+        t("operation.itemTransactionsCreatedSuccessfully"),
       );
       router.replace({ name: "ItemTransactions" });
     } catch (err: any) {
