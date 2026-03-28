@@ -974,7 +974,8 @@
     "date": "Date",
     "serial": "Serial",
     "action": "Action",
-    "release": "Release"
+    "release": "Release",
+    "itemTransactionsCreatedSuccessfully": "Item Transactions Created Successfully"
   },
   "PhysicalCount": {
     "PhysicalCount": "Physical Count",

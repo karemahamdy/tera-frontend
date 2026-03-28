@@ -973,7 +973,8 @@
     "date": "التاريخ",
     "serial": "الرقم التسلسلي",
     "action": "الإجراء",
-    "release": "تحرير"
+    "release": "تحرير",
+    "itemTransactionsCreatedSuccessfully": "تم إنشاء العمليات بنجاح"
   },
   "PhysicalCount": {
     "PhysicalCount": "الجرد الفعلي",
