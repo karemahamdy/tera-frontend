@@ -91,6 +91,8 @@ const openItemDialog = async () => {
 };
 
 const handleSelectItem = (selectedItem: any) => {
+  console.log(selectedItem);
+  
   showItemDialog.value = false;
   const originalItem = itemsLookups.value.find(i => i.id === selectedItem.id);
   const units = originalItem?.units || selectedItem.units || [];
@@ -123,7 +125,7 @@ const handleSelectItem = (selectedItem: any) => {
     tax: tax,
     total: calcTotal(qty, price, tax),
     serials: [],
-    tracked: true  
+    tracked: selectedItem.trackingType === "Serial"  
   };
   items.value.push(newItem);
   emitUpdate();
@@ -246,7 +248,7 @@ const handleWarehouseChange = async (item: any) => {
         :showDelete="false">
         <template #col-code="{ data }">
           <div class="flex items-center gap-2 rounded">
-            <Badge v-if="!data.tracked" severity="success" class="circle-badge-sm">
+            <Badge v-if="data.tracked" severity="success" class="circle-badge-sm">
               <VsxIcon iconName="Brodcast" :size="20" type="linear" />
             </Badge>
             <Badge v-else severity="transparent" class="circle-badge">
