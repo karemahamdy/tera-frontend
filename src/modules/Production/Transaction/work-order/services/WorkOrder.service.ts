@@ -1,37 +1,37 @@
 import axiosWrapper from "@/app/http/axiosWrapper";
-import type { Pagination, OperationsMasterResponse } from "../types/OperationsMaster";
+import type { Pagination, workOrderResponse } from "../types/WorkOrder";
 
 
-export const OperationsMasterService = {
+export const workOrderService = {
   async getAll(params: Pagination) {
 
-    const resp = await axiosWrapper.get<OperationsMasterResponse>(
-      `/Operations`, { params }
+    const resp = await axiosWrapper.get<workOrderResponse>(
+      `/LedgerDetailCard`, { params }
     );
     return resp.data;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/Operations/${id}`);
+    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/Operations`, payload);
+    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/Operations/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/Operations/${id}`);
+    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/Operations/Status/${id}`,
+      `/LedgerDetailCard/Status/${id}`,
       null,
       {
         params: { isActive }
@@ -42,7 +42,7 @@ export const OperationsMasterService = {
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/Operations/export-workCenters`,
+      `/LedgerDetailCard/export-workOrders`,
       {
         params: payload,
         responseType: "blob",
