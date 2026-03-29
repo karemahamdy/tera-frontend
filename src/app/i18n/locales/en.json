@@ -1556,6 +1556,7 @@
     "notesPlaceholder": "Add any relevant notes about the downtime event...",
     "datePlaceholder": "Select Date",
     "time": "Time",
-    "timePlaceholder": "Select Time"
+    "timePlaceholder": "Select Time",
+    "viewDowntime"  : "View Downtime"
    }
 }

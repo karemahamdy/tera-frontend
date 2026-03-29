@@ -100,13 +100,13 @@ const handleActionMenu = async (payload: any) => {
     const data = payload.data || payload.row || payload;
     if (action === 'edit') {
         router.push({
-            name: "downtimeFormEdit",
+            name: "DowntimeFormEdit",
             params: { id: data.id },
         });
     }
     if (action === 'view') {
         router.push({
-            name: "downtimeFormView",
+            name: "DowntimeFormView",
             params: { id: data.id },
         });
     }
@@ -137,7 +137,7 @@ const adddowntime = () => {
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="production" subtitle="transaction" actionName="downtime.downtime" />
+        <ScreenHeader title="production" subtitle="operation.transactions" actionName="downtime.downtime" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>

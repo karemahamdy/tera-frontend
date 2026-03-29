@@ -1550,6 +1550,7 @@
   "notesPlaceholder": "أضف أي ملاحظات ذات صلة بحدث التوقف...",
   "datePlaceholder": "اختر التاريخ",
   "time": "الوقت",
-  "timePlaceholder": "اختر الوقت"
+  "timePlaceholder": "اختر الوقت",
+  "viewDowntime": "عرض التوقف"
 }
 }
