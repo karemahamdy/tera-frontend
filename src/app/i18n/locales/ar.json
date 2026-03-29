@@ -1521,5 +1521,37 @@
     "editBOMInfoDesc": "قم بإعداد تفاصيل قائمة المواد والمكونات والتكاليف لتخطيط الإنتاج",
     "createBOMInfo": "إضافة قائمة مواد جديدة",
     "editBOMInfo": "تعديل قائمة المواد"
-  }
+  },
+"downtime": {
+  "downtime": "التوقف",
+  "Downtime": "توقفات الإنتاج",
+  "subtitle": "تتبع توقفات الماكينات وانقطاعات الإنتاج",
+  "addNew": "تسجيل توقف",
+  "searchPlaceholder": "ابحث عن التوقفات...",
+  "machine": "الماكينة",
+  "WorkOrder": "أمر الشغل",
+  "WorkOrderOptional": "أمر الشغل (اختياري)",
+  "DowntimeType": "نوع التوقف",
+  "type": "النوع",
+  "duration": "المدة (ساعة)",
+  "date": "التاريخ",
+  "deleteConfirm": "هل أنت متأكد أنك تريد حذف حدث التوقف هذا؟",
+  "DowntimeDeletedSuccessfully": "تم حذف حدث التوقف بنجاح",
+  "DowntimeCreatedSuccessfully": "تم تسجيل حدث التوقف بنجاح",
+  "DowntimeUpdatedSuccessfully": "تم تحديث حدث التوقف بنجاح",
+  "createDowntimeInfoDesc": "سجل حدث توقف جديد للماكينة المحددة",
+  "editDowntimeInfoDesc": "قم بتحديث تفاصيل حدث التوقف المسجل",
+  "createDowntimeInfo": "تسجيل توقف",
+  "editDowntimeInfo": "تعديل التوقف",
+  "MachinePlaceholder": "اختر الماكينة",
+  "WorkOrderPlaceholder": "اختر أمر الشغل",
+  "DowntimeTypePlaceholder": "اختر نوع التوقف",
+  "durationPlaceholder": "أدخل المدة بالساعات",
+  "notes": "ملاحظات",
+  "notesPlaceholder": "أضف أي ملاحظات ذات صلة بحدث التوقف...",
+  "datePlaceholder": "اختر التاريخ",
+  "time": "الوقت",
+  "timePlaceholder": "اختر الوقت",
+  "viewDowntime": "عرض التوقف"
+}
 }
