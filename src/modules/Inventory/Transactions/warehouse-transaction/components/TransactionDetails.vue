@@ -177,6 +177,30 @@ async function handleDstWarehouseChange(val: string) {
   }
 }
 
+watch(
+  [
+    () => modelValue.value.warehouse, 
+    () => modelValue.value.destination?.warehouse, 
+    () => modelValue.value.direction,
+    () => modelValue.value.zone,
+    () => modelValue.value.destination?.zone
+  ],
+  ([srcWh, dstWh, type, srcZn, dstZn]) => {
+    if (type === 'Transfer' && srcWh && dstWh && srcWh === dstWh) {
+      if (srcZn && dstZn && srcZn !== dstZn) {
+        if (errors.destinationWarehouse === t('validation.sameSourceAndDestination')) errors.destinationWarehouse = '';
+        if (errors.warehouse === t('validation.sameSourceAndDestination')) errors.warehouse = '';
+      } else {
+        errors.destinationWarehouse = t('validation.sameSourceAndDestination');
+        errors.warehouse = t('validation.sameSourceAndDestination');
+      }
+    } else {
+      if (errors.destinationWarehouse === t('validation.sameSourceAndDestination')) errors.destinationWarehouse = '';
+      if (errors.warehouse === t('validation.sameSourceAndDestination')) errors.warehouse = '';
+    }
+  }
+);
+
 function handleSrcLocation(location: any) {
   modelValue.value.zone = location.zoneId;
   modelValue.value.zoneName = location.zoneName;
@@ -223,6 +247,8 @@ async function validate(): Promise<boolean> {
         warehouseId: modelValue.value.warehouse,
         destinationWarehouseId: modelValue.value.destination?.warehouse || null,
         direction: modelValue.value.direction,
+        zoneId: modelValue.value.zone,
+        destinationZoneId: modelValue.value.destination?.zone,
       },
       { abortEarly: false }
     );
@@ -230,8 +256,8 @@ async function validate(): Promise<boolean> {
   } catch (err: any) {
     if (err.inner) {
       err.inner.forEach((e: any) => {
-        if (e.path === 'warehouseId') errors.warehouse = t('validation.required');
-        if (e.path === 'destinationWarehouseId') errors.destinationWarehouse = t('validation.required');
+        if (e.path === 'warehouseId') errors.warehouse = t(e.message);
+        if (e.path === 'destinationWarehouseId') errors.destinationWarehouse = t(e.message);
       });
     }
     return false;
