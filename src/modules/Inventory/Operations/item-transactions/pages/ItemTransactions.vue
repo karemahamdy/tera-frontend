@@ -42,7 +42,7 @@ const columns = computed(() => {
     const Columns = [
         { field: 'sourceItemCode', header: t('operation.sourceItem'), sortable: true },
         { field: 'targetItemCode', header: t('operation.targetItem'), sortable: true },
-        { field: 'warehouseCode', header: t('operation.warehouse'), sortable: true },
+        // { field: 'warehouseCode', header: t('operation.warehouse'), sortable: true },
         { field: 'transactionsCount', header: t('operation.transactions'), sortable: true },
         { field: 'operationType', header: t('operation.type'), type: 'slot', sortable: true },
         { field: 'transactionDate', header: t('operation.transferDate'), type: 'date', sortable: true },

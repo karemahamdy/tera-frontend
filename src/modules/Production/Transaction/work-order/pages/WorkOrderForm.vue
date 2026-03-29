@@ -1,123 +1,68 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useForm } from "vee-validate";
-import { LDCSchema } from "../validation/WorkOrderSchema";
-import router from "@/app/router";
-import { useworkOrder } from "../composables/useWorkOrder";
+import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
+import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+import WODetails from '../components/WODetails.vue';
 
-const props = defineProps<{
-  mode: "edit" | "create" | "view";
-  id?: string;
-}>();
+const { t } = useI18n();
+const route = useRoute();
+// const router = useRouter();
+const mode = computed(() => {
+  if (route.name === 'SalesWaybillView') return 'view';
+  if (route.name === 'SalesWaybillEdit') return 'edit';
+  return 'create';
+});
+const activeStep = ref(0);
 
-const editMode = props.mode === "edit";
-const viewMode = props.mode === "view";
-const isSubmitting = ref(false);
-const { createworkOrder, updateworkOrder } = useworkOrder();
-
-type LDCFormValues = {
-  code: string;
-  department: string;
-  name: string;
-  notes: string | null;
-  isActive: boolean;
+const nextTab = () => {
+  if (activeStep.value < steps.length - 1) activeStep.value++;
 };
 
-const initialValues: LDCFormValues = {
-  code: "",
-  department: "",
-  name: "",
-  notes: null,
-  isActive: true,
+const previousTab = () => {
+  if (activeStep.value > 0) activeStep.value--;
 };
-
-const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
-  validationSchema: LDCSchema,
-  initialValues,
-});
-
-const [code] = defineField("code");
-const [name] = defineField("name");
-const [notes] = defineField("notes");
-const [department] = defineField("department");
-const [isActive] = defineField("isActive");
-
-const onSubmit = handleSubmit(async (values) => {
-  isSubmitting.value = true;
-  if (viewMode) return;
-
-  try {
-    if (editMode && props.id) {
-      await updateworkOrder(props.id, values);
-    } else {
-      await createworkOrder(values);
-    }
-    router.push({
-      name: "workOrder",
-
-    });
-  } catch (error) {
-    console.error("Error submitting form:", error);
-  } finally {
-    isSubmitting.value = false;
-  }
-});
+const steps = [
+  { label: t("steps.woNumber") },
+  { label: t("steps.Materials") },
+  { label: t("steps.Operations") },
+];
 </script>
 
-
 <template>
-  <div>
-  <ScreenHeader title="production" subtitle="masterData" :actionName="editMode ? $t('workCenter.editWorkCenterInfo') : $t('workCenter.createWorkCenterInfo')"  />
+  <div class="p-6 w-full h-full bg-gray-100">
+    <!-- <div class="flex items-center justify-between mb-6"> -->
+     <ScreenHeader title="production" subtitle="masterData"
+      :actionName="mode === 'edit' ? $t('workOrder.editWorkCenterInfo') : $t('workOrder.createWorkCenterInfo')" />
+    <!-- </div> -->
 
-    <card class="p-6 bg-[#ffffff] rounded-[10px]">
-      <template #title>
-        <div class="flex flex-col px-20">
-          <h2 class="heading-title">
-            {{ editMode ? $t("workCenter.editWorkCenterInfo") : $t("workCenter.createWorkCenterInfo") }}
-          </h2>
-          <p class="subheading-title">
-            {{ editMode ? $t("workCenter.editWorkCenterInfoDesc") : $t("workCenter.createWorkCenterInfoDesc") }}
-          </p>
-        </div>
-      </template>
+    <BaseStepper 
+      v-model="activeStep" 
+      :steps="steps" 
+    >
+      <Card class="mt-6 rounded-2xl shadow-sm">
+        <template #content>
+            <div v-show="activeStep === 0">
+            <WODetails :mode="mode" />
+            </div>
+            <div v-show="activeStep === 1">
+            </div>
+            <div v-show="activeStep === 2">  
+            </div>
 
-      <template #content>
-        <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
-
-          <div class="grid grid-cols-2 gap-4">  
-            <FormInput :label="$t('workCenter.workCentercode')" v-model="code" :placeholder="$t('workCenter.codePlaceholder')"
-              :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
-               <FormInput :label="$t('workCenter.workCentername')" v-model="name" :placeholder="$t('workCenter.namePlaceholder')"
-              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
-              :error="errors.department" :invalid="!!errors.department" :disabled="viewMode" />
-           <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
-          </div>
-
-          <div>
-            <label class="text-gray-700 font-medium mb-2 block">
-              {{ $t("workCenter.notes") }}
-            </label>
-            <Textarea v-model="notes" :placeholder="$t('workCenter.notesPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.notes }"
-              :disabled="isSubmitting" />
-            <small v-if="errors.notes" class="text-danger-500">
-              {{ $t(errors.notes) }}
-            </small>
-          </div>
-
-          <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'WorkCenters' }" :disabled="isSubmitting" />
-            <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'"
-              variant="primary" block :disabled="isSubmitting" :loading="isSubmitting" />
-          </div>
-        </form>
-      </template>
-    </card>
+        </template>
+      </Card>
+      
+      <StepperActions 
+        v-if="mode !== 'view'"
+        :current="activeStep" 
+        :total="steps.length"    
+        :finishText="mode === 'edit' ? t('button.update') : t('button.create')"
+        @next="nextTab" 
+        @previous="previousTab" 
+        
+      />
+    </BaseStepper>
   </div>
 </template>
-
-<style scoped></style>
