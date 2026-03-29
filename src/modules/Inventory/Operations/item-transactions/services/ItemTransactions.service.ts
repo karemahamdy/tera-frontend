@@ -30,4 +30,14 @@ export const ItemTransactionsService = {
     );
     return data.data;
   },
+
+  async validateItems(params: { sourceItem : string; targetItem: string }) {
+    const data = await axiosWrapper.get<{ data: ItemInfo }>(
+      `/MergeOrTransferTransactions/validate-items/`,
+      {
+        params,
+      },
+    );
+    return data.data;
+  },
 };
