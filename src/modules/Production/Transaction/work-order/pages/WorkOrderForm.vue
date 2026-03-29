@@ -5,6 +5,8 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import WODetails from '../components/WODetails.vue';
+import Materials from '../components/Materials.vue';
+import Operations from '../components/Operations.vue';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -32,25 +34,21 @@ const steps = [
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-    <!-- <div class="flex items-center justify-between mb-6"> -->
-     <ScreenHeader title="production" subtitle="masterData"
-      :actionName="mode === 'edit' ? $t('workOrder.editWorkCenterInfo') : $t('workOrder.createWorkCenterInfo')" />
-    <!-- </div> -->
+     <ScreenHeader title="production" subtitle="operation.transactions"
+      :actionName="mode === 'edit' ? $t('workOrder.workOrdereditInfo') : $t('workOrder.workOrdercreateInfo')" />
 
-    <BaseStepper 
-      v-model="activeStep" 
-      :steps="steps" 
-    >
+    <BaseStepper v-model="activeStep" :steps="steps" >
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
             <div v-show="activeStep === 0">
             <WODetails :mode="mode" />
             </div>
             <div v-show="activeStep === 1">
+              <Materials :mode="mode" />
             </div>
-            <div v-show="activeStep === 2">  
+            <div v-show="activeStep === 2">
+              <Operations :mode="mode" />  
             </div>
-
         </template>
       </Card>
       
