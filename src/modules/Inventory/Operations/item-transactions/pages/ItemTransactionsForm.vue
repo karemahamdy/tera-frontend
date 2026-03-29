@@ -75,7 +75,7 @@ const loadSourceTargetItemDetails = async () => {
 const transactionTypes = computed(() => {
   return [
     { label: t("operation.merge"), value: "ItemMerge" },
-    { label: t("operation.transfer"), value: "ItemTransfer" },
+    { label: t("operation.transfer"), value: "TransferTransactions" },
   ];
 });
 

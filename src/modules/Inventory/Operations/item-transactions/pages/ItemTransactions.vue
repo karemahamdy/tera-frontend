@@ -30,7 +30,7 @@ const filtersOperation = computed(() => {
             field: "typeFilter",
             options: [
                 { label: t("operation.allTypes"), value: null },
-                { label: t("operation.transfer"), value: "ItemTransfer" },
+                { label: t("operation.transfer"), value: "TransferTransactions" },
                 { label: t("operation.merge"), value: "ItemMerge" },
             ],
         }

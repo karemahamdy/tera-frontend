@@ -1166,7 +1166,8 @@
     "locations": "• المواقع: ",
     "transactions": "• المعاملات: ",
     "sourceFrom": "من",
-    "targetTo": "إلى"
+    "targetTo": "إلى",
+    "sourceTargetDifferent": "يجب أن يكون الصنف المصدر والمستهدف مختلفين"
   },
   "payment": {
     "paymentFinanceInfo": "معلومات الدفع والمالية",
