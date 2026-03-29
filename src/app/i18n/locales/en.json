@@ -1526,5 +1526,26 @@
     "editBOMInfoDesc": "Configure BOM details, components, and costs for production planning",
     "createBOMInfo": "Add New BOM",
     "editBOMInfo": "Edit BOM"
-  }
+  },
+  "downtime": {
+    "downtime": "Downtime",
+    "Downtime": "Production Downtimes",
+    "subtitle": "Track machine downtimes and production interruptions",
+    "addNew": "Record Downtime",
+    "searchPlaceholder": "Search Downtimes...",
+    "machine": "Machine",
+    "WorkOrder": "Work Order",
+    "DowntimeType": "Downtime Type",
+    "type": "Type",
+    "duration": "Duration (HR)",
+    "date": "Date",
+    "deleteConfirm": "Are you sure you want to delete this downtime event?",
+    "DowntimeDeletedSuccessfully": "Downtime Event Deleted Successfully",
+    "DowntimeCreatedSuccessfully": "Downtime Event Created Successfully",
+    "DowntimeUpdatedSuccessfully": "Downtime Event Updated Successfully",
+    "createDowntimeInfoDesc": "Log downtime events with machine, timing, and reason details for analysis and improvement",
+    "editDowntimeInfoDesc": "Update downtime event details to maintain accurate records for analysis and improvement",
+    "createDowntimeInfo": "Add New Downtime Event",
+    "editDowntimeInfo": "Edit Downtime Event"
+   }
 }

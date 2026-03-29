@@ -1520,5 +1520,26 @@
     "editBOMInfoDesc": "قم بإعداد تفاصيل قائمة المواد والمكونات والتكاليف لتخطيط الإنتاج",
     "createBOMInfo": "إضافة قائمة مواد جديدة",
     "editBOMInfo": "تعديل قائمة المواد"
-  }
+  },
+  "downtime": {
+  "downtime": "التوقف",
+  "Downtime": "توقفات الإنتاج",
+  "subtitle": "تتبع توقفات الماكينات وانقطاعات الإنتاج",
+  "addNew": "تسجيل توقف",
+  "searchPlaceholder": "ابحث عن التوقفات...",
+  "machine": "الماكينة",
+  "WorkOrder": "أمر الشغل",
+  "DowntimeType": "نوع التوقف",
+  "type": "النوع",
+  "duration": "المدة (ساعة)",
+  "date": "التاريخ",
+  "deleteConfirm": "هل أنت متأكد أنك تريد حذف حدث التوقف هذا؟",
+  "DowntimeDeletedSuccessfully": "تم حذف حدث التوقف بنجاح",
+  "DowntimeCreatedSuccessfully": "تم إنشاء حدث التوقف بنجاح",
+  "DowntimeUpdatedSuccessfully": "تم تحديث حدث التوقف بنجاح",
+  "createDowntimeInfoDesc": "سجل أحداث التوقف مع تفاصيل الماكينة والتوقيت والسبب للتحليل والتحسين",
+  "editDowntimeInfoDesc": "قم بتحديث تفاصيل حدث التوقف للحفاظ على سجلات دقيقة للتحليل والتحسين",
+  "createDowntimeInfo": "إضافة حدث توقف جديد",
+  "editDowntimeInfo": "تعديل حدث التوقف"
+}
 }

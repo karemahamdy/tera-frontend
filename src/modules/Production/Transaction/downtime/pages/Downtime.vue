@@ -42,8 +42,8 @@ const data = ref([
 // });
 const filtersOperation = computed(() => {
     return [
-          {
-            placeholder: "downtime.name",
+           {
+            placeholder: "downtime.machine",
             value: null,
             field: "status",
             options: [
@@ -53,7 +53,17 @@ const filtersOperation = computed(() => {
             ],
         },
         {
-            placeholder: "activeSessions.allStatus",
+            placeholder: "downtime.WorkOrder",
+            value: null,
+            field: "status",
+            options: [
+                  { label: t("usersManagement.allStatus"), value: null },
+                { label: t("button.active"), value: "IsActive" },
+                { label: t("button.inactive"), value: "InActive" },
+            ],
+        },
+        {
+            placeholder: "downtime.type",
             value: null,
             field: "status",
             options: [
@@ -67,11 +77,11 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'code', header: t('downtime.code'), sortable: true },
-        { field: 'name', header: t('downtime.name'), type: 'slot', sortable: true },
-        { field: 'department', header: t('downtime.LaborCost/Hr'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('downtime.Overhead'), sortable: true },
-        { field: 'isActive', header: t('status'), type: 'status', sortable: true },
+        { field: 'code', header: t('downtime.date'), sortable: true },
+        { field: 'name', header: t('downtime.machine'), type: 'slot', sortable: true },
+        { field: 'department', header: t('downtime.WorkOrder'), type: 'slot', sortable: true },
+        { field: 'machines', header: t('downtime.DowntimeType'), sortable: true },
+        { field: 'machines', header: t('downtime.duration'), sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -138,7 +148,7 @@ const adddowntime = () => {
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
-                <PageHeader title="downtime.operationsMaster" subtitle="downtime.subtitle" :showExport="false"
+                <PageHeader title="downtime.Downtime" subtitle="downtime.subtitle" :showExport="false"
                     :showImport="false" :mainBtn="true" mainBtnText="downtime.addNew" :showFilter="true"
                :filters="filtersOperation" @filter-change="onFilterChange"
                     searchPlaceholder="downtime.searchPlaceholder" @search="onSearch" :onMainBtnClick="adddowntime" 
@@ -148,11 +158,7 @@ const adddowntime = () => {
             <template #content>
                 <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
-               <template  v-slot:["col-code"]="{ data }">
-                        <span class="text-primary-500 cursor-pointer underline">{{ data.code }}</span>
-                    </template>
-                    </DynamicTable>
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy />
             </template>
         </card>
 
