@@ -1535,6 +1535,7 @@
     "searchPlaceholder": "Search Downtimes...",
     "machine": "Machine",
     "WorkOrder": "Work Order",
+    "WorkOrderOptional": "Work Order (Optional)",
     "DowntimeType": "Downtime Type",
     "type": "Type",
     "duration": "Duration (HR)",
@@ -1543,9 +1544,18 @@
     "DowntimeDeletedSuccessfully": "Downtime Event Deleted Successfully",
     "DowntimeCreatedSuccessfully": "Downtime Event Created Successfully",
     "DowntimeUpdatedSuccessfully": "Downtime Event Updated Successfully",
-    "createDowntimeInfoDesc": "Log downtime events with machine, timing, and reason details for analysis and improvement",
-    "editDowntimeInfoDesc": "Update downtime event details to maintain accurate records for analysis and improvement",
-    "createDowntimeInfo": "Add New Downtime Event",
-    "editDowntimeInfo": "Edit Downtime Event"
+    "createDowntimeInfoDesc": "Log a new downtime event for the selected machine",
+    "editDowntimeInfoDesc": "Update the recorded downtime details",
+    "createDowntimeInfo": "Record Downtime",
+    "editDowntimeInfo": "Edit Downtime",
+    "MachinePlaceholder": "Select Machine",
+    "WorkOrderPlaceholder": "Select Work Order",
+    "DowntimeTypePlaceholder": "Select Downtime Type",
+    "durationPlaceholder": "Enter Duration in Hours",
+    "notes": "Notes",
+    "notesPlaceholder": "Add any relevant notes about the downtime event...",
+    "datePlaceholder": "Select Date",
+    "time": "Time",
+    "timePlaceholder": "Select Time"
    }
 }

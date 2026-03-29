@@ -15,13 +15,6 @@ const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
-    {
-        action: "toggleActive",
-        changeStatus: true,
-        label: t("button.active"),
-        type: "switch",
-        key: "isActive",
-    },
      {
       slot: true,
       label: t("button.view"),
@@ -137,7 +130,7 @@ const handleDeleteConfirm = async () => {
 };
 
 const adddowntime = () => {
-    router.push({name: 'downtimeCreate' });
+    router.push({name: 'DowntimeCreate' });
 };
 
 </script>
