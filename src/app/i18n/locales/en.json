@@ -1368,7 +1368,8 @@
     "payment": "Payment"
   },
   "validation": {
-    "required": "This field is required"
+    "required": "This field is required",
+    "sameSourceAndDestination": "Source and destination cannot be the same"
   },
   "workCenter" : {
     "workCenter": "Work Centers",

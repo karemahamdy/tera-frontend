@@ -114,6 +114,27 @@ watch(() => formData.type, (newType) => {
   }
 });
 
+watch([
+  () => formData.warehouseId, 
+  () => formData.destinationWarehouseId, 
+  () => formData.type,
+  () => formData.zoneId,
+  () => formData.destinationZoneId
+], ([srcWh, dstWh, type, srcZn, dstZn]) => {
+  if (type === 'Transfer' && srcWh && dstWh && srcWh === dstWh) {
+    if (srcZn && dstZn && srcZn !== dstZn) {
+      if (errors.TargetWarehouse === t('validation.sameSourceAndDestination')) errors.TargetWarehouse = '';
+      if (errors.SourceWarehouse === t('validation.sameSourceAndDestination')) errors.SourceWarehouse = '';
+    } else {
+      errors.TargetWarehouse = t('validation.sameSourceAndDestination');
+      errors.SourceWarehouse = t('validation.sameSourceAndDestination');
+    }
+  } else {
+    if (errors.TargetWarehouse === t('validation.sameSourceAndDestination')) errors.TargetWarehouse = '';
+    if (errors.SourceWarehouse === t('validation.sameSourceAndDestination')) errors.SourceWarehouse = '';
+  }
+});
+
 onMounted(async () => {
   await Promise.all([
     getUsersLookups(),
