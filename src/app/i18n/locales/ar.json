@@ -1553,5 +1553,26 @@
   "time": "الوقت",
   "timePlaceholder": "اختر الوقت",
   "viewDowntime": "عرض التوقف"
+},
+"workOrder": {
+    "workOrder": "أوامر العمل",
+    "subtitle": "إدارة أوامر الإنتاج وتتبع التقدم",
+    "addNew": "إنشاء أمر عمل",
+    "searchPlaceholder": "البحث برقم أمر العمل، اسم المنتج، أو الكود...",
+    "workOrderId": "رقم أمر العمل",
+    "name": "الاسم",
+    "viewWorkOrder": "عرض أوامر العمل",
+    "namePlaceholder": "أدخل اسم أمر العمل",
+    "codePlaceholder": "أدخل كود أمر العمل",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل الوصف",
+    "Plannedstart": "تاريخ البدء المخطط",
+    "PlannedstartPlaceholder": "اختر تاريخ البدء المخطط",
+    "WarehouseOut": "الخروج من المخزن",
+    "WarehouseIn": "الدخول للمخزن",
+    "quantity": "الكمية",
+    "item": "الصنف",
+    "itemPlaceholder": "اختر الصنف",
+    "woNumber": "رقم أمر العمل"
 }
 }

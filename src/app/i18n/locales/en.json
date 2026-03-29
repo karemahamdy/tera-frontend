@@ -1019,7 +1019,7 @@
     "code": "Code",
     "countDate": "Count Date",
     "physicalCountLines": "Line Items",
-    "notes":"Notes"
+    "notes": "Notes"
   },
   "InventoryAdjustment": {
     "InventoryAdjustment": "Adjustment",
@@ -1372,7 +1372,7 @@
     "required": "This field is required",
     "sameSourceAndDestination": "Source and destination cannot be the same"
   },
-  "workCenter" : {
+  "workCenter": {
     "workCenter": "Work Centers",
     "subtitle": "Manage production work centers and departments",
     "addNew": "Create Work Order",
@@ -1384,11 +1384,11 @@
     "codePlaceholder": "Enter Work Center Code",
     "description": "Description",
     "descriptionPlaceholder": "Enter Description",
-  "department": "Department",
-  "notes": "Notes",
-  "notesPlaceholder": "Add Your Notes...",
-  "workCentercode": "Work Center Code",
-  "workCentername": "Work Center Name",
+    "department": "Department",
+    "notes": "Notes",
+    "notesPlaceholder": "Add Your Notes...",
+    "workCentercode": "Work Center Code",
+    "workCentername": "Work Center Name",
     "departmentPlaceholder": "Select Department",
     "code": "Code",
     "machines": "Machines",
@@ -1406,9 +1406,9 @@
   "OperationsMaster": {
     "operationsMaster": "Operations Master",
     "subtitle": "Manage production processes and operations",
-    "viewOperationsMaster": "View Operations",  
+    "viewOperationsMaster": "View Operations",
     "name": "Process Name",
-    "code" : "Process Code",
+    "code": "Process Code",
     "LaborCost/Hr": "Labor Cost/Hr",
     "Overhead": "Overhead %",
     "addNew": "Create Operation",
@@ -1471,13 +1471,13 @@
     "OverheadPlaceholder": "Enter Overhead Percentage",
     "SetupCostPerHourPlaceholder": "Enter Setup Cost Per Hour",
     "SetupTimePlaceholder": "Enter Setup times (HR)",
-     "CostPerHourPlaceholder": "Enter Cost Per Hour",
-     "MachineCodePlaceholder": "Enter Machine Code",
-     "MachineNamePlaceholder": "Enter Machine Name",
-     "notesPlaceholder": "Add Your Notes...",
-     "notes": "Notes"
-},
- "BOM": {
+    "CostPerHourPlaceholder": "Enter Cost Per Hour",
+    "MachineCodePlaceholder": "Enter Machine Code",
+    "MachineNamePlaceholder": "Enter Machine Name",
+    "notesPlaceholder": "Add Your Notes...",
+    "notes": "Notes"
+  },
+  "BOM": {
     "Code": "BOM Code",
     "Name": "BOM Name",
     "FinalProduct": "Final Product",
@@ -1511,7 +1511,7 @@
     "Operation": "Operation",
     "TotalCost": "Total Cost",
     "CreatedOn": "Created On",
-      "BOM": "Bill of Materials",
+    "BOM": "Bill of Materials",
     "subtitle": "Manage product BOMs and component structures",
     "addNew": "Create BOM",
     "searchPlaceholder": "Search by BOM code, product name, or product code...",
@@ -1519,7 +1519,7 @@
     "BOMNamePlaceholder": "Enter BOM Name",
     "ProductPlaceholder": "Select Product",
     "VersionPlaceholder": "Enter Version",
-      "deleteConfirm": "Are you sure you want to delete this BOM?",
+    "deleteConfirm": "Are you sure you want to delete this BOM?",
     "BOMDeletedSuccessfully": "BOM Deleted Successfully",
     "BOMCreatedSuccessfully": "BOM Created Successfully",
     "BOMUpdatedSuccessfully": "BOM Updated Successfully",
@@ -1558,6 +1558,27 @@
     "datePlaceholder": "Select Date",
     "time": "Time",
     "timePlaceholder": "Select Time",
-    "viewDowntime"  : "View Downtime"
-   }
+    "viewDowntime": "View Downtime"
+  },
+  "workOrder": {
+    "workOrder": "Work Orders",
+    "subtitle": "Manage production work orders and track progress",
+    "addNew": "Create Work Order",
+    "searchPlaceholder": "Search by WO number, product name, or code...",
+    "workOrderId": "Work Order ID",
+    "name": "Name",
+    "viewWorkOrder": "View Work Orders",
+    "namePlaceholder": "Enter Work Order Name",
+    "codePlaceholder": "Enter Work Order Code",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter Description",
+    "Plannedstart": "Planned Start",
+    "PlannedstartPlaceholder": "Select Planned Start Date",
+    "WarehouseOut": "Warehouse Out",
+    "WarehouseIn": "Warehouse In",
+    "quantity": "Quantity",
+    "item": "Item",
+    "itemPlaceholder": "Select Item",
+    "woNumber": "wo Number"
+  }
 }
