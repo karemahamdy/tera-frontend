@@ -1165,7 +1165,8 @@
     "locations": "• Locations: ",
     "transactions": "• Transactions: ",
     "sourceFrom": "Source (Form)",
-    "targetTo": "Destination (To)"
+    "targetTo": "Destination (To)",
+    "sourceTargetDifferent": "Source and target must be different"
   },
   "payment": {
     "paymentFinanceInfo": "Payment & Finance Info",
