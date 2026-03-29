@@ -55,9 +55,7 @@ export function useItemTransactions() {
     loading.value = true;
     try {
       await ItemTransactionsService.create(payload);
-      toastService.success(
-        t("operation.itemTransactionsCreatedSuccessfully"),
-      );
+      toastService.success(t("operation.itemTransactionsCreatedSuccessfully"));
       router.replace({ name: "ItemTransactions" });
     } catch (err: any) {
       toastService.error(err);
@@ -122,6 +120,25 @@ export function useItemTransactions() {
     }
   };
 
+  const validateItems = async (sourceItem: string, targetItem: string) => {
+    try {
+      await ItemTransactionsService.validateItems({
+        sourceItem,
+        targetItem,
+      });
+      return {
+        status: true,
+        msg: "",
+      };
+    } catch (err: any) {
+      toastService.error(err);
+      return {
+        status: false,
+        msg: err,
+      };
+    }
+  };
+
   return {
     loading,
     apiItemTransactions,
@@ -137,5 +154,6 @@ export function useItemTransactions() {
     onFilterChange,
     onSort,
     getItemInformations,
+    validateItems,
   };
 }
