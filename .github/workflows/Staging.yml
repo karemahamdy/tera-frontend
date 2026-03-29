@@ -6,7 +6,7 @@ on:
       - staging
 
 env:
-  VITE_API_URL: https://teraerptesting-ffgxa9ejepc4bpfp.canadacentral-01.azurewebsites.net/api
+  VITE_API_URL: https://teraerpstaging-fuc8axegceeccqeg.canadacentral-01.azurewebsites.net/api
 
 jobs:
   build-and-deploy:
