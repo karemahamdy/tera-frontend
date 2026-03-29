@@ -73,7 +73,7 @@ const onSubmit = handleSubmit(async (values) => {
 
           <div class="grid grid-cols-2 gap-4">
             <FormInput :label="$t('workOrder.workOrderNumber')" v-model="code"
-              :placeholder="$t('workOrder.workOrderNumberPlaceholder')" :error="errors.code" :invalid="!!errors.code" />
+              :placeholder="$t('WO-2024-001')" :error="errors.code" :invalid="!!errors.code" />
             <div class="w-full">
               <label class="block text-gray-600 text-lg font-bold">{{ $t("downtime.date") }}</label>
               <DatePicker showIcon fluid iconDisplay="input" :placeholder="$t('downtime.datePlaceholder')" />
@@ -113,13 +113,6 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
-
-          <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'WorkCenters' }"
-              :disabled="isSubmitting" />
-            <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'"
-              variant="primary" block :disabled="isSubmitting" :loading="isSubmitting" />
-          </div>
         </form>
   </div>
 </template>
