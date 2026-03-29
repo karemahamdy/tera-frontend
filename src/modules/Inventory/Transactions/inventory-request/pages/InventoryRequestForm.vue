@@ -87,7 +87,7 @@ const submit = async () => {
   const payload: any = {
     inventoryRequestNumber: formData.documentNumber,
     requestedBy: formData.requestedBy,
-    requestDate: formData.requestDate.toISOString(),
+    requestDate: new Date(formData.requestDate.getTime() - formData.requestDate.getTimezoneOffset() * 60000).toISOString(),
     type: formData.type,
     warehouseId: formData.warehouseId || null,
     zoneId: formData.zoneId || null,
