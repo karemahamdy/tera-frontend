@@ -6,32 +6,32 @@ export const OperationsMasterService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<OperationsMasterResponse>(
-      `/LedgerDetailCard`, { params }
+      `/Operations`, { params }
     );
     return resp.data;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
+    const data = await axiosWrapper.get<any>(`/Operations/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
+    const data = await axiosWrapper.post<any>(`/Operations`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/Operations/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
+    await axiosWrapper.delete(`/Operations/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/LedgerDetailCard/Status/${id}`,
+      `/Operations/Status/${id}`,
       null,
       {
         params: { isActive }
@@ -42,7 +42,7 @@ export const OperationsMasterService = {
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/LedgerDetailCard/export-workCenters`,
+      `/Operations/export-workCenters`,
       {
         params: payload,
         responseType: "blob",

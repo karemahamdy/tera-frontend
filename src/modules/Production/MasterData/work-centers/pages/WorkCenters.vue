@@ -15,7 +15,6 @@ const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
-
      {
       slot: true,
       label: t("button.view"),

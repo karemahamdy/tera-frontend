@@ -15,47 +15,48 @@ const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
-     {
-      slot: true,
-      label: t("button.view"),
-      icon: "Eye",
-      color: "#3F5FAC",
-      action: 'view',
+    {
+        slot: true,
+        label: t("button.view"),
+        icon: "Eye",
+        color: "#3F5FAC",
+        action: 'view',
     },
 ];
 const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 'Department C', machines: "8 machines", isActive: true },
+    { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", status: "Completed" },
+    { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", status: "In Progress" },
+    { id: 3, code: 'WC003', name: 'Work Center 3', department: 'Department C', machines: "8 machines", status: "New" },
 ]);
 // onMounted(() => {
 //     fetchworkOrder();
 // });
 const filtersOperation = computed(() => {
     return [
-  
+
         {
             placeholder: "activeSessions.allStatus",
             value: null,
             field: "status",
             options: [
-                  { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+                { label: t("usersManagement.allStatus"), value: null },
+                { label: t("button.Completed"), value: "IsActive" },
+                { label: t("button.InProgress"), value: "IsActive" },
+                { label: t("button.New"), value: "InActive" },
             ],
         },
     ]
 });
 
 const columns = computed(() => {
-    const Columns = [ 
+    const Columns = [
         { field: 'code', header: t('workOrder.woNumber'), sortable: true },
         { field: 'name', header: t('workOrder.item'), type: 'slot', sortable: true },
         { field: 'department', header: t('workOrder.quantity'), type: 'slot', sortable: true },
         { field: 'machines', header: t('workOrder.WarehouseIn'), sortable: true },
         { field: 'machines', header: t('workOrder.WarehouseOut'), sortable: true },
-         { field: 'machines', header: t('workOrder.Plannedstart'), sortable: true },
-        { field: 'isActive', header: t('status'), type: 'status', sortable: true },
+        { field: 'machines', header: t('workOrder.Plannedstart'), sortable: true },
+        { field: 'status', header: t('status'), sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -111,37 +112,51 @@ const handleDeleteConfirm = async () => {
 };
 
 const addworkOrder = () => {
-    router.push({name: 'workOrderCreate' });
+    router.push({ name: 'workOrderCreate' });
 };
 
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-           <ScreenHeader title="production" subtitle="operation.transactions" actionName="workOrder.workOrder" />
+        <ScreenHeader title="production" subtitle="operation.transactions" actionName="workOrder.workOrder" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
                 <PageHeader title="workOrder.workOrder" subtitle="workOrder.subtitle" :showExport="false"
                     :showImport="false" :mainBtn="true" mainBtnText="workOrder.addNew" :showFilter="true"
-               :filters="filtersOperation" @filter-change="onFilterChange"
-                    searchPlaceholder="workOrder.searchPlaceholder" @search="onSearch" :onMainBtnClick="addworkOrder" 
-                    />
+                    :filters="filtersOperation" @filter-change="onFilterChange"
+                    searchPlaceholder="workOrder.searchPlaceholder" @search="onSearch" :onMainBtnClick="addworkOrder" />
             </template>
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
-               <template  v-slot:["col-code"]="{ data }">
+                    @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
+                    @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
+                    <template v-slot:["col-code"]="{ data }">
                         <span class="text-primary-500 cursor-pointer">{{ data.code }}</span>
                     </template>
-                    </DynamicTable>
+                    <template v-slot:["col-status"]="{ data }">
+                        <div v-if="data.status === 'In Progress'"
+                            class="flex align-items-center justify-center rounded-full gap-1 p-1 text-sm bg-warning-50 text-warning-500 border border-warning-500">
+                            <span>{{ data.status }}</span>
+                        </div>
+                        <div v-else-if="data.status === 'Completed'"
+                            class="flex align-items-center justify-center rounded-full gap-1 p-1 text-sm bg-success-50 text-success-500 border border-success-500">
+                            <span>{{ data.status }}</span>
+                        </div>
+                        <div v-else
+                            class="flex align-items-center justify-center rounded-full gap-1 p-1 text-sm bg-primary-50 text-primary-500 border border-primary-500">
+                            <span>{{ data.status }}</span>
+                        </div>
+                    </template>
+                </DynamicTable>
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('workOrder.deleteworkOrderConfirm')"
-            :buttons="[
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
+            :title="$t('workOrder.deleteworkOrderConfirm')" :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
             ]" @confirm="handleDeleteConfirm" />

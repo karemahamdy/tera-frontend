@@ -2,8 +2,8 @@
 import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { LDCSchema } from "../validation/WorkOrderSchema";
-import { useworkCenter } from "../composables/useWorkOrder";
 import router from "@/app/router";
+import { useworkOrder } from "../composables/useWorkOrder";
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
@@ -13,7 +13,7 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { createworkCenter, updateworkCenter } = useworkCenter();
+const { createworkOrder, updateworkOrder } = useworkOrder();
 
 type LDCFormValues = {
   code: string;
@@ -48,12 +48,12 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     if (editMode && props.id) {
-      await updateworkCenter(props.id, values);
+      await updateworkOrder(props.id, values);
     } else {
-      await createworkCenter(values);
+      await createworkOrder(values);
     }
     router.push({
-      name: "workCenter",
+      name: "workOrder",
 
     });
   } catch (error) {
