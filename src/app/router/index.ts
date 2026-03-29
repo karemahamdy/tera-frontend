@@ -31,6 +31,7 @@ import { WorkCentersRoutes } from "@/modules/Production/MasterData/work-centers/
 import { OperationsMasterRoutes } from "@/modules/Production/MasterData/operation-master/routes";
 import { MachinesRoutes } from "@/modules/Production/MasterData/machines/routes";
 import { BOMRoutes } from "@/modules/Production/MasterData/bom/routes";
+import { DowntimeRoutes } from "@/modules/Production/Transaction/downtime/routes";
 
 const defaultTitle = "Tera ERP";
 const routes = [
@@ -71,6 +72,7 @@ const routes = [
       ...OperationsMasterRoutes,
       ...MachinesRoutes,
       ...BOMRoutes,
+      ...DowntimeRoutes,
       {
         path: "",
         component: () => import("@/app/layouts/DefaultLayout.vue"),
