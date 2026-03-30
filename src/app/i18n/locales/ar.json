@@ -447,6 +447,7 @@
     "editItem": "تعديل الصنف",
     "stock": "المخزون",
     "transactions": "المعاملات",
+    "type": "النوع",
     "pricing": "التسعير",
     "inactive": "غير نشط",
     "transactiontype": "نوع المعاملة",
@@ -1363,7 +1364,7 @@
     "Operations": "العمليات",
     "Materials": "المواد",
     "woNumber": "رقم أمر العمل",
-    "RejectWaste": ""
+    "RejectWaste": "رفض/هدر"
   },
   "validation": {
     "required": "هذا الحقل مطلوب",

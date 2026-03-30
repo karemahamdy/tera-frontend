@@ -4,17 +4,18 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import OperationsView from '../components/OperationsView.vue';
 import MaterialsView from '../components/MaterialsView.vue';
+import RejectWasteView from '../components/RejectWasteView.vue';
 
 const activeTab = ref("BOMMaterials");
 const route = useRoute();
 const handleEdit = () => {
-    router.push(`/work-orders/edit/${route.params.id}`);
+    router.push(`/production-receipts/edit/${route.params.id}`);
 };
 
 </script>
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="production" subtitle="masterData" actionName="workOrder.viewworkOrder" />
+        <ScreenHeader title="production" subtitle="operation.transactions"  actionName="ProductionReceipts.viewProductionReceipt" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <template #title>
                 <div class="flex justify-between items-start p-4 border-b border-gray-200">
@@ -28,24 +29,24 @@ const handleEdit = () => {
                         </div>
                         <p class="text-[#667085]">OPR-CUT</p>
                     </div>
-                    <BaseButton :label="$t('button.editItem')" variant="primary" icon="Edit" @click="handleEdit()" />
+                    <BaseButton :label="$t('button.edit')" variant="primary" icon="Edit" @click="handleEdit()" />
                 </div>
             </template>
 
             <template #content>
                 <div class="grid grid-cols-3 gap-16 p-4">
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.workOrderNumber') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{ $t('ProductionReceipts.ReceiptNo') }}</span>
                         <span class="text-[#101828] text-base font-medium">MC-CNC-001</span>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.item') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{$t('ProductionReceipts.WorkOrder') }}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[#101828] text-base font-medium">CNC Milling </span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.UOM') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{ $t('ProductionReceipts.item') }}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[#101828] text-base font-medium">5454</span>
                         </div>
@@ -54,19 +55,19 @@ const handleEdit = () => {
 
                 <div class="grid grid-cols-3 gap-16 p-4">
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.salesOrder') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{ $t('ProductionReceipts.ProducedQty') }}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[#101828] text-base font-medium">WC-002</span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.WarehouseIn') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{ $t('ProductionReceipts.WarehouseIn') }}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[#101828] text-base font-medium">WC-002</span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.quantity') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{ $t('ProductionReceipts.WarehouseOut') }}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[#101828] text-base font-medium">WC-002</span>
                         </div>
@@ -75,23 +76,18 @@ const handleEdit = () => {
 
                 <div class="grid grid-cols-3 gap-16 p-4">
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.WarehouseOut') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{ $t('ProductionReceipts.TotalDowntimeHours') }}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[#101828] text-base font-medium">WC-002</span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.RelatedWorkOrder') }}</span>
+                        <span class="text-lg text-[#A4A7AE]">{{ $t('ProductionReceipts.DownTimeType') }}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[#101828] text-base font-medium">WC-002</span>
                         </div>
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('workOrder.Plannedstart') }}</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#101828] text-base font-medium">WC-002</span>
-                        </div>
-                    </div>
+                   
                 </div>
             </template>
 
@@ -105,6 +101,9 @@ const handleEdit = () => {
                             <Tab value="Operations">
                                 {{ $t("workOrder.Operations") }}
                             </Tab>
+                             <Tab value="RejectWaste">
+                                {{ $t("steps.RejectWaste") }}
+                            </Tab>
                         </TabList>
                     </div>
                     <TabPanels>
@@ -113,6 +112,9 @@ const handleEdit = () => {
                         </TabPanel>
                         <TabPanel value="Operations">
                             <OperationsView />
+                        </TabPanel>
+                          <TabPanel value="RejectWaste">
+                            <RejectWasteView />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
