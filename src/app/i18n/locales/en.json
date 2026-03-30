@@ -1624,6 +1624,7 @@
     "WarehouseInPlaceholder": "Select Warehouse in",
     "PlannedStartPlaceholder": "Enter Planned Starting Date",
     "workOrdercreateInfo": "Create Work Order",
-    "workOrderEditInfo": "Edit Work Order"
+    "workOrderEditInfo": "Edit Work Order",
+    "viewworkOrder": "View Work Order"
   }
 }
