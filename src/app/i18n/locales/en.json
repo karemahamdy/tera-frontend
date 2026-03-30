@@ -1490,7 +1490,7 @@
     "MaterialCost": "Material Cost",
     "OverheadCost": "Overhead Cost",
     "ofTotalCost": "of Total Cost",
-    "ofTotalCostPerUnit": "of Total Cost Per Unit",
+    "ofTotalCostPerUnit": "Total Cost Per Unit",
     "ChangedBy": "Changed by",
     "uom": "UOM",
     "quantity": "Quantity",
