@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { LDCSchema } from "../validation/ProductionReceiptsSchema";
 import router from "@/app/router";
-import { useworkOrder } from "../composables/useProductionReceipts";
+import { useProductionReceipts } from "../composables/useProductionReceipts";
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
@@ -13,7 +13,7 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { createworkOrder, updateworkOrder } = useworkOrder();
+const { updateProductionReceipts, createProductionReceipts } = useProductionReceipts();
 
 type LDCFormValues = {
   code: string;
@@ -47,9 +47,9 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     if (editMode && props.id) {
-      await updateworkOrder(props.id, values);
+      await updateProductionReceipts(props.id, values);
     } else {
-      await createworkOrder(values);
+      await createProductionReceipts(values);
     }
     router.push({
       name: "workOrder",
