@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 import WODetails from '../components/WODetails.vue';
 import Materials from '../components/Materials.vue';
 import Operations from '../components/Operations.vue';
+import ProductionReceiptsDetails from '../components/ProductionReceiptsDetails.vue';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -29,25 +30,29 @@ const steps = [
   { label: t("steps.woNumber") },
   { label: t("steps.Materials") },
   { label: t("steps.Operations") },
+  { label: t("steps.RejectWaste") },
 ];
 </script>
 
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
-     <ScreenHeader title="production" subtitle="operation.transactions"
-      :actionName="mode === 'edit' ? $t('workOrder.workOrdereditInfo') : $t('workOrder.workOrdercreateInfo')" />
+            <ScreenHeader title="production" subtitle="operation.transactions" 
+             :actionName="mode === 'edit' ? $t('ProductionReceipts.ProductionReceiptseditInfo') : $t('ProductionReceipts.ProductionReceiptscreateInfo')" />
 
     <BaseStepper v-model="activeStep" :steps="steps" >
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
             <div v-show="activeStep === 0">
-            <WODetails :mode="mode" />
+            <ProductionReceiptsDetails :mode="mode" />
             </div>
             <div v-show="activeStep === 1">
               <Materials :mode="mode" />
             </div>
             <div v-show="activeStep === 2">
               <Operations :mode="mode" />  
+            </div>
+             <div v-show="activeStep === 3">
+              <!-- <RejectWaste :mode="mode" />   -->
             </div>
         </template>
       </Card>

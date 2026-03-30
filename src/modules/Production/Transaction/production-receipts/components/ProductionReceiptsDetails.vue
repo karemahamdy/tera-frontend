@@ -52,7 +52,7 @@ const onSubmit = handleSubmit(async (values) => {
       await createProductionReceipts(values);
     }
     router.push({
-      name: "workOrder",
+      name: "ProductionReceipts",
 
     });
   } catch (error) {
@@ -68,51 +68,48 @@ const onSubmit = handleSubmit(async (values) => {
   <div>
         <form form @submit.prevent="onSubmit" class="space-y-6">
           <p class="font-bold mb-5 text-lg">
-            {{ $t("workOrder.workOrderDetails") }}
+            {{ $t("ProductionReceipts.ProductionReceiptDetails") }}
           </p>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormInput :label="$t('workOrder.workOrderNumber')" v-model="code"
+            <FormInput :label="$t('ProductionReceipts.ReceiptNo')" v-model="code"
               :placeholder="$t('WO-2024-001')" :error="errors.code" :invalid="!!errors.code" />
             <div class="w-full">
-              <label class="block text-gray-600 text-lg font-bold">{{ $t("downtime.date") }}</label>
-              <DatePicker showIcon fluid iconDisplay="input" :placeholder="$t('downtime.datePlaceholder')" />
+              <label class="block text-gray-600 text-lg font-bold">{{ $t("ProductionReceipts.date") }}</label>
+              <DatePicker showIcon fluid iconDisplay="input" :placeholder="$t('ProductionReceipts.datePlaceholder')" />
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('workOrder.salesOrder')" v-model="code"
-              :placeholder="$t('workOrder.salesOrderPlaceholder')" :error="errors.code" :invalid="!!errors.code" />
-            <FormDropdown :label="$t('workOrder.item')" v-model="name" :placeholder="$t('workOrder.itemPlaceholder')"
+            <FormDropdown :label="$t('ProductionReceipts.WorkOrder')" v-model="code"
+              :placeholder="$t('ProductionReceipts.WorkOrderPlaceholder')" :error="errors.code" :invalid="!!errors.code" />
+            <FormInput :label="$t('ProductionReceipts.item')" v-model="name" :placeholder="$t('Hydraulic Pump')"
               :error="errors.name" :invalid="!!errors.name" />
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
-            <FormInput :label="$t('workOrder.UOM')" v-model="department" :placeholder="$t('workOrder.UOMPlaceholder')"
-              :error="errors.department" :invalid="!!errors.department" />
-            <FormInput :label="$t('workOrder.quantity')" v-model="department"
-              :placeholder="$t('workOrder.quantityPlaceholder')" :error="errors.department"
+          <div class="">
+            
+            <FormInput :label="$t('ProductionReceipts.quantity')" v-model="department"
+              :placeholder="$t('ProductionReceipts.quantityPlaceholder')" :error="errors.department"
               :invalid="!!errors.department" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('workOrder.WarehouseIn')" v-model="code"
-              :placeholder="$t('workOrder.WarehouseInPlaceholder')" :error="errors.code" :invalid="!!errors.code" />
-            <FormDropdown :label="$t('workOrder.WarehouseOut')" v-model="name"
-              :placeholder="$t('workOrder.WarehouseOutPlaceholder')" :error="errors.name" :invalid="!!errors.name" />
+            <FormDropdown :label="$t('ProductionReceipts.WarehouseIn')" v-model="code"
+              :placeholder="$t('ProductionReceipts.WarehouseInPlaceholder')" :error="errors.code" :invalid="!!errors.code" />
+            <FormDropdown :label="$t('ProductionReceipts.WarehouseOut')" v-model="name"
+              :placeholder="$t('ProductionReceipts.WarehouseOutPlaceholder')" :error="errors.name" :invalid="!!errors.name" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('workOrder.RelatedWorkOrder')" v-model="department"
-              :placeholder="$t('workOrder.RelatedWorkOrderPlaceholder')" :error="errors.department"
+            <FormInput :label="$t('ProductionReceipts.DownTime')" v-model="department"
+              :placeholder="$t('ProductionReceipts.DownTimePlaceholder')" :error="errors.department"
               :invalid="!!errors.department" />
-            <div class="w-full">
-              <label class="block text-gray-700 text-lg font-bold">{{ $t("workOrder.Plannedstart") }}</label>
-              <DatePicker showIcon fluid iconDisplay="input" :placeholder="$t('workOrder.PlannedstartPlaceholder')" />
-            </div>
+              <FormDropdown :label="$t('ProductionReceipts.DownTimeType')" v-model="department"
+              :placeholder="$t('ProductionReceipts.DownTimeTypePlaceholder')" :error="errors.department"
+              :invalid="!!errors.department" />
           </div>
 
-          <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
         </form>
   </div>
 </template>

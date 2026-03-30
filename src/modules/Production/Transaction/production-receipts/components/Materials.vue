@@ -3,6 +3,7 @@ import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelec
 import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
+import SalesQuantitySerialDialog from '@/modules/Inventory/shared/components/SalesQuantitySerialDialog.vue';
 
 const { t } = useI18n();
 const { getItemsLookups, itemsLookups } = useInventoryLookups();
@@ -39,8 +40,13 @@ const columns = computed(() => [
 const showItemDialog = ref(false);
 const availableItems = computed(() => itemsLookups.value);
 
-const openItemDialog = () => {
-    if (!props.disabled) showItemDialog.value = true;
+// --- Quantity/Serial Dialog ---
+const showQtyDialog = ref(false);
+const currentItem = ref<any>(null);
+
+const openQtyDialog = (item: any) => {
+    currentItem.value = item;
+    showQtyDialog.value = true;
 };
 
 const handleSelectItem = (item: any) => {
@@ -63,7 +69,16 @@ const removeItem = (data: any) => {
     }
     emitUpdate();
 };
-
+const handleSaveSerials = (payload: any) => {
+    if (currentItem.value) {
+        currentItem.value.serials = payload.serials;
+        currentItem.value.quantity = payload.totalQty;
+    }
+    emitUpdate();
+};
+const openItemDialog = () => {
+    if (!props.disabled) showItemDialog.value = true;
+};
 </script>
 
 <template>
@@ -73,28 +88,11 @@ const removeItem = (data: any) => {
             <div>
                 <h2 class="text-xl font-bold text-gray-900">{{ t('workOrder.BOMMaterials') }}</h2>
             </div>
-            <BaseButton v-if="!disabled" :label="t('workOrder.addItem')" icon="AddSquare"
+             <BaseButton v-if="!disabled" :label="t('workOrder.addItem')" icon="AddSquare"
                 class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
                 @click="openItemDialog" />
         </div>
-        <div class="grid grid-cols-3 gap-16 p-4">
-            <div class="flex flex-col gap-2">
-                <span class="text-lg text-[#A4A7AE]">{{ $t('BOM.code') }}</span>
-                <span class="text-[#101828] text-base font-medium">MC-CNC-001</span>
-            </div>
-            <div class="flex flex-col gap-2">
-                <span class="text-lg text-[#A4A7AE]">{{ $t('BOM.name') }}</span>
-                <div class="flex items-center gap-2">
-                    <span class="text-[#101828] text-base font-medium">CNC Milling </span>
-                </div>
-            </div>
-            <div class="flex flex-col gap-2">
-                <span class="text-lg text-[#A4A7AE]">{{ $t('BOM.BomVersion') }}</span>
-                <div class="flex items-center gap-2">
-                    <span class="text-[#101828] text-base font-medium">5454</span>
-                </div>
-            </div>
-        </div>
+
         <!-- Table -->
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
@@ -109,10 +107,21 @@ const removeItem = (data: any) => {
                         </Badge>
                         <div class="text-base text-gray-700">{{ data.code }}</div>
                     </div>
-               </template>
+                </template>
                 <template #col-quantity="{ data }">
                     <div class="flex items-center gap-2">
-                            <InputText  v-model.number="data.quantity" class="w-20 p-inputtext-sm" />
+                        <!-- Show button when: serial-tracked (create/edit) OR has serials (view) -->
+                        <template v-if="data.trackingType === 'Serial' || (disabled && data.serials?.length > 0)">
+                            <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')"
+                                variant="outline-primary" @click="openQtyDialog(data)" />
+                            <span class="text-gray-500">({{ data.quantity }})</span>
+                        </template>
+                        <template v-else>
+                            <InputText v-if="!disabled" v-model.number="data.quantity" class="w-20 p-inputtext-sm" />
+                            <span v-else class="text-gray-700">
+                                {{ data.quantity }}
+                            </span>
+                        </template>
                     </div>
                 </template>
                 <template #col-unitId="{ data }">
@@ -131,7 +140,8 @@ const removeItem = (data: any) => {
             </DynamicTable>
         </div>
         <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
-
+        <SalesQuantitySerialDialog v-if="currentItem" v-model:visible="showQtyDialog" :item="currentItem"
+            :disabled="disabled" @save="handleSaveSerials" />
     </div>
 </template>
 

@@ -15,7 +15,13 @@ const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
-   
+     {
+        action: "toggleActive",
+        changeStatus: true,
+        label: t("button.active"),
+        type: "switch",
+        key: "isActive",
+    },
     {
         slot: true,
         label: t("button.view"),
@@ -38,14 +44,14 @@ const filtersOperation = computed(() => {
             placeholder: "workCenter.workCenter",
             value: null,
             field: "status",
-            options: [
-                { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
-            ],
+            // options: [
+            //     { label: t("usersManagement.allStatus"), value: null },
+            //     { label: t("button.active"), value: "IsActive" },
+            //     { label: t("button.inactive"), value: "InActive" },
+            // ],
         },
         {
-            placeholder: "activeSessions.allStatus",
+            placeholder: "status",
             value: null,
             field: "status",
             options: [
