@@ -51,7 +51,7 @@ const filtersOperation = computed(() => {
             ],
         },
         {
-            placeholder: "activeSessions.allStatus",
+            placeholder: "status",
             value: null,
             field: "status",
             options: [

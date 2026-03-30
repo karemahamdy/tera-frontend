@@ -44,14 +44,14 @@ const filtersOperation = computed(() => {
             placeholder: "workCenter.workCenter",
             value: null,
             field: "status",
-            options: [
-                { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
-            ],
+            // options: [
+            //     { label: t("usersManagement.allStatus"), value: null },
+            //     { label: t("button.active"), value: "IsActive" },
+            //     { label: t("button.inactive"), value: "InActive" },
+            // ],
         },
         {
-            placeholder: "activeSessions.allStatus",
+            placeholder: "status",
             value: null,
             field: "status",
             options: [

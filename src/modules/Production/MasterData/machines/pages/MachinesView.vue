@@ -24,7 +24,7 @@ const handleEdit = () => {
                         </div>
                         <p class="text-[#667085]">MC-CNC-001</p>
                     </div>
-                    <BaseButton :label="$t('button.editItem')" variant="primary" icon="Edit" @click="handleEdit()" />
+                    <BaseButton :label="$t('button.edit--')" variant="primary" icon="Edit" @click="handleEdit()" />
                 </div>
             </template>
 

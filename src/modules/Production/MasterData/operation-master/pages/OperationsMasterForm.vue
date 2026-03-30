@@ -119,7 +119,7 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'OperationsMasters' }"
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'OperationsMaster' }"
               :disabled="isSubmitting" />
             <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'"
               variant="primary" block :disabled="isSubmitting" :loading="isSubmitting" />
