@@ -86,7 +86,11 @@
     "invalidEmail": "Invalid email",
     "toDate": "to Date",
     "fromDate": "from Date",
-    "min_1": "Minimum 1"
+    "min_1": "Minimum 1",
+      "mustBeNumber": "Must be a valid number",
+    "mustBeGreaterThanZero": "Must be greater than 0",
+    "minZero": "Must be at least 0",
+    "maxHundred": "Must be at most 100"
   },
   "auth": {
     "welcomeBack": "Welcome Back",

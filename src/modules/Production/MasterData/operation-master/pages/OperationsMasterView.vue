@@ -57,12 +57,7 @@ const handleEdit = () => {
                             <span class="text-[#101828] text-base font-medium">WC-002</span>
                         </div>
                     </div>
-                     <div class="flex flex-col gap-2">
-                        <span class="text-lg text-[#A4A7AE]">{{ $t('OperationsMaster.laborCost') }}</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#101828] text-base font-medium">500</span>
-                        </div>
-                    </div>       
+       
                 </div>
                     <div class="flex flex-col gap-2  p-4">
                         <span class="text-lg text-[#A4A7AE]"> {{  $t("OperationsMaster.description")  }}</span>

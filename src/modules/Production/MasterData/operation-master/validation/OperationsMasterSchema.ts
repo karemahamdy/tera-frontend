@@ -1,17 +1,30 @@
 import * as yup from "yup";
 
-export const LDCSchema = yup.object({
-  nameEn: yup
+export const OperationsMasterSchema = yup.object({
+  processCode: yup
     .string()
-    .required("form.fieldRequired")
-    .min(3, "form.min_3"),
-     nameAr: yup
+    .required("form.fieldRequired"),
+
+  processName: yup
     .string()
+    .required("form.fieldRequired"),
+
+  laborCostPerHour: yup
+    .number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : value
+    )
+    .typeError("form.mustBeNumber")
     .required("form.fieldRequired")
-    .min(3, "form.min_3"),
- code: yup
-    .string()
+    .moreThan(0, "form.mustBeGreaterThanZero"),
+
+  overheadPercentage: yup
+    .number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : value
+    )
+    .typeError("form.mustBeNumber")
     .required("form.fieldRequired")
-    .min(1, "form.min_1"),
- 
+    .min(0, "form.minZero")
+    .max(100, "form.maxHundred"),
 });
