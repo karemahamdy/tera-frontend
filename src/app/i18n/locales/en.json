@@ -1531,7 +1531,21 @@
     "createBOMInfoDesc": "Configure BOM details, components, and costs for production planning",
     "editBOMInfoDesc": "Configure BOM details, components, and costs for production planning",
     "createBOMInfo": "Add New BOM",
-    "editBOMInfo": "Edit BOM"
+    "editBOMInfo": "Edit BOM",
+     "viewBOM": "View Bill of Materials",
+  "namePlaceholder": "Enter BOM Name",
+  "codePlaceholder": "Enter Material Code",
+  "notesPlaceholder": "Add any relevant notes...",
+  "quantityPlaceholder": "Enter Quantity",
+  "HeaderInformation": "Header Information",
+  "FinalProductPlaceholder": "Select Final Product",
+  "uomPlaceholder": "Select Unit of Measure",
+  "operationPlaceholder": "Select Operation",
+  "machinePlaceholder": "Select Machine",
+  "scrapPlaceholder": "Enter Scrap %",
+  "ActiveBOM": "Active BOM (Only one active BOM per product)",
+  "BOMeditInfo": "Edit BOM",
+  "BOMcreateInfo": "Create BOM"
   },
   "downtime": {
     "downtime": "Downtime",
