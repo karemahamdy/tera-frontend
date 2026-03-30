@@ -80,7 +80,7 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
 
       <div class="grid grid-cols-2 gap-4">
-        <FormInput :label="$t('BOM.versions')" v-model="department" :placeholder="$t('BOM.VersionPlaceholder')"
+        <FormInput :label="$t('BOM.versions')" v-model="department" :placeholder="$t('Version 1')"
           :error="errors.department" :invalid="!!errors.department" />
         <FormInput :label="$t('BOM.quantity')" v-model="department" :placeholder="$t('BOM.quantityPlaceholder')"
           :error="errors.department" :invalid="!!errors.department" />
@@ -92,7 +92,7 @@ const onSubmit = handleSubmit(async (values) => {
         <FormInput :label="$t('workOrder.UOM')" v-model="code" :placeholder="$t('workOrder.UOMPlaceholder')"
           :error="errors.code" :invalid="!!errors.code" />
       </div>
-      <ToggleItem :title="$t('status')" :label="$t('BOM.ActiveBOM')" v-model="isActive" />
+      <ToggleItem :title="$t('BOM.BOMStatus')" :label="$t('BOM.ActiveBOM')" v-model="isActive" />
       <div>
         <label class="text-gray-700 font-medium mb-2 block">
           {{ $t("downtime.notes") }}

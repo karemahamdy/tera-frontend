@@ -1535,8 +1535,8 @@
      "viewBOM": "View Bill of Materials",
   "namePlaceholder": "Enter BOM Name",
   "codePlaceholder": "Enter Material Code",
-  "notesPlaceholder": "Add any relevant notes...",
-  "quantityPlaceholder": "Enter Quantity",
+  "notesPlaceholder": "Add Your Notes..",
+  "quantityPlaceholder": "Enter Base Quantity",
   "HeaderInformation": "Header Information",
   "FinalProductPlaceholder": "Select Final Product",
   "uomPlaceholder": "Select Unit of Measure",
@@ -1545,7 +1545,8 @@
   "scrapPlaceholder": "Enter Scrap %",
   "ActiveBOM": "Active BOM (Only one active BOM per product)",
   "BOMeditInfo": "Edit BOM",
-  "BOMcreateInfo": "Create BOM"
+  "BOMcreateInfo": "Create BOM",
+  "BOMStatus" : "BOM Status"
   },
   "downtime": {
     "downtime": "Downtime",

@@ -72,7 +72,7 @@ const removeItem = (data: any) => {
         <!-- Header -->
         <div class="flex justify-between items-center mb-3">
             <div>
-                <h2 class="text-xl font-bold text-gray-900">{{ t('workOrder.BOMMaterials') }}</h2>
+                <h2 class="text-xl font-bold text-gray-900">{{ t('steps.Materials') }}</h2>
             </div>
             <BaseButton v-if="!disabled" :label="t('workOrder.addItem')" icon="AddSquare"
                 class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"

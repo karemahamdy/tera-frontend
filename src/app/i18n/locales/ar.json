@@ -1538,7 +1538,8 @@
      "machinePlaceholder": "اختر الآلة",
      "ActiveBOM": "قائمة المواد النشطة (يسمح بقائمة مواد نشطة واحدة فقط لكل منتج)",
      "BOMeditInfo": "تعديل قائمة المواد",
-     "BOMcreateInfo": "إنشاء قائمة مواد جديدة"
+     "BOMcreateInfo": "إنشاء قائمة مواد جديدة",
+     "BOMStatus": "الحالة"
   },
 "downtime": {
   "downtime": "التوقف",
