@@ -1362,7 +1362,8 @@
     "payment": "الدفع",
     "Operations": "العمليات",
     "Materials": "المواد",
-    "woNumber": "رقم أمر العمل"
+    "woNumber": "رقم أمر العمل",
+    "RejectWaste": ""
   },
   "validation": {
     "required": "هذا الحقل مطلوب",

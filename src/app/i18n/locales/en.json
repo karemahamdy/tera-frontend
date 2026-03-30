@@ -1368,7 +1368,8 @@
     "payment": "Payment",
     "Operations": "Operations",
     "Materials": "Materials",
-    "woNumber":"Wo Number"
+    "woNumber":"Wo Number",
+    "RejectWaste": "Reject & Waste"
   },
   "validation": {
     "required": "This field is required",
@@ -1421,7 +1422,7 @@
     "editOperationsMasterInfo": "Edit Operation",
     "operationCodePlaceholder": "Enter Operation Code",
     "operationNamePlaceholder": "Enter Operation Name",
-    "laborCostPlaceholder": "Enter Labor Cost per Hour",
+    "laborCostPlaceholder": "Enter Labor Cost per Hour $",
     "laborCost": "Labor Cost per Hour",
     "overheadPlaceholder": "Enter Overhead Percentage",
     "deleteConfirm": "Are you sure you want to delete this operation?",
@@ -1644,6 +1645,21 @@
     "ProductionReceiptUpdatedSuccessfully": "Production Receipt Updated Successfully",
     "item": "Item",
     "itemPlaceholder": "Select Item",
-    "workOrderPlaceholder": "Select Work Order"
+    "workOrderPlaceholder": "Select Work Order",
+    "DownTimeType": "Down time Type",
+    "DownTime": "Down time",
+    "DownTimeTypePlaceholder": "Select Downtime Type",
+    "DownTimePlaceholder": "Enter Downtime",
+    "WarehouseOut": "Warehouse Out",
+    "WarehouseIn": "Warehouse In",
+    "date": "Date",
+    "ProductionReceiptDetails": "Production Receipt Details",
+    "datePlaceholder": "Select Date",
+    "WorkOrderPlaceholder": "Select Work Order",
+    "quantityPlaceholder": "Enter Quantity",
+    "WarehouseOutPlaceholder":"Select Warehouse out",
+    "WarehouseInPlaceholder":"Select Warehouse in",
+    "ProductionReceiptscreateInfo": "Create Receipt",
+    "ProductionReceiptseditInfo": "Edit Receipt"
   }
 }

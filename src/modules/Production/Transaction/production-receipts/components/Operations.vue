@@ -35,26 +35,6 @@ const columns = computed(() => [
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
-// --- Item Selection Dialog ---
-const showItemDialog = ref(false);
-const availableItems = computed(() => itemsLookups.value);
-
-const openItemDialog = () => {
-    if (!props.disabled) showItemDialog.value = true;
-};
-
-const handleSelectItem = (item: any) => {
-    items.value.push({
-        itemId: item.id || item.itemId,
-        trackingType: item.trackingType || null,
-        code: item.code,
-        name: item.name,
-        quantity: 1,
-        uom: item.baseUnitName || 'PCS',
-    });
-    emitUpdate();
-};
-
 const removeItem = (data: any) => {
     if (props.disabled) return;
     const index = items.value.findIndex(item => item.id === data.id);
@@ -72,30 +52,9 @@ const removeItem = (data: any) => {
         <div class="flex justify-between items-center mb-3">
             <div>
                 <h2 class="text-xl font-bold text-gray-900">{{ t('workOrder.Operations') }}</h2>
-
-            </div>
-            <BaseButton v-if="!disabled" :label="t('workOrder.NewRow')" icon="AddSquare"
-                class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-                @click="openItemDialog" />
-        </div>
-        <div class="grid grid-cols-3 gap-16 p-4">
-            <div class="flex flex-col gap-2">
-                <span class="text-lg text-[#A4A7AE]">{{ $t('BOM.code') }}</span>
-                <span class="text-[#101828] text-base font-medium">MC-CNC-001</span>
-            </div>
-            <div class="flex flex-col gap-2">
-                <span class="text-lg text-[#A4A7AE]">{{ $t('BOM.name') }}</span>
-                <div class="flex items-center gap-2">
-                    <span class="text-[#101828] text-base font-medium">CNC Milling </span>
-                </div>
-            </div>
-            <div class="flex flex-col gap-2">
-                <span class="text-lg text-[#A4A7AE]">{{ $t('BOM.BomVersion') }}</span>
-                <div class="flex items-center gap-2">
-                    <span class="text-[#101828] text-base font-medium">5454</span>
-                </div>
             </div>
         </div>
+        
         <!-- Table -->
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
@@ -116,14 +75,13 @@ const removeItem = (data: any) => {
                     <span class="text-primary-600 border border-primary-600 py-4 px-4 rounded-lg">{{ data.code }}</span>
                 </template>
                 <template #col-action="{ data }">
-                    <button v-if="!disabled" class="text-red-400 hover:text-red-600" @click="removeItem(data)">
+                    <button  class="text-red-400 hover:text-red-600" @click="removeItem(data)">
                         <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
                     </button>
                 </template>
             </DynamicTable>
         </div>
-        <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
-
+       
     </div>
 </template>
 
