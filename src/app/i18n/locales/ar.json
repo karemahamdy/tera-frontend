@@ -1616,6 +1616,7 @@
     "WarehouseInPlaceholder": "اختر المخزن للإضافة",
     "PlannedStartPlaceholder": "أدخل تاريخ البدء المخطط",
     "workOrdercreateInfo": "اضافة امر عمل جديد",
-    "workOrderEditInfo": "تعديل امر العمل"
+    "workOrderEditInfo": "تعديل امر العمل",
+    "viewworkOrder": "عرض امر العمل"
 }
 }
