@@ -1426,6 +1426,7 @@
     "operationNamePlaceholder": "أدخل اسم العملية",
     "laborCost": "تكلفة العمالة لكل ساعة",
     "laborCostPlaceholder": "أدخل تكلفة العمالة لكل ساعة",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذه العملية؟",
     "OperationsMasterDeletedSuccessfully": "تم حذف العملية بنجاح",
     "OperationsMasterCreatedSuccessfully": "تم إنشاء العملية بنجاح",
     "OperationsMasterUpdatedSuccessfully": "تم تحديث العملية بنجاح",
