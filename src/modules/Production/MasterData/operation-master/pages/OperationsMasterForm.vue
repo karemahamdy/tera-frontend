@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useForm } from "vee-validate";
 import { OperationsMasterSchema } from "../validation/OperationsMasterSchema";
 import { useOperationsMaster } from "../composables/useOperationsMaster";
@@ -13,7 +13,7 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { createOperationsMaster, updateOperationsMaster } = useOperationsMaster();
+const { createOperationsMaster, updateOperationsMaster, fetchOperationsMasterById } = useOperationsMaster();
 
 type OperationsMasterValues = {
   processCode: string;
@@ -22,7 +22,7 @@ type OperationsMasterValues = {
   overheadPercentage: number | null;
   description: string | null;
   isActive: boolean;
-};
+} 
 
 const initialValues: OperationsMasterValues = {
   processCode: "",
@@ -33,7 +33,7 @@ const initialValues: OperationsMasterValues = {
   isActive: true,
 };
 
-const { errors, defineField, handleSubmit } = useForm<OperationsMasterValues>({
+const { errors, defineField, handleSubmit , setValues} = useForm<OperationsMasterValues>({
   validationSchema: OperationsMasterSchema,
   initialValues,
 });
@@ -45,10 +45,27 @@ const [processName] = defineField("processName");
 const [overheadPercentage] = defineField("overheadPercentage");
 const [isActive] = defineField("isActive");
 
+onMounted(async () => {
+  
+  if (editMode && props.id || viewMode && props.id) {
+    const data = await fetchOperationsMasterById(props.id);
+    if (data) {
+      const mappedValues: OperationsMasterValues = {
+        processName: data.processName ?? null,
+        processCode: data.processCode ?? null,
+        laborCostPerHour: data.laborCostPerHour ?? null,
+        overheadPercentage: data.overheadPercentage ?? null,
+        description: data.description ?? null,
+        isActive  : data.isActive   ?? null,
+      };
+        setValues(mappedValues);
+    }
+  }
+});
+
+
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
-  if (viewMode) return;
-
   try {
     if (editMode && props.id) {
       await updateOperationsMaster(props.id, values);
