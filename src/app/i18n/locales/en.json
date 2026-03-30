@@ -1660,6 +1660,9 @@
     "WarehouseOutPlaceholder":"Select Warehouse out",
     "WarehouseInPlaceholder":"Select Warehouse in",
     "ProductionReceiptscreateInfo": "Create Receipt",
-    "ProductionReceiptseditInfo": "Edit Receipt"
+    "ProductionReceiptseditInfo": "Edit Receipt",
+    "reason":"Reason",
+    "relartedProcess":"Related Process",
+    "SelectItem":"Select Item"
   }
 }
