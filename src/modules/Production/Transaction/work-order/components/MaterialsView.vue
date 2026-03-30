@@ -1,30 +1,16 @@
 <script setup lang="ts">
-import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useInventoryLookups } from "@/composables/useInventoryLookups";
+
 
 const { t } = useI18n();
-const { getItemsLookups, itemsLookups } = useInventoryLookups();
-
 const props = defineProps<{
     lineItems?: any[];
     disabled?: boolean;
 }>();
 
 const emit = defineEmits(['next', 'prev', 'update']);
-
 const items = ref<any[]>([]);
-
-onMounted(async () => {
-    await Promise.all([
-        getItemsLookups(),
-    ]);
-});
-
-function emitUpdate() {
-    emit('update', [...items.value]);
-}
 
 const columns = computed(() => [
     { field: 'code', header: t('itemList.itemCode') },
@@ -32,18 +18,7 @@ const columns = computed(() => [
     { field: 'quantity', header: t('itemList.quantity') },
     { field: 'unitId', header: t('itemList.UOM') },
     { field: 'quantity', header: t('BOM.scrap') },
-    // ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
-
-
-// const removeItem = (data: any) => {
-//     if (props.disabled) return;
-//     const index = items.value.findIndex(item => item.id === data.id);
-//     if (index !== -1) {
-//         items.value.splice(index, 1);
-//     }
-//     emitUpdate();
-// };
 
 </script>
 
