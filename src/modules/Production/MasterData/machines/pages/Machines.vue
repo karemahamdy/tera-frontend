@@ -143,25 +143,21 @@ const addmachines = () => {
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
                     <template v-slot:["col-code"]="{ data }">
-                        <span class="text-primary-500 cursor-pointer">{{ data.code }}</span>
+                       <span class="text-primary-500 cursor-pointer">{{ data.code }}</span>
                     </template>
-                   <template v-slot:["col-department"]="{ data }">
-  <div class="flex items-center gap-2 w-full">
-    <ProgressBar 
-      class="flex-1 progress-bar-small"
-      :value="data.department"
-      :show-value="false"
-      style="background-color: #E1E7F4;"
-      :class="data.department > 60 ? 'progress-green' : 'progress-orange'"
-    />
-    <span>{{ data.department }}</span>
-  </div>
-</template>
+                    <template v-slot:["col-department"]="{ data }">
+                        <div class="flex items-center gap-2 w-full">
+                            <ProgressBar class="flex-1 progress-bar-small" :value="data.department" :show-value="false"
+                                style="background-color: #E1E7F4;"
+                                :class="data.department > 60 ? 'progress-green' : 'progress-orange'" />
+                            <span>{{ data.department }}</span>
+                        </div>
+                    </template>
                 </DynamicTable>
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('machines.deletemachinesConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('machines.deleteConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },

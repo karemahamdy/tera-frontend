@@ -1618,5 +1618,26 @@
     "workOrdercreateInfo": "اضافة امر عمل جديد",
     "workOrderEditInfo": "تعديل امر العمل",
     "viewworkOrder": "عرض امر العمل"
-}
+},
+  "ProductionReceipts": {
+    "ProductionReceipts": "إيصالات الإنتاج",
+    "subtitle": "تسجيل وتتبع الإنتاج",
+    "addNew": "إنشاء إيصال",
+    "searchPlaceholder": "ابحث في الإيصالات...",
+    "Cost/Unit": "التكلفة لكل وحدة",
+    "TotalCost": "إجمالي التكلفة",
+    "quantity": "الكمية",
+    "ProducedQty": "الكمية المنتجة",
+    "WorkOrder": "أمر العمل",
+    "Date": "التاريخ",
+    "ReceiptNo": "رقم الإيصال",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف إيصال الإنتاج هذا؟",
+    "ProductionReceiptDeletedSuccessfully": "تم حذف إيصال الإنتاج بنجاح",
+    "ProductionReceiptCreatedSuccessfully": "تم إنشاء إيصال الإنتاج بنجاح",
+    "ProductionReceiptUpdatedSuccessfully": "تم تحديث إيصال الإنتاج بنجاح",
+    "item": "الصنف",
+    "itemPlaceholder": "اختر الصنف",
+    "workOrderPlaceholder": "اختر أمر العمل"
+  }
+
 }

@@ -33,30 +33,39 @@ const data = ref([
 // });
 const filtersOperation = computed(() => {
     return [
-
         {
-            placeholder: "activeSessions.allStatus",
+            placeholder: "ProductionReceipts.WorkOrder",
             value: null,
             field: "status",
-            options: [
-                { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.Completed"), value: "IsActive" },
-                { label: t("button.InProgress"), value: "IsActive" },
-                { label: t("button.New"), value: "InActive" },
-            ],
+            // options: [
+            //     { label: t("usersManagement.allStatus"), value: null },
+            //     { label: t("button.Completed"), value: "IsActive" },
+            //     { label: t("button.InProgress"), value: "IsActive" },
+            //     { label: t("button.New"), value: "InActive" },
+            // ],
+        },
+         {
+            placeholder: "ProductionReceipts.item",
+            value: null,
+            field: "status",
+            // options: [
+            //     { label: t("usersManagement.allStatus"), value: null },
+            //     { label: t("button.Completed"), value: "IsActive" },
+            //     { label: t("button.InProgress"), value: "IsActive" },
+            //     { label: t("button.New"), value: "InActive" },
+            // ],
         },
     ]
 });
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'code', header: t('ProductionReceipts.woNumber'), sortable: true },
-        { field: 'name', header: t('ProductionReceipts.item'), type: 'slot', sortable: true },
-        { field: 'department', header: t('ProductionReceipts.quantity'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('ProductionReceipts.WarehouseIn'), sortable: true },
-        { field: 'machines', header: t('ProductionReceipts.WarehouseOut'), sortable: true },
-        { field: 'machines', header: t('ProductionReceipts.Plannedstart'), sortable: true },
-        { field: 'status', header: t('status'), sortable: true },
+        { field: 'code', header: t('ProductionReceipts.ReceiptNo'), sortable: true },
+        { field: 'name', header: t('ProductionReceipts.Date'), type: 'slot', sortable: true },
+        { field: 'department', header: t('ProductionReceipts.WorkOrder'), type: 'slot', sortable: true },
+        { field: 'machines', header: t('ProductionReceipts.ProducedQty'), sortable: true },
+        { field: 'machines', header: t('ProductionReceipts.TotalCost'), sortable: true },
+        { field: 'machines', header: t('ProductionReceipts.Cost/Unit'), sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -133,30 +142,12 @@ const addProductionReceipts = () => {
                 <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
-                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
-                    <template v-slot:["col-code"]="{ data }">
-                        <span class="text-primary-500 cursor-pointer">{{ data.code }}</span>
-                    </template>
-                    <template v-slot:["col-status"]="{ data }">
-                        <div v-if="data.status === 'In Progress'"
-                            class="flex align-items-center justify-center rounded-full gap-1 p-1 text-sm bg-warning-50 text-warning-500 border border-warning-500">
-                            <span>{{ data.status }}</span>
-                        </div>
-                        <div v-else-if="data.status === 'Completed'"
-                            class="flex align-items-center justify-center rounded-full gap-1 p-1 text-sm bg-success-50 text-success-500 border border-success-500">
-                            <span>{{ data.status }}</span>
-                        </div>
-                        <div v-else
-                            class="flex align-items-center justify-center rounded-full gap-1 p-1 text-sm bg-primary-50 text-primary-500 border border-primary-500">
-                            <span>{{ data.status }}</span>
-                        </div>
-                    </template>
-                </DynamicTable>
+                    :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy />
             </template>
         </card>
 
         <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon"
-            :title="$t('ProductionReceipts.deleteProductionReceiptsConfirm')" :buttons="[
+            :title="$t('ProductionReceipts.deleteConfirm')" :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },
             ]" @confirm="handleDeleteConfirm" />

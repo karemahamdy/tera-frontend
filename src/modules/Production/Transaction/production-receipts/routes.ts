@@ -12,7 +12,7 @@ export const ProductionReceiptsRoutes = [
   {
     path: "/production-receipts/create",
     component: () => import("@/modules/Production/Transaction/production-receipts/pages/ProductionReceiptsForm.vue"),
-    name: "workOrderCreate",
+    name: "ProductionReceiptsCreate",
      props: { mode: "create" },
     meta: {
       hide: true,
@@ -23,7 +23,7 @@ export const ProductionReceiptsRoutes = [
    {
     path: "/production-receipts/edit/:id",
     component: () => import("@/modules/Production/Transaction/production-receipts/pages/ProductionReceiptsForm.vue"),
-    name: "workOrderFormEdit",
+    name: "ProductionReceiptsFormEdit",
       props: (route: any) => ({
       mode: "edit",
       id: route.params.id,
@@ -37,7 +37,7 @@ export const ProductionReceiptsRoutes = [
    {
     path: "/production-receipts/view/:id",
     component: () => import("@/modules/Production/Transaction/production-receipts/pages/ProductionReceiptsView.vue"),
-    name: "workOrderFormView",
+    name: "ProductionReceiptsFormView",
   props: (route: any) => ({
       mode: "view",
       id: route.params.id,
