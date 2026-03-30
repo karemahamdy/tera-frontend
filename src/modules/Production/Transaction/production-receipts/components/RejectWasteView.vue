@@ -30,9 +30,12 @@ function emitUpdate() {
 const columns = computed(() => [
     { field: 'code', header: t('itemList.itemCode') },
     { field: 'name', header: t('itemList.itemName') },
+    { field: 'type', header: t('itemList.type') },
     { field: 'quantity', header: t('itemList.quantity') },
-    { field: 'unitId', header: t('itemList.UOM') },
-    { field: 'scrap', header: t('BOM.scrap') },
+    { field: 'warehouse', header: t('itemList.warehouse') },
+    { field: 'zone', header: t('itemList.zone') },
+    { field: 'zone', header: t('ProductionReceipts.relartedProcess') },
+    { field: 'reason', header: t('ProductionReceipts.reason') },
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
@@ -76,23 +79,12 @@ const handleSaveSerials = (payload: any) => {
     }
     emitUpdate();
 };
-const openItemDialog = () => {
-    if (!props.disabled) showItemDialog.value = true;
-};
+
 </script>
 
 <template>
     <div class="flex flex-col h-full bg-white rounded-xl ">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-3">
-            <div>
-                <h2 class="text-xl font-bold text-gray-900">{{ t('workOrder.BOMMaterials') }}</h2>
-            </div>
-            <BaseButton v-if="!disabled" :label="t('workOrder.addItem')" icon="AddSquare"
-                class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-                @click="openItemDialog" />
-        </div>
-
+    
         <!-- Table -->
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
@@ -124,13 +116,21 @@ const openItemDialog = () => {
                         </template>
                     </div>
                 </template>
-                <template #col-unitId="{ data }">
-                    <FormDropdown :modelValue="data.unitId" optionLabel="label" optionValue="value"
+                <template #col-type="{ data }">
+                    <FormDropdown :modelValue="data.type" optionLabel="label" optionValue="value"
                         class="w-34 p-inputtext-sm text-sm" />
                 </template>
-                <template #col-scrap="{ data }">
+                <template #col-zone="{ data }">
+                    <FormDropdown :modelValue="data.zone" optionLabel="label" optionValue="value"
+                        class="w-34 p-inputtext-sm text-sm" />
+                </template>
+                <template #col-warehouse="{ data }">
+                    <FormDropdown :modelValue="data.warehouse" optionLabel="label" optionValue="value"
+                        class="w-34 p-inputtext-sm text-sm" />
+                </template>
+                <template #col-reason="{ data }">
                     <div class="flex items-center gap-2">
-                        <InputText v-model.number="data.scrap" class="w-20 p-inputtext-sm" />
+                        <InputText v-model.number="data.reason" class="w-20 p-inputtext-sm" />
                     </div>
                 </template>
                 <template #col-name="{ data }">

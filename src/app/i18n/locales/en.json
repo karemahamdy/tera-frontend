@@ -449,6 +449,7 @@
     "itemCode": "Item Code",
     "UOM": "UOM",
     "itemList": "Item List",
+    "type": "Type",
     "itemName": "Item Name",
     "itemDescription": "Item Description",
     "itemGroupPlaceholder": "Select Item Group",
@@ -1661,6 +1662,11 @@
     "WarehouseOutPlaceholder":"Select Warehouse out",
     "WarehouseInPlaceholder":"Select Warehouse in",
     "ProductionReceiptscreateInfo": "Create Receipt",
-    "ProductionReceiptseditInfo": "Edit Receipt"
+    "ProductionReceiptseditInfo": "Edit Receipt",
+    "reason":"Reason",
+    "relartedProcess":"Related Process",
+    "SelectItem":"Select Item",
+    "TotalDowntimeHours": "Total Downtime Hours",
+    "viewProductionReceipt": "View Production Receipt"
   }
 }
