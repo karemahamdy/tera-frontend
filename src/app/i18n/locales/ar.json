@@ -1526,7 +1526,21 @@
     "createBOMInfoDesc": "قم بإعداد تفاصيل قائمة المواد والمكونات والتكاليف لتخطيط الإنتاج",
     "editBOMInfoDesc": "قم بإعداد تفاصيل قائمة المواد والمكونات والتكاليف لتخطيط الإنتاج",
     "createBOMInfo": "إضافة قائمة مواد جديدة",
-    "editBOMInfo": "تعديل قائمة المواد"
+    "editBOMInfo": "تعديل قائمة المواد",
+    "viewBOM": "عرض قائمة المواد",
+    "namePlaceholder": "أدخل اسم قائمة المواد",
+    "codePlaceholder": "أدخل رمز المواد",
+    "notesPlaceholder": "أضف أي ملاحظات ذات صلة...",
+    "quantityPlaceholder":"أدخل الكمية",
+    "HeaderInformation": "المعلومات الأساسية",
+    "FinalProductPlaceholder": "اختر المنتج النهائي",
+     "uomPlaceholder": "اختر وحدة القياس",
+     "operationPlaceholder": "اختر العملية",
+     "machinePlaceholder": "اختر الآلة",
+     "ActiveBOM": "قائمة المواد النشطة (يسمح بقائمة مواد نشطة واحدة فقط لكل منتج)",
+     "BOMeditInfo": "تعديل قائمة المواد",
+     "BOMcreateInfo": "إنشاء قائمة مواد جديدة",
+     "BOMStatus": "الحالة"
   },
 "downtime": {
   "downtime": "التوقف",
