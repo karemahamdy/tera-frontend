@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useForm } from "vee-validate";
-import { LDCSchema } from "../validation/OperationsMasterSchema";
+import { OperationsMasterSchema } from "../validation/OperationsMasterSchema";
 import { useOperationsMaster } from "../composables/useOperationsMaster";
 import router from "@/app/router";
 
@@ -13,39 +13,59 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { createOperationsMaster, updateOperationsMaster } = useOperationsMaster();
+const { createOperationsMaster, updateOperationsMaster, fetchOperationsMasterById } = useOperationsMaster();
 
-type LDCFormValues = {
-  code: string;
-  department: string;
-  name: string;
-  notes: string | null;
+type OperationsMasterValues = {
+  processCode: string;
+  processName: string;
+  laborCostPerHour: number | null;
+  overheadPercentage: number | null;
+  description: string | null;
   isActive: boolean;
-};
+} 
 
-const initialValues: LDCFormValues = {
-  code: "",
-  department: "",
-  name: "",
-  notes: null,
+const initialValues: OperationsMasterValues = {
+  processCode: "",
+  processName: "",
+  laborCostPerHour: null,
+  overheadPercentage: null,
+  description: null,
   isActive: true,
 };
 
-const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
-  validationSchema: LDCSchema,
+const { errors, defineField, handleSubmit , setValues} = useForm<OperationsMasterValues>({
+  validationSchema: OperationsMasterSchema,
   initialValues,
 });
 
-const [code] = defineField("code");
-const [name] = defineField("name");
-const [notes] = defineField("notes");
-const [department] = defineField("department");
+const [processCode] = defineField("processCode");
+const [laborCostPerHour] = defineField("laborCostPerHour");
+const [description] = defineField("description");
+const [processName] = defineField("processName");
+const [overheadPercentage] = defineField("overheadPercentage");
 const [isActive] = defineField("isActive");
+
+onMounted(async () => {
+  
+  if (editMode && props.id || viewMode && props.id) {
+    const data = await fetchOperationsMasterById(props.id);
+    if (data) {
+      const mappedValues: OperationsMasterValues = {
+        processName: data.processName ?? null,
+        processCode: data.processCode ?? null,
+        laborCostPerHour: data.laborCostPerHour ?? null,
+        overheadPercentage: data.overheadPercentage ?? null,
+        description: data.description ?? null,
+        isActive  : data.isActive   ?? null,
+      };
+        setValues(mappedValues);
+    }
+  }
+});
+
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
-  if (viewMode) return;
-
   try {
     if (editMode && props.id) {
       await updateOperationsMaster(props.id, values);
@@ -54,7 +74,6 @@ const onSubmit = handleSubmit(async (values) => {
     }
     router.push({
       name: "OperationsMaster",
-
     });
   } catch (error) {
     console.error("Error submitting form:", error);
@@ -86,20 +105,20 @@ const onSubmit = handleSubmit(async (values) => {
         <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
 
           <div class="grid grid-cols-2 gap-4">
-            <FormInput :label="$t('OperationsMaster.code')" v-model="code"
-              :placeholder="$t('OperationsMaster.operationCodePlaceholder')" :error="errors.code" :invalid="!!errors.code"
+            <FormInput :label="$t('OperationsMaster.code')" v-model="processCode"
+              :placeholder="$t('OperationsMaster.operationCodePlaceholder')" :error="errors.processCode" :invalid="!!errors.processCode"
               :disabled="viewMode" />
-            <FormInput :label="$t('OperationsMaster.name')" v-model="name"
-              :placeholder="$t('OperationsMaster.operationNamePlaceholder')" :error="errors.name" :invalid="!!errors.name"
+            <FormInput :label="$t('OperationsMaster.name')" v-model="processName"
+              :placeholder="$t('OperationsMaster.operationNamePlaceholder')" :error="errors.processName" :invalid="!!errors.processName"
               :disabled="viewMode" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormInput :label="$t('OperationsMaster.laborCost')" v-model="department"
-              :placeholder="$t('OperationsMaster.laborCostPlaceholder')" :error="errors.department"
-              :invalid="!!errors.department" :disabled="viewMode" />
-            <FormInput :label="$t('OperationsMaster.Overhead')" v-model="name"
-              :placeholder="$t('OperationsMaster.overheadPlaceholder')" :error="errors.name" :invalid="!!errors.name"
+            <FormInput :label="$t('OperationsMaster.laborCost')" v-model="laborCostPerHour"
+              :placeholder="$t('OperationsMaster.laborCostPlaceholder')" :error="errors.laborCostPerHour"
+              :invalid="!!errors.laborCostPerHour" :disabled="viewMode" />
+            <FormInput :label="$t('OperationsMaster.Overhead')" v-model="overheadPercentage"
+              :placeholder="$t('OperationsMaster.overheadPlaceholder')" :error="errors.overheadPercentage" :invalid="!!errors.overheadPercentage"
               :disabled="viewMode" />
           </div>
 
@@ -108,11 +127,11 @@ const onSubmit = handleSubmit(async (values) => {
               <label class="text-gray-700 font-medium mb-2 block">
                 {{ $t("OperationsMaster.description") }}
               </label>
-              <Textarea v-model="notes" :placeholder="$t('OperationsMaster.descriptionPlaceholder')"
-                class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.notes }"
+              <Textarea v-model="description" :placeholder="$t('OperationsMaster.descriptionPlaceholder')"
+                class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.description }"
                 :disabled="isSubmitting" />
-              <small v-if="errors.notes" class="text-danger-500">
-                {{ $t(errors.notes) }}
+              <small v-if="errors.description" class="text-danger-500">
+                {{ $t(errors.description) }}
               </small>
             </div>
              <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />

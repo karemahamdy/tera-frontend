@@ -13,7 +13,7 @@ export const OperationsMasterService = {
 
   async getById(id: string): Promise<any> {
     const data = await axiosWrapper.get<any>(`/Operations/${id}`);
-    return data.data;
+    return data;
   },
 
   async create(payload: any) {

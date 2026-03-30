@@ -5,7 +5,7 @@ import { OperationsMasterService } from "../services/OperationsMaster.service";
 import type { OperationsMaster } from "../types/OperationsMaster";
 
 export function useOperationsMaster() {
-  const loading = ref(false);
+ const loading = ref(false);
 const apiOperationsMaster = ref<OperationsMaster[]>([]);
 const tableData = ref<any[]>([]);
 
@@ -16,7 +16,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const StatusFilter = ref('');
+const IsActive = ref<boolean | null | string>(null);
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const { t } = useI18n();
@@ -30,7 +30,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        IsActive: IsActive.value
       });
       const payload = response && response.data ? response.data : response;
       apiOperationsMaster.value = payload.items ?? [];
@@ -124,7 +124,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     const field = filter.filter.field;
     const value = filter.value;
     if (field === "status") {
-      StatusFilter.value = value;
+      IsActive.value = value;
     }
     fetchOperationsMaster(1);
   };

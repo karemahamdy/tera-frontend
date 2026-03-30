@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useOperationsMaster } from "../composables/useOperationsMaster";
@@ -12,11 +12,11 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteOperationsMaster, onFilterChange } = useOperationsMaster();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteOperationsMaster, fetchOperationsMaster, onFilterChange, apiOperationsMaster } = useOperationsMaster();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
-  {
+     {
         action: "toggleActive",
         changeStatus: true,
         label: t("button.active"),
@@ -37,14 +37,9 @@ const rules = [
     "OperationsMaster.processCode",
 ];
 
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 'Department C', machines: "8 machines", isActive: true },
-]);
-// onMounted(() => {
-//     fetchOperationsMaster();
-// });
+onMounted(() => {
+    fetchOperationsMaster();
+});
 const filtersOperation = computed(() => {
     return [
           {
@@ -58,13 +53,13 @@ const filtersOperation = computed(() => {
             ],
         },
         {
-            placeholder: "activeSessions.allStatus",
+            placeholder: "status",
             value: null,
             field: "status",
             options: [
                   { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+                { label: t("button.active"), value: true },
+                { label: t("button.inactive"), value: false },
             ],
         },
     ]
@@ -72,10 +67,10 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'code', header: t('OperationsMaster.code'), sortable: true },
-        { field: 'name', header: t('OperationsMaster.name'), type: 'slot', sortable: true },
-        { field: 'department', header: t('OperationsMaster.LaborCost/Hr'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('OperationsMaster.Overhead'), sortable: true },
+        { field: 'processCode', header: t('OperationsMaster.code'), sortable: true },
+        { field: 'processName', header: t('OperationsMaster.name'), type: 'slot', sortable: true },
+        { field: 'laborCostPerHour', header: t('OperationsMaster.LaborCost/Hr'), type: 'slot', sortable: true },
+        { field: 'overheadPercentage', header: t('OperationsMaster.Overhead'), sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -151,11 +146,11 @@ const addOperationsMaster = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiOperationsMaster" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
-               <template  v-slot:["col-code"]="{ data }">
-                        <span class="text-primary-500 cursor-pointer underline">{{ data.code }}</span>
+               <template  v-slot:["col-processCode"]="{ data }">
+                        <span class="text-primary-500 cursor-pointer underline">{{ data.processCode }}</span>
                     </template>
                     </DynamicTable>
             </template>
