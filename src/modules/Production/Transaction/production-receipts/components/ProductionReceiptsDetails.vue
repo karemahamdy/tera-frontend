@@ -39,7 +39,6 @@ const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
 const [code] = defineField("code");
 const [name] = defineField("name");
 const [department] = defineField("department");
-const [isActive] = defineField("isActive");
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
