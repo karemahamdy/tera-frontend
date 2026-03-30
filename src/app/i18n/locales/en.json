@@ -1626,5 +1626,25 @@
     "workOrdercreateInfo": "Create Work Order",
     "workOrderEditInfo": "Edit Work Order",
     "viewworkOrder": "View Work Order"
+  },
+  "ProductionReceipts": {
+  "ProductionReceipts": "Production Receipts",
+    "subtitle": "Record and track production output",
+    "addNew": "Create Receipt",
+    "searchPlaceholder": "Search Receipts......",
+    "Cost/Unit": "Cost/Unit",
+    "TotalCost": "Total Cost",
+    "quantity": "Quantity",
+    "ProducedQty": "Produced Qty",
+    "WorkOrder":"Work Order",
+    "Date":"Date",
+    "ReceiptNo": "Receipt Number",
+    "deleteConfirm": "Are you sure you want to delete this production receipt?",
+    "ProductionReceiptDeletedSuccessfully": "Production Receipt Deleted Successfully",
+    "ProductionReceiptCreatedSuccessfully": "Production Receipt Created Successfully",
+    "ProductionReceiptUpdatedSuccessfully": "Production Receipt Updated Successfully",
+    "item": "Item",
+    "itemPlaceholder": "Select Item",
+    "workOrderPlaceholder": "Select Work Order"
   }
 }
