@@ -4,7 +4,6 @@ import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import WODetails from '../components/WODetails.vue';
 import Materials from '../components/Materials.vue';
 import Operations from '../components/Operations.vue';
 import ProductionReceiptsDetails from '../components/ProductionReceiptsDetails.vue';

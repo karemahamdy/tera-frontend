@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
 
 const { t } = useI18n();
-const { getItemsLookups, itemsLookups } = useInventoryLookups();
+const { getItemsLookups } = useInventoryLookups();
 
 const props = defineProps<{
     lineItems?: any[];
