@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 import Materials from '../components/Materials.vue';
 import Operations from '../components/Operations.vue';
 import ProductionReceiptsDetails from '../components/ProductionReceiptsDetails.vue';
+import RejectWaste from '../components/RejectWaste.vue';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -51,7 +52,7 @@ const steps = [
               <Operations :mode="mode" />  
             </div>
              <div v-show="activeStep === 3">
-              <!-- <RejectWaste :mode="mode" />   -->
+              <RejectWaste :mode="mode" />  
             </div>
         </template>
       </Card>
