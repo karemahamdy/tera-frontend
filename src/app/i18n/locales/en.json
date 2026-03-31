@@ -88,7 +88,7 @@
     "fromDate": "from Date",
     "min_1": "Minimum 1",
       "mustBeNumber": "Must be a valid number",
-    "mustBeGreaterThanZero": "Must be greater than 0",
+    "mustBeGreaterThanZero": "Must be greater than 0 or equal to 0",
     "minZero": "Must be at least 0",
     "maxHundred": "Must be at most 100"
   },
