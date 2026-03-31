@@ -78,13 +78,16 @@ const columns = computed(() => {
 });
 
 const firstRecord = computed(() => {
+     if (!totalCount.value || totalCount.value === 0) return 0;
     return ((pageIndex.value - 1) * pageSize.value) + 1;
 });
 
 const lastRecord = computed(() => {
+     if (!totalCount.value || totalCount.value === 0) return 0;
     const last = pageIndex.value * pageSize.value;
     return Math.min(last, totalCount.value || last);
 });
+
 
 const confirmDelete = (row: any) => {
     rowToDelete.value = row;
