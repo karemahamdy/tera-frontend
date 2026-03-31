@@ -88,6 +88,16 @@ export function useOperationsMaster() {
   const updateOperationsMaster = async (id: string, payload: any) => {
     loading.value = true;
     try {
+         payload.overheadPercentage =
+        payload.overheadPercentage === "" ||
+        payload.overheadPercentage === undefined
+          ? null
+          : Number(payload.overheadPercentage);
+           payload.laborCostPerHour =
+        payload.laborCostPerHour === "" ||
+        payload.laborCostPerHour === undefined
+          ? null
+          : Number(payload.laborCostPerHour);
       const response = await OperationsMasterService.update(id, payload);
       toastService.success(
         t("OperationsMaster.OperationsMasterUpdatedSuccessfully"),
