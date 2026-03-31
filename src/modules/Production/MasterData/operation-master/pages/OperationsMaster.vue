@@ -6,13 +6,16 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useOperationsMaster } from "../composables/useOperationsMaster";
 import RulesCard from "@/sharedComponents/RulesCard.vue";
+import { useLookups } from "@/composables/useLookups";
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
+
 const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteOperationsMaster, fetchOperationsMaster, onFilterChange, apiOperationsMaster } = useOperationsMaster();
+const { getProcessLookups, processLookups } = useLookups();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -39,17 +42,19 @@ const rules = [
 
 onMounted(() => {
     fetchOperationsMaster();
+    getProcessLookups();
 });
 const filtersOperation = computed(() => {
     return [
           {
             placeholder: "OperationsMaster.name",
             value: null,
-            field: "status",
+            field: "ProcessId",
             options: [
-                  { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+            //       { label: t("usersManagement.allStatus"), value: null },
+            //     { label: t("button.active"), value: "IsActive" },
+            //     { label: t("button.inactive"), value: "InActive" },
+            ...processLookups.value
             ],
         },
         {

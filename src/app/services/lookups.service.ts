@@ -132,4 +132,7 @@ export const LookupsService = {
       `/InventoryLookups/sales-return-reasons`,
     );
   },
+   getProcessLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Operations/GetAllOperationsLockUp");
+  },
 };
