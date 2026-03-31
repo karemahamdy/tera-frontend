@@ -12,6 +12,9 @@ jobs:
   build-and-deploy:
     runs-on: self-hosted
 
+    env:
+      NODE_OPTIONS: "--max-old-space-size=1024"
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -28,14 +31,16 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Check Memory
+        run: free -h  
+
       - name: Build Vue App
         run: yarn build
 
       - name: Deploy to Server
         run: |
-          sudo rm -rf /var/www/vue-app/staging/dist
-          sudo mkdir -p /var/www/vue-app/staging/dist
-          sudo cp -r dist/* /var/www/vue-app/staging/dist/
+          sudo mkdir -p /var/www/vue-app/testing
+          sudo rsync -av --delete dist/ /var/www/vue-app/testing/dist/
 
       - name: Reload Nginx
         run: sudo systemctl reload nginx
