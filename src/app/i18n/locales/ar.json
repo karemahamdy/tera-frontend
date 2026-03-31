@@ -94,7 +94,7 @@
     "fromDate": "من",
     "min_1": "الحد الأدنى 1",
     "mustBeNumber": "يجب إدخال رقم صحيح",
-    "mustBeGreaterThanZero": "يجب أن يكون أكبر من صفر",
+    "mustBeGreaterThanZero": "يجب أن يكون أكبر من صفر او يساوي الصفر",
     "minZero": "يجب ألا يقل عن صفر",
     "maxHundred": "يجب ألا يزيد عن 100"
   },
