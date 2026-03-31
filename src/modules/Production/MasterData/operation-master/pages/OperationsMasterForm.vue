@@ -114,10 +114,10 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormInput :label="$t('OperationsMaster.laborCost')" v-model="laborCostPerHour"
+            <FormInput type="number" :label="$t('OperationsMaster.laborCost')" v-model.number="laborCostPerHour"
               :placeholder="$t('OperationsMaster.laborCostPlaceholder')" :error="errors.laborCostPerHour"
               :invalid="!!errors.laborCostPerHour" :disabled="viewMode" />
-            <FormInput :label="$t('OperationsMaster.Overhead')" v-model="overheadPercentage"
+            <FormInput type="number" :label="$t('OperationsMaster.Overhead')" v-model.number="overheadPercentage"
               :placeholder="$t('OperationsMaster.overheadPlaceholder')" :error="errors.overheadPercentage" :invalid="!!errors.overheadPercentage"
               :disabled="viewMode" />
           </div>
