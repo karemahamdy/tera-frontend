@@ -51,10 +51,16 @@ const handleEdit = () => {
                     <div>
                         <div class="flex items-center gap-6 mb-2">
                             <h1 class="text-2xl font-bold text-[#101828]">{{ data.processName }}</h1>
-                            <span
-                                :class="['px-8 py-0.5 rounded-md  text-md font-medium', 'bg-[#ECFDF3] text-[#027A48]']">
-                                {{ data.isActive ? $t('button.active') : $t('button.inactive') }}
-                            </span>
+                          <span
+  :class="[
+    'px-8 py-0.5 rounded-md text-md font-medium',
+    data.isActive
+      ? 'bg-[#ECFDF3] text-[#027A48]'   // أخضر
+      : 'bg-[#FFF4E5] text-[#ED6C02]'   // برتقالي
+  ]"
+>
+  {{ data.isActive ? $t('button.active') : $t('button.inactive') }}
+</span>
                         </div>
                         <p class="text-[#667085]">{{ data.processCode }}</p>
                     </div>
