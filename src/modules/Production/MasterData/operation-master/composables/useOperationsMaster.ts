@@ -17,6 +17,7 @@ export function useOperationsMaster() {
   const searchTerm = ref("");
   const orderBy = ref("");
   const IsActive = ref<boolean | null | string>(null);
+  const ProcessId = ref<string | null | string>(null);
   const orderDirection = ref<"asc" | "desc">("desc");
 
   const { t } = useI18n();
@@ -31,6 +32,7 @@ export function useOperationsMaster() {
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
         IsActive: IsActive.value,
+        ProcessId: ProcessId.value,
       });
       const payload = response && response.data ? response.data : response;
       apiOperationsMaster.value = payload.items ?? [];
@@ -155,6 +157,9 @@ export function useOperationsMaster() {
     const value = filter.value;
     if (field === "status") {
       IsActive.value = value;
+    }
+    if (field === "ProcessId") {
+      ProcessId.value = value;
     }
     fetchOperationsMaster(1);
   };

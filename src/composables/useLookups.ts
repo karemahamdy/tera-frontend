@@ -34,6 +34,8 @@ export function useLookups() {
   const itemGroupLookups = ref<LookupsOption[]>([]);
   const adjustmentReasonLookups = ref<LookupsOption[]>([]);
   const itemLookups = ref<LookupsOption[]>([]);
+  const processLookups = ref<LookupsOption[]>([]);
+
 
   const getAdjustmentReasonLookups = async () => {
     try {
@@ -359,6 +361,17 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
+    const getProcessLookups = async () => {
+    try {
+      const res = await LookupsService.getProcessLookups();
+      processLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   return {
     groupsLookups,
     branchesLookups,
@@ -389,6 +402,8 @@ export function useLookups() {
     adjustmentReasonLookups,
     itemLookups,
     reasonsSalesLookups,
+    processLookups,
+    getProcessLookups,
     getAdjustmentReasonLookups,
     getIPLookups,
     getReasonLookups,
