@@ -106,20 +106,19 @@ const onSubmit = handleSubmit(async (values) => {
 
           <div class="grid grid-cols-2 gap-4">
             <FormInput :label="$t('OperationsMaster.code')" v-model="processCode"
-              :placeholder="$t('OperationsMaster.operationCodePlaceholder')" :error="errors.processCode" :invalid="!!errors.processCode"
-              :disabled="viewMode" />
+              :placeholder="$t('OperationsMaster.operationCodePlaceholder')" :error="errors.processCode" :invalid="!!errors.processCode" :disabled="viewMode || editMode" />
             <FormInput :label="$t('OperationsMaster.name')" v-model="processName"
               :placeholder="$t('OperationsMaster.operationNamePlaceholder')" :error="errors.processName" :invalid="!!errors.processName"
-              :disabled="viewMode" />
+              />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <FormInput type="number" :label="$t('OperationsMaster.laborCost')" v-model.number="laborCostPerHour"
               :placeholder="$t('OperationsMaster.laborCostPlaceholder')" :error="errors.laborCostPerHour"
-              :invalid="!!errors.laborCostPerHour" :disabled="viewMode" />
+              :invalid="!!errors.laborCostPerHour" />
             <FormInput type="number" :label="$t('OperationsMaster.Overhead')" v-model.number="overheadPercentage"
               :placeholder="$t('OperationsMaster.overheadPlaceholder')" :error="errors.overheadPercentage" :invalid="!!errors.overheadPercentage"
-              :disabled="viewMode" />
+              />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
