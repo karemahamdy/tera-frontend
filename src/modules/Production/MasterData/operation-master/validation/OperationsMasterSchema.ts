@@ -21,7 +21,7 @@ export const OperationsMasterSchema = yup.object({
   overheadPercentage: yup
     .number()
     .transform((value, originalValue) =>
-      originalValue === "" ? undefined : value
+      originalValue === "" ? null : value
     )
     .nullable()
     .notRequired()
