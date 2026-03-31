@@ -5,19 +5,19 @@ import { OperationsMasterService } from "../services/OperationsMaster.service";
 import type { OperationsMaster } from "../types/OperationsMaster";
 
 export function useOperationsMaster() {
- const loading = ref(false);
-const apiOperationsMaster = ref<OperationsMaster[]>([]);
-const tableData = ref<any[]>([]);
+  const loading = ref(false);
+  const apiOperationsMaster = ref<OperationsMaster[]>([]);
+  const tableData = ref<any[]>([]);
 
-const pageIndex = ref(1);
-const pageSize = ref(10);
-const totalCount = ref(0);
-const totalPages = ref(1);
+  const pageIndex = ref(1);
+  const pageSize = ref(10);
+  const totalCount = ref(0);
+  const totalPages = ref(1);
 
-const searchTerm = ref('');
-const orderBy = ref('');
-const IsActive = ref<boolean | null | string>(null);
-const orderDirection = ref<'asc' | 'desc'>('desc');
+  const searchTerm = ref("");
+  const orderBy = ref("");
+  const IsActive = ref<boolean | null | string>(null);
+  const orderDirection = ref<"asc" | "desc">("desc");
 
   const { t } = useI18n();
 
@@ -30,7 +30,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        IsActive: IsActive.value
+        IsActive: IsActive.value,
       });
       const payload = response && response.data ? response.data : response;
       apiOperationsMaster.value = payload.items ?? [];
@@ -61,8 +61,20 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   const createOperationsMaster = async (payload: any) => {
     loading.value = true;
     try {
+      payload.overheadPercentage =
+        payload.overheadPercentage === "" ||
+        payload.overheadPercentage === undefined
+          ? null
+          : Number(payload.overheadPercentage);
+           payload.laborCostPerHour =
+        payload.laborCostPerHour === "" ||
+        payload.laborCostPerHour === undefined
+          ? null
+          : Number(payload.laborCostPerHour);
       const response = await OperationsMasterService.create(payload);
-      toastService.success(t("OperationsMaster.OperationsMasterCreatedSuccessfully"));
+      toastService.success(
+        t("OperationsMaster.OperationsMasterCreatedSuccessfully"),
+      );
       await fetchOperationsMaster(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -77,7 +89,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       const response = await OperationsMasterService.update(id, payload);
-      toastService.success(t("OperationsMaster.OperationsMasterUpdatedSuccessfully"));
+      toastService.success(
+        t("OperationsMaster.OperationsMasterUpdatedSuccessfully"),
+      );
       await fetchOperationsMaster(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -92,9 +106,13 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       await OperationsMasterService.delete(id);
-      toastService.success((t("OperationsMaster.OperationsMasterDeletedSuccessfully")));
-      apiOperationsMaster.value = apiOperationsMaster.value.filter((b) => b.id !== id);
-      fetchOperationsMaster(pageIndex.value)
+      toastService.success(
+        t("OperationsMaster.OperationsMasterDeletedSuccessfully"),
+      );
+      apiOperationsMaster.value = apiOperationsMaster.value.filter(
+        (b) => b.id !== id,
+      );
+      fetchOperationsMaster(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
       throw err;
@@ -107,7 +125,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       await OperationsMasterService.toggleActive(id, isActive);
-      toastService.success((t("OperationsMaster.OperationsMasterUpdatedSuccessfully")));
+      toastService.success(
+        t("OperationsMaster.OperationsMasterUpdatedSuccessfully"),
+      );
       await fetchOperationsMaster(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);
@@ -134,11 +154,11 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     fetchOperationsMaster(1);
   };
 
-  const onSort = (orderByField: string, direction: 'asc' | 'desc') => {
+  const onSort = (orderByField: string, direction: "asc" | "desc") => {
     orderBy.value = orderByField;
     orderDirection.value = direction;
     fetchOperationsMaster(1);
-  }
+  };
 
   return {
     loading,
@@ -157,6 +177,6 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     setPage: (p: number) => fetchOperationsMaster(p),
     onSearch,
     onFilterChange,
-    onSort
+    onSort,
   };
 }
