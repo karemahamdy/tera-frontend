@@ -29,4 +29,5 @@ export interface Pagination {
   orderBy?: string;
   orderDirection?: "asc" | "desc";
   IsActive?: boolean | null | string;
+  ProcessId?: string | null | string;
 }

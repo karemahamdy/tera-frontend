@@ -31,7 +31,7 @@ export const OperationsMasterService = {
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/Operations/Status/${id}`,
+      `/Operations/activate-deactivate-operation/${id}`,
       null,
       {
         params: { isActive }
