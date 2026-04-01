@@ -51,10 +51,8 @@ const filtersOperation = computed(() => {
             value: null,
             field: "ProcessId",
             options: [
-            //       { label: t("usersManagement.allStatus"), value: null },
-            //     { label: t("button.active"), value: "IsActive" },
-            //     { label: t("button.inactive"), value: "InActive" },
-            ...processLookups.value
+                  { label: t("usersManagement.allStatus"), value: null },
+                   ...processLookups.value
             ],
         },
         {
