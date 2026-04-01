@@ -13,7 +13,7 @@ export const workCenterService = {
 
   async getById(id: string): Promise<any> {
     const data = await axiosWrapper.get<any>(`/WorkCenters/${id}`);
-    return data.data;
+    return data;
   },
 
   async create(payload: any) {

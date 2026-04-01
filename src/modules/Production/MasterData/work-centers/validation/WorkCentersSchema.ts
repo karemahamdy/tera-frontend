@@ -1,15 +1,16 @@
+
 import * as yup from "yup";
 
-export const LDCSchema = yup.object({
-  nameEn: yup
+export const WorkCentersschema = yup.object({
+  workCenterCode: yup
     .string()
     .required("form.fieldRequired")
     .min(3, "form.min_3"),
-     nameAr: yup
+  workCenterName: yup
     .string()
     .required("form.fieldRequired")
     .min(3, "form.min_3"),
- code: yup
+ departmentId: yup
     .string()
     .required("form.fieldRequired")
     .min(1, "form.min_1"),
