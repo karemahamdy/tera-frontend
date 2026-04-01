@@ -5,6 +5,7 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useworkCenter } from "../composables/useWorkCenters";
+import { useLookups } from "@/composables/useLookups";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -12,6 +13,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteworkCenter, onFilterChange, fetchworkCenter, apiworkCenter } = useworkCenter();
+const {  departmentsLookups, getDepartmentsLookups } = useLookups();  
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -32,18 +34,19 @@ const customItems = [
 ];
 onMounted(() => {
     fetchworkCenter();
+    getDepartmentsLookups();
 });
 const filtersOperation = computed(() => {
     return [
           {
             placeholder: "workCenter.department",
             value: null,
-            field: "status",
-            // options: [
-            //       { label: t("usersManagement.allStatus"), value: null },
-            //     { label: t("button.active"), value: "IsActive" },
-            //     { label: t("button.inactive"), value: "InActive" },
-            // ],
+            field: "departmentId",
+            options: [
+
+             { label: t("usersManagement.allDepartment"), value: null },
+              ...departmentsLookups.value
+            ],
         },
         {
             placeholder: "status",

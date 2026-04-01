@@ -16,9 +16,9 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-  const IsActive = ref<boolean | null | string>(null);
-
 const orderDirection = ref<'asc' | 'desc'>('desc');
+const IsActive = ref<boolean | null | string>(null);
+const departmentId = ref<string | null | string>(null);
 
   const { t } = useI18n();
 
@@ -31,7 +31,8 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        IsActive: IsActive.value
+        IsActive: IsActive.value,
+        departmentId: departmentId.value,
       });
       const payload = response && response.data ? response.data : response;
       apiworkCenter.value = payload.items ?? [];
@@ -126,6 +127,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     const value = filter.value;
     if (field === "status") {
       IsActive.value = value;
+    }
+    if (field === "departmentId") {
+      departmentId.value = value;
     }
     fetchworkCenter(1);
   };
