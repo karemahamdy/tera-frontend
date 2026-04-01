@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useworkCenter } from "../composables/useWorkCenters";
@@ -11,7 +11,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteworkCenter, onFilterChange } = useworkCenter();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteworkCenter, onFilterChange, fetchworkCenter, apiworkCenter } = useworkCenter();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -30,14 +30,9 @@ const customItems = [
       action: 'view',
     },
 ];
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 'Department C', machines: "8 machines", isActive: true },
-]);
-// onMounted(() => {
-//     fetchworkCenter();
-// });
+onMounted(() => {
+    fetchworkCenter();
+});
 const filtersOperation = computed(() => {
     return [
           {
@@ -56,8 +51,8 @@ const filtersOperation = computed(() => {
             field: "status",
             options: [
                   { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+                { label: t("button.active"), value: true },
+                 { label: t("button.inactive"), value: false },
             ],
         },
     ]
@@ -65,10 +60,10 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'code', header: t('workCenter.code'), sortable: true },
-        { field: 'name', header: t('workCenter.name'), type: 'slot', sortable: true },
-        { field: 'department', header: t('workCenter.department'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('workCenter.machines'), sortable: true },
+        { field: 'workCenterCode', header: t('workCenter.code'), sortable: true },
+        { field: 'workCenterName', header: t('workCenter.name'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('workCenter.department'), type: 'slot', sortable: true },
+        { field: 'machinesCount', header: t('workCenter.machines'), sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -147,7 +142,7 @@ const addworkCenter = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiworkCenter" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
                <template  v-slot:["col-code"]="{ data }">
