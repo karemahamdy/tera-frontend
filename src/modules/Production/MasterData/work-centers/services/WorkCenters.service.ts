@@ -6,43 +6,39 @@ export const workCenterService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<workCenterResponse>(
-      `/LedgerDetailCard`, { params }
+      `/WorkCenters`, { params }
     );
     return resp.data;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
+    const data = await axiosWrapper.get<any>(`/WorkCenters/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
+    const data = await axiosWrapper.post<any>(`/WorkCenters`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/WorkCenters/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
+    await axiosWrapper.delete(`/WorkCenters/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/LedgerDetailCard/Status/${id}`,
-      null,
-      {
-        params: { isActive }
-      }
+      `/WorkCenters/activate-deactivate-operation/${id}/${isActive}`,
     );
     return data.data;
   },
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/LedgerDetailCard/export-workCenters`,
+      `/WorkCenters/export-workCenters`,
       {
         params: payload,
         responseType: "blob",
