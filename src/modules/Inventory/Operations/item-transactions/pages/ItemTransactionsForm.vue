@@ -187,7 +187,7 @@ onMounted(() => {
                   :placeholder="$t('itemTransaction.sourceItemSelect')"
                 />
                 <div
-                  v-if="mergeTransfareType === 'ItemTransfer'"
+                  v-if="mergeTransfareType === 'TransferTransactions'"
                   class="mt-3 p-5 bg-primary-25 rounded-xl"
                 >
                   <p class="text-lg">

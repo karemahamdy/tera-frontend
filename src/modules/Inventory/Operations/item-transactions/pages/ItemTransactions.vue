@@ -119,9 +119,9 @@ onMounted(() => {
                     <template v-slot:["col-operationType"]="{ data }">
                         <div
                             class="flex align-items-center justify-center rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
-                            <VsxIcon v-if="data.operationType === 'ItemTransfer'" iconName="ArrowSwapHorizontal" type="linear" />
+                            <VsxIcon v-if="data.operationType === 'TransferTransactions'" iconName="ArrowSwapHorizontal" type="linear" />
                             <VsxIcon v-else iconName="Routing2" type="linear" />
-                            <span>{{ data.operationType === 'ItemTransfer' ? $t("operation.transfer") : $t('operation.merge') }}</span>
+                            <span>{{ data.operationType === 'TransferTransactions' ? $t("operation.transfer") : $t('operation.merge') }}</span>
                         </div>
                     </template>
                 </DynamicTable>
