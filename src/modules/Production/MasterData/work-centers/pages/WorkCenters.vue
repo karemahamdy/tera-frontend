@@ -41,7 +41,7 @@ const filtersOperation = computed(() => {
           {
             placeholder: "workCenter.department",
             value: null,
-            field: "departmentId",
+            field: "DepartmentId",
             options: [
 
              { label: t("usersManagement.allDepartment"), value: null },
