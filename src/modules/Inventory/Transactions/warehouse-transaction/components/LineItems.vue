@@ -10,10 +10,16 @@ import { useInventoryLookups } from '@/composables/useInventoryLookups';
 const props = withDefaults(defineProps<{
   lineItems?: any[] | null;
   direction?: string;
+  masterWarehouseId?: string | null;
+  masterZoneId?: string | null;
+  masterLocationId?: string | null;
   disabled?: boolean;
 }>(), {
   lineItems: null,
   direction: 'Inbound',
+  masterWarehouseId: null,
+  masterZoneId: null,
+  masterLocationId: null,
   disabled: false,
 });
 
@@ -96,7 +102,7 @@ function mapApiItem(item: any) {
     row: item.row ?? '',
     column: item.column ?? '',
     rack: item.rack ?? '',
-    serials: (item.serialLots || []).map((s: any) => ({
+    serials: (item.serials || item.serialLots || []).map((s: any) => ({
       id: s.id,
       mainSerial: s.mainSerial,
       qty: s.availableQuantity ?? s.qty ?? 0,
@@ -271,13 +277,15 @@ const loadingLocationItemId = ref<any>(null);
 
 const currentLocations = computed(() => {
   if (!locationPickerTarget.value) return [];
-  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === locationPickerTarget.value.warehouseId);
+  const targetWhId = locationPickerTarget.value.warehouseId || props.masterWarehouseId;
+  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === targetWhId);
   return wh?.locations || [];
 });
 
 const openLocationPicker = (item: any) => {
-  if (!item.warehouseId) return;
-  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === item.warehouseId);
+  const targetWhId = item.warehouseId || props.masterWarehouseId;
+  if (!targetWhId) return;
+  const wh = WarehouseHierarchyLookups.value.find(w => w.warehouseId === targetWhId);
   if (wh?.warehouseType === 'Professional') {
     locationPickerTarget.value = item;
     showLocationPicker.value = true;
@@ -327,8 +335,12 @@ const handleWarehouseChange = async (item: any) => {
 };
 
 const fetchItemBalance = async (item: any) => {
-  if (item.itemId && item.warehouseId) {
-    item.balance = await getItemBalance(item.itemId, item.warehouseId, item.zoneId, item.locationId);
+  const targetWhId = item.warehouseId || props.masterWarehouseId;
+  if (item.itemId && targetWhId) {
+    const isMasterWh = targetWhId === props.masterWarehouseId;
+    const targetZnId = isMasterWh ? (item.zoneId || props.masterZoneId) : item.zoneId;
+    const targetLocId = isMasterWh ? (item.locationId || props.masterLocationId) : item.locationId;
+    item.balance = await getItemBalance(item.itemId, targetWhId, targetZnId, targetLocId);
   }
 };
 
@@ -427,7 +439,7 @@ const fetchItemBalance = async (item: any) => {
         <template #col-zone="{ data }">
           <div class="flex flex-col gap-1">
             <template
-              v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === data.warehouseId)?.warehouseType === 'Professional' || (isLoadingLocation && loadingLocationItemId === data.id)">
+              v-if="WarehouseHierarchyLookups.find(w => w.warehouseId === (data.warehouseId || masterWarehouseId))?.warehouseType === 'Professional' || (isLoadingLocation && loadingLocationItemId === data.id)">
               <div v-if="isLoadingLocation && loadingLocationItemId === data.id"
                 class="flex items-center gap-2 text-xs text-primary-500 font-medium py-1 px-2 border border-primary-200 rounded-lg">
                 <ProgressSpinner style="width:14px;height:14px" strokeWidth="6" />
@@ -483,8 +495,11 @@ const fetchItemBalance = async (item: any) => {
       @select="handleSelectItem" />
     <template v-if="showQtyDialog && currentItem">
       <SalesQuantitySerialDialog v-if="direction === 'Transfer' || direction === 'Outbound'" :key="qtyDialogKey" v-model:visible="showQtyDialog"
-        :item="currentItem" :initialSerials="currentItem.serials" :warehouseId="currentItem.warehouseId"
-        :zoneId="currentItem.zoneId" :locationId="currentItem.locationId" :disabled="disabled"
+        :item="currentItem" :initialSerials="currentItem.serials" 
+        :warehouseId="currentItem.warehouseId || masterWarehouseId"
+        :zoneId="(currentItem.warehouseId && currentItem.warehouseId !== masterWarehouseId) ? currentItem.zoneId : (currentItem.zoneId || masterZoneId)" 
+        :locationId="(currentItem.warehouseId && currentItem.warehouseId !== masterWarehouseId) ? currentItem.locationId : (currentItem.locationId || masterLocationId)" 
+        :disabled="disabled"
         @save="handleSaveSerials" />
       <QuantitySerialDialog v-else v-model:visible="showQtyDialog" :item="currentItem"
         :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
