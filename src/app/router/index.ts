@@ -77,6 +77,7 @@ const routes = [
       ...DowntimeRoutes,
       ...WorkOrderTransactionRoutes,
       ...ProductionReceiptsRoutes,
+      
       {
         path: "",
         component: () => import("@/app/layouts/DefaultLayout.vue"),
