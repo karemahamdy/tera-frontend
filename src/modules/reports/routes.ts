@@ -1,4 +1,4 @@
-export const reportsRoutes = [
+export const reportRoutes = [
   {
     path: "/reports/",
     name: "Reports",
