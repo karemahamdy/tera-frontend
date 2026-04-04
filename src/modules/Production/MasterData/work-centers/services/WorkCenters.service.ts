@@ -31,7 +31,7 @@ export const workCenterService = {
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/WorkCenters/activate-deactivate-operation/${id}/${isActive}`,
+      `/WorkCenters/activate-deactivate-WorkCenter/${id}/${isActive}`,
     );
     return data.data;
   },
