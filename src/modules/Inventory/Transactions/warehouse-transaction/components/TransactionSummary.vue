@@ -27,37 +27,37 @@ defineProps({
     <div class="grid grid-cols-1 md:grid-cols-3 gap-y-8 gap-x-12">
       <div>
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.waybillDate') }}</p>
-        <p class="text-base font-semibold text-gray-800">{{ data.waybillDate }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.waybillDate || '-' }}</p>
       </div>
 
       <div>
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.inventoryRequest') }}</p>
-        <p class="text-base font-semibold text-gray-800">{{ data.inventoryRequest }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.inventoryRequest || '-' }}</p>
       </div>
 
       <div>
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.direction') }}</p>
-        <p class="text-base font-semibold text-gray-800">{{ data.direction }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.direction || '-' }}</p>
       </div>
 
       <div v-if="data.direction !== 'Transfer'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.warehouse') }}</p>
-        <p class="text-base font-semibold text-gray-800">{{ data.warehouse }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.warehouse || '-' }}</p>
       </div>
 
       <div v-if="data.direction !== 'Transfer'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.zone') }}</p>
-        <p class="text-base font-semibold text-gray-800">{{ data.zone }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.zone || '-' }}</p>
       </div>
 
       <div v-if="data.direction !== 'Transfer'">
         <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.type') }}</p>
-        <p class="text-base font-semibold text-gray-800">{{ data.type }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.type || '-' }}</p>
       </div>
 
       <div class="md:col-span-3" v-if="data.direction !== 'Transfer'">
-        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('transaction.costCenter') }}</p>
-        <p class="text-base font-semibold text-gray-800">{{ data.costCenter }}</p>
+        <p class="text-sm font-medium text-gray-400 mb-1">{{ t('items.costCenter') }}</p>
+        <p class="text-base font-semibold text-gray-800">{{ data.costCenter || '-' }}</p>
       </div>
     </div>
 

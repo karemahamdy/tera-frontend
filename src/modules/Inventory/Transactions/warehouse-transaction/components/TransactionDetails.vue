@@ -120,6 +120,7 @@ async function handleInventoryRequestChange(val: string) {
       unitName: item.unitName,
       trackingType: item.trackingType,
       serial: item.serial,
+      serialLots: item.serialLots || item.serials,
       baseUnitId: item.baseUnitId,
       baseUnitName: item.baseUnitName,
       warehouseId: item.warehouseId,
