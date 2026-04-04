@@ -33,7 +33,7 @@ import { BOMRoutes } from "@/modules/Production/MasterData/bom/routes";
 import { DowntimeRoutes } from "@/modules/Production/Transaction/downtime/routes";
 import { WorkOrderTransactionRoutes } from "@/modules/Production/Transaction/work-order/routes";
 import { ProductionReceiptsRoutes } from "@/modules/Production/Transaction/production-receipts/routes";
-import { reportRoutes } from "@/modules/Reports/routes";
+import { reportRoutes } from "@/modules/reports/routes";
 // import { reportRoutes } from "@/modules/Reports/routes";
 
 const defaultTitle = "Tera ERP";
