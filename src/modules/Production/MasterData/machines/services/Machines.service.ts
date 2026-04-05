@@ -6,43 +6,39 @@ export const MachinesService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<MachinesResponse>(
-      `/LedgerDetailCard`, { params }
+      `/Machines`, { params }
     );
     return resp.data;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
-    return data.data;
+    const data = await axiosWrapper.get<any>(`/Machines/${id}`);
+    return data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
+    const data = await axiosWrapper.post<any>(`/Machines`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/Machines/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
+    await axiosWrapper.delete(`/Machines/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/LedgerDetailCard/Status/${id}`,
-      null,
-      {
-        params: { isActive }
-      }
+      `/Machines/activate-deactivate-Machine/${id}/${isActive}`,
     );
     return data.data;
   },
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/LedgerDetailCard/export-Machiness`,
+      `/Machines/export-Machiness`,
       {
         params: payload,
         responseType: "blob",
