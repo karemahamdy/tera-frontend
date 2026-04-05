@@ -5,6 +5,7 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useMachines } from "../composables/useMachines";
+import { useLookups } from "@/composables/useLookups";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -12,7 +13,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteMachines, onFilterChange, fetchMachines, apiMachines } = useMachines();
-
+const { getWorkCentersLookups, workCentersLookups } = useLookups();
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
      {
@@ -33,6 +34,7 @@ const customItems = [
 
 onMounted(() => {
     fetchMachines();
+    getWorkCentersLookups();
 });
 const filtersOperation = computed(() => {
     return [
@@ -40,10 +42,10 @@ const filtersOperation = computed(() => {
             placeholder: "workCenter.workCenter",
             value: null,
             field: "WorkCenterId",
-            // options: [
-            //     { label: t("usersManagement.allStatus"), value: null },
-             
-            // ],
+            options: [
+                { label: t("button.all"), value: null },
+             ...workCentersLookups.value
+            ],
         },
         {
             placeholder: "status",
