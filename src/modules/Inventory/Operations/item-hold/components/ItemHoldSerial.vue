@@ -57,10 +57,10 @@ const handleReleaseConfirm = async () => {
     })
     await nextTick()
     await fetchItemHoldLastPage();
-    if (apiHoldingSerials.value?.length == 0) {
+    // if (apiHoldingSerials.value?.length == 0) {
         isVisible.value = false;
         window.location.reload();
-    }
+    // }
 }
 
 const getSerailDialog = (itemTransaction: ItemHoldTransaction) => {

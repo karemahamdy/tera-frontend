@@ -135,4 +135,7 @@ export const LookupsService = {
    getProcessLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>("/Operations/GetAllOperationsLockUp");
   },
+   getWorkCentersLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/WorkCenters/GetAllWorkCentersLockUp");
+  },
 };
