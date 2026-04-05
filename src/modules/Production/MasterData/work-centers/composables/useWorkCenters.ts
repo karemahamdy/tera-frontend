@@ -18,7 +18,7 @@ const searchTerm = ref('');
 const orderBy = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 const IsActive = ref<boolean | null | string>(null);
-const departmentId = ref<string | null | string>(null);
+const DepartmentId = ref<string | null | string>(null);
 
   const { t } = useI18n();
 
@@ -32,7 +32,7 @@ const departmentId = ref<string | null | string>(null);
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
         IsActive: IsActive.value,
-        departmentId: departmentId.value,
+        DepartmentId: DepartmentId.value,
       });
       const payload = response && response.data ? response.data : response;
       apiworkCenter.value = payload.items ?? [];
@@ -128,8 +128,8 @@ const departmentId = ref<string | null | string>(null);
     if (field === "status") {
       IsActive.value = value;
     }
-    if (field === "departmentId") {
-      departmentId.value = value;
+    if (field === "DepartmentId") {
+      DepartmentId.value = value;
     }
     fetchworkCenter(1);
   };

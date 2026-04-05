@@ -4,32 +4,28 @@ import { toastService } from "@/app/services/toastService";
 import { InventoryLookupsService } from "@/app/services/Inventorylookups.service";
 import { LookupsService } from "@/app/services/lookups.service";
 
+const supplierLookups = ref<LookupsOption[]>([]);
+const customerLookups = ref<LookupsOption[]>([]);
+const CurrenciesLookups = ref<LookupsOption[]>([]);
+const IncotermsLookups = ref<LookupsOption[]>([]);
+const WarehouseLookups = ref<LookupsOption[]>([]);
+const PaymentTerms = ref<LookupsOption[]>([]);
+const ZonesLookups = ref<LookupsOption[]>([]);
+const itemsLookups = ref<ItemLookup[]>([]);
+const UnitsLookups = ref<LookupsOption[]>([]);
+const costCenterLookups = ref<LookupsOption[]>([]);
+const WarehouseHierarchyLookups = ref<any[]>([]);
+const serialsLookups = ref<any[]>([]);
+const itemBalance = ref<number>(0);
+const ItemsSerialsLookups = ref<any[]>([]);
+const purchaseWaybills = ref<any[]>([]);
+const purchaseWaybillsItems = ref<any[]>([]);
+const salesWaybills = ref<any[]>([]);
+const salesWaybillsItems = ref<any[]>([]);
+const inspectionResultsLookups = ref<any[]>([]);
+const inventoryRequests = ref<LookupsOption[]>([]);
+
 export function useInventoryLookups() {
-  const supplierLookups = ref<LookupsOption[]>([]);
-  const customerLookups = ref<LookupsOption[]>([]);
-  const CurrenciesLookups = ref<LookupsOption[]>([]);
-  const IncotermsLookups = ref<LookupsOption[]>([]);
-  const WarehouseLookups = ref<LookupsOption[]>([]);
-  const PaymentTerms = ref<LookupsOption[]>([]);
-  const ZonesLookups = ref<LookupsOption[]>([]);
-  const itemsLookups = ref<ItemLookup[]>([]);
-  const UnitsLookups = ref<LookupsOption[]>([]);
-  const costCenterLookups = ref<LookupsOption[]>([]);
-  const WarehouseHierarchyLookups = ref<any[]>([]);
-  const serialsLookups = ref<any[]>([]);
-  const itemBalance = ref<number>(0);
-
-  const ItemsSerialsLookups = ref<any[]>([]);
-
-  const purchaseWaybills = ref<any[]>([]);
-  const purchaseWaybillsItems = ref<any[]>([]);
-
-  const salesWaybills = ref<any[]>([]);
-  const salesWaybillsItems = ref<any[]>([]);
-
-  const inspectionResultsLookups = ref<any[]>([]);
-  const inventoryRequests = ref<LookupsOption[]>([]);
-
   const getItemSerialsLookups = async (params: {
     itemId: string;
     warehouseId: string;

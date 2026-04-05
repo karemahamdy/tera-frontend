@@ -8,7 +8,6 @@ import { auditLogRoutes } from "@/modules/audit-log/routes";
 import { activeSessionsRoutes } from "@/modules/active-sessions/routes";
 import { notFoundRoutes } from "@/modules/not-found/routes";
 import { branchesRoutes } from "@/modules/branch-management/routes";
-import { reportsRoutes } from "@/modules/reports/routes";
 import { useUserStore } from "@/app/store/useUserStore";
 import { LicenseRoutes } from "@/modules/license-info/routes";
 import { LDCRoutes } from "@/modules/Inventory/MasterData/LDC/routes";
@@ -34,6 +33,7 @@ import { BOMRoutes } from "@/modules/Production/MasterData/bom/routes";
 import { DowntimeRoutes } from "@/modules/Production/Transaction/downtime/routes";
 import { WorkOrderTransactionRoutes } from "@/modules/Production/Transaction/work-order/routes";
 import { ProductionReceiptsRoutes } from "@/modules/Production/Transaction/production-receipts/routes";
+import { reportsRoutes } from "@/modules/Reports/routes";
 
 const defaultTitle = "Tera ERP";
 const routes = [

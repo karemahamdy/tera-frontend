@@ -82,8 +82,8 @@ onMounted(async () => {
     <p class="subheading-title">{{ t("purchaseWaybill.WarehouseDetailsDesc") }}</p>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-    <FormDropdown v-if="!disabled" :label="t('purchaseWaybill.ReceivingWarehouse')" :modelValue="form.warehouseId"
-      :error="errors.warehouseId" :placeholder="t('purchaseWaybill.ReceivingWarehousePlaceholder')"
+    <FormDropdown v-if="!disabled" :label="t('purchaseWaybill.dispatchWarehouse')" :modelValue="form.warehouseId"
+      :error="errors.warehouseId" :placeholder="t('purchaseWaybill.dispatchWarehousePlaceholder')"
       :invalid="!!errors.warehouseId" :options="WarehouseLookups" @update:modelValue="onWarehouseChange" />
     <FormInput v-else :label="t('purchaseWaybill.ReceivingWarehouse')"
       :modelValue="props.warehouseDetails?.warehouseName ?? ''" disabled />

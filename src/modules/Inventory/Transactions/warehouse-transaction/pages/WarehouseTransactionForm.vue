@@ -121,20 +121,20 @@ const summaryData = computed(() => {
   const cc = costCenterLookups.value.find(c => c.value === d.costCenter);
   
   return {
-    waybillDate: toDateStr(d.waybillDate) || '',
-    inventoryRequest: d.inventoryRequestNumber || d.inventoryRequest || '—',
+    waybillDate: toDateStr(d.waybillDate),
+    inventoryRequest: d.inventoryRequestNumber || d.inventoryRequest,
     direction: d.direction,
-    warehouse: wh?.label || '—',
-    zone: d.locationCode || d.zoneName || '—',
-    type: d.type || '—',
-    costCenter: cc?.label || d.costCenter || '—',
+    warehouse: wh?.label,
+    zone: d.locationCode || d.zoneName,
+    type: d.type,
+    costCenter: cc?.label || d.costCenter,
     source: {
-      warehouse: wh?.label || '—',
-      zone: d.locationCode || d.zoneName || '—'
+      warehouse: wh?.label,
+      zone: d.locationCode || d.zoneName
     },
     destination: {
-      warehouse: dstWh?.label || '—',
-      zone: d.destination?.locationCode || d.destination?.zoneName || '—'
+      warehouse: dstWh?.label,
+      zone: d.destination?.locationCode || d.destination?.zoneName
     }
   };
 });
@@ -163,8 +163,8 @@ const submit = async () => {
         quantity: Number(item.quantity) || 0,
         unitOfMeasure: item.unitId || item.unitOfMeasure || null,
         warehouseId: item.warehouseId || det.warehouse || null,
-        zoneId: item.zoneId || null,
-        locationId: item.locationId || null,
+        zoneId: (item.warehouseId && item.warehouseId !== det.warehouse) ? (item.zoneId || null) : (item.zoneId || det.zone || null),
+        locationId: (item.warehouseId && item.warehouseId !== det.warehouse) ? (item.locationId || null) : (item.locationId || det.locationId || null),
         unitPrice: Number(item.unitPrice) || 0,
         total: Number(item.total) || 0,
         serialLots: (item.serials || item.serialLots || []).map((s: any) => ({
@@ -284,6 +284,9 @@ watch(() => formData.details.direction, (newVal, oldVal) => {
               <LineItems
                 :lineItems="formData.lineItems"
                 :direction="formData.details.direction"
+                :masterWarehouseId="formData.details.warehouse"
+                :masterZoneId="formData.details.zone"
+                :masterLocationId="formData.details.locationId"
                 :disabled="isDisabled"
                 @update="(val) => formData.lineItems = val"
               />

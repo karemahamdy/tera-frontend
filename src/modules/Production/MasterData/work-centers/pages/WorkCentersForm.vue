@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useForm } from "vee-validate";
-import { LDCSchema } from "../validation/WorkCentersSchema";
+import { WorkCentersschema } from "../validation/WorkCentersSchema";
 import { useworkCenter } from "../composables/useWorkCenters";
 import router from "@/app/router";
+import { useLookups } from "@/composables/useLookups";
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
@@ -13,34 +14,55 @@ const props = defineProps<{
 const editMode = props.mode === "edit";
 const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { createworkCenter, updateworkCenter } = useworkCenter();
+const { createworkCenter, updateworkCenter, fetchworkCenterById} = useworkCenter();
+const {  departmentsLookups, getDepartmentsLookups } = useLookups();  
 
-type LDCFormValues = {
-  code: string;
-  department: string;
-  name: string;
-  notes: string | null;
+
+type WorkCenterValues = {
+  workCenterCode: string;
+  departmentId: string;
+  workCenterName: string;
+  note: string | null;
   isActive: boolean;
+  rowVersion?: string;
 };
 
-const initialValues: LDCFormValues = {
-  code: "",
-  department: "",
-  name: "",
-  notes: null,
+const initialValues: WorkCenterValues = {
+  workCenterCode: "",
+  departmentId: "",
+  workCenterName: "",
+  note: null,
   isActive: true,
 };
 
-const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
-  validationSchema: LDCSchema,
+const { errors, defineField, handleSubmit, setValues } = useForm<WorkCenterValues>({
+  validationSchema: WorkCentersschema,
   initialValues,
 });
 
-const [code] = defineField("code");
-const [name] = defineField("name");
-const [notes] = defineField("notes");
-const [department] = defineField("department");
+const [workCenterCode] = defineField("workCenterCode");
+const [workCenterName] = defineField("workCenterName");
+const [note] = defineField("note");
+const [departmentId] = defineField("departmentId");
 const [isActive] = defineField("isActive");
+
+onMounted(async () => {
+  getDepartmentsLookups();
+  if (editMode && props.id || viewMode && props.id) {
+    const data = await fetchworkCenterById(props.id);
+    if (data) {
+      const mappedValues: WorkCenterValues = {
+        workCenterName: data.workCenterName ?? null,
+        workCenterCode: data.workCenterCode ?? null,
+        departmentId: data.departmentId ?? null,
+        rowVersion: data.rowVersion,
+        note: data.note ?? null,
+        isActive  : data.isActive   ?? null,
+      };
+        setValues(mappedValues);
+    }
+  }
+});
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
@@ -53,7 +75,7 @@ const onSubmit = handleSubmit(async (values) => {
       await createworkCenter(values);
     }
     router.push({
-      name: "workCenter",
+      name: "WorkCenters",
 
     });
   } catch (error) {
@@ -85,15 +107,15 @@ const onSubmit = handleSubmit(async (values) => {
         <form form @submit.prevent="onSubmit" class="space-y-6 px-20">
 
           <div class="grid grid-cols-2 gap-4">  
-            <FormInput :label="$t('workCenter.workCentercode')" v-model="code" :placeholder="$t('workCenter.codePlaceholder')"
-              :error="errors.code" :invalid="!!errors.code" :disabled="viewMode" />
-               <FormInput :label="$t('workCenter.workCentername')" v-model="name" :placeholder="$t('workCenter.namePlaceholder')"
-              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
+            <FormInput :label="$t('workCenter.workCentercode')" v-model="workCenterCode" :placeholder="$t('workCenter.codePlaceholder')"
+              :error="errors.workCenterCode" :invalid="!!errors.workCenterCode" :disabled="viewMode || editMode" />
+               <FormInput :label="$t('workCenter.workCentername')" v-model="workCenterName" :placeholder="$t('workCenter.namePlaceholder')"
+              :error="errors.workCenterName" :invalid="!!errors.workCenterName" :disabled="viewMode" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('workCenter.department')" v-model="department" :placeholder="$t('workCenter.departmentPlaceholder')"
-              :error="errors.department" :invalid="!!errors.department" :disabled="viewMode" />
+            <FormDropdown :label="$t('workCenter.department')" v-model="departmentId"  :options="departmentsLookups" :placeholder="$t('workCenter.departmentPlaceholder')"
+              :error="errors.departmentId" :invalid="!!errors.departmentId" :disabled="viewMode" />
            <ToggleItem :title="$t('status')" :label="$t('button.active')" v-model="isActive" />
           </div>
 
@@ -101,11 +123,11 @@ const onSubmit = handleSubmit(async (values) => {
             <label class="text-gray-700 font-medium mb-2 block">
               {{ $t("workCenter.notes") }}
             </label>
-            <Textarea v-model="notes" :placeholder="$t('workCenter.notesPlaceholder')"
-              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.notes }"
+            <Textarea v-model="note" :placeholder="$t('workCenter.notesPlaceholder')"
+              class="mt-1 w-full p-3 border rounded-lg" rows="4" :class="{ 'border-danger-500': errors.note }"
               :disabled="isSubmitting" />
-            <small v-if="errors.notes" class="text-danger-500">
-              {{ $t(errors.notes) }}
+            <small v-if="errors.note" class="text-danger-500">
+              {{ $t(errors.note) }}
             </small>
           </div>
 
