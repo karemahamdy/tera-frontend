@@ -224,9 +224,10 @@ const openQtyDialog = (item: any) => {
 const handleSaveSerials = (payload: any) => {
   showQtyDialog.value = false;
   if (currentItem.value) {
-    currentItem.value.serials = payload.serials;
-    currentItem.value.quantity = payload.totalQty;
-    currentItem.value.total = calcTotal(payload.totalQty, currentItem.value.unitPrice);
+    const actualItem = items.value.find(i => i.id === currentItem.value.id) || currentItem.value;
+    actualItem.serials = payload.serials;
+    actualItem.quantity = payload.totalQty;
+    actualItem.total = calcTotal(payload.totalQty, actualItem.unitPrice);
   }
   emitUpdate();
 };
@@ -294,17 +295,19 @@ const openLocationPicker = (item: any) => {
 
 const handleSelectLocation = async (location: any) => {
   if (locationPickerTarget.value) {
-    locationPickerTarget.value.zone = location.zoneName;
-    locationPickerTarget.value.zoneId = location.zoneId;
-    locationPickerTarget.value.locationId = location.id || location.locationId;
-    locationPickerTarget.value.locationCode = location.locationCode;
-    locationPickerTarget.value.row = location.row;
-    locationPickerTarget.value.column = location.column;
-    locationPickerTarget.value.rack = location.rack;
+    const actualItem = items.value.find(i => i.id === locationPickerTarget.value.id) || locationPickerTarget.value;
+    actualItem.zone = location.zoneName;
+    actualItem.zoneId = location.zoneId;
+    actualItem.locationId = location.id || location.locationId;
+    actualItem.locationCode = location.locationCode;
+    actualItem.row = location.row;
+    actualItem.column = location.column;
+    actualItem.rack = location.rack;
 
     // Fetch balance
-    await fetchItemBalance(locationPickerTarget.value);
+    await fetchItemBalance(actualItem);
   }
+  
   emitUpdate();
 };
 
