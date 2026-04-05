@@ -105,7 +105,7 @@ function mapApiItem(item: any) {
     serials: (item.serials || item.serialLots || []).map((s: any) => ({
       id: s.id,
       mainSerial: s.mainSerial,
-      qty: s.availableQuantity ?? s.qty ?? 0,
+      qty: s.qty ?? s.availableQuantity ?? 0,
       batchNumber: s.batchNumber ?? s.batch ?? null,
       expireDate: s.expireDate ?? s.expire ?? null,
       serialNumber2: s.serialNumber2 ?? null,
