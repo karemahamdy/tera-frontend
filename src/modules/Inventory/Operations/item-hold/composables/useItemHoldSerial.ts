@@ -16,6 +16,7 @@ export function useItemHoldSerial() {
 
   const itemId = ref<string | null>(null);
   const warehouseId = ref<string | null>(null);
+  const transactionLineId = ref<string | null>(null);
 
   const orderBy = ref("");
   const orderDirection = ref<"asc" | "desc">("desc");
@@ -42,6 +43,7 @@ export function useItemHoldSerial() {
     page = 1,
     ItemId: string = itemId.value as string,
     WarehouseId: string = warehouseId.value as string,
+    TransactionLineId: string = transactionLineId.value as string,
   ) => {
     loading.value = true;
     apiHoldingSerials.value = [];
@@ -49,6 +51,7 @@ export function useItemHoldSerial() {
       const response: any = await ItemHoldService.getHoldingSerial(
         ItemId,
         WarehouseId,
+        TransactionLineId,
         {
           pageIndex: page,
           pageSize: pageSize.value,
@@ -64,6 +67,7 @@ export function useItemHoldSerial() {
       totalPages.value = payload.totalPages ?? 1;
       itemId.value = ItemId;
       warehouseId.value = WarehouseId;
+      transactionLineId.value = TransactionLineId;
     } catch (err: any) {
       toastService.error(err);
     } finally {

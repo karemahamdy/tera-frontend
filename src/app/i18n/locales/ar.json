@@ -981,7 +981,9 @@
     "serial": "الرقم التسلسلي",
     "action": "الإجراء",
     "release": "تحرير",
-    "itemTransactionsCreatedSuccessfully": "تم إنشاء العمليات بنجاح"
+    "released": "تم التحرير",
+    "itemTransactionsCreatedSuccessfully": "تم إنشاء العمليات بنجاح",
+    "AvailableToRelease": "متاح للتحرير"
   },
   "PhysicalCount": {
     "PhysicalCount": "الجرد الفعلي",
