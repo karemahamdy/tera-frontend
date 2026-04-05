@@ -3,6 +3,7 @@ import router from '@/app/router';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useworkCenter } from '../composables/useWorkCenters';
+
 const props = defineProps<{
   mode: "edit" | "create" | "view";
   id?: string;

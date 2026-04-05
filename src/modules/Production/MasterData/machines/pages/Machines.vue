@@ -100,7 +100,7 @@ const handleActionMenu = async (payload: any) => {
     }
     if (action === 'view') {
         router.push({
-            name: "machinesFormView",
+            name: "MachinesFormView",
             params: { id: data.id },
         });
     }

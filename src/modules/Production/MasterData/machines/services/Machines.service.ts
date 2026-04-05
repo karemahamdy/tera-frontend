@@ -13,7 +13,7 @@ export const MachinesService = {
 
   async getById(id: string): Promise<any> {
     const data = await axiosWrapper.get<any>(`/Machines/${id}`);
-    return data.data;
+    return data;
   },
 
   async create(payload: any) {
