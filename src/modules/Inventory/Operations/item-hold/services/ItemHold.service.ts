@@ -69,10 +69,11 @@ export const ItemHoldService = {
   async getHoldingSerial(
     ItemId: string,
     WarehouseId: string,
+    TransactionLineId: string,
     params: Pagination,
   ) {
     const resp = await axiosWrapper.get<ItemSerialTransactionResponse>(
-      `/item-hold/serial-holding-items-for-releasing/${ItemId}/${WarehouseId}`,
+      `/item-hold/serial-holding-items-for-releasing/${ItemId}/${WarehouseId}/${TransactionLineId}`,
       {
         params,
       },
