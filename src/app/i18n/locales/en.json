@@ -982,7 +982,9 @@
     "serial": "Serial",
     "action": "Action",
     "release": "Release",
-    "itemTransactionsCreatedSuccessfully": "Item Transactions Created Successfully"
+    "released": "Released",
+    "itemTransactionsCreatedSuccessfully": "Item Transactions Created Successfully",
+    "AvailableToRelease": "Available to Release"
   },
   "PhysicalCount": {
     "PhysicalCount": "Physical Count",
