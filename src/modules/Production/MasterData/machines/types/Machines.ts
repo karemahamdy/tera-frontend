@@ -31,3 +31,19 @@ export interface Pagination {
   IsActive?: string;
   WorkCenterId?: string;
 }
+
+export type MachineValues = {
+  machineCode: string;
+  machineName: string;
+  machineModel: string;
+  workCenterId: string;
+  machineCapacity: number | null;
+  costPerHour: number | null;
+  efficiencyPercentage: number | null;
+  overheadPercentage: number | null;
+  setupTime: number | null;
+  setupCostPerHour: number | null;
+  note: string | null;
+  isActive: boolean;
+ rowVersion?: string;
+};

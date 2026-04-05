@@ -22,6 +22,12 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
 
  const { t } = useI18n();
  
+ const removeNullValues = (obj: any) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== null && value !== undefined)
+  );
+};
+
   const fetchMachines = async (page = 1) => {
     loading.value = true;
     try {
@@ -63,7 +69,8 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   const createMachines = async (payload: any) => {
     loading.value = true;
     try {
-      const response = await MachinesService.create(payload);
+     const cleanedPayload = removeNullValues(payload);
+    const response = await MachinesService.create(cleanedPayload);
       toastService.success(t("Machines.MachinesCreatedSuccessfully"));
       await fetchMachines(pageIndex.value);
       return response;
@@ -78,7 +85,8 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   const updateMachines = async (id: string, payload: any) => {
     loading.value = true;
     try {
-      const response = await MachinesService.update(id, payload);
+       const cleanedPayload = removeNullValues(payload);
+    const response = await MachinesService.update(id, cleanedPayload);
       toastService.success(t("Machines.MachinesUpdatedSuccessfully"));
       await fetchMachines(pageIndex.value);
       return response;
