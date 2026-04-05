@@ -5,7 +5,7 @@ import { MachinesService } from "../services/Machines.service";
 import type { Machines } from "../types/Machines";
 
 export function useMachines() {
-  const loading = ref(false);
+const loading = ref(false);
 const apiMachines = ref<Machines[]>([]);
 const tableData = ref<any[]>([]);
 
@@ -16,11 +16,12 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const StatusFilter = ref('');
+const IsActive = ref('');
+const WorkCenterId = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
-  const { t } = useI18n();
-
+ const { t } = useI18n();
+ 
   const fetchMachines = async (page = 1) => {
     loading.value = true;
     try {
@@ -30,7 +31,8 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        IsActive: IsActive.value,
+        WorkCenterId: WorkCenterId.value
       });
       const payload = response && response.data ? response.data : response;
       apiMachines.value = payload.items ?? [];
@@ -123,8 +125,11 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
-      StatusFilter.value = value;
+    if (field === "IsActive") {
+      IsActive.value = value;
+    }
+     if (field === "WorkCenterId") {
+      WorkCenterId.value = value;
     }
     fetchMachines(1);
   };
