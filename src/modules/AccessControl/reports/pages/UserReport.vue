@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import ReportFilters from "../components/ReportFilters.vue";
 import { useI18n } from "vue-i18n";
 import { useLookups } from "@/composables/useLookups";
 import { useReports } from "../composables/useReports";
