@@ -13,7 +13,7 @@ export const FileService = {
 
         const link = document.createElement("a");
         link.href = url;
-        link.download = fileName || "user-template-file.xlxs";
+        link.download = fileName || "user-template-file.xlsx";
         document.body.appendChild(link);
         link.click();
 
@@ -45,7 +45,7 @@ export const FileService = {
   window.URL.revokeObjectURL(link.href);
 },
 downloadBlobCSV(data: Blob, fileName: string) {
-  const isCSV = fileName.toLowerCase().endsWith(".xlxs");
+  const isCSV = fileName.toLowerCase().endsWith(".xlsx");
   if (isCSV) {
     const BOM = "\uFEFF";
     data.text().then(text => {

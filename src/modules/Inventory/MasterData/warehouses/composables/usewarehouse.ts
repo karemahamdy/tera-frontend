@@ -174,7 +174,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         WarehouseType: WarehouseType.value,
         IsActive: IsActive.value
       });
-      FileService.downloadBlob(response, "warehouse-data.xlxs");
+      FileService.downloadBlob(response, "warehouse-data.xlsx");
     } catch (err: any) {
       toastService.error(err);
     }

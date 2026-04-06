@@ -119,7 +119,7 @@ const handleConfirm = async () => {
                     searchPlaceholder="activeSessions.searchPlaceholder" @search="search" :rows="pagination.PageSize"
                     :totalRecords="pagination.total" :first="firstRecord" :last="lastRecord" :filters="filtersOperation"
                       :hasMenu="false"  templateFileUrl="/Session/export" dataFileUrl="/Session/export"
-                    templateFileName="session-template.xlxs" dataFileName="session-data.xlxs" />
+                    templateFileName="session-template.xlsx" dataFileName="session-data.xlsx" />
             </template>
             <!-- DynamicTable component -->
             <template #content>

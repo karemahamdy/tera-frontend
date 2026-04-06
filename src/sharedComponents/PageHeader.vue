@@ -30,8 +30,8 @@ const props = defineProps({
   onExportData: { type: Function, default: null },
   templateFileUrl: { type: [String, null], default: null },
   dataFileUrl: { type: [String, null], default: null },
-  templateFileName: { type: String, default: "template-file.xlxs" },
-  dataFileName: { type: String, default: "data-file.xlxs" },
+  templateFileName: { type: String, default: "template-file.xlsx" },
+  dataFileName: { type: String, default: "data-file.xlsx" },
   filters: { type: Array, default: [] },
   requiresBody: { type: Boolean, default: false },
 });

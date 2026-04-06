@@ -186,8 +186,8 @@ const addUserGroup = () => {
           hasMenu
           templateFileUrl="/Group/DownloadImportTemplate"
           dataFileUrl="/Group/ExportGroup"
-          templateFileName="group-template.xlxs"
-          dataFileName="group-data.xlxs"
+          templateFileName="group-template.xlsx"
+          dataFileName="group-data.xlsx"
           @upload="importUsers"
         />
       </template>

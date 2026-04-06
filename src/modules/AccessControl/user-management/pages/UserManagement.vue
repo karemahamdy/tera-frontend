@@ -234,8 +234,8 @@ onMounted(() => {
           hasMenu
           templateFileUrl="/Users/DownloadImportTemplate"
           dataFileUrl="/Users/exportUsers"
-          templateFileName="user-template.xlxs"
-          dataFileName="user-data.xlxs"
+          templateFileName="user-template.xlsx"
+          dataFileName="user-data.xlsx"
           @upload="importUsers"
         />
       </template>
