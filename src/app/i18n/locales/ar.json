@@ -1441,7 +1441,11 @@
     "note": "يجب أن يكون كود العملية فريدًا",
     "operation": "يمكن ربط العمليات في مسار قائمة المواد",
     "processCode": "لا يمكن الحذف إذا كانت العملية مستخدمة في أي قائمة مواد",
-    "ruleHeader": "قواعد العمل"
+    "ruleHeader": "قواعد العمل",
+    "OperationsMaster(Code&Name)": "العمليات (الكود والاسم)",
+    "Operation/Process Master Report": "تقرير العمليات/العمليات",
+    "ReportDescription": "تحليل تكاليف العمالة، المصاريف غير المباشرة",
+    "ReportTitle": "تقرير العمليات/العمليات"
   },
   "machines": {
     "machines": "الآلات",

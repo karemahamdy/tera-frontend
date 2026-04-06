@@ -1446,7 +1446,10 @@
     "note": "Process Code must be unique",
     "operation": "Operations may be linked in BOM routing",
     "processCode": "Cannot delete if operation is used in any BOM",
-    "ruleHeader": "Business Rules"
+    "ruleHeader": "Business Rules",
+    "ReportDescription": "All production processes with labor and overhead setup used in routing and costing",
+    "ReportTitle": "Operation/Process Master Report",
+    "OperationsMaster(Code&Name)": "Operations (Code & Name)"
   },
   "machines": {
     "machines": "Machines",
