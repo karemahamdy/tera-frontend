@@ -10,12 +10,11 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import ChangePassword from "@/sharedComponents/ChangePassword.vue";
 import type { UserListItem } from "../types/User";
-import { useUsers } from "../composables/useUsers";
 import { useLookups } from "@/composables/useLookups";
+import { useUsers } from "../composables/useUsers";
 
 const { list, pagination, changePage, getList, search, sort, deleteItem, onFilterChange, changeUserStatus, resetPassword, importUsers } =
   useUsers();
-
 
 const { groupsLookups, departmentsLookups, getDepartmentsLookups, getGroupLookups } = useLookups();  
 const { t } = useI18n();

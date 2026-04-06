@@ -6,10 +6,10 @@ import { assignRolesSchema } from "../validation/UserAssignRolesSchema";
 import { useRolesUser } from "../composables/assignRolesToUser";
 import { useLookups } from "@/composables/useLookups";
 import { toastService } from "@/app/services/toastService";
-import { useUsers } from "@/modules/user-management/composables/useUsers";
 const { userData, getUserById } = useUsers();
 import type { AssignRole } from "../types/user";
 import { useI18n } from "vue-i18n";
+import { useUsers } from "../../user-management/composables/useUsers";
 const { t } = useI18n();
 
 const route = useRoute();

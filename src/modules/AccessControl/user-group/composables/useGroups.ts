@@ -5,9 +5,9 @@ import type {
   GroupTableItem,
   AddGroup,
 } from "../../user-group/types/groups";
-import { toastService } from "../../../app/services/toastService";
 import { useI18n } from "vue-i18n";
 import { FileService } from "@/app/services/file.service";
+import { toastService } from "@/app/services/toastService";
 
 export function useGroups() {
   const { t } = useI18n();

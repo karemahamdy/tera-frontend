@@ -8,19 +8,19 @@ export const reportsRoutes = [
       {
         path: "/reports/user",
         name: "userReport",
-        component: () => import("./pages/UserReport.vue"),
+        component: () => import("@/modules/AccessControl/reports/pages/UserReport.vue"),
         meta: { permission: null },
       },
       {
         path: "/reports/user-group",
         name: "userGroupReport",
-        component: () => import("./pages/UserGroupReport.vue"),
+        component: () => import("@/modules/AccessControl/reports/pages/UserGroupReport.vue"),
         meta: { permission: null },
       },
       {
         path: "/reports/permission-report",
         name: "PermissionReport",
-        component: () => import("./pages/PermissionReport.vue"),
+        component: () => import("@/modules/AccessControl/reports/pages/PermissionReport.vue"),
         meta: { permission: null },
       },
     ],

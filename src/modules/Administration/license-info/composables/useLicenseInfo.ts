@@ -2,7 +2,6 @@ import { ref, computed, onMounted } from 'vue';
 import type { ActivationInformation } from '../types/license';
 import { AdministrationService } from '../services/group.service';
 
-
 export function useLicenseInfo() {
   const loading = ref(false);
   const licenseInfo = ref<ActivationInformation | null>(null);

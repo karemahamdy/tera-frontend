@@ -1,15 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { authRoutes } from "@/modules/auth/routes.ts";
-import { homeRoutes } from "@/modules/home/routes.ts";
-import { userGroupRoutes } from "@/modules/user-group/routes";
-import { rolesPermissionsRoutes } from "@/modules/roles-permissions/routes";
-import { userManagementRoutes } from "@/modules/user-management/routes";
-import { auditLogRoutes } from "@/modules/audit-log/routes";
-import { activeSessionsRoutes } from "@/modules/active-sessions/routes";
+import { homeRoutes } from "@/modules/home/routes.ts";;
 import { notFoundRoutes } from "@/modules/not-found/routes";
-import { branchesRoutes } from "@/modules/branch-management/routes";
 import { useUserStore } from "@/app/store/useUserStore";
-import { LicenseRoutes } from "@/modules/license-info/routes";
 import { LDCRoutes } from "@/modules/Inventory/MasterData/LDC/routes";
 import { InventoryRoutes } from "@/modules/Inventory/MasterData/warehouses/routes";
 import { itemManagementRoutes } from "@/modules/Inventory/MasterData/items/routes";
@@ -33,7 +26,14 @@ import { BOMRoutes } from "@/modules/Production/MasterData/bom/routes";
 import { DowntimeRoutes } from "@/modules/Production/Transaction/downtime/routes";
 import { WorkOrderTransactionRoutes } from "@/modules/Production/Transaction/work-order/routes";
 import { ProductionReceiptsRoutes } from "@/modules/Production/Transaction/production-receipts/routes";
-import { reportsRoutes } from "@/modules/Reports/routes";
+import { reportsRoutes } from "@/modules/AccessControl/reports/routes";
+import { userManagementRoutes } from "@/modules/AccessControl/user-management/routes";
+import { userGroupRoutes } from "@/modules/AccessControl/user-group/routes";
+import { branchesRoutes } from "@/modules/AccessControl/branch-management/routes";
+import { rolesPermissionsRoutes } from "@/modules/AccessControl/roles-permissions/routes";
+import { auditLogRoutes } from "@/modules/AccessControl/audit-log/routes";
+import { activeSessionsRoutes } from "@/modules/AccessControl/active-sessions/routes";
+import { LicenseRoutes } from "@/modules/Administration/license-info/routes";
 
 const defaultTitle = "Tera ERP";
 const routes = [

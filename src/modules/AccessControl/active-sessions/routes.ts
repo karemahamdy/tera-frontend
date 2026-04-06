@@ -1,7 +1,7 @@
 export const activeSessionsRoutes = [
   {
     path: "/active-sessions",
-    component: () => import("@/modules/active-sessions/pages/ActiveSessions.vue"),
+    component: () => import("@/modules/AccessControl/active-sessions/pages/ActiveSessions.vue"),
     name: "ActiveSessions",
     meta: {
       hide: true,
