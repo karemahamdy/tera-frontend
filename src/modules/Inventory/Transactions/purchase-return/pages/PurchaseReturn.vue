@@ -128,11 +128,16 @@ const addPurchaseReturn = () => {
     router.push({ name: 'PurchaseReturnCreate' });
 };
 const getStatusBadge = (status: any) => {
-    return status === "Posted" ? "status-active" : "status-inactive";
-}
+    return status === "Posted" || status === "مُرحَّل"
+        ? "status-active"
+        : "status-inactive";
+};
+
 const getStatusText = (status: any) => {
-    return status === "Posted" ? "status-text-active" : "status-text-inactive";
-}
+    return status === "Posted" || status === "مُرحَّل"
+        ? "status-text-active"
+        : "status-text-inactive";
+};
 </script>
 
 <template>
@@ -150,7 +155,7 @@ const getStatusText = (status: any) => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiPurchaseReturn" :loading="loading" :customItems="customItems"
-                    :canEdit="(row: any) => row.status !== 'Posted'"
+                    :canEdit="(row: any) => row.status !== 'Posted' && row.status !== 'مُرحَّل'"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
