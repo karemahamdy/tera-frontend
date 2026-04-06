@@ -2,8 +2,6 @@
 import { ref, onMounted, computed, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
-import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import TransactionDetails from '../components/TransactionDetails.vue';
 import LineItems from '../components/LineItems.vue';
 import TransactionSummary from '../components/TransactionSummary.vue';

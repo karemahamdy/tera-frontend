@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
-import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
-
 import OpeningBalanceInfo from '../components/OpeningBalanceInfo.vue';
 import OpeningBalanceReview from '../components/OpeningBalanceReview.vue';
 import { useOpeningBalance } from "../composables/useOpeningBalance";
