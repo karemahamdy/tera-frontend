@@ -1416,6 +1416,7 @@
     "createWorkCenterInfo": "Create Work Center",
     "editWorkCenterInfo": "Edit Work Center",
     "viewworkCenter": "View Work Center"
+
   },
   "OperationsMaster": {
     "operationsMaster": "Operations Master",
@@ -1461,6 +1462,7 @@
     "code": "Machine Code",
     "workCenter": "Work Center",
     "workCenterPlaceholder": "Select Work Center",
+    "machinesName": "Machine Name",
     "Capacity": "Capacity",
     "MachineCapacity": "Machine Capacity",
     "Viewmachines": "View Machines",
@@ -1489,7 +1491,10 @@
     "MachineCodePlaceholder": "Enter Machine Code",
     "MachineNamePlaceholder": "Enter Machine Name",
     "notesPlaceholder": "Add Your Notes...",
-    "notes": "Notes"
+    "notes": "Notes",
+    "ReportTitle": "Machine Master Report",
+    "ReportDescription": "Master list of machines with planning and costing parameters",
+    "machines(Code&Name)": "Machines (Code & Name)"
   },
   "BOM": {
     "Code": "BOM Code",
@@ -1558,7 +1563,11 @@
   "ActiveBOM": "Active BOM (Only one active BOM per product)",
   "BOMeditInfo": "Edit BOM",
   "BOMcreateInfo": "Create BOM",
-  "BOMStatus" : "BOM Status"
+  "BOMStatus" : "BOM Status",
+  "MatQty": "Mat. Qty",
+  "BOM(Code&Name)": "BOM (Code & Name)",
+  "ReportTitle": "BOM Master Report",
+  "ReportDescription": "List BOM header, material lines, and routing lines for each BOM version and final product"
   },
   "downtime": {
     "downtime": "Downtime",
