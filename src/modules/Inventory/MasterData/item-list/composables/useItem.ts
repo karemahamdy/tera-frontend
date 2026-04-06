@@ -150,7 +150,7 @@ const orderDirection = ref<"asc" | "desc">("desc");
         ItemGroupIds: ItemGroupIds.value
 
       });
-      FileService.downloadBlob(response, "item-data.csv");
+      FileService.downloadBlob(response, "item-data.xlxs");
     } catch (err: any) {
       toastService.error(err);
     }

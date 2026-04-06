@@ -170,7 +170,7 @@ watch(
             type="file"
             ref="fileInput"
             style="display: none"
-            accept=".xlsx,.xls,.csv"
+            accept=".xlsx,.xls,.xlxs"
             @change="handleFileUpload"
           />
           <template v-show="false">
