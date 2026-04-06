@@ -57,16 +57,16 @@ const handleReleaseConfirm = async () => {
     })
     await nextTick()
     await fetchItemHoldLastPage();
-    if (apiHoldingSerials.value?.length == 0) {
+    // if (apiHoldingSerials.value?.length == 0) {
         isVisible.value = false;
         window.location.reload();
-    }
+    // }
 }
 
 const getSerailDialog = (itemTransaction: ItemHoldTransaction) => {
     selectedItem.value = itemTransaction
     isVisible.value = true;
-    fetchHoldingSerials(1, itemTransaction.itemId, itemTransaction.warehouseId)
+    fetchHoldingSerials(1, itemTransaction.itemId, itemTransaction.warehouseId, itemTransaction.transactionLineId)
 
 }
 
@@ -85,10 +85,11 @@ defineExpose({
                     @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)"
                     :first="firstRecord" :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" lazy>
                     <template v-slot:["col-release"]="{ data }">
-                        <div @click="confirmRelease(data)"
-                            class="cursor-pointer flex align-items-center justify-center rounded gap-1 p-1 text-sm text-success-500">
-                            <VsxIcon iconName="Unlock" type="linear" />
-                            <span>{{ $t('operation.release') }}</span>
+                        <div @click="!data.isReleased && confirmRelease(data)"
+                            class="flex align-items-center justify-center rounded gap-1 p-1 text-sm"
+                            :class="data.isReleased ? 'text-gray-400 cursor-not-allowed' : 'text-success-500 cursor-pointer'">
+                            <VsxIcon :iconName="data.isReleased ? 'Lock' : 'Unlock'" type="linear" />
+                            <span>{{ data.isReleased ? $t('operation.released') : $t('operation.release') }}</span>
                         </div>
                     </template>
                 </DynamicTable>

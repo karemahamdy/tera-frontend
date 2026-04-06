@@ -17,5 +17,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts", "src/modules/reports/services/reports/.service.ts", "src/modules/Inventory/Transactions/purchase-return/composables/use/ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts", "src/modules/AccessControl/reports/services/reports/.service.ts", "src/modules/Inventory/Transactions/purchase-return/composables/use/ts"]
 }

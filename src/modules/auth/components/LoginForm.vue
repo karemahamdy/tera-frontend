@@ -30,7 +30,7 @@ const { handleSubmit } = useForm({
 const { value: userName, errorMessage: userNameError } = useField<string>("userName");
 const { value: password, errorMessage: passwordError } = useField<string>("password");
 const { value: entityId, errorMessage: entityError } = useField<string | null>("entityId");
-const { value: rememberMe } = useField<boolean>("rememberMe");
+// const { value: rememberMe } = useField<boolean>("rememberMe");
 const loading = ref<boolean>(false)
 
 onMounted(() => {
@@ -107,12 +107,12 @@ const getEntityLookups = async () => {
           <small v-if="passwordError" class="text-danger-500">{{ passwordError }}</small>
         </div>
 
-        <div class="flex items-center gap-2 mt-2">
+        <!-- <div class="flex items-center gap-2 mt-2">
           <Checkbox v-model="rememberMe" :binary="true" inputId="remember" />
           <label for="remember" class="text-gray-700 cursor-pointer">
             {{ $t("auth.rememberMe") }}
           </label>
-        </div>
+        </div> -->
 
         <!-- Login Button -->
         <Button @click="onSubmit" :label="$t('auth.login')" :loading="loading" severity="info" class="w-full" />

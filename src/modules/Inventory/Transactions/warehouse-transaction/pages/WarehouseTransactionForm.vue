@@ -2,8 +2,6 @@
 import { ref, onMounted, computed, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
-import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import TransactionDetails from '../components/TransactionDetails.vue';
 import LineItems from '../components/LineItems.vue';
 import TransactionSummary from '../components/TransactionSummary.vue';
@@ -169,6 +167,7 @@ const submit = async () => {
         total: Number(item.total) || 0,
         serialLots: (item.serials || item.serialLots || []).map((s: any) => ({
           mainSerial: s.mainSerial || s.serial || '',
+          quantity: Number(s.qty ?? s.availableQuantity) || 0,
           availableQuantity: Number(s.qty ?? s.availableQuantity) || 0,
           batchNumber: s.batchNumber || s.batch || null,
           expireDate: s.expireDate || s.expire ? new Date(new Date(s.expireDate || s.expire).getTime() - new Date(s.expireDate || s.expire).getTimezoneOffset() * 60000).toISOString() : null,

@@ -154,7 +154,7 @@ const addItemGroup = () => {
                     searchPlaceholder="itemGroup.searchPlaceholder" :onMainBtnClick="addItemGroup" hasMenu
                     :templateFileUrl="`/ItemClassifications/import-template/${currentLevelString}`"
                     :dataFileUrl="`/ItemClassifications/export/${currentLevelString}`"
-                    templateFileName="item-group-template.csv" dataFileName="item-group-data.csv"
+                    templateFileName="item-group-template.xlxs" dataFileName="item-group-data.xlxs"
                     @upload="importItemGroup" />
             </template>
             <template #content>

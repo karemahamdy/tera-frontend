@@ -68,8 +68,8 @@
     "normal": "عادي",
     "professional": "محترف",
     "all": "الكل",
-    "Posted": "ترحيل",
-    "Pending": "معلق",
+    "Posted": "مُرحَّل",
+    "Pending": "قيد الانتظار",
     "Shipped": "تم الشحن",
     "step": "الخطوة {index} من {total}",
     "free": "حر",
@@ -96,7 +96,8 @@
     "mustBeNumber": "يجب إدخال رقم صحيح",
     "mustBeGreaterThanZero": "يجب أن يكون أكبر من صفر او يساوي الصفر",
     "minZero": "يجب ألا يقل عن صفر",
-    "maxHundred": "يجب ألا يزيد عن 100"
+    "maxHundred": "يجب ألا يزيد عن 100",
+    "max": "وصلت للحد الادنى"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",
@@ -981,7 +982,9 @@
     "serial": "الرقم التسلسلي",
     "action": "الإجراء",
     "release": "تحرير",
-    "itemTransactionsCreatedSuccessfully": "تم إنشاء العمليات بنجاح"
+    "released": "تم التحرير",
+    "itemTransactionsCreatedSuccessfully": "تم إنشاء العمليات بنجاح",
+    "AvailableToRelease": "متاح للتحرير"
   },
   "PhysicalCount": {
     "PhysicalCount": "الجرد الفعلي",

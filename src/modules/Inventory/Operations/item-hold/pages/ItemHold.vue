@@ -45,6 +45,7 @@ const columns = computed(() => {
         { field: 'warehouseName', header: t('operation.warehouse'), sortable: true },
         { field: 'zone', header: t('operation.zone'), sortable: true },
         { field: 'quantity', header: t('operation.quantity'), type: 'slot', sortable: true },
+        { field: 'availableToRelease', header: t('operation.AvailableToRelease'), type: 'slot', sortable: true },
         { field: 'type', header: t('operation.type'), sortable: true },
         { field: 'reason', header: t('operation.reason'), sortable: true },
         { field: 'holdDate', header: t('operation.date'), type: 'date', sortable: true },
@@ -126,10 +127,11 @@ const handleReleaseConfirm = async () => {
                     </template>
                     <template v-slot:["col-release"]="{ data }">
                         <div
-                            @click="confirmRelease(data)"
-                            class="cursor-pointer flex align-items-center justify-center rounded gap-1 p-1 text-sm text-success-500">
-                            <VsxIcon iconName="Unlock" type="linear" />
-                            <span>{{ $t('operation.release') }}</span>
+                            @click="!data.isReleased && confirmRelease(data)"
+                            class="flex align-items-center justify-center rounded gap-1 p-1 text-sm"
+                            :class="data.isReleased ? 'text-gray-400 cursor-not-allowed' : 'text-success-500 cursor-pointer'">
+                            <VsxIcon :iconName="data.isReleased ? 'Lock' : 'Unlock'" type="linear" />
+                            <span>{{ data.isReleased ? $t('operation.released') : $t('operation.release') }}</span>
                         </div>
                     </template>
                 </DynamicTable>

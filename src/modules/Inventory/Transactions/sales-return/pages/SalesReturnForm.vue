@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import ReturnDetails from "../components/ReturnDetails.vue";
-
-import BaseStepper from "@/sharedComponents/stepper/BaseStepper.vue";
-import StepperActions from "@/sharedComponents/stepper/StepperActions.vue";
 import LineItems from "../components/LineItems.vue";
 
 import { useI18n } from "vue-i18n";

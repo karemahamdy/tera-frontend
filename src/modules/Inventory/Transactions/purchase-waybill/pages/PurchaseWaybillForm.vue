@@ -3,8 +3,6 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import SupplierDetails from '../components/SupplierDetails.vue';
 import WarehouseDetails from '../components/WarehouseDetails.vue';
-import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
-import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import LineItems from '../components/LineItems.vue';
 import Payment from '../components/Payment.vue';
 import { usePurchaseWaybill } from '../composables/usePurshace';

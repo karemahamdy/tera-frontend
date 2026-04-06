@@ -144,7 +144,7 @@ const addBranch = () => {
                     :filters="filtersOperation" searchPlaceholder="warehouses.searchPlaceholder" @search="onSearch"
                     :onMainBtnClick="addBranch" @filter-change="onFilterChange" hasMenu @upload="importWarehouse"
                     :onExportData="exportWarehouse" templateFileUrl="/Warehouses/DownloadImportTemplate"
-                    templateFileName="Warehouses-data.csv" dataFileName="Warehouses-data.csv" />
+                    templateFileName="Warehouses-data.xlxs" dataFileName="Warehouses-data.xlxs" />
             </template>
             <!-- DynamicTable component -->
             <template #content>

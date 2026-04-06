@@ -2,8 +2,6 @@
 import { ref, reactive, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
-import BaseStepper from '@/sharedComponents/stepper/BaseStepper.vue';
-import StepperActions from '@/sharedComponents/stepper/StepperActions.vue';
 import LineItems from '../components/LineItems.vue';
 import RequestInfo from '../components/RequestInfo.vue';
 import ReviewSummary from '../components/ReviewSummary.vue';
@@ -48,7 +46,7 @@ onMounted(async () => {
   if (id.value) {
     const result = await fetchInventoryRequestById(id.value);
     if (result) {
-      formData.documentNumber = result.inventoryRequestNumber || result.documentNumber || result.requestId;
+      formData.documentNumber = result.inventoryRequestNumber || result.documentNumber;
       formData.requestedBy = result.requestedBy || result.requestedById;
       formData.requestDate = result.requestDate || result.date ? new Date(result.requestDate || result.date) : new Date();
       formData.type = result.type;

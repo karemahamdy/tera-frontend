@@ -90,7 +90,8 @@
       "mustBeNumber": "Must be a valid number",
     "mustBeGreaterThanZero": "Must be greater than 0 or equal to 0",
     "minZero": "Must be at least 0",
-    "maxHundred": "Must be at most 100"
+    "maxHundred": "Must be at most 100",
+    "max": "Reached the maximum limit"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -982,7 +983,9 @@
     "serial": "Serial",
     "action": "Action",
     "release": "Release",
-    "itemTransactionsCreatedSuccessfully": "Item Transactions Created Successfully"
+    "released": "Released",
+    "itemTransactionsCreatedSuccessfully": "Item Transactions Created Successfully",
+    "AvailableToRelease": "Available to Release"
   },
   "PhysicalCount": {
     "PhysicalCount": "Physical Count",

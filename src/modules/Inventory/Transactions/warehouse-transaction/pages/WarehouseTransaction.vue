@@ -126,6 +126,17 @@ const handleDeleteConfirm = async () => {
 const addWarehouseTransaction = () => {
     router.push({name: 'WarehouseTransactionCreate' });
 };
+const getStatusBadge = (status: any) => {
+    return status === "Posted" || status === "مُرحَّل"
+        ? "status-active"
+        : "status-inactive";
+};
+
+const getStatusText = (status: any) => {
+    return status === "Posted" || status === "مُرحَّل"
+        ? "status-text-active"
+        : "status-text-inactive";
+};
 </script>
 
 <template>
@@ -143,7 +154,7 @@ const addWarehouseTransaction = () => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiWarehouseTransaction" :loading="loading" :customItems="customItems"
-                    @action-menu-click="handleActionMenu" :canEdit="(row: any) => row.status !== 'Posted'"
+                    @action-menu-click="handleActionMenu"  :canEdit="(row: any) => row.status !== 'Posted' && row.status !== 'مُرحَّل'""
                      :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy >
                     <template v-slot:["col-transactionDirection"]="{ data }">
@@ -161,10 +172,10 @@ const addWarehouseTransaction = () => {
                         </div>
                     </template>
                     <template v-slot:["col-status"]="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <Badge :class="data.status == 'Posted' ? 'status-active' : 'status-inactive'"
+                        <div class="flex  align-items-center gap-2">
+                            <Badge :class="getStatusBadge(data.status)"
                                 style="border: 1px solid white;  align-items:center; margin-top:8px"></Badge>
-                            <span :class="data.status == 'Posted' ? 'status-text-active' : 'status-text-inactive'">
+                            <span :class="getStatusText(data.status)">
                                 {{ data.status }}
                             </span>
                         </div>

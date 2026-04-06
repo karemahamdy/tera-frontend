@@ -15,11 +15,11 @@ const isDeleting = ref(false);
 const { loading, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteSalesWaybill, onFilterChange, fetchSalesWaybill, apiSalesWaybill } = useSalesWaybill();
 
 const rules = [
-  "rules.stockAvailable",    
-  "rules.serialLot",         
-  "rules.multiUoM",          
-  "rules.shippingStock",    
-  "rules.carrierIntegration" 
+    "rules.stockAvailable",
+    "rules.serialLot",
+    "rules.multiUoM",
+    "rules.shippingStock",
+    "rules.carrierIntegration"
 ];
 
 const customItems = [
@@ -115,16 +115,21 @@ const addPurchaseWaybill = () => {
     router.push({ name: 'SalesWaybillCreate' });
 };
 const getStatusBadge = (status: any) => {
-    return status === "Posted" ? "status-active" : "status-inactive";
-}
+    return status === "Posted" || status === "مُرحَّل"
+        ? "status-active"
+        : "status-inactive";
+};
+
 const getStatusText = (status: any) => {
-    return status === "Posted" ? "status-text-active" : "status-text-inactive";
-}
+    return status === "Posted" || status === "مُرحَّل"
+        ? "status-text-active"
+        : "status-text-inactive";
+};
 </script>
 
 <template>
     <div class="p-6 w-full h-full bg-gray-100">
-        <ScreenHeader title="inventory"  subtitle="operation.transactions" actionName="salesWaybill.salesWaybill" />
+        <ScreenHeader title="inventory" subtitle="operation.transactions" actionName="salesWaybill.salesWaybill" />
         <card class="bg-[#ffffff] rounded-[10px]">
             <!-- PageHeader component -->
             <template #title>
@@ -137,7 +142,7 @@ const getStatusText = (status: any) => {
             <!-- DynamicTable component -->
             <template #content>
                 <DynamicTable :columns="columns" :data="apiSalesWaybill" :loading="loading" :customItems="customItems"
-                :canEdit="(row: any) => row.status !== 'Posted'"
+                    :canEdit="(row: any) => row.status !== 'Posted' && row.status !== 'مُرحَّل'"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
@@ -150,7 +155,7 @@ const getStatusText = (status: any) => {
                             </span>
                         </div>
                     </template>
-                      <template  v-slot:["col-WaybillId"]="{ data }">
+                    <template v-slot:["col-WaybillId"]="{ data }">
                         <span class="text-primary-500 cursor-pointer underline">{{ data.WaybillId }}</span>
                     </template>
                 </DynamicTable>

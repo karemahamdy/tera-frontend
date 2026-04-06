@@ -175,8 +175,8 @@ const addBranch = () => {
                     :mainBtn="true" mainBtnText="itemList.addItem" :showMultiFilter="true" :filters="filtersOperation"
                     searchPlaceholder="itemList.searchPlaceholder" @search="onSearch" :onMainBtnClick="addBranch"
                     hasMenu @upload="importItem" :onExportData="exportItem" @filter-change="onFilterChange"
-                    templateFileUrl="/Item/DownloadImportTemplate" templateFileName="Items-data.csv"
-                    dataFileName="Items-data.csv">
+                    templateFileUrl="/Item/DownloadImportTemplate" templateFileName="Items-data.xlxs"
+                    dataFileName="Items-data.xlxs">
                     <template #middle>
                         <ItemsInfo />
                     </template>

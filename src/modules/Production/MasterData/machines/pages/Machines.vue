@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useMachines } from "../composables/useMachines";
+import { useLookups } from "@/composables/useLookups";
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteMachines, onFilterChange } = useMachines();
-
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteMachines, onFilterChange, fetchMachines, apiMachines } = useMachines();
+const { getWorkCentersLookups, workCentersLookups } = useLookups();
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
      {
@@ -30,34 +31,30 @@ const customItems = [
         action: 'view',
     },
 ];
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 50, machines: "3 machines", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 90, machines: "3 machines", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 40, machines: "8 machines", isActive: true },
-]);
-// onMounted(() => {
-//     fetchmachines();
-// });
+
+onMounted(() => {
+    fetchMachines();
+    getWorkCentersLookups();
+});
 const filtersOperation = computed(() => {
     return [
         {
             placeholder: "workCenter.workCenter",
             value: null,
-            field: "status",
-            // options: [
-            //     { label: t("usersManagement.allStatus"), value: null },
-            //     { label: t("button.active"), value: "IsActive" },
-            //     { label: t("button.inactive"), value: "InActive" },
-            // ],
+            field: "WorkCenterId",
+            options: [
+                { label: t("button.all"), value: null },
+             ...workCentersLookups.value
+            ],
         },
         {
             placeholder: "status",
             value: null,
-            field: "status",
+            field: "IsActive",
             options: [
                 { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+                { label: t("button.active"), value: true },
+                { label: t("button.inactive"), value: false },
             ],
         },
     ]
@@ -65,11 +62,11 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'code', header: t('machines.code'), sortable: true },
-        { field: 'name', header: t('machines.name'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('machines.workCenter'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('machines.HourCost'), sortable: true },
-        { field: 'department', header: t('machines.Capacity'), type: 'slot', sortable: true },
+        { field: 'machineCode', header: t('machines.code'), sortable: true },
+        { field: 'machineName', header: t('machines.name'), type: 'slot', sortable: true },
+        { field: 'workCenterName', header: t('machines.workCenter'), type: 'slot', sortable: true },
+        { field: 'costPerHour', header: t('machines.HourCost'), sortable: true },
+        { field: 'machineCapacity', header: t('machines.Capacity'), type: 'slot', sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -105,7 +102,7 @@ const handleActionMenu = async (payload: any) => {
     }
     if (action === 'view') {
         router.push({
-            name: "machinesFormView",
+            name: "MachinesFormView",
             params: { id: data.id },
         });
     }
@@ -147,7 +144,7 @@ const addmachines = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiMachines" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
