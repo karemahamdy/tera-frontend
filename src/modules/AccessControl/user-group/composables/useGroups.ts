@@ -60,11 +60,6 @@ export function useGroups() {
       totalCount.value = payload.totalCount ?? 0;
       totalPages.value = payload.totalPages ?? 1;
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
     } finally {
       loading.value = false;
@@ -78,11 +73,6 @@ export function useGroups() {
       const group = await GroupService.getById(id);
       return group;
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
       return null;
     } finally {
@@ -100,11 +90,6 @@ export function useGroups() {
       toastService.success(t("userGroup.userGroupUpdated"));
       fetchGroups(pageIndex.value);
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
       throw err;
     } finally {
@@ -134,11 +119,6 @@ export function useGroups() {
       await fetchGroups();
       return response;
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
       throw err;
     } finally {
@@ -155,11 +135,6 @@ export function useGroups() {
       await fetchGroups();
       return response;
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
       throw err;
     } finally {
@@ -175,11 +150,6 @@ export function useGroups() {
       toastService.success(t("userGroup.userGroupDeleted"));
       apiGroups.value = apiGroups.value.filter((group) => group.id !== id);
     } catch (err: any) {
-      const errors =
-        err?.response?.data?.errors || err?.response?.data?.validationErrors;
-      if (errors && typeof errors === "object") {
-        validationErrors.value = errors;
-      }
       toastService.error(err);
       throw err;
     } finally {

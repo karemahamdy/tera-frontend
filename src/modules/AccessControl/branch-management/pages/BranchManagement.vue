@@ -12,7 +12,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 
-const { loading, fetchBranches, filteredTableData, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useBranches();
+const { loading, fetchBranches, apiBranches, deleteBranch, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage } = useBranches();
 
 onMounted(() => {
     fetchBranches();
@@ -33,7 +33,7 @@ const columns = computed(() => {
         { field: 'name', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
         { field: 'addressEn', header: t('branch.address'), sortable: true },
-        { field: 'status', header: t('status'), type: 'status', sortable: true },
+        { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'createAt', header: t('table.created'), type: 'date', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -104,7 +104,7 @@ const addBranch = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="filteredTableData" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiBranches" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy>
                     <template v-slot:["col-name"]="{ data }">
