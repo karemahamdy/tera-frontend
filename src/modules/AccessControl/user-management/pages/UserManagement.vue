@@ -24,36 +24,6 @@ const showDialog = ref(false);
 const rowToDelete = ref<UserListItem | null>(null);
 const selectedUserId = ref<string | null>(null);
 
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-        id: 1,
-        name: "John Moore",
-        email: "john@tera.com",
-        avatar: null,
-        userGroup: "Administration",
-        department: "Finance",
-        accessScope: "Global",
-        status: "in Active",
-        lastLogin: "Oct 11, 2025",
-      },
-      {
-        id: 2,
-        name: "Mick Taylor",
-        email: "mick@tera.com",
-        avatar: null,
-        userGroup: "Finance Team",
-        department: "Finance",
-        accessScope: "Branch",
-        status: "Active",
-        lastLogin: "Nov 3, 2025",
-      },
-    ],
-  },
-});
-
 const permissionItems = [
   {
     label: "button.new",
