@@ -1706,5 +1706,22 @@
 "ReportDescription": "بنود المواد المخططة في قائمة المكونات المرتبطة بكل أمر تشغيل",
 "MatQty": "كمية المادة",
 "Item(Code & Name)": "الصنف (الكود والاسم)"
+},
+  "OperationActuals": {
+  "OperationActuals": "العمليات الفعلية",
+  "subtitle": "تسجيل التنفيذ الفعلي للعمليات أثناء استلام الإنتاج",
+  "title": "تقرير العمليات الفعلية لإيصال الإنتاج",
+  "ReceiptNo": "رقم الإيصال",
+  "WorkOrder": "أمر الشغل",
+  "Operation": "العملية",
+  "Machine": "الماكينة",
+  "ActualStart": "بداية فعلية",
+  "ActualEnd": "نهاية فعلية",
+  "Process": "العملية",
+  "SEQ": "التسلسل",
+  "BOMSetupTime": "زمن الإعداد (BOM)",
+  "BOMRunTime": "زمن التشغيل (BOM)",
+  "ActualRuntime": "زمن التشغيل الفعلي",
+  "ActualSetupTime": "زمن الإعداد الفعلي"
 }
 }

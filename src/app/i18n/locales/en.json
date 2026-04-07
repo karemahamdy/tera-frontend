@@ -1714,5 +1714,22 @@
   "ReportDescription": "Planned BOM material lines attached to each work order",
   "MatQty": "Mat. Qty",
   "Item(Code & Name)": "Item (Code & Name)"
+  },
+   "OperationActuals": {
+    "OperationActuals": "Operation Actuals",
+    "subtitle": "Actual operation execution captured during production receipt",
+    "title": "Production Receipt Operation Actuals Report",
+    "ReceiptNo": "Receipt NO",
+    "WorkOrder": "Work Order",
+    "Operation": "Operation",
+    "Machine": "Machine",
+    "ActualStart": "Actual Start",
+    "ActualEnd": "Actual End",
+    "Process": "Process",
+   "SEQ": "SEQ",
+   "BOMSetupTime": "BOM Setup Time",
+   "BOMRunTime": "BOM Run Time",
+   "ActualRuntime": "Actual Runtime",
+   "ActualSetupTime": "Actual Setup Time"
   }
 }
