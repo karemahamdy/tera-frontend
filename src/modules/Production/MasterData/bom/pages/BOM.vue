@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useBOM } from "../composables/useBom";
@@ -11,7 +11,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteBOM, onFilterChange } = useBOM();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteBOM, onFilterChange, fetchBOM, apiBOM } = useBOM();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -30,14 +30,10 @@ const customItems = [
         action: 'view',
     },
 ];
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 50, BOM: "3 BOM", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 90, BOM: "3 BOM", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 40, BOM: "8 BOM", isActive: true },
-]);
-// onMounted(() => {
-//     fetchBOM();
-// });
+
+onMounted(() => {
+    fetchBOM();
+});
 const filtersOperation = computed(() => {
     return [
         {
@@ -65,14 +61,14 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'code', header: t('BOM.code'), sortable: true },
-        { field: 'name', header: t('BOM.name'), type: 'slot', sortable: true },
-        { field: 'BOM', header: t('BOM.Product'), type: 'slot', sortable: true },
-        { field: 'BOM', header: t('BOM.Version'), sortable: true },
-        { field: 'department', header: t('BOM.Material'), type: 'slot', sortable: true },
-        { field: 'department', header: t('BOM.Operation'), type: 'slot', sortable: true },
-        { field: 'department', header: t('BOM.TotalCost'), type: 'slot', sortable: true },
-       { field: 'department', header: t('BOM.CreatedOn'), type: 'date', sortable: true },
+        { field: 'bomCode', header: t('BOM.code'), sortable: true },
+        { field: 'bomName', header: t('BOM.name'), type: 'slot', sortable: true },
+        { field: 'parentItemName', header: t('BOM.Product'), type: 'slot', sortable: true },
+        { field: 'version', header: t('BOM.Version'), sortable: true },
+        { field: 'materialsCount', header: t('BOM.Material'), type: 'slot', sortable: true },
+        { field: 'operationsCount', header: t('BOM.Operation'), type: 'slot', sortable: true },
+        { field: 'totalCost', header: t('BOM.TotalCost'), type: 'slot', sortable: true },
+       { field: 'createdAt', header: t('BOM.CreatedOn'), type: 'date', sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -150,7 +146,7 @@ const addBOM = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiBOM" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>

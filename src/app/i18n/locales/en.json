@@ -1692,5 +1692,21 @@
     "SelectItem":"Select Item",
     "TotalDowntimeHours": "Total Downtime Hours",
     "viewProductionReceipt": "View Production Receipt"
+  },
+  "WorkOrderRegister" : {
+    "WorkOrderRegister": "Work Order Register",
+    "WONumber": "WO Number",
+    "Date"  : "Date",
+    "SalesOrder": "Sales Order",
+    "Customer": "Customer",
+    "Product": "Product",
+    "QTY": "QTY",
+    "UOM": "UOM",
+    "WHIN": "WH IN",
+    "WHOUT": "WH OUT",
+    "RelatedWO": "Related WO",
+    "PlannedStart": "Planned Start",
+    "ReportTitle": "Work Order Register",
+    "ReportDescription": "All work orders with header details and current lifecycle status"
   }
 }

@@ -1684,5 +1684,21 @@
     "reason": "السبب",
     "relartedProcess": "العملية ذات الصلة",
     "SelectItem": "اختر الصنف"
-  }
+  },
+  "WorkOrderRegister": {
+    "WorkOrderRegister": "سجل أوامر التشغيل",
+  "WONumber": "رقم أمر التشغيل",
+  "Date": "التاريخ",
+  "SalesOrder": "أمر البيع",
+  "Customer": "العميل",
+  "Product": "المنتج",
+  "QTY": "الكمية",
+  "UOM": "وحدة القياس",
+  "WHIN": "المخزن الوارد",
+  "WHOUT": "المخزن المنصرف",
+  "RelatedWO": "أمر تشغيل مرتبط",
+  "PlannedStart": "بداية مخططة",
+  "ReportTitle": "سجل أوامر التشغيل",
+  "ReportDescription": "جميع أوامر التشغيل مع تفاصيل الرأس وحالة دورة الحياة الحالية"
+}
 }

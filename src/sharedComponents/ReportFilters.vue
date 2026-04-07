@@ -29,7 +29,7 @@ const clearFilters = () => {
 <template>
   <div class="flex flex-wrap justify-between items-center">
     <!-- Filters -->
-    <div class="flex gap-[10px] mt-2 flex-nowrap">
+    <div class="flex gap-[10px] mt-2 mb-2 flex-nowrap">
       <component
         :is="filter.selectionMode === 'single' ? 'Dropdown' : 'MultiSelect'"
         v-for="(filter, index) in filters"
