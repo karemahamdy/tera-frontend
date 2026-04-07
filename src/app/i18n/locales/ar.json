@@ -1723,5 +1723,11 @@
   "BOMRunTime": "زمن التشغيل (BOM)",
   "ActualRuntime": "زمن التشغيل الفعلي",
   "ActualSetupTime": "زمن الإعداد الفعلي"
-}
+},
+  "DowntimeLog": {
+    "ReportTitle": "تقرير مواد أمر التشغيل",
+"ReportDescription": "بنود المواد المخططة في قائمة المكونات (BOM) المرتبطة بكل أمر تشغيل",
+"MatQty": "كمية المادة",
+"Item(Code & Name)": "الصنف (الكود والاسم)"
+  }
 }

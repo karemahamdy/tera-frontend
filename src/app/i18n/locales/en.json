@@ -1731,5 +1731,11 @@
    "BOMRunTime": "BOM Run Time",
    "ActualRuntime": "Actual Runtime",
    "ActualSetupTime": "Actual Setup Time"
+  },
+  "DowntimeLog": {
+    "DowntimeLogReport": "Downtime Log ",
+    "ReportTitle": "Downtime Log Report",
+  "ReportDescription": "List every downtime event recorded for machines, with optional work order reference",
+  "EntryNo": "Entry No"
   }
 }
