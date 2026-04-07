@@ -1737,5 +1737,11 @@
     "ReportTitle": "Downtime Log Report",
   "ReportDescription": "List every downtime event recorded for machines, with optional work order reference",
   "EntryNo": "Entry No"
+  },
+  "ProductionReceipt" : {
+    "ProductionReceiptReport": "Production Receipt",
+    "ReportTitle": "Production Receipt Report",
+    "ReportDescription": "All production receipt transactions for finished goods posting",
+    "ReceiptNo": "Receipt No"
   }
 }
