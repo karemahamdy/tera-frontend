@@ -20,7 +20,7 @@ const {
 const filtersOperation = computed(() => {
   return [
     {
-      placeholder: "OperationsMaster.OperationsMaster(Code&Name)",
+      placeholder: "workCenter.workCenter(Code&Name)",
       value:  filterState.value.status,
       field: "status",
     //   selectionMode: "single",
@@ -29,6 +29,16 @@ const filtersOperation = computed(() => {
         // { label: t("button.inactive"), value: false },
       ],
     },
+     {
+            placeholder: "workCenter.department",
+            value: null,
+            field: "DepartmentId",
+            options: [
+
+             { label: t("usersManagement.allDepartment"), value: null },
+              // ...departmentsLookups.value
+            ],
+        },
        {
       placeholder: "usersManagement.allStatus",
       value:  filterState.value.status,
@@ -49,12 +59,11 @@ const filterState = ref({
 
 const columns = computed(() => {
   const Columns = [
-      { field: 'processCode', header: t('OperationsMaster.code'), sortable: true },
-        { field: 'processName', header: t('OperationsMaster.name'), type: 'slot', sortable: true },
-        { field: 'laborCostPerHour', header: t('OperationsMaster.LaborCost/Hr'), type: 'slot', sortable: true },
-        { field: 'overheadPercentage', header: t('OperationsMaster.Overhead'), sortable: true },
+      { field: 'workCenterCode', header: t('workCenter.code'), sortable: true },
+        { field: 'workCenterName', header: t('workCenter.name'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('workCenter.department'), type: 'slot', sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
-        { field: 'overheadPercentage', header: t('OperationsMaster.description'), sortable: true },
+        { field: 'descrizsption', header: t('workCenter.description'), sortable: true },
   ];
   return Columns;
 });
@@ -127,13 +136,13 @@ onMounted(() => {
 </script>
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
- <ScreenHeader title="production" subtitle="reports.title" actionName="OperationsMaster.operationsMaster" />
+ <ScreenHeader title="production" subtitle="reports.title" actionName="workCenter.workCenter" />
     <card class="bg-white rounded-[10px] w-full overflow-x-auto">
       <!-- PageHeader component -->
       <template #title>
          <PageHeader
-          title="OperationsMaster.ReportTitle"
-          subtitle="OperationsMaster.ReportDescription"
+          title="workCenter.ReportTitle"
+          subtitle="workCenter.ReportDescription"
           :showExport="true"
           :showSearch="false"
           :onExport="onExport"

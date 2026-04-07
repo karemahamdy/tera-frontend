@@ -1415,7 +1415,10 @@
     "editWorkCenterInfoDesc": "Refine and update the details of your work center",
     "createWorkCenterInfo": "Create Work Center",
     "editWorkCenterInfo": "Edit Work Center",
-    "viewworkCenter": "View Work Center"
+    "viewworkCenter": "View Work Center",
+    "ReportTitle": "Work Center Master Report",
+    "ReportDescription": "All work centers and their department assignment and status",
+    "workCenter(Code&Name)": "Work Centers (Code & Name)"
 
   },
   "OperationsMaster": {

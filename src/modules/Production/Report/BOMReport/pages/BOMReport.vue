@@ -143,8 +143,8 @@ const onFilterChange = ({ filter, value }: any) => {
 };
 onMounted(() => {
 //   Promise.all([getGroupLookups(false), getRolesLookups(false)]);
-  const body = getFilterBody([]);
-  setFilter(body);
+  // const body = getFilterBody([]);
+  // setFilter(body);
   hasSearched.value = true;
 });
 
