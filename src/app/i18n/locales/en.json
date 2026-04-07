@@ -1708,5 +1708,11 @@
     "PlannedStart": "Planned Start",
     "ReportTitle": "Work Order Register",
     "ReportDescription": "All work orders with header details and current lifecycle status"
+  },
+  "WorkOrderMaterial": {
+  "ReportTitle": "Work Order Material Report",
+  "ReportDescription": "Planned BOM material lines attached to each work order",
+  "MatQty": "Mat. Qty",
+  "Item(Code & Name)": "Item (Code & Name)"
   }
 }

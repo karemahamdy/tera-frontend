@@ -19,18 +19,18 @@ const {
 
 const filtersOperation = computed(() => {
   return [
-    {
-      placeholder: "WorkOrderRegister.WONumber",
-      value:  filterState.value.status,
-      field: "status",
-    //   selectionMode: "single",
-      options: [
-        // { label: t("button.active"), value: true },
-        // { label: t("button.inactive"), value: false },
-      ],
-    },
+      {
+            placeholder: "downtime.WorkOrder",
+            value: null,
+            field: "DepartmentId",
+            options: [
+
+             { label: t("usersManagement.allDepartment"), value: null },
+              // ...departmentsLookups.value
+            ],
+        },
      {
-            placeholder: "WorkOrderRegister.SalesOrder",
+            placeholder: "BOM.BOM(Code&Name)",
             value: null,
             field: "DepartmentId",
             options: [
@@ -40,27 +40,17 @@ const filtersOperation = computed(() => {
             ],
         },
        {
-      placeholder: "WorkOrderRegister.Product",
+      placeholder: "WorkOrderMaterial.Item(Code & Name)",
       value:  filterState.value.status,
       field: "status",
       // selectionMode: "single",
-      options: [
-        { label: t("button.active"), value: true },
-        { label: t("button.inactive"), value: false },
-      ],
+      // options: [
+      //   { label: t("button.active"), value: true },
+      //   { label: t("button.inactive"), value: false },
+      // ],
     },
-      {
-            placeholder: "WorkOrderRegister.WHIN",
-            value: null,
-            field: "DepartmentId",
-            options: [
-
-             { label: t("usersManagement.allDepartment"), value: null },
-              // ...departmentsLookups.value
-            ],
-        },
           {
-            placeholder: "WorkOrderRegister.WHOUT",
+            placeholder: "BOM.Product",
             value: null,
             field: "DepartmentId",
             options: [
@@ -91,16 +81,20 @@ const filterState = ref({
 const columns = computed(() => {
   const Columns = [
       { field: 'WorkOrderRegisterCode', header: t('WorkOrderRegister.WONumber'), sortable: true },
-        { field: 'WorkOrderRegisterName', header: t('WorkOrderRegister.Date'), type: 'slot', sortable: true },
-        { field: 'departmentName', header: t('WorkOrderRegister.SalesOrder'), type: 'slot', sortable: true },
-        { field: 'departmentName', header: t('WorkOrderRegister.Customer'), type: 'slot', sortable: true },
-        { field: 'departmentName', header: t('WorkOrderRegister.Product'), type: 'slot', sortable: true },
+        { field: 'WorkOrderRegisterName', header: t('BOM.FinalProduct'), type: 'slot', sortable: true },
         { field: 'departmentName', header: t('WorkOrderRegister.QTY'), type: 'slot', sortable: true },
         { field: 'departmentName', header: t('WorkOrderRegister.UOM'), type: 'slot', sortable: true },
-        { field: 'departmentName', header: t('WorkOrderRegister.WHIN'), type: 'slot', sortable: true },
-        { field: 'departmentName', header: t('WorkOrderRegister.WHOUT'), type: 'slot', sortable: true },
-        { field: 'departmentName', header: t('WorkOrderRegister.RelatedWO'), type: 'slot', sortable: true },
-        { field: 'departmentName', header: t('WorkOrderRegister.PlannedStart'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.code'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.name'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.Version'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('itemList.itemCode'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('itemList.itemName'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('WorkOrderRegister.MatQty'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.scrap'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.Seq'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.Process'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.Machine'), type: 'slot', sortable: true },
+        { field: 'departmentName', header: t('BOM.RunTime'), type: 'slot', sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
 
   ];
@@ -175,13 +169,13 @@ onMounted(() => {
 </script>
 <template>
   <div class="p-6 w-full h-full bg-gray-100">
- <ScreenHeader title="production" subtitle="reports.title" actionName="WorkOrderRegister.WorkOrderRegister" />
+ <ScreenHeader title="production" subtitle="reports.title" actionName="WorkOrderMaterial.ReportTitle" />
     <card class="bg-white rounded-[10px] w-full overflow-x-auto">
       <!-- PageHeader component -->
       <template #title>
          <PageHeader
-          title="WorkOrderRegister.ReportTitle"
-          subtitle="WorkOrderRegister.ReportDescription"
+          title="WorkOrderMaterial.ReportTitle"
+          subtitle="WorkOrderMaterial.ReportDescription"
           :showExport="true"
           :showSearch="false"
           :onExport="onExport"
