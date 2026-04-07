@@ -33,12 +33,13 @@ import { auditLogRoutes } from "@/modules/AccessControl/audit-log/routes";
 import { activeSessionsRoutes } from "@/modules/AccessControl/active-sessions/routes";
 import { LicenseRoutes } from "@/modules/Administration/license-info/routes";
 import { reportRoutes } from "@/modules/AccessControl/reports/routes";
-import { BOMReportRoutes } from "@/modules/Production/Report/BOMReport/routes";
+import { BOMReportRoutes } from "@/modules/Production/Report/bom-report/routes";
 import { DowntimeRoutes } from "@/modules/Production/Transaction/downtime/routes";
-import { MachineReportRoutes } from "@/modules/Production/Report/MachineMaster/routes";
-import { OperationReportRoutes } from "@/modules/Production/Report/OperationMaster/routes";
-import { WorkCenterMasterRoutes } from "@/modules/Production/Report/WorkCenterMaster/routes";
-import { WorkOrderReportRoutes } from "@/modules/Production/Report/WorkOrderRegister/routes";
+import { MachineReportRoutes } from "@/modules/Production/Report/machine-master/routes";
+import { OperationReportRoutes } from "@/modules/Production/Report/operation-master/routes";
+import { WorkCenterMasterRoutes } from "@/modules/Production/Report/workcenter-master/routes";
+import { WorkOrderReportRoutes } from "@/modules/Production/Report/workorder-register/routes";
+import { WorkOrderMaterialRoutes } from "@/modules/Production/Report/workorder-material/routes";
 
 const defaultTitle = "Tera ERP";
 const routes = [
@@ -87,6 +88,7 @@ const routes = [
       ...OperationReportRoutes,
       ...WorkCenterMasterRoutes,
       ...WorkOrderReportRoutes,
+      ...WorkOrderMaterialRoutes,
       {
         path: "",
         component: () => import("@/app/layouts/DefaultLayout.vue"),

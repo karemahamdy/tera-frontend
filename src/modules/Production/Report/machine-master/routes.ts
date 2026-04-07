@@ -1,7 +1,7 @@
 export const MachineReportRoutes = [
   {
     path: "/machine-report",
-    component: () => import("@/modules/Production/Report/MachineMaster/pages/MachineReport.vue"),
+    component: () => import("@/modules/Production/Report/machine-master/pages/MachineReport.vue"),
     name: "MachineReport",
     meta: {
       hide: true,

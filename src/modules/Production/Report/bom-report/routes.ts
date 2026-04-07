@@ -1,7 +1,7 @@
 export const BOMReportRoutes = [
   {
     path: "/bom-report",
-    component: () => import("@/modules/Production/Report/BOMReport/pages/BOMReport.vue"),
+    component: () => import("@/modules/Production/Report/bom-report/pages/BOMReport.vue"),
     name: "BOMReport",
     meta: {
       hide: true,
