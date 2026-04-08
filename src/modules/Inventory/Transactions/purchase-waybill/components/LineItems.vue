@@ -266,8 +266,17 @@ const handleWarehouseChange = async (item: any) => {
               <span class="text-gray-500">({{ data.quantity }})</span>
             </template>
             <template v-else>
-              <InputText :value="data.quantity" class="w-20 p-inputtext-sm" :disabled="disabled"
-                @change="(e: any) => { const v = Number(e.target.value) || 0; data.quantity = v; data.total = calcTotal(v, data.unitPrice, data.tax); emitUpdate(); }" />
+             <InputText
+  :value="data.quantity"
+  class="w-20 p-inputtext-sm"
+  :disabled="disabled"
+  @input="(e: any) => {
+    const v = Number(e.target.value) || 0;
+    data.quantity = v;
+    data.total = calcTotal(v, data.unitPrice, data.tax);
+    emitUpdate();
+  }"
+/>
             </template>
           </div>
         </template>
