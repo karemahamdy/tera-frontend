@@ -138,4 +138,8 @@ export const LookupsService = {
    getWorkCentersLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>("/WorkCenters/GetAllWorkCentersLockUp");
   },
+   getAllVersionsLookups() {
+    return axiosWrapper.get<{ data: any[] }>("/Bom/GetAllVersionsLockUp");
+  },
+   
 };

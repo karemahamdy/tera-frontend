@@ -36,6 +36,7 @@ export function useLookups() {
   const itemLookups = ref<LookupsOption[]>([]);
   const processLookups = ref<LookupsOption[]>([]);
   const workCentersLookups = ref<LookupsOption[]>([]);
+  const AllVersionsLookups = ref<LookupsOption[]>([]);
 
   const getAdjustmentReasonLookups = async () => {
     try {
@@ -372,12 +373,23 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
-   const getWorkCentersLookups = async () => {
+  const getWorkCentersLookups = async () => {
     try {
       const res = await LookupsService.getWorkCentersLookups();
       workCentersLookups.value = res.data.map((group) => ({
         label: group.name,
         value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  }
+     const getAllVersionsLookups = async () => {
+    try {
+      const res = await LookupsService.getAllVersionsLookups();
+      AllVersionsLookups.value = res.data.map((group) => ({
+        label: group.version,
+        value: group.version,
       }));
     } catch (error) {
       toastService.error(error as string);
@@ -416,6 +428,8 @@ export function useLookups() {
     reasonsSalesLookups,
     processLookups,
     workCentersLookups,
+    AllVersionsLookups,
+    getAllVersionsLookups,
     getWorkCentersLookups,
     getProcessLookups,
     getAdjustmentReasonLookups,

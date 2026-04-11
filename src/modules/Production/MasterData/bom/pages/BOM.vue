@@ -5,6 +5,7 @@ import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useBOM } from "../composables/useBom";
+import { useLookups } from "@/composables/useLookups";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -12,7 +13,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteBOM, onFilterChange, fetchBOM, apiBOM } = useBOM();
-
+const { AllVersionsLookups  , getAllVersionsLookups} = useLookups();
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
       {
@@ -32,18 +33,18 @@ const customItems = [
 ];
 
 onMounted(() => {
-    fetchBOM();
+  fetchBOM();
+  getAllVersionsLookups();
 });
 const filtersOperation = computed(() => {
     return [
         {
             placeholder: "BOM.Version",
             value: null,
-            field: "status",
+            field: "ParentItemId",
             options: [
-                { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+                { label: t("button.all"), value: null },
+              ...AllVersionsLookups.value,
             ],
         },
         {

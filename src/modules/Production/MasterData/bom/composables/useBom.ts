@@ -17,6 +17,7 @@ const totalPages = ref(1);
 const searchTerm = ref('');
 const orderBy = ref('');
 const StatusFilter = ref('');
+const ParentItemId = ref<string | null>(null);
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const { t } = useI18n();
@@ -30,7 +31,8 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        StatusFilter: StatusFilter.value,
+        ParentItemId: ParentItemId.value,
       });
       const payload = response && response.data ? response.data : response;
       apiBOM.value = payload.items ?? [];
@@ -123,8 +125,11 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
-      StatusFilter.value = value;
+      if (field === "status") {
+        StatusFilter.value = value;
+    }
+    if (field === "ParentItemId") {
+      ParentItemId.value = value;
     }
     fetchBOM(1);
   };
