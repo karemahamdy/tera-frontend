@@ -1009,7 +1009,7 @@
     "CountNumber": "رقم الجرد",
     "ScheduledDate": "التاريخ المجدول",
     "StartNewPhysicalCount": "بدء جرد فعلي جديد",
-    "CompareSystemStockWithActualPhysicalCount": "مقارنة رصيد النظام مع الجرد الفعلي الفعلي",
+    "CompareSystemStockWithActualPhysicalCount": "مقارنة رصيد النظام مع الجرد الفعلي",
     "ItemCode": "كود الصنف",
     "ItemName": "اسم الصنف",
     "SystemBalance": "رصيد النظام",
