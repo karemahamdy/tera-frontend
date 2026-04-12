@@ -1381,7 +1381,8 @@
   },
   "validation": {
     "required": "هذا الحقل مطلوب",
-    "sameSourceAndDestination": "لا يمكن أن يكون المصدر والوجهة متطابقين"
+    "sameSourceAndDestination": "لا يمكن أن يكون المصدر والوجهة متطابقين",
+    "invalidQuantity": "الكمية يجب أن تكون أكبر من الصفر"
   },
   "workCenter": {
     "workCenter": "مركز العمل",

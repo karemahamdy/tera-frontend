@@ -1387,7 +1387,8 @@
   },
   "validation": {
     "required": "This field is required",
-    "sameSourceAndDestination": "Source and destination cannot be the same"
+    "sameSourceAndDestination": "Source and destination cannot be the same",
+    "invalidQuantity": "Invalid quantity must be greater than zero"
   },
   "workCenter": {
     "workCenter": "Work Centers",

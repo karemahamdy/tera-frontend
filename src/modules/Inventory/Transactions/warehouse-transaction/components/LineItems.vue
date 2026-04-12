@@ -135,8 +135,20 @@ function emitUpdate() {
 }
 
 function validate(): boolean {
-  itemsError.value = items.value.length > 0 ? "" : t("validation.atLeastOneItem");
-  return !itemsError.value;
+  if (items.value.length === 0) {
+    itemsError.value = t("validation.atLeastOneItem");
+    return false;
+  }
+
+  const hasInvalidQty = items.value.some(item => !item.quantity || item.quantity <= 0);
+
+  if (hasInvalidQty) {
+    itemsError.value = t("validation.qtyGreaterThanZero");
+    return false;
+  }
+
+  itemsError.value = "";
+  return true;
 }
 
 defineExpose({ validate });
@@ -292,7 +304,12 @@ const openLocationPicker = (item: any) => {
     showLocationPicker.value = true;
   }
 };
-
+function getQtyError(item: any): string {
+  if (!item.quantity || item.quantity <= 0) {
+    return t("validation.invalidQuantity");
+  }
+  return "";
+}
 const handleSelectLocation = async (location: any) => {
   if (locationPickerTarget.value) {
     const actualItem = items.value.find(i => i.id === locationPickerTarget.value.id) || locationPickerTarget.value;
@@ -390,13 +407,17 @@ const fetchItemBalance = async (item: any) => {
               <span class="text-gray-500">({{ data.quantity }})</span>
             </template>
             <template v-else>
-              <InputText v-if="!disabled" v-model.number="data.quantity" class="w-20 p-inputtext-sm" @input="() => {
+              <InputText :class="{ 'p-invalid': !data.quantity || data.quantity <= 0 }"  v-if="!disabled" v-model.number="data.quantity" class="w-20 p-inputtext-sm" @input="() => {
                 data.total = calcTotal(data.quantity, data.unitPrice);
                 emitUpdate();
               }" />
               <span v-else class="text-gray-700">
                 {{ data.quantity }}
               </span>
+              <!-- 👇 أضف الرسالة هنا -->
+<small v-if="!disabled && getQtyError(data)" class="p-error text-xs">
+  {{ getQtyError(data) }}
+</small>
             </template>
           </div>
         </template>
