@@ -121,7 +121,7 @@ const summaryData = computed(() => {
   return {
     waybillDate: toDateStr(d.waybillDate),
     inventoryRequest: d.inventoryRequestNumber || d.inventoryRequest,
-    direction: d.direction,
+    direction: d.direction ? t(`direction.${d.direction}`) : '-',
     warehouse: wh?.label,
     zone: d.locationCode || d.zoneName,
     type: d.type,

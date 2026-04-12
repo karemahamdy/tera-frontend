@@ -1364,7 +1364,10 @@
   "direction": {
     "transfer": "تحويل",
     "inbound": "وارد",
-    "outbound": "صادر"
+    "outbound": "صادر",
+    "Outbound": "صادر",
+    "Inbound": "وارد",
+    "Transfer": "تحويل"
   },
   "steps": {
     "commercialDetails": "البيانات التجارية",
