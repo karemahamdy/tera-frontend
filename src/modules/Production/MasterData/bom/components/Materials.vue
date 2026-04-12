@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import { ref, computed, onMounted } from 'vue';
+import { useForm } from "vee-validate";
 import { useI18n } from 'vue-i18n';
-import { useInventoryLookups } from "@/composables/useInventoryLookups";
+import { useLookups } from '@/composables/useLookups';
+import ItemSelectionDialog from '@/modules/Production/ItemSelectionDialog.vue';
+import { materialSchema } from '../validation/BOMSchema';
 
 const { t } = useI18n();
-const { getItemsLookups, itemsLookups } = useInventoryLookups();
+const { getAllItemsLookUp, itemsLookups } = useLookups();
 
 const props = defineProps<{
     lineItems?: any[];
@@ -18,7 +20,7 @@ const items = ref<any[]>([]);
 
 onMounted(async () => {
     await Promise.all([
-        getItemsLookups(),
+        getAllItemsLookUp(),
     ]);
 });
 
@@ -28,15 +30,21 @@ function emitUpdate() {
 
 const columns = computed(() => [
     { field: 'code', header: t('itemList.itemCode') },
-    { field: 'name', header: t('itemList.itemName') },
+    { field: 'itemName', header: t('itemList.itemName') },
     { field: 'quantity', header: t('itemList.quantity') },
     { field: 'unitId', header: t('itemList.UOM') },
-    { field: 'quantity', header: t('BOM.scrap') },
+    { field: 'scrap', header: t('BOM.scrap') },
     { field: 'notes', header: t('downtime.notes') },
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
-
+// const calculateExpectedQty = (baseQty, compQty, scrap) => {
+//   return baseQty * compQty * (1 + scrap / 100);
+// };
 // --- Item Selection Dialog ---
+
+const { } = useForm({
+  validationSchema: materialSchema,
+});
 const showItemDialog = ref(false);
 const availableItems = computed(() => itemsLookups.value);
 
@@ -45,15 +53,17 @@ const openItemDialog = () => {
 };
 
 const handleSelectItem = (item: any) => {
-    items.value.push({
-        itemId: item.id || item.itemId,
-        trackingType: item.trackingType || null,
-        code: item.code,
-        name: item.name,
-        quantity: 1,
-        uom: item.baseUnitName || 'PCS',
-    });
-    emitUpdate();
+  items.value.push({
+    itemId: item.id || item.itemId,
+    tracked: item.tracked || null,
+    code: item.code,
+    itemName: item.name,
+    quantity: 1,
+    scrap: 0, 
+    unitId: item.baseUnitId || null,
+    notes: '',
+  });
+  emitUpdate();
 };
 
 const removeItem = (data: any) => {
@@ -85,7 +95,7 @@ const removeItem = (data: any) => {
                 :showDelete="false">
                 <template #col-code="{ data }">
                     <div class="flex items-center gap-2 rounded">
-                        <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
+                        <Badge v-if="data.tracked" severity="success" class="circle-badge-sm">
                             <VsxIcon iconName="Brodcast" :size="20" type="linear" />
                         </Badge>
                         <Badge v-else severity="transparent" class="circle-badge">
@@ -109,8 +119,8 @@ const removeItem = (data: any) => {
                         class="w-34 p-inputtext-sm text-sm" />
                 </template>
 
-                <template #col-name="{ data }">
-                    <span class="text-gray-600">{{ data.name }}</span>
+                <template #col-itemName="{ data }">
+                    <span class="text-gray-600">{{ data.itemName }}</span>
                 </template>
                 <template #col-action="{ data }">
                     <button v-if="!disabled" class="text-red-400 hover:text-red-600" @click="removeItem(data)">

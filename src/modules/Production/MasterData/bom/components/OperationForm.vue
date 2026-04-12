@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import ItemSelectionDialog from '@/modules/Inventory/shared/components/ItemSelectionDialog.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useInventoryLookups } from "@/composables/useInventoryLookups";
+import { useLookups } from '@/composables/useLookups';
+import { routingSchema } from '../validation/BOMSchema';
+import { useForm } from 'vee-validate';
 
 const { t } = useI18n();
-const { getItemsLookups, itemsLookups } = useInventoryLookups();
+const { getProcessLookups, processLookups, getMachineLookups, machineLookups } = useLookups();
 
 const props = defineProps<{
     lineItems?: any[];
@@ -18,7 +19,8 @@ const items = ref<any[]>([]);
 
 onMounted(async () => {
     await Promise.all([
-        getItemsLookups(),
+        getProcessLookups(),
+        getMachineLookups(),
     ]);
 });
 
@@ -27,33 +29,30 @@ function emitUpdate() {
 }
 
 const columns = computed(() => [
-    { field: 'code', header: t('BOM.Seq') },
-    { field: 'Process', header: t('BOM.Process') },
-    { field: 'Process', header: t('BOM.Machine') },
-    { field: 'quantity', header: t('BOM.RenTime') },
-    { field: 'quantity', header: t('BOM.Setuptime') },
-    { field: 'notes', header: t('downtime.notes') },
-    ...(props.disabled ? [] : [{ field: 'action', header: '' }])
+  { field: 'sequence', header: t('BOM.Seq') },
+  { field: 'operationId', header: t('BOM.Process') },
+  { field: 'machineId', header: t('BOM.Machine') },
+  { field: 'runTime', header: t('BOM.RenTime') },
+  { field: 'setupTime', header: t('BOM.Setuptime') },
+  { field: 'notes', header: t('downtime.notes') },
+  ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
-// --- Item Selection Dialog ---
-const showItemDialog = ref(false);
-const availableItems = computed(() => itemsLookups.value);
+const {  } = useForm({
+  validationSchema: routingSchema,
+  initialValues: [],
+});
 
-const openItemDialog = () => {
-    if (!props.disabled) showItemDialog.value = true;
-};
-
-const handleSelectItem = (item: any) => {
-    items.value.push({
-        itemId: item.id || item.itemId,
-        trackingType: item.trackingType || null,
-        code: item.code,
-        name: item.name,
-        quantity: 1,
-        uom: item.baseUnitName || 'PCS',
-    });
-    emitUpdate();
+const addEmptyRow = () => {
+  items.value.push({
+    sequence: items.value.length + 1,
+    operationId: null,
+    machineId: null,
+    runTime: 0,
+    setupTime: 0,
+    notes: '',
+  });
+  emitUpdate();
 };
 
 const removeItem = (data: any) => {
@@ -76,22 +75,27 @@ const removeItem = (data: any) => {
             </div>
             <BaseButton v-if="!disabled" :label="t('workOrder.NewRow')" icon="AddSquare"
                 class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
-                @click="openItemDialog" />
+                @click="addEmptyRow" />
         </div>
         
         <!-- Table -->
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
                 :showDelete="false">
-                <template #col-Process="{ data }">
-                    <FormDropdown :modelValue="data.Process" optionLabel="label" optionValue="value"
-                        class="w-34 p-inputtext-sm text-sm" />
+                <template #col-operationId="{ data }">
+                    <FormDropdown :modelValue="data.operationId" :options="processLookups" optionLabel="label" optionValue="value"
+                        class="w-fit-content p-inputtext-sm text-sm" />
                 </template>
-               <template #col-quantity="{ data }">
-                    <div class="flex items-center gap-2">
-                        <InputText v-model.number="data.quantity" class="w-20 p-inputtext-sm" />
-                    </div>
+                <template #col-machineId="{ data }">
+                    <FormDropdown :modelValue="data.machineId" :options="machineLookups" optionLabel="label" optionValue="value"
+                        class="w-fit-content p-inputtext-sm text-sm" />
                 </template>
+                <template #col-runTime="{ data }">
+                    <InputText  v-model.number="data.runTime" class="w-20 p-inputtext-sm" />
+                </template>
+                <template #col-setupTime="{ data }">
+                    <InputText  v-model.number="data.setupTime" class="w-20 p-inputtext-sm" />
+                    </template>
                 <template #col-name="{ data }">
                     <span class="text-gray-600">{{ data.name }}</span>
                 </template>
@@ -100,8 +104,8 @@ const removeItem = (data: any) => {
                             <InputText  v-model.number="data.quantity" class="w-28 p-inputtext-sm" />
                     </div>
                 </template>
-                 <template #col-code="{ data }">
-                    <span class="text-primary-600 border border-primary-600 py-4 px-4 rounded-lg">{{ data.code }}</span>
+                 <template #col-sequence="{ data }">
+                    <span class="text-primary-600 border border-primary-600 py-4 px-4 rounded-lg">{{ data.sequence }}</span>
                 </template>
                 <template #col-action="{ data }">
                     <button v-if="!disabled" class="text-red-400 hover:text-red-600" @click="removeItem(data)">
@@ -110,8 +114,7 @@ const removeItem = (data: any) => {
                 </template>
             </DynamicTable>
         </div>
-        <ItemSelectionDialog v-model:visible="showItemDialog" :items="availableItems" @select="handleSelectItem" />
-
+      
     </div>
 </template>
 

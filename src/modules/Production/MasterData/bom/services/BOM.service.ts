@@ -30,7 +30,7 @@ export const BOMService = {
   },
 
   async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(
+    const data = await axiosWrapper.patch<any>(
       `/Bom/activate-deactivate-Bom/${id}/${isActive}`,
     );
     return data.data;

@@ -5,6 +5,7 @@ import type {
   CodeLookups,
   reasonsLookups,
   ApiResponse,
+  ItemLookup,
 } from "../types/lookups";
 
 export const LookupsService = {
@@ -135,11 +136,18 @@ export const LookupsService = {
    getProcessLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>("/Operations/GetAllOperationsLockUp");
   },
+    getMachineLookups() {
+    return axiosWrapper.get<{ data: Lookups[] }>("/Machines/GetAllMachinesLockUp");
+  },
    getWorkCentersLookups() {
     return axiosWrapper.get<{ data: Lookups[] }>("/WorkCenters/GetAllWorkCentersLockUp");
   },
    getAllVersionsLookups() {
     return axiosWrapper.get<{ data: any[] }>("/Bom/GetAllVersionsLockUp");
   },
-   
+   getAllItemsLookUp() {
+    return axiosWrapper.get<ApiResponse<ItemLookup[]>>(
+      "/Bom/GetAllItemsLockUp",
+    );
+  },
 };

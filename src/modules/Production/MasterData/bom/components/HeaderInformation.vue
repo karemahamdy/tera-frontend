@@ -16,19 +16,23 @@ const isSubmitting = ref(false);
 const { createworkOrder, updateworkOrder } = useworkOrder();
 
 type LDCFormValues = {
-  code: string;
-  department: string;
-  name: string;
+  bomCode: string;
+  bomName: string;
+  parentItemId: string;
+  baseQuantity: number;
   notes: string | null;
   isActive: boolean;
+  version: string;
 };
 
 const initialValues: LDCFormValues = {
-  code: "",
-  department: "",
-  name: "",
+  bomCode: "",
+  bomName: "",
+  parentItemId: "",
+  baseQuantity: 1,
   notes: null,
   isActive: true,
+  version: "Version 1",
 };
 
 const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
@@ -36,11 +40,13 @@ const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
   initialValues,
 });
 
-const [code] = defineField("code");
-const [name] = defineField("name");
-const [department] = defineField("department");
-const [isActive] = defineField("isActive");
+const [bomCode] = defineField("bomCode");
+const [bomName] = defineField("bomName");
+// const [parentItemId] = defineField("parentItemId");
+const [baseQuantity] = defineField("baseQuantity");
 const [notes] = defineField("notes");
+const [isActive] = defineField("isActive");
+const [version] = defineField("version");
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
@@ -73,24 +79,24 @@ const onSubmit = handleSubmit(async (values) => {
       </p>
 
       <div class="grid grid-cols-2 gap-4">
-        <FormInput :label="$t('BOM.code')" v-model="code" :placeholder="$t('WO-2024-001')" :error="errors.code"
-          :invalid="!!errors.code" />
-        <FormInput :label="$t('BOM.name')" v-model="name" :placeholder="$t('BOM.namePlaceholder')" :error="errors.name"
-          :invalid="!!errors.name" />
+        <FormInput :label="$t('BOM.code')" v-model="bomCode" :placeholder="$t('WO-2024-001')" :error="errors.bomCode"
+          :invalid="!!errors.bomCode" />
+        <FormInput :label="$t('BOM.name')" v-model="bomName" :placeholder="$t('BOM.namePlaceholder')" :error="errors.bomName"
+          :invalid="!!errors.bomName" />
       </div>
 
       <div class="grid grid-cols-2 gap-4">
-        <FormInput :label="$t('BOM.versions')" v-model="department" :placeholder="$t('Version 1')"
-          :error="errors.department" :invalid="!!errors.department" />
-        <FormInput :label="$t('BOM.quantity')" v-model="department" :placeholder="$t('BOM.quantityPlaceholder')"
-          :error="errors.department" :invalid="!!errors.department" />
+        <FormInput :label="$t('BOM.versions')" v-model="version" :placeholder="$t('Version 1')"
+          :error="errors.version" :invalid="!!errors.version" disabled/>
+        <FormInput :label="$t('BOM.quantity')" v-model="baseQuantity" :placeholder="$t('BOM.quantityPlaceholder')"
+          :error="errors.baseQuantity" :invalid="!!errors.baseQuantity" />
       </div>
 
       <div class="grid grid-cols-2 gap-4">
-        <FormDropdown :label="$t('BOM.FinalProduct')" v-model="name" :placeholder="$t('BOM.FinalProductPlaceholder')"
-          :error="errors.name" :invalid="!!errors.name" />
-        <FormInput :label="$t('workOrder.UOM')" v-model="code" :placeholder="$t('workOrder.UOMPlaceholder')"
-          :error="errors.code" :invalid="!!errors.code" />
+        <FormDropdown :label="$t('BOM.FinalProduct')" v-model="bomName" :placeholder="$t('BOM.FinalProductPlaceholder')"
+          :error="errors.bomName" :invalid="!!errors.bomName" />
+        <FormInput :label="$t('workOrder.UOM')" v-model="bomCode" :placeholder="$t('workOrder.UOMPlaceholder')"
+          :error="errors.bomCode" :invalid="!!errors.bomCode" />
       </div>
       <ToggleItem :title="$t('BOM.BOMStatus')" :label="$t('BOM.ActiveBOM')" v-model="isActive" />
       <div>

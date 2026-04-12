@@ -35,8 +35,11 @@ export function useLookups() {
   const adjustmentReasonLookups = ref<LookupsOption[]>([]);
   const itemLookups = ref<LookupsOption[]>([]);
   const processLookups = ref<LookupsOption[]>([]);
+  const machineLookups = ref<LookupsOption[]>([]);
   const workCentersLookups = ref<LookupsOption[]>([]);
   const AllVersionsLookups = ref<LookupsOption[]>([]);
+  const itemsLookups = ref<any[]>([]);
+
 
   const getAdjustmentReasonLookups = async () => {
     try {
@@ -373,6 +376,17 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
+  const getMachineLookups = async () => {
+    try {
+      const res = await LookupsService.getMachineLookups();
+      machineLookups.value = res.data.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   const getWorkCentersLookups = async () => {
     try {
       const res = await LookupsService.getWorkCentersLookups();
@@ -395,7 +409,14 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
-
+  const getAllItemsLookUp = async () => {
+    try {
+      const res = await LookupsService.getAllItemsLookUp();
+      itemsLookups.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   return {
     groupsLookups,
     branchesLookups,
@@ -429,9 +450,13 @@ export function useLookups() {
     processLookups,
     workCentersLookups,
     AllVersionsLookups,
+    itemsLookups,
+    machineLookups,
+    getAllItemsLookUp,
     getAllVersionsLookups,
     getWorkCentersLookups,
     getProcessLookups,
+    getMachineLookups,
     getAdjustmentReasonLookups,
     getIPLookups,
     getReasonLookups,
