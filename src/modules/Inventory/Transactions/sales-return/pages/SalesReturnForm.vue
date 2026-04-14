@@ -27,8 +27,19 @@ const {
 } = form;
 
 const activeStep = ref<number>(0);
-const nextTab = () => {
-  if (activeStep.value < steps.value.length - 1) activeStep.value++;
+const nextTab = async () => {
+  if (activeStep.value === 0) {
+    const fieldsToValidate = ['documentNumber', 'customerId', 'returnDate', 'returnReason', 'warehouseId'];
+    const results = await Promise.all(fieldsToValidate.map(f => form.validateField(f as keyof typeof form.errors)));
+    if (results.some(r => !r.valid)) return;
+  } else if (activeStep.value === 1) {
+    const r = await form.validateField('lineItems');
+    if (!r.valid) return;
+  }
+  
+  if (activeStep.value < steps.value.length - 1) {
+    activeStep.value++;
+  }
 };
 
 const previousTab = () => {

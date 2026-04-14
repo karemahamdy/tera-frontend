@@ -71,7 +71,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     try {
      const cleanedPayload = removeNullValues(payload);
     const response = await MachinesService.create(cleanedPayload);
-      toastService.success(t("Machines.MachinesCreatedSuccessfully"));
+      toastService.success(t("machines.MachinesCreatedSuccessfully"));
       await fetchMachines(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -87,7 +87,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     try {
        const cleanedPayload = removeNullValues(payload);
     const response = await MachinesService.update(id, cleanedPayload);
-      toastService.success(t("Machines.MachinesUpdatedSuccessfully"));
+      toastService.success(t("machines.MachinesUpdatedSuccessfully"));
       await fetchMachines(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -102,7 +102,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       await MachinesService.delete(id);
-      toastService.success((t("Machines.MachinesDeletedSuccessfully")));
+      toastService.success((t("machines.MachinesDeletedSuccessfully")));
       apiMachines.value = apiMachines.value.filter((b) => b.id !== id);
       fetchMachines(pageIndex.value)
     } catch (err: any) {
@@ -117,7 +117,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       await MachinesService.toggleActive(id, isActive);
-      toastService.success((t("Machines.MachinesUpdatedSuccessfully")));
+      toastService.success((t("machines.MachinesUpdatedSuccessfully")));
       await fetchMachines(pageIndex.value);
     } catch (err: any) {
       toastService.error(err);

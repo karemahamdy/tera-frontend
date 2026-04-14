@@ -29,7 +29,7 @@ const {
 const { getReasonLookups, reasonsLookups } = useLookups();
 
 import { useForm } from "vee-validate";
-const { handleSubmit, errors, defineField, resetForm, setValues } =
+const { handleSubmit, errors, defineField, resetForm, setValues, validateField, validate } =
   useForm<SalesReturnForm>({
     validationSchema: SalesReturnSchema,
     initialValues: {
@@ -293,6 +293,8 @@ export function useSalesReturnForm() {
     id,
     errors,
     zones,
+    validateField,
+    validate,
     // returnHeader payload
     documentNumber,
     originalWaybillIds,
