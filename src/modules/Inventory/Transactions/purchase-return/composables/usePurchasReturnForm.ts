@@ -234,19 +234,16 @@ export function usePurchaseReturnForm() {
           sourceLineId: item.lineId,
           originalWaybillId: item.waybillId,
           trackingType: item.trackingType,
-          units:
-            item?.units.map((unit: Unit) => ({
-              label: `${unit.unitName} (${unit.unitCode})`,
-              value: unit.unitId,
-            })) || [],
-          serials:
-            item?.itemSerialDtos.map((serial: any) => ({
-              ...serial,
-              qty:
-                serial.qty || serial.quantity || serial.availableQuantity || 0,
-              quantity:
-                serial.qty || serial.quantity || serial.availableQuantity || 0,
-            })) || [],
+          units: (item?.units ?? []).map((unit: Unit) => ({
+            label: `${unit.unitName} (${unit.unitCode})`,
+            value: unit.unitId,
+          })),
+          serials: (item?.itemSerialDtos ?? []).map((serial: any) => ({
+            ...serial,
+            qty: serial.qty || serial.quantity || serial.availableQuantity || 0,
+            quantity:
+              serial.qty || serial.quantity || serial.availableQuantity || 0,
+          })),
         })) || [];
 
       lineItems.value = lineItems.value.filter((item) => !item.documentNumber);

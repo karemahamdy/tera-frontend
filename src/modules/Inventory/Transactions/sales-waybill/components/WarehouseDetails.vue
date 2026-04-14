@@ -6,6 +6,7 @@ import { useInventoryLookups } from "@/composables/useInventoryLookups"
 const props = withDefaults(defineProps<{
    warehouseDetails?: any;
   disabled?: boolean;
+  errors?: Record<string, string>;
 }>(), {
   warehouseDetails: null,
   disabled: false,
