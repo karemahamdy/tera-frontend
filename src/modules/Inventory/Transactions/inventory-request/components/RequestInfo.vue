@@ -7,10 +7,13 @@ import StorageLocationPicker from "@/modules/Inventory/shared/components/Storage
 
 const { t } = useI18n()
 
-const { modelValue: formData, disabled } = defineProps<{
+const props = defineProps<{
   modelValue: any;
   disabled?: boolean;
+  errors?: Record<string, string>;
 }>();
+
+const { modelValue: formData, disabled } = props;
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -115,23 +118,23 @@ watch(() => formData.type, (newType) => {
 });
 
 watch([
-  () => formData.warehouseId, 
-  () => formData.destinationWarehouseId, 
+  () => formData.warehouseId,
+  () => formData.destinationWarehouseId,
   () => formData.type,
   () => formData.zoneId,
   () => formData.destinationZoneId
 ], ([srcWh, dstWh, type, srcZn, dstZn]) => {
   if (type === 'Transfer' && srcWh && dstWh && srcWh === dstWh) {
     if (srcZn && dstZn && srcZn !== dstZn) {
-      if (errors.TargetWarehouse === t('validation.sameSourceAndDestination')) errors.TargetWarehouse = '';
-      if (errors.SourceWarehouse === t('validation.sameSourceAndDestination')) errors.SourceWarehouse = '';
+      internalErrors.TargetWarehouse = '';
+      internalErrors.SourceWarehouse = '';
     } else {
-      errors.TargetWarehouse = t('validation.sameSourceAndDestination');
-      errors.SourceWarehouse = t('validation.sameSourceAndDestination');
+      internalErrors.TargetWarehouse = t('validation.sameSourceAndDestination');
+      internalErrors.SourceWarehouse = t('validation.sameSourceAndDestination');
     }
   } else {
-    if (errors.TargetWarehouse === t('validation.sameSourceAndDestination')) errors.TargetWarehouse = '';
-    if (errors.SourceWarehouse === t('validation.sameSourceAndDestination')) errors.SourceWarehouse = '';
+    if (internalErrors.TargetWarehouse === t('validation.sameSourceAndDestination')) internalErrors.TargetWarehouse = '';
+    if (internalErrors.SourceWarehouse === t('validation.sameSourceAndDestination')) internalErrors.SourceWarehouse = '';
   }
 });
 
@@ -143,14 +146,21 @@ onMounted(async () => {
   ]);
 });
 
-const errors = reactive({
+// Internal reactive errors (for same-warehouse watcher)
+const internalErrors = reactive({
   inventoryRequestNumber: "",
   RequestedBy: "",
   SourceWarehouse: "",
   Reason: "",
   TargetWarehouse: "",
   type: "",
-})
+});
+
+// Merged errors: parent prop errors take precedence
+const errors = computed(() => ({
+  ...internalErrors,
+  ...(props.errors || {}),
+}));
 </script>
 
 <template>

@@ -6,6 +6,7 @@ import LineItems from '../components/LineItems.vue';
 import RequestInfo from '../components/RequestInfo.vue';
 import ReviewSummary from '../components/ReviewSummary.vue';
 import { useInventoryRequest } from '../composables/useInventoryRequest';
+import { InventoryRequestSchema } from '../validation/InventoryRequestSchema';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -73,10 +74,6 @@ onMounted(async () => {
   }
 });
 
-const nextTab = () => {
-  if (activeStep.value < steps.length - 1) activeStep.value++;
-};
-
 const previousTab = () => {
   if (activeStep.value > 0) activeStep.value--;
 };
@@ -118,6 +115,54 @@ const submit = async () => {
   }
 };
 
+const errors = ref<{ [key: string]: string }>({});
+
+// Map yup schema paths → keys used in RequestInfo.vue
+const schemaPathToErrorKey: Record<string, string> = {
+  type: 'type',
+  warehouseId: 'SourceWarehouse',
+  destinationWarehouseId: 'TargetWarehouse',
+};
+
+const nextTab = () => {
+  // Only validate step 0 (RequestInfo); other steps go straight through
+  if (activeStep.value !== 0) {
+    activeStep.value++;
+    return;
+  }
+
+  try {
+    InventoryRequestSchema.validateSync(
+      {
+        type: formData.type,
+        warehouseId: formData.warehouseId,
+        destinationWarehouseId: formData.type === 'Transfer' ? (formData.destinationWarehouseId || null) : undefined,
+        zoneId: formData.zoneId,
+        destinationZoneId: formData.destinationZoneId,
+      },
+      { abortEarly: false }
+    );
+
+    errors.value = {};
+    activeStep.value++;
+
+  } catch (err: any) {
+    errors.value = {};
+
+    if (err.inner && err.inner.length) {
+      err.inner.forEach((e: any) => {
+        if (e.path) {
+          const key = schemaPathToErrorKey[e.path] ?? e.path;
+          errors.value[key] = e.message;
+        }
+      });
+    } else if (err.path) {
+      // abortEarly: true fallback (single error)
+      const key = schemaPathToErrorKey[err.path] ?? err.path;
+      errors.value[key] = err.message;
+    }
+  }
+};
 const steps = [
   { label: t('inventoryRequest.requestInfoStep') },
   { label: t('inventoryRequest.lineItemsStep') },
@@ -133,16 +178,16 @@ const steps = [
       <Card class="mt-6 rounded-2xl shadow-sm">
         <template #content>
           <div v-if="!dataReady" class="flex justify-center items-center py-20">
-            <ProgressSpinner />
+            <!-- <ProgressSpinner /> -->
           </div>
           <template v-else>
-            <RequestInfo v-if="activeStep === 0" v-model="formData" :disabled="isDisabled" />
+            <RequestInfo v-if="activeStep === 0" v-model="formData" :disabled="isDisabled" :errors="errors"/>
             <LineItems v-else-if="activeStep === 1" :lineItems="formData.lineItems" :disabled="isDisabled" @update="(val) => formData.lineItems = val" @next="nextTab" @prev="previousTab" />
             <ReviewSummary v-else-if="activeStep === 2" :formData="formData" @next="nextTab" @prev="previousTab" />
           </template>
         </template>
       </Card>
-      <StepperActions v-if="mode !== 'view'" :current="activeStep" :total="steps.length" 
+      <StepperActions v-if="mode !== 'view'" :current="activeStep" :total="steps.length"  
         :finishText="mode === 'edit' ? t('button.update') : t('button.create')"
         @next="nextTab" @previous="previousTab" @finish="submit" />
 
