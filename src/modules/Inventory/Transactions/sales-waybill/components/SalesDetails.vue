@@ -25,7 +25,6 @@ const props = defineProps<{
   salesDetails?: any;
   paymentTerms?: any;
   disabled?: boolean;
-  errors?: Record<string, string>;
 }>();
 
 const emit = defineEmits(['update']);
@@ -192,7 +191,6 @@ function emitUpdate() {
         :options="customerLookups"
         optionLabel="label"
         optionValue="value"
-        :error="errors?.customerId"
         :disabled="disabled" 
       />
 
@@ -216,7 +214,6 @@ function emitUpdate() {
             showIcon fluid iconDisplay="input"
             :placeholder="t('salesWaybill.WaybillDatePlaceholder')" 
             :disabled="disabled" 
-            :invalid="!!errors?.waybillDate" 
           />
         </div>
 

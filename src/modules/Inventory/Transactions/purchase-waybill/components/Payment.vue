@@ -128,6 +128,7 @@ const importOptions = [
   { label: t("payment.import"), value: "Import" },
   { label: t("payment.local"), value: "Local" },
 ]
+const isCash = computed(() => form.paymentType === 'Cash');
 
 onMounted(async () => {
   await Promise.all([getIncotermsLookups(), getPaymentTermsLookups()]);
@@ -177,7 +178,7 @@ onMounted(async () => {
         <div class="grid grid-cols-2 gap-4">
           <div class="md:col-span-2">
             <FormDropdown v-if="!disabled" :label="t('payment.paymentTerms')" :modelValue="form.paymentTermId"
-              :options="PaymentTerms" :placeholder="t('payment.selectTerms')"
+              :options="PaymentTerms" :placeholder="t('payment.selectTerms')" :disabled="disabled || isCash"
               @update:modelValue="(v: string) => { form.paymentTermId = v; emitUpdate(); }" />
             <FormInput v-else :label="t('payment.paymentTerms')"
               :modelValue="props.paymentInfo?.paymentTermName ?? ''" disabled />
@@ -185,7 +186,7 @@ onMounted(async () => {
 
           <div class="md:col-span-2">
             <FormDropdown v-if="!disabled" :label="t('payment.importType')" :modelValue="form.purchaseType"
-              :options="importOptions" :placeholder="t('payment.selectType')"
+              :options="importOptions" :placeholder="t('payment.selectType')"  :disabled="disabled || isCash"
               @update:modelValue="(v: string) => { form.purchaseType = v; emitUpdate(); }" />
             <FormInput v-else :label="t('payment.importType')"
               :modelValue="props.paymentInfo?.purchaseType ?? ''" disabled />
@@ -194,7 +195,7 @@ onMounted(async () => {
           <div class="md:col-span-2">
             <FormDropdown v-if="!disabled" :label="t('payment.incoterms')" :modelValue="form.incoterm"
               :options="IncotermsLookups" :placeholder="t('payment.selectIncoterms')"
-              :disabled="isLocal"
+              :disabled="isLocal || disabled || isCash"
               @update:modelValue="(v: string) => { form.incoterm = v; emitUpdate(); }" />
             <FormInput v-else :label="t('payment.incoterms')"
               :modelValue="props.paymentInfo?.incoterm ?? '—'" disabled />

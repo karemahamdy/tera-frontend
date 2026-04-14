@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {  reactive, computed, watch, onMounted, watchEffect } from "vue"
+import {  reactive, computed, watch, onMounted, nextTick } from "vue"
 import { useI18n } from "vue-i18n"
 import TransactionSummary from '@/modules/Inventory/shared/components/TransactionSummary.vue'
 import { useInventoryLookups } from "@/composables/useInventoryLookups";
@@ -16,7 +16,6 @@ const props = defineProps<{
     paymentTerms?: any;
     notes?: any;
     disabled?: boolean;
-    errors?: Record<string, string>;
 }>();
 
 const emit = defineEmits(['prev', 'submit', 'update'])
@@ -79,15 +78,18 @@ const grandTotalValue = computed(() => {
 
 // exchange rate from parent terms (default 1)
 const exchangeRate = computed(() => props.paymentTerms?.exchangeRate || 1);
-
-// disable & clear incoterm when purchase type is Local
-const isLocal = computed(() => form.purchaseType === 'Local');
-watchEffect(() => {
-  if (isLocal.value) {
-    form.incoterm = null;
-  }
-});
 const isCash = computed(() => form.paymentType === 'Cash');
+const isLocal = computed(() => form.purchaseType === 'Local')
+// disable & clear incoterm when purchase type is Local
+// const isLocal = computed(() => form.purchaseType === 'Local');
+watch(() => form.purchaseType, (val) => {
+    if (val === 'Local') {
+        form.incoterm = null;
+        nextTick(() => emitUpdate());
+    } else {
+        emitUpdate();
+    }
+});
 watch(
   () => [form.comment1, form.comment2, form.comment3, form.comment4, form.comment5, form.note],
   () => {
@@ -201,22 +203,19 @@ const salesTypeOptions = [
                             optionValue="value" 
                             :placeholder="t('payment.selectTerms')" 
                             :disabled="disabled || isCash" 
-                            :error="errors?.paymentTermId"
                             @update:modelValue="emitUpdate"
                         />
                     </div>
                     <div class="md:col-span-2">
-                        <FormDropdown 
-                            :label="t('salesWaybill.SalesType')" 
-                            v-model="form.purchaseType" 
-                            :options="salesTypeOptions"
-                            optionLabel="label"
-                            optionValue="value"
-                            :placeholder="t('payment.selectType')" 
-                            :disabled="disabled || isCash"
-                            :error="errors?.purchaseType" 
-                            @update:modelValue="emitUpdate"
-                        />
+                            <FormDropdown 
+                                :label="t('salesWaybill.SalesType')" 
+                                v-model="form.purchaseType" 
+                                :options="salesTypeOptions"
+                                optionLabel="label"
+                                optionValue="value"
+                                :placeholder="t('payment.selectType')" 
+                                :disabled="disabled || isCash" 
+                            />
                     </div>
                     <div class="md:col-span-2">
                         <FormDropdown 
@@ -227,9 +226,7 @@ const salesTypeOptions = [
                             optionValue="value"
                             :placeholder="t('payment.selectIncoterms')" 
                             :disabled="disabled || isLocal || isCash" 
-                            :error="errors?.incoterm"
                             @update:modelValue="emitUpdate"
-                            
                         />
                     </div>
                 </div>

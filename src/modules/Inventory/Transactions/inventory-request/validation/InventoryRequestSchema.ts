@@ -1,11 +1,11 @@
 import * as yup from "yup";
 
 export const InventoryRequestSchema = yup.object({
-  type: yup.string().required("validation.typeRequired"),
+  type: yup.string().required("form.fieldRequired"),
 
   warehouseId: yup
     .string()
-    .required("validation.sourceWarehouseRequired"),
+    .required("form.fieldRequired"),
 
   destinationWarehouseId: yup
     .string()
@@ -19,7 +19,7 @@ export const InventoryRequestSchema = yup.object({
         // ❌ لو Transfer لازم destination
         if (type === "Transfer" && !value) {
           return this.createError({
-            message: "validation.targetWarehouseRequired",
+            message: "form.fieldRequired",
           });
         }
 
@@ -29,7 +29,7 @@ export const InventoryRequestSchema = yup.object({
 
     .test(
       "same-source-destination",
-      "validation.sameSourceAndDestination",
+      "form.fieldRequired",
       function (value) {
         const { type, warehouseId, zoneId, destinationZoneId } = this.parent;
 
