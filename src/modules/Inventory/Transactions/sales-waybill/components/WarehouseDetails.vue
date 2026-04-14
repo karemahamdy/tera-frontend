@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   warehouseDetails: null,
   disabled: false,
+  
 });
 
 const { t } = useI18n()
@@ -84,13 +85,13 @@ onMounted(async () => {
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
     <FormDropdown v-if="!disabled" :label="t('purchaseWaybill.dispatchWarehouse')" :modelValue="form.warehouseId"
-      :error="errors.warehouseId" :placeholder="t('purchaseWaybill.dispatchWarehousePlaceholder')"
+      :error="props.errors?.warehouseId" :placeholder="t('purchaseWaybill.dispatchWarehousePlaceholder')"
       :invalid="!!errors.warehouseId" :options="WarehouseLookups" @update:modelValue="onWarehouseChange" />
     <FormInput v-else :label="t('purchaseWaybill.ReceivingWarehouse')"
       :modelValue="props.warehouseDetails?.warehouseName ?? ''" disabled />
 
     <FormDropdown v-if="isProf && !disabled" :label="t('purchaseWaybill.zone')" :modelValue="form.zoneId"
-      :error="errors.zoneId" :placeholder="t('purchaseWaybill.zonePlaceholder')" :invalid="!!errors.zoneId"
+      :error="props.errors?.zoneId" :placeholder="t('purchaseWaybill.zonePlaceholder')" :invalid="!!errors.zoneId"
       :options="ZonesLookups" @update:modelValue="onZoneChange" />
     <FormInput v-else-if="isProf && disabled" :label="t('purchaseWaybill.zone')"
       :modelValue="props.warehouseDetails?.zoneName ?? '—'" disabled />

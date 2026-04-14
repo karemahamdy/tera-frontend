@@ -25,6 +25,7 @@ const props = defineProps<{
   salesDetails?: any;
   paymentTerms?: any;
   disabled?: boolean;
+  errors?: Record<string, string>;
 }>();
 
 const emit = defineEmits(['update']);
@@ -186,7 +187,7 @@ function emitUpdate() {
       <FormDropdown 
         :label="t('salesWaybill.Customer')" 
         v-model="localData.customerDetails.customerId" 
-      
+        :error="errors?.customerId"
         :placeholder="t('salesWaybill.CustomerPlaceholder')" 
         :options="customerLookups"
         optionLabel="label"
@@ -213,8 +214,10 @@ function emitUpdate() {
             v-model="localData.customerDetails.waybillDate" 
             showIcon fluid iconDisplay="input"
             :placeholder="t('salesWaybill.WaybillDatePlaceholder')" 
-            :disabled="disabled" 
+            :disabled="disabled"
+            :class="{'p-invalid border-red-500': errors?.waybillDate}" 
           />
+          <small v-if="errors?.waybillDate" class="p-error text-red-500 block mt-1">{{ t(errors.waybillDate) }}</small>
         </div>
 
         <div class="w-1/2">

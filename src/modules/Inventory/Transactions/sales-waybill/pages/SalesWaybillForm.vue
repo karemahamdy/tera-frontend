@@ -8,6 +8,7 @@ import Payment from '../components/Payment.vue';
 import { useSalesWaybill } from '../composables/useSales';
 import { useI18n } from "vue-i18n";
 import { toastService } from '@/app/services/toastService';
+import { CustomerSchema, LineItemsSchema, PaymentSchema, WarehouseSchema } from '../validation/SalesWaybillSchema';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -82,10 +83,45 @@ const updatePaymentData = (data: any) => {
   formData.value.notes = data.notes;
 };
 
-const nextTab = () => {
-  if (activeStep.value < steps.length - 1) activeStep.value++;
-};
+// const nextTab = () => {
+//   if (activeStep.value < steps.length - 1) activeStep.value++;
+// };
+const errors = ref<Record<string, string>>({});
 
+const nextTab = async () => {
+  try {
+    if (activeStep.value === 0) {
+      await CustomerSchema.validate(formData.value.customerDetails, { abortEarly: false });
+    }
+
+    if (activeStep.value === 1) {
+      await WarehouseSchema.validate(formData.value.warehouseDetails, { abortEarly: false });
+    }
+
+    if (activeStep.value === 2) {
+      await LineItemsSchema.validate({ lineItems: formData.value.lineItems }, { abortEarly: false });
+    }
+
+    if (activeStep.value === 3) {
+      await PaymentSchema.validate(formData.value.paymentInfo, { abortEarly: false });
+    }
+
+    // لو كله تمام
+    if (activeStep.value < steps.length - 1) {
+      activeStep.value++;
+    }
+
+  } 
+  catch (err: any) {
+  errors.value = {};
+
+  if (err.inner) {
+    err.inner.forEach((e: any) => {
+      errors.value[e.path] = e.message;
+    });
+  }
+}
+};
 const previousTab = () => {
   if (activeStep.value > 0) activeStep.value--;
 };
@@ -309,19 +345,22 @@ onMounted(async () => {
                 :paymentTerms="formData?.paymentTerms"
                 :disabled="isDisabled"
                 @update="updateCustomerData" 
+                :errors="errors"
               />
             </div>
             <div v-show="activeStep === 1">
               <WarehouseDetails 
                 :warehouseDetails="formData?.warehouseDetails"
                 :disabled="isDisabled"
-                @update="updateWarehouseData" 
+                @update="updateWarehouseData"
+                :errors="errors"
               />
             </div>
             <div v-show="activeStep === 2">
               <LineItems 
                 :lineItems="formData?.lineItems" 
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updateLineItemsData"
                 @next="nextTab" 
                 @prev="previousTab" 
@@ -334,6 +373,7 @@ onMounted(async () => {
                 :paymentTerms="formData?.paymentTerms"
                 :notes="formData?.notes"
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updatePaymentData"
                 @prev="previousTab" 
                 @submit="submit" 

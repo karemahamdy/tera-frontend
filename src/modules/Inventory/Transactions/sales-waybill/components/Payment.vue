@@ -16,6 +16,7 @@ const props = defineProps<{
     paymentTerms?: any;
     notes?: any;
     disabled?: boolean;
+    errors?: Record<string, string>;
 }>();
 
 const emit = defineEmits(['prev', 'submit', 'update'])
@@ -201,6 +202,7 @@ const salesTypeOptions = [
                             :options="PaymentTerms" 
                             optionLabel="label" 
                             optionValue="value" 
+                            :error="errors?.paymentTermId"
                             :placeholder="t('payment.selectTerms')" 
                             :disabled="disabled || isCash" 
                             @update:modelValue="emitUpdate"
@@ -213,6 +215,7 @@ const salesTypeOptions = [
                                 :options="salesTypeOptions"
                                 optionLabel="label"
                                 optionValue="value"
+                                :error="errors?.purchaseType"
                                 :placeholder="t('payment.selectType')" 
                                 :disabled="disabled || isCash" 
                             />
@@ -224,6 +227,7 @@ const salesTypeOptions = [
                             :options="IncotermsLookups"
                             optionLabel="label"
                             optionValue="value"
+                            :error="errors?.incoterm"
                             :placeholder="t('payment.selectIncoterms')" 
                             :disabled="disabled || isLocal || isCash" 
                             @update:modelValue="emitUpdate"
