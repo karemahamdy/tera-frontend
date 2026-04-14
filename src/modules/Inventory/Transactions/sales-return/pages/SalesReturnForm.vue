@@ -30,7 +30,7 @@ const activeStep = ref<number>(0);
 const nextTab = async () => {
   if (activeStep.value === 0) {
     const fieldsToValidate = ['documentNumber', 'customerId', 'returnDate', 'returnReason', 'warehouseId'];
-    const results = await Promise.all(fieldsToValidate.map(f => form.validateField(f as keyof typeof form.errors)));
+    const results = await Promise.all(fieldsToValidate.map(f => form.validateField(f as any)));
     if (results.some(r => !r.valid)) return;
   } else if (activeStep.value === 1) {
     const r = await form.validateField('lineItems');
