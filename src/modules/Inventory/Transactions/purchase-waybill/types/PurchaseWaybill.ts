@@ -92,6 +92,7 @@ export interface LineItem {
   note: string | null;
   isBlocked: boolean;
   serials: Serial[];
+  trackingType: string | null;
 }
 
 export interface PaymentInfoData {

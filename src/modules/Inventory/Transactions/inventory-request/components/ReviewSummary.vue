@@ -96,19 +96,19 @@ const columns = computed(() => [
           <span v-if="formData.type === 'Transfer'"
             class="flex justify-end w-24 mx-30 rounded gap-1 p-1 text-sm bg-primary-50 text-primary-500">
             <VsxIcon iconName="ArrowSwapHorizontal" type="linear" />
-            <span>Transfer</span>
+            <span>{{ t(`direction.${formData.type}`) }}</span>
           </span>
 
           <span v-else-if="formData.type === 'Inbound'"
             class="flex justify-end w-24 mx-30 rounded gap-1 p-1 text-sm bg-success-50 text-success-500">
             <VsxIcon iconName="ArrowDown" type="linear" />
-            <span>Inbound</span>
+            <span>{{ t(`direction.${formData.type}`) }}</span>
           </span>
 
           <span v-else-if="formData.type === 'Outbound'"
             class="flex justify-end  w-24 mx-30 rounded gap-1 p-1 text-sm bg-danger-50 text-danger-500">
             <VsxIcon iconName="ArrowUp" type="linear" />
-            <span>Outbound</span>
+            <span>{{ t(`direction.${formData.type}`) }}</span>
           </span>
 
           <span v-else class="flex justify-end rounded gap-1 p-1 text-sm  text-primary-500">

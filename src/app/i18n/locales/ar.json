@@ -1009,7 +1009,7 @@
     "CountNumber": "رقم الجرد",
     "ScheduledDate": "التاريخ المجدول",
     "StartNewPhysicalCount": "بدء جرد فعلي جديد",
-    "CompareSystemStockWithActualPhysicalCount": "مقارنة رصيد النظام مع الجرد الفعلي الفعلي",
+    "CompareSystemStockWithActualPhysicalCount": "مقارنة رصيد النظام مع الجرد الفعلي",
     "ItemCode": "كود الصنف",
     "ItemName": "اسم الصنف",
     "SystemBalance": "رصيد النظام",
@@ -1364,7 +1364,10 @@
   "direction": {
     "transfer": "تحويل",
     "inbound": "وارد",
-    "outbound": "صادر"
+    "outbound": "صادر",
+    "Outbound": "صادر",
+    "Inbound": "وارد",
+    "Transfer": "تحويل"
   },
   "steps": {
     "commercialDetails": "البيانات التجارية",
@@ -1378,7 +1381,8 @@
   },
   "validation": {
     "required": "هذا الحقل مطلوب",
-    "sameSourceAndDestination": "لا يمكن أن يكون المصدر والوجهة متطابقين"
+    "sameSourceAndDestination": "لا يمكن أن يكون المصدر والوجهة متطابقين",
+    "invalidQuantity": "الكمية يجب أن تكون أكبر من الصفر"
   },
   "workCenter": {
     "workCenter": "مركز العمل",

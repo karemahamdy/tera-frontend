@@ -80,7 +80,7 @@ const openItemDialog = () => {
 
 const handleSelectItem = (item: any) => {
     items.value.push({
-        // id: Date.now().toString(),
+        id: Date.now().toString(),
         itemId: item.id || item.itemId,
         trackingType: item.trackingType || null,
         code: item.code,

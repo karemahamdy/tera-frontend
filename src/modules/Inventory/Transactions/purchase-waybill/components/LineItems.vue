@@ -49,7 +49,8 @@ function mapApiItem(item: LineItem) {
       id: s.id, mainSerial: s.mainSerial, qty: s.quantity, batchNumber: s.batchNumber, expireDate: s.expireDate
     })),
     isBlocked: item.isBlocked,
-    tracked: (item.serials && item.serials.length > 0) || item.quantity > 0,
+    // tracked: (item.serials && item.serials.length > 0) || item.quantity > 0,
+    trackingType: item.trackingType
   };
 }
 
@@ -125,7 +126,7 @@ const handleSelectItem = (selectedItem: any) => {
     tax: tax,
     total: calcTotal(qty, price, tax),
     serials: [],
-    tracked: selectedItem.trackingType === "Serial"  
+    trackingType: selectedItem.trackingType || null, 
   };
   items.value.push(newItem);
   emitUpdate();
@@ -248,7 +249,7 @@ const handleWarehouseChange = async (item: any) => {
         :showDelete="false">
         <template #col-code="{ data }">
           <div class="flex items-center gap-2 rounded">
-            <Badge v-if="data.tracked" severity="success" class="circle-badge-sm">
+            <Badge v-if="data.trackingType === 'Serial'" severity="success" class="circle-badge-sm">
               <VsxIcon iconName="Brodcast" :size="20" type="linear" />
             </Badge>
             <Badge v-else severity="transparent" class="circle-badge">
@@ -260,7 +261,7 @@ const handleWarehouseChange = async (item: any) => {
 
         <template #col-quantity="{ data }">
           <div class="flex items-center gap-2">
-            <template v-if="data.tracked">
+            <template v-if="data.trackingType === 'Serial'">
               <BaseButton :label="disabled ? t('button.view') : t('itemsList.add')" variant="outline-primary"
                 @click="openQtyDialog(data)" />
               <span class="text-gray-500">({{ data.quantity }})</span>

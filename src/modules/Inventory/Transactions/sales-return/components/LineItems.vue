@@ -44,6 +44,12 @@ const availableItems = computed(() =>
   })),
 );
 
+function getQtyError(item: any): string {
+  if (!item.quantity || item.quantity <= 0) {
+    return t("validation.invalidQuantity");
+  }
+  return "";
+}
 const warehouseLookups = computed(() =>
   WarehouseHierarchyLookups.value.map((wh) => ({
     label: wh.warehouseName,
@@ -106,7 +112,7 @@ const handleSelectItem = (item: any) => {
     itemCode: item.code,
     unitId: item.baseUnitId,
     documentNumber: null,
-    quantity: 0,
+    quantity: 1,
     unitPrice: 0,
     warehouseId: null,
     zoneId: null,
@@ -210,6 +216,9 @@ const removeItem = (data: any) => {
           </div>
           <div v-else>
             <InputNumber :disabled="isView" v-model="data.quantity" :min="0" :max="data.shipped" />
+            <small v-if="getQtyError(data)" class="p-error text-xs">
+              {{ getQtyError(data) }}
+            </small>
           </div>
         </template>
 
