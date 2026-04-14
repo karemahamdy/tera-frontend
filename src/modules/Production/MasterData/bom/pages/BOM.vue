@@ -41,7 +41,7 @@ const filtersOperation = computed(() => {
         {
             placeholder: "BOM.Version",
             value: null,
-            field: "ParentItemId",
+            field: "Version",
             options: [
                 { label: t("button.all"), value: null },
               ...AllVersionsLookups.value,

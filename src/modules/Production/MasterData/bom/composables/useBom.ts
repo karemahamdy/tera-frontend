@@ -17,7 +17,7 @@ const totalPages = ref(1);
 const searchTerm = ref('');
 const orderBy = ref('');
 const StatusFilter = ref('');
-const ParentItemId = ref<string | null>(null);
+const Version = ref<number | null>(null);
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const { t } = useI18n();
@@ -32,7 +32,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
         StatusFilter: StatusFilter.value,
-        ParentItemId: ParentItemId.value,
+        Version: Version.value,
       });
       const payload = response && response.data ? response.data : response;
       apiBOM.value = payload.items ?? [];
@@ -128,8 +128,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
       if (field === "status") {
         StatusFilter.value = value;
     }
-    if (field === "ParentItemId") {
-      ParentItemId.value = value;
+    if (field === "Version") {
+      const num = parseInt(value, 10);
+      Version.value = isNaN(num) ? null : num;
     }
     fetchBOM(1);
   };
