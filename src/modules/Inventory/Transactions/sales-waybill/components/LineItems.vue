@@ -210,7 +210,12 @@ const removeItem = (data: any) => {
     emitUpdate();
 };
 
-
+function getQtyError(item: any): string {
+  if (!item.quantity || item.quantity <= 0) {
+    return t("validation.invalidQuantity");
+  }
+  return "";
+}
 
 </script>
 
@@ -258,6 +263,9 @@ const removeItem = (data: any) => {
                 data.total = calcTotal(data.quantity, data.tax, data.unitPrice);
                 emitUpdate();
               }" />
+               <small v-if="getQtyError(data)" class="p-error text-xs">
+              {{ getQtyError(data) }}
+            </small>
               <span v-else class="text-gray-700">
                 {{ data.quantity }}
               </span>

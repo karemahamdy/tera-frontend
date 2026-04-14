@@ -26,6 +26,7 @@ const isVisible = computed({
 const serialInput = ref('');
 const qtyInput = ref<number>(1);
 const isProcessing = ref(false);
+const serialError = ref(false);
 
 const serialList = ref<any[]>(props.initialSerials ? [...props.initialSerials] : []);
 
@@ -45,9 +46,11 @@ const totalQty = computed(() =>
 );
 
 const addSerial = () => {
-    console.log(serialInput.value);
-    
-    if (!serialInput.value) return;
+    if (!serialInput.value) {
+        serialError.value = true;
+        return;
+    }
+    serialError.value = false;
     
     const found = serialsLookups.value.find(s => s.mainSerial === serialInput.value);
 
@@ -135,7 +138,9 @@ watch(() => props.visible, (newVal) => {
                             filter 
                             :placeholder="t('serial.selectSerial')" 
                             class="w-full"
+                            :class="{ 'p-invalid border-red-500': serialError }"
                         />
+                        <small v-if="serialError" class="text-red-500 text-xs">{{ t('form.fieldRequired') }}</small>
                     </div>
                     <div class="flex flex-col gap-1">
                         <label class="text-xs text-gray-600 font-medium">{{ t('serial.quantity') }}</label>

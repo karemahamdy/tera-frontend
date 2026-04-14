@@ -16,6 +16,7 @@ const props = defineProps<{
     paymentTerms?: any;
     notes?: any;
     disabled?: boolean;
+    errors?: Record<string, string>;
 }>();
 
 const emit = defineEmits(['prev', 'submit', 'update'])
@@ -86,6 +87,7 @@ watchEffect(() => {
     form.incoterm = null;
   }
 });
+const isCash = computed(() => form.paymentType === 'Cash');
 watch(
   () => [form.comment1, form.comment2, form.comment3, form.comment4, form.comment5, form.note],
   () => {
@@ -198,7 +200,8 @@ const salesTypeOptions = [
                             optionLabel="label" 
                             optionValue="value" 
                             :placeholder="t('payment.selectTerms')" 
-                            :disabled="disabled" 
+                            :disabled="disabled || isCash" 
+                            :error="errors?.paymentTermId"
                             @update:modelValue="emitUpdate"
                         />
                     </div>
@@ -210,7 +213,8 @@ const salesTypeOptions = [
                             optionLabel="label"
                             optionValue="value"
                             :placeholder="t('payment.selectType')" 
-                            :disabled="disabled" 
+                            :disabled="disabled || isCash"
+                            :error="errors?.purchaseType" 
                             @update:modelValue="emitUpdate"
                         />
                     </div>
@@ -222,8 +226,10 @@ const salesTypeOptions = [
                             optionLabel="label"
                             optionValue="value"
                             :placeholder="t('payment.selectIncoterms')" 
-                            :disabled="disabled || isLocal" 
+                            :disabled="disabled || isLocal || isCash" 
+                            :error="errors?.incoterm"
                             @update:modelValue="emitUpdate"
+                            
                         />
                     </div>
                 </div>

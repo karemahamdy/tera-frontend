@@ -58,6 +58,7 @@ const defaultFormData = {
 };
 
 const formData = ref<any>({ ...defaultFormData });
+const errors = ref<Record<string, string>>({});
 
 const activeStep = ref(0);
 
@@ -83,6 +84,20 @@ const updatePaymentData = (data: any) => {
 };
 
 const nextTab = () => {
+  errors.value = {};
+  if (activeStep.value === 0) {
+    let isValid = true;
+    if (!formData.value.customerDetails.customerId) {
+      errors.value.customerId = "form.fieldRequired";
+      isValid = false;
+    }
+    if (!formData.value.customerDetails.waybillDate) {
+      errors.value.waybillDate = "form.fieldRequired";
+      isValid = false;
+    }
+    if (!isValid) return;
+  }
+
   if (activeStep.value < steps.length - 1) activeStep.value++;
 };
 
@@ -91,6 +106,26 @@ const previousTab = () => {
 };
 
 const submit = async () => {
+  errors.value = {};
+  let isValid = true;
+
+  if (formData.value.paymentInfo?.paymentType === 'Payable' && !formData.value.paymentInfo?.paymentTermId) {
+    errors.value.paymentTermId = "form.fieldRequired";
+    isValid = false;
+  }
+  if (!formData.value.paymentInfo?.purchaseType) {
+    errors.value.purchaseType = "form.fieldRequired";
+    isValid = false;
+  } else if (formData.value.paymentInfo?.purchaseType === 'Export' && !formData.value.paymentInfo?.incoterm) {
+    errors.value.incoterm = "form.fieldRequired";
+    isValid = false;
+  }
+
+  if (!isValid) {
+    toastService.error(t('form.pleaseFixErrors'));
+    return;
+  }
+
   try {
     console.log('Submitting with formData:', formData.value);
     const exchangeRate = formData.value.paymentTerms?.exchangeRate !== null && 
@@ -308,6 +343,7 @@ onMounted(async () => {
                 :salesDetails="formData?.customerDetails"
                 :paymentTerms="formData?.paymentTerms"
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updateCustomerData" 
               />
             </div>
@@ -334,6 +370,7 @@ onMounted(async () => {
                 :paymentTerms="formData?.paymentTerms"
                 :notes="formData?.notes"
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updatePaymentData"
                 @prev="previousTab" 
                 @submit="submit" 
