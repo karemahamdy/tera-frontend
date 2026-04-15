@@ -45,6 +45,7 @@ const {  } = useForm({
 
 const addEmptyRow = () => {
   items.value.push({
+    id: Date.now().toString(),
     sequence: items.value.length + 1,
     operationId: null,
     machineId: null,
