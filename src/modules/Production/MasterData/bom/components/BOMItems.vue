@@ -1,37 +1,41 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 const { t } = useI18n();
 
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 50, BOM: "3 BOM", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 90, BOM: "3 BOM", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 40, BOM: "8 BOM", isActive: true },
+const props = defineProps<{
+  materials: any[];
+}>();
+
+const columns = computed(() => [
+  { field: 'componentItemCode', header: t('BOM.code'), sortable: false },
+  { field: 'componentItemName', header: t('BOM.name'), sortable: false },
+  { field: 'uomName', header: t('BOM.uom'), sortable: false },
+  { field: 'quantity', header: t('BOM.quantity'), sortable: false },
+  { field: 'unitCost', header: t('BOM.unitcost'), sortable: false },
+  { field: 'scrapPercentage', header: t('BOM.scrap'), sortable: false },
+  { field: 'totalCost', header: t('BOM.TotalCost'), sortable: false },
 ]);
 
-const columns = computed(() => {
-    const Columns = [
-        { field: 'code', header: t('BOM.code'), sortable: false },
-        { field: 'name', header: t('BOM.name'), type: 'slot', sortable: false },
-        { field: 'BOM', header: t('BOM.uom'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.quantity'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.unitcost'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.scrap'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.TotalCost'), type: 'slot', sortable: false },
-    ];
-
-    return Columns;
+const totalMaterialCost = computed(() => {
+  return props.materials.reduce((sum, item) => {
+    const cost = Number(item.totalCost) || 0;
+    return sum + cost;
+  }, 0).toFixed(2);
 });
-
-
 </script>
 
 <template>
-    <div class="">
-                <DynamicTable :columns="columns" :data="data" :paginator="false" lazy>
-                    
-                </DynamicTable>
-    </div>
+  <div>
+    <DynamicTable :columns="columns" :data="materials" :paginator="false" lazy />
+    
+     <div class="bg-[#EEF2FF] px-4 py-3 rounded-lg text-sm text-[#6366F1] flex justify-between mt-4">
+            <span class="text-[#717680] text-center pt-3 text-[18px]">{{ t('BOM.TotalMaterialCost') }}</span>
+            <span class="text-[#414651] text-[24px] font-bold">${{ totalMaterialCost }}</span>
+               
+            </div>
+  </div>
 </template>
 
 <style scoped>

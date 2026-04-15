@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 const { t } = useI18n();
 
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 50, BOM: "3 BOM", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 90, BOM: "3 BOM", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 40, BOM: "8 BOM", isActive: true },
+const props = defineProps<{
+  routings: any[];
+}>();
+
+const columns = computed(() => [
+  { field: 'sequence',      header: t('BOM.Seq'),          sortable: false },
+  { field: 'operationName', header: t('BOM.Process'),       sortable: false },
+  { field: 'machineName',   header: t('BOM.Machine'),       sortable: false },
+  { field: 'runTime',       header: t('BOM.RunTime'),       sortable: false },
+  { field: 'setupTime',     header: t('BOM.SetupTime'),     sortable: false },
+  { field: 'totalCost',     header: t('BOM.TotalCost'),     sortable: false },
+  { field: 'overheadCost',  header: t('BOM.OverheadCost'),  sortable: false },
 ]);
-
-const columns = computed(() => {
-    const Columns = [
-        { field: 'code', header: t('BOM.Seq'), sortable: false },
-        { field: 'name', header: t('BOM.Process'), type: 'slot', sortable: false },
-        { field: 'BOM', header: t('BOM.Machine'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.RunTime'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.SetupTime'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.TotalCost'), type: 'slot', sortable: false },
-        { field: 'department', header: t('BOM.OverheadCost'), type: 'slot', sortable: false },
-    ];
-
-    return Columns;
+const formattedRoutings = computed(() => {
+  return props.routings.map(item => ({
+    ...item,
+    totalCost: item.totalCost != null ? Number(item.totalCost).toFixed(2) : '0.00',
+    overheadCost: item.overheadCost != null ? Number(item.overheadCost).toFixed(2) : '0.00',
+  }));
 });
-
-
 </script>
 
 <template>
-    <div class="">
-                <DynamicTable :columns="columns" :data="data" :paginator="false" lazy>         
-                </DynamicTable>
-    </div>
+  <div>
+    <DynamicTable :columns="columns" :data="formattedRoutings" :paginator="false" lazy />
+  </div>
 </template>
+
 
 <style scoped>
 :deep(.p-datatable .p-datatable-tbody > tr > td) {
