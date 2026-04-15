@@ -1527,6 +1527,7 @@
     "RenTime": "Run time",
     "Process": "Process",
     "Machine": "Machine",
+    "TotalMaterialCost": "Total Material Cost",
     "RunTime": "Run Time",
     "SetupTime": "Setup Time",
     "headerInfo": "Header Info",
