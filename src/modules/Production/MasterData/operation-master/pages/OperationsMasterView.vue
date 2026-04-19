@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router';
 import { useOperationsMaster } from '../composables/useOperationsMaster';
 import { onMounted, ref } from 'vue';
 
-
 const route = useRoute();
 const { fetchOperationsMasterById } = useOperationsMaster();
 const props = defineProps<{
