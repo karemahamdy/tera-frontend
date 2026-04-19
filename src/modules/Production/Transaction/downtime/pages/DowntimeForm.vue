@@ -1,65 +1,124 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useForm } from "vee-validate";
-import { LDCSchema } from "../validation/DowntimeSchema";
+import { downtimeSchema } from "../validation/DowntimeSchema";
 import { useDowntime } from "../composables/useDowntime";
 import router from "@/app/router";
+import { useLookups } from "@/composables/useLookups";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
   id?: string;
 }>();
+const { t } = useI18n();
 
 const editMode = props.mode === "edit";
-const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
-const { createDowntime, updateDowntime } = useDowntime();
+const { createDowntime, updateDowntime, fetchDowntimeById } = useDowntime();
+const { getMachineLookups, machineLookups } = useLookups();
 
-type LDCFormValues = {
-  code: string;
-  department: string;
-  name: string;
+const downtimeTypeOptions = [
+  { label: t("type.Breakdown"), value: "Breakdown" },
+  { label: t("type.Setup"), value: "Setup" },
+  { label: t("type.MaterialShortage"), value: "MaterialShortage" },
+  { label: t("type.QualityIssue"), value: "QualityIssue" },
+  { label: t("type.PowerOutage"), value: "PowerOutage" },
+  { label: t("type.OperatorAbsence"), value: "OperatorAbsence" },
+  { label: t("type.Other"), value: "Other" },
+];
+const getNowValues = () => {
+  const now = new Date();
+  return {
+    date: now,
+    time: now,
+  };
+};
+
+const now = getNowValues();
+type downtimeValues = {
+  date: Date | null;
+  time: Date | null;
+  downtimeType: string | null;
+  machineId: string | null;
+  workOrderId: string | null;
   notes: string | null;
-  isActive: boolean;
+  duration: number | null;
+   rowVersion?: string | null,
 };
 
-const initialValues: LDCFormValues = {
-  code: "",
-  department: "",
-  name: "",
+const initialValues: downtimeValues = {
+   date: editMode ? null : now.date,
+  time: editMode ? null : now.time,
+  downtimeType: null,
+  machineId: null,
+  workOrderId: null,
   notes: null,
-  isActive: true,
+  duration: null,
 };
 
-const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
-  validationSchema: LDCSchema,
+const { errors, defineField, handleSubmit, setValues } = useForm<downtimeValues>({
+  validationSchema: downtimeSchema,
   initialValues,
 });
 
-const [code] = defineField("code");
-const [name] = defineField("name");
+const [date] = defineField("date");
+const [time] = defineField("time");
+const [workOrderId] = defineField("workOrderId");
 const [notes] = defineField("notes");
-const [department] = defineField("department");
+const [machineId] = defineField("machineId");
+const [downtimeType] = defineField("downtimeType");
+const [duration] = defineField("duration");
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
-  if (viewMode) return;
-
   try {
-    if (editMode && props.id) {
-      await updateDowntime(props.id, values);
-    } else {
-      await createDowntime(values);
-    }
-    router.push({
-      name: "Downtime",
+    const payload = {
+      ...values,
+      date: values.date
+        ? values.date.toISOString().split("T")[0]
+        : null,
 
-    });
+      time: values.time
+        ? values.time.toTimeString().split(" ")[0]
+        : null,
+    };
+
+    if (editMode && props.id) {
+      await updateDowntime(props.id, payload);
+    } else {
+      await createDowntime(payload);
+    }
+
+    router.push({ name: "Downtime" });
   } catch (error) {
     console.error("Error submitting form:", error);
   } finally {
     isSubmitting.value = false;
   }
+});
+onMounted(async () => {
+
+  if (editMode && props.id) {
+    const data = await fetchDowntimeById(props.id);
+    if (data) {
+      const mappedValues: downtimeValues = {
+        date: data.date ? new Date(data.date) : null,
+        time: data.time
+          ? new Date(`1970-01-01T${data.time}`)
+          : null,
+        downtimeType: data.downtimeType ?? null,
+        machineId: data.machineId ?? null,
+        workOrderId: data.workOrderId ?? null,
+        duration: data.duration ?? null,
+        notes: data.notes ?? null,
+         rowVersion: data.rowVersion,
+
+      };
+      setValues(mappedValues);
+    }
+  }
+  getMachineLookups()
 });
 </script>
 
@@ -86,30 +145,33 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="grid grid-cols-2 gap-4">
             <div class="w-full">
               <label class="block text-gray-600 text-lg font-bold">{{ $t("downtime.date") }}</label>
-              <DatePicker showIcon fluid iconDisplay="input" :placeholder="$t('downtime.datePlaceholder')"/>
+              <DatePicker v-model="date" showIcon fluid iconDisplay="input"
+                :placeholder="$t('downtime.datePlaceholder')" />
             </div>
             <div class="w-full">
               <label class="block mb-1 font-bold text-gray-700">
                 {{ $t('downtime.time') }}
-             </label>
-              <Calendar class="w-full" inputClass="w-full" style="width: 100%" :placeholder="$t('downtime.timePlaceholder')" timeOnly />
+              </label>
+              <Calendar v-model="time" class="w-full" inputClass="w-full" style="width: 100%"
+                :placeholder="$t('downtime.timePlaceholder')" timeOnly />
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('downtime.machine')" v-model="code"
-              :placeholder="$t('downtime.MachinePlaceholder')" :error="errors.code" :invalid="!!errors.code"
-              :disabled="viewMode" />
-            <FormDropdown :label="$t('downtime.WorkOrderOptional')" v-model="name"
-              :placeholder="$t('downtime.WorkOrderPlaceholder')" :error="errors.name" :invalid="!!errors.name"
-              :disabled="viewMode" />
+            <FormDropdown :label="$t('downtime.machine')" v-model="machineId" :options="machineLookups"
+              :placeholder="$t('downtime.MachinePlaceholder')" :error="errors.machineId" :invalid="!!errors.machineId"
+              />
+            <FormDropdown :label="$t('downtime.WorkOrderOptional')" v-model="workOrderId"
+              :placeholder="$t('downtime.WorkOrderPlaceholder')" :error="errors.workOrderId"
+              :invalid="!!errors.workOrderId" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <FormDropdown :label="$t('downtime.DowntimeType')" v-model="department"
-              :placeholder="$t('downtime.DowntimeTypePlaceholder')" :error="errors.department"
-              :invalid="!!errors.department" :disabled="viewMode" />
-            <FormInput :label="$t('downtime.duration')" v-model="name" :placeholder="$t('downtime.durationPlaceholder')"
-              :error="errors.name" :invalid="!!errors.name" :disabled="viewMode" />
+            <FormDropdown :label="$t('downtime.DowntimeType')" v-model="downtimeType"  :options="downtimeTypeOptions"
+              :placeholder="$t('downtime.DowntimeTypePlaceholder')" :error="errors.downtimeType"
+              :invalid="!!errors.downtimeType" />
+            <FormInput :label="$t('downtime.duration')" v-model="duration"
+              :placeholder="$t('downtime.durationPlaceholder')" :error="errors.duration" :invalid="!!errors.duration"
+              />
           </div>
 
           <div>
@@ -125,9 +187,9 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
 
           <div class="flex justify-between gap-4 mb-4 w-full">
-            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'downtimes' }"
+            <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'Downtime' }"
               :disabled="isSubmitting" />
-            <BaseButton type="submit" v-if="!viewMode" :label="editMode ? 'button.save' : 'button.create'"
+            <BaseButton type="submit"  :label="editMode ? 'button.save' : 'button.create'"
               variant="primary" block :disabled="isSubmitting" :loading="isSubmitting" />
           </div>
         </form>

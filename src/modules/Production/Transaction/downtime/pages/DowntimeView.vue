@@ -53,7 +53,7 @@ const handleEdit = () => {
                         <div class="flex items-center gap-6 mb-2">
                             <h1 class="text-2xl font-bold text-[#101828]">{{ data.downtimeType }}</h1>  
                         </div>
-                        <p class="text-[#667085]">OPR-CUT</p>
+                        <!-- <p class="text-[#667085]">OPR-CUT</p> -->
                     </div>
                     <BaseButton :label="$t('button.edit')" variant="primary" icon="Edit" @click="handleEdit()" />
                 </div>

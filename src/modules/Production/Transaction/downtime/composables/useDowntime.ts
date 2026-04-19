@@ -64,7 +64,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       const response = await DowntimeService.create(payload);
-      toastService.success(t("Downtime.DowntimeCreatedSuccessfully"));
+      toastService.success(t("downtime.DowntimeCreatedSuccessfully"));
       await fetchDowntime(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -79,7 +79,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       const response = await DowntimeService.update(id, payload);
-      toastService.success(t("Downtime.DowntimeUpdatedSuccessfully"));
+      toastService.success(t("downtime.DowntimeUpdatedSuccessfully"));
       await fetchDowntime(pageIndex.value);
       return response;
     } catch (err: any) {
@@ -94,7 +94,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     loading.value = true;
     try {
       await DowntimeService.delete(id);
-      toastService.success((t("Downtime.DowntimeDeletedSuccessfully")));
+      toastService.success((t("downtime.DowntimeDeletedSuccessfully")));
       apiDowntime.value = apiDowntime.value.filter((b) => b.id !== id);
       fetchDowntime(pageIndex.value)
     } catch (err: any) {

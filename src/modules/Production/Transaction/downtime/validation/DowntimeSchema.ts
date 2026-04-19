@@ -1,17 +1,31 @@
 import * as yup from "yup";
 
-export const LDCSchema = yup.object({
-  nameEn: yup
+export const downtimeSchema = yup.object({
+  date: yup
+    .date()
+    .typeError("form.fieldRequired")
+    .required("form.fieldRequired"),
+
+  time: yup
+    .date()
+    .typeError("form.fieldRequired")
+    .required("form.fieldRequired"),
+
+  machineId: yup
     .string()
-    .required("form.fieldRequired")
-    .min(3, "form.min_3"),
-     nameAr: yup
+    .required("form.fieldRequired"),
+
+  downtimeType: yup
     .string()
+    .required("form.fieldRequired"),
+
+  duration: yup
+    .number()
+    .typeError("form.fieldRequired")
     .required("form.fieldRequired")
-    .min(3, "form.min_3"),
- code: yup
-    .string()
-    .required("form.fieldRequired")
-    .min(1, "form.min_1"),
- 
+    .moreThan(0, "form.Zero"),
+
+  workOrderId: yup.string().nullable(),
+
+  notes: yup.string().nullable(),
 });
