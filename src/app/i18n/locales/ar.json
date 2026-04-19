@@ -1606,6 +1606,15 @@
     "timePlaceholder": "اختر الوقت",
     "viewDowntime": "عرض التوقف"
   },
+  "type": {
+      "Breakdown": "عطل",
+    "Setup": "إعداد",
+    "MaterialShortage": "نقص في المواد",
+    "QualityIssue": "مشكلة جودة",
+    "PowerOutage": "انقطاع الكهرباء",
+    "OperatorAbsence": "غياب المشغل",
+    "Other": "أخرى"
+  },
   "workOrder": {
     "workOrder": "أوامر العمل",
     "subtitle": "إدارة أوامر الإنتاج وتتبع التقدم",

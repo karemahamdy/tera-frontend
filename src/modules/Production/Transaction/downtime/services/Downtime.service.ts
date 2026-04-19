@@ -6,43 +6,31 @@ export const DowntimeService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<Downtime>(
-      `/LedgerDetailCard`, { params }
+      `/Downtime`, { params }
     );
     return resp;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
+    const data = await axiosWrapper.get<any>(`/Downtime/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
+    const data = await axiosWrapper.post<any>(`/Downtime`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/Downtime/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
+    await axiosWrapper.delete(`/Downtime/${id}`);
   },
-
-  async toggleActive(id: string, isActive: boolean) {
-    const data = await axiosWrapper.put<any>(
-      `/LedgerDetailCard/Status/${id}`,
-      null,
-      {
-        params: { isActive }
-      }
-    );
-    return data.data;
-  },
-
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/LedgerDetailCard/export-workCenters`,
+      `/Downtime/export-workCenters`,
       {
         params: payload,
         responseType: "blob",

@@ -1,27 +1,22 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useDowntime } from "../composables/useDowntime";
+import { useLookups } from "@/composables/useLookups";
 
 const { t } = useI18n();
 const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteDowntime, onFilterChange } = useDowntime();
+const { loading, apiDowntime, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteDowntime, onFilterChange, fetchDowntime } = useDowntime();
+const { getMachineLookups, machineLookups } = useLookups();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
-      {
-        action: "toggleActive",
-        changeStatus: true,
-        label: t("button.active"),
-        type: "switch",
-        key: "isActive",
-    },
      {
       slot: true,
       label: t("button.view"),
@@ -31,25 +26,20 @@ const customItems = [
     },
 ];
 
+onMounted(() => {
+    fetchDowntime();
+    getMachineLookups()
+});
 
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", isActive: true },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", isActive: false },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 'Department C', machines: "8 machines", isActive: true },
-]);
-// onMounted(() => {
-//     fetchdowntime();
-// });
 const filtersOperation = computed(() => {
     return [
            {
             placeholder: "downtime.machine",
             value: null,
-            field: "status",
+            field: "MachineId",
             options: [
-                  { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+                  { label: t("button.all"), value: null },
+                ...machineLookups.value,
             ],
         },
         {
@@ -57,7 +47,7 @@ const filtersOperation = computed(() => {
             value: null,
             field: "status",
             options: [
-                  { label: t("usersManagement.allStatus"), value: null },
+                  { label: t("button.all"), value: null },
                 { label: t("button.active"), value: "IsActive" },
                 { label: t("button.inactive"), value: "InActive" },
             ],
@@ -65,11 +55,17 @@ const filtersOperation = computed(() => {
         {
             placeholder: "downtime.type",
             value: null,
-            field: "status",
-            options: [
-                  { label: t("usersManagement.allStatus"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+            field: "DowntimeType",
+           options: [
+                { label: t("button.all"), value: null },
+                { label: t("type.Breakdown"), value: 1 },
+                { label: t("type.Setup"), value: 2 },
+                { label: t("type.MaterialShortage"), value: 3 },
+                { label: t("type.QualityIssue"), value: 4 },
+                { label: t("type.PowerOutage"), value: 5 },
+                { label: t("type.OperatorAbsence"), value: 6 },
+                { label: t("type.Other"), value: 7 },
+                
             ],
         },
     ]
@@ -77,11 +73,11 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [ 
-        { field: 'code', header: t('downtime.date'), sortable: true },
-        { field: 'name', header: t('downtime.machine'), type: 'slot', sortable: true },
-        { field: 'department', header: t('downtime.WorkOrder'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('downtime.DowntimeType'), sortable: true },
-        { field: 'machines', header: t('downtime.duration'), sortable: true },
+        { field: 'date', header: t('downtime.date'), sortable: true },
+        { field: 'machineName', header: t('downtime.machine'), type: 'slot', sortable: true },
+        { field: 'workOrderNumber', header: t('downtime.WorkOrder'), type: 'slot', sortable: true },
+        { field: 'downtimeType', header: t('downtime.DowntimeType'), sortable: true },
+        { field: 'duration', header: t('downtime.duration'), sortable: true },
         { field: 'action', header: t('action') }
     ];
 
@@ -123,10 +119,6 @@ const handleActionMenu = async (payload: any) => {
     if (action === 'delete') {
         confirmDelete(data);
     }
-    if (action === "toggleActive") {
-        if (loading.value) return;
-        await toggleActive(data.id, !data.isActive);
-    }
 };
 
 const handleDeleteConfirm = async () => {
@@ -159,13 +151,13 @@ const adddowntime = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiDowntime" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage" @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount"  @search="onSearch" lazy />
             </template>
         </card>
 
-        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('downtime.deletedowntimeConfirm')"
+        <StatusDialog v-model:visible="showDeleteDialog" :icon="alertIcon" :title="$t('downtime.deleteConfirm')"
             :buttons="[
                 { label: $t('button.cancel'), variant: 'ghost', action: 'cancel' },
                 { label: $t('button.delete'), variant: 'danger', action: 'confirm' },

@@ -16,7 +16,8 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const StatusFilter = ref('');
+const MachineId = ref('');
+const DowntimeType = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
   const { t } = useI18n();
@@ -30,7 +31,8 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value
+        MachineId: MachineId.value,
+        DowntimeType: DowntimeType.value
       });
       const payload = response && response.data ? response.data : response;
       apiDowntime.value = payload.items ?? [];
@@ -103,28 +105,17 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     }
   };
 
-  const toggleActive = async (id: string, isActive: boolean) => {
-    loading.value = true;
-    try {
-      await DowntimeService.toggleActive(id, isActive);
-      toastService.success((t("Downtime.DowntimeUpdatedSuccessfully")));
-      await fetchDowntime(pageIndex.value);
-    } catch (err: any) {
-      toastService.error(err);
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
   const onFilterChange = (filter: {
     filter: { field: string };
     value: string;
   }) => {
     const field = filter.filter.field;
     const value = filter.value;
-    if (field === "status") {
-      StatusFilter.value = value;
+    if (field === "MachineId") {
+      MachineId.value = value;
+    }
+     if (field === "DowntimeType") {
+      DowntimeType.value = value;
     }
     fetchDowntime(1);
   };
@@ -149,7 +140,6 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     createDowntime,
     updateDowntime,
     deleteDowntime,
-    toggleActive,
     pageIndex,
     pageSize,
     totalCount,

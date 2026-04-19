@@ -1390,6 +1390,15 @@
     "sameSourceAndDestination": "Source and destination cannot be the same",
     "invalidQuantity": "Invalid quantity must be greater than zero"
   },
+   "type": {
+    "Breakdown": "Breakdown",
+    "Setup": "Setup",
+    "MaterialShortage": "Material Shortage",
+    "QualityIssue": "Quality Issue",
+    "PowerOutage": "Power Outage",
+    "OperatorAbsence": "Operator Absence",
+    "Other": "Other"
+  },
   "workCenter": {
     "workCenter": "Work Centers",
     "subtitle": "Manage production work centers and departments",
