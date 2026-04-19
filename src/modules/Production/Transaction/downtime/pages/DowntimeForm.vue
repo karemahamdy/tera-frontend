@@ -6,6 +6,7 @@ import { useDowntime } from "../composables/useDowntime";
 import router from "@/app/router";
 import { useLookups } from "@/composables/useLookups";
 import { useI18n } from "vue-i18n";
+import type { downtimeValues } from "../types/Downtime";
 
 const props = defineProps<{
   mode: "edit" | "create" | "view";
@@ -16,7 +17,7 @@ const { t } = useI18n();
 const editMode = props.mode === "edit";
 const isSubmitting = ref(false);
 const { createDowntime, updateDowntime, fetchDowntimeById } = useDowntime();
-const { getMachineLookups, machineLookups } = useLookups();
+const { getMachineLookups, machineLookups, getworkOrderLookUp, WorkOrderLookups } = useLookups();
 
 const downtimeTypeOptions = [
   { label: t("type.Breakdown"), value: "Breakdown" },
@@ -36,16 +37,6 @@ const getNowValues = () => {
 };
 
 const now = getNowValues();
-type downtimeValues = {
-  date: Date | null;
-  time: Date | null;
-  downtimeType: string | null;
-  machineId: string | null;
-  workOrderId: string | null;
-  notes: string | null;
-  duration: number | null;
-   rowVersion?: string | null,
-};
 
 const initialValues: downtimeValues = {
    date: editMode ? null : now.date,
@@ -119,6 +110,7 @@ onMounted(async () => {
     }
   }
   getMachineLookups()
+  getworkOrderLookUp()
 });
 </script>
 
@@ -160,7 +152,7 @@ onMounted(async () => {
             <FormDropdown :label="$t('downtime.machine')" v-model="machineId" :options="machineLookups"
               :placeholder="$t('downtime.MachinePlaceholder')" :error="errors.machineId" :invalid="!!errors.machineId"
               />
-            <FormDropdown :label="$t('downtime.WorkOrderOptional')" v-model="workOrderId"
+            <FormDropdown :label="$t('downtime.WorkOrderOptional')" v-model="workOrderId" :options="WorkOrderLookups"
               :placeholder="$t('downtime.WorkOrderPlaceholder')" :error="errors.workOrderId"
               :invalid="!!errors.workOrderId" />
           </div>

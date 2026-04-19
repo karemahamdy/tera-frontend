@@ -39,6 +39,7 @@ export function useLookups() {
   const workCentersLookups = ref<LookupsOption[]>([]);
   const AllVersionsLookups = ref<LookupsOption[]>([]);
   const itemsLookups = ref<any[]>([]);
+  const WorkOrderLookups = ref<any[]>([]);
 
 
   const getAdjustmentReasonLookups = async () => {
@@ -417,6 +418,17 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
+   const getworkOrderLookUp = async () => {
+    try {
+      const res = await LookupsService.getworkOrderLookUp();
+      WorkOrderLookups.value = res.data.map((group) => ({
+        label: group.workOrderNumber,
+        value: group.id,
+      }));
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
   return {
     groupsLookups,
     branchesLookups,
@@ -424,6 +436,7 @@ export function useLookups() {
     reasonsLookups,
     rolesLookups,
     screensLookups,
+    WorkOrderLookups,
     CodeLookups,
     departmentsLookups,
     usersLookups,
@@ -453,6 +466,7 @@ export function useLookups() {
     itemsLookups,
     machineLookups,
     getAllItemsLookUp,
+    getworkOrderLookUp,
     getAllVersionsLookups,
     getWorkCentersLookups,
     getProcessLookups,

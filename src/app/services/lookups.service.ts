@@ -150,4 +150,9 @@ export const LookupsService = {
       "/Bom/GetAllItemsLockUp",
     );
   },
-};
+   getworkOrderLookUp() {
+    return axiosWrapper.get<ApiResponse<any[]>>(
+      "/WorkOrder/GetAllWorkOrders",
+    );
+},
+}

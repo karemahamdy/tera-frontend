@@ -17,6 +17,7 @@ const totalPages = ref(1);
 const searchTerm = ref('');
 const orderBy = ref('');
 const MachineId = ref('');
+const WorkOrderId = ref('');
 const DowntimeType = ref('');
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
@@ -32,7 +33,8 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
         MachineId: MachineId.value,
-        DowntimeType: DowntimeType.value
+        DowntimeType: DowntimeType.value,
+        WorkOrderId: WorkOrderId.value
       });
       const payload = response && response.data ? response.data : response;
       apiDowntime.value = payload.items ?? [];
@@ -116,6 +118,9 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     }
      if (field === "DowntimeType") {
       DowntimeType.value = value;
+    }
+     if (field === "WorkOrderId") {
+      WorkOrderId.value = value;
     }
     fetchDowntime(1);
   };

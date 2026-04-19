@@ -13,7 +13,7 @@ const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
 const { loading, apiDowntime, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteDowntime, onFilterChange, fetchDowntime } = useDowntime();
-const { getMachineLookups, machineLookups } = useLookups();
+const { getMachineLookups, machineLookups, WorkOrderLookups, getworkOrderLookUp } = useLookups();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -28,7 +28,8 @@ const customItems = [
 
 onMounted(() => {
     fetchDowntime();
-    getMachineLookups()
+    getMachineLookups();
+    getworkOrderLookUp()
 });
 
 const filtersOperation = computed(() => {
@@ -45,11 +46,10 @@ const filtersOperation = computed(() => {
         {
             placeholder: "downtime.WorkOrder",
             value: null,
-            field: "status",
+            field: "WorkOrderId",
             options: [
                   { label: t("button.all"), value: null },
-                { label: t("button.active"), value: "IsActive" },
-                { label: t("button.inactive"), value: "InActive" },
+               ...WorkOrderLookups.value
             ],
         },
         {

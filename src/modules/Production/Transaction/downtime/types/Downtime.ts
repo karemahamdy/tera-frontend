@@ -30,4 +30,16 @@ export interface Pagination {
   orderDirection?: "asc" | "desc";
   MachineId?: string;
   DowntimeType?: string;
+  WorkOrderId?: string;
 }
+
+export interface downtimeValues  {
+  date: Date | null;
+  time: Date | null;
+  downtimeType: string | null;
+  machineId: string | null;
+  workOrderId: string | null;
+  notes: string | null;
+  duration: number | null;
+   rowVersion?: string | null,
+};
