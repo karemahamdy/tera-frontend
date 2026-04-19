@@ -16,7 +16,7 @@ const totalPages = ref(1);
 
 const searchTerm = ref('');
 const orderBy = ref('');
-const StatusFilter = ref('');
+const IsActive = ref<boolean | null | string>(null);
 const Version = ref<number | null>(null);
 const orderDirection = ref<'asc' | 'desc'>('desc');
 
@@ -31,7 +31,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
         searchingWord: searchTerm.value,
         orderBy: orderBy.value,
         orderDirection: orderDirection.value,
-        StatusFilter: StatusFilter.value,
+        IsActive : IsActive.value,
         Version: Version.value,
       });
       const payload = response && response.data ? response.data : response;
@@ -126,7 +126,7 @@ const orderDirection = ref<'asc' | 'desc'>('desc');
     const field = filter.filter.field;
     const value = filter.value;
       if (field === "status") {
-        StatusFilter.value = value;
+        IsActive.value = value;
     }
     if (field === "Version") {
       const num = parseInt(value, 10);
