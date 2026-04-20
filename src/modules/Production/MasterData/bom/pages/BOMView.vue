@@ -46,14 +46,14 @@ const handleEdit = () => {
             <div class="flex items-center gap-3 mb-3">
               <h1 class="text-2xl font-bold text-[#101828]">{{ bomData?.bomName ?? '—' }}</h1>
               <span :class="['px-8 py-0.5 rounded-lg text-md font-medium',
-                bomData?.isActive ? 'bg-[#D1FADF] text-[#027A48]' : 'bg-[#FFF3E0] text-[#F59E0B]']">
-                {{ bomData?.isActive ? $t('button.active') : $t('button.inactive') }}
+                bomData?.parentItemCode ? 'bg-[#D1FADF] text-[#027A48]' : 'bg-[#FFF3E0] text-[#F59E0B]']">
+                {{ bomData?.parentItemCode  }}
               </span>
               <span class="px-8 py-0.5 rounded-lg text-md font-medium bg-[#D6E0FF] text-[#638EFF]">
                 V{{ bomData?.version }}
               </span>
             </div>
-            <p class="text-[#667085]">{{ bomData?.parentItemName }} ({{ bomData?.parentItemCode }})</p>
+            <p class="text-[#667085]">{{ bomData?.parentItemName }}</p>
           </div>
           <BaseButton :label="$t('button.edit')" variant="primary" icon="Edit" @click="handleEdit()" />
         </div>
