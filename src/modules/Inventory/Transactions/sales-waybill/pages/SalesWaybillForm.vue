@@ -7,7 +7,6 @@ import LineItems from '../components/LineItems.vue';
 import Payment from '../components/Payment.vue';
 import { useSalesWaybill } from '../composables/useSales';
 import { useI18n } from "vue-i18n";
-import { toastService } from '@/app/services/toastService';
 import { CustomerSchema, LineItemsSchema, PaymentSchema, WarehouseSchema } from '../validation/SalesWaybillSchema';
 
 const { t } = useI18n();
@@ -89,46 +88,49 @@ const updatePaymentData = (data: any) => {
 const errors = ref<Record<string, string>>({});
 
 const nextTab = async () => {
+  errors.value = {}; // ← must be first line
+
   try {
     if (activeStep.value === 0) {
       await CustomerSchema.validate(formData.value.customerDetails, { abortEarly: false });
     }
-
     if (activeStep.value === 1) {
-      await WarehouseSchema.validate(formData.value.warehouseDetails, { abortEarly: false });
+      await WarehouseSchema.validate(formData.value.warehouseDetails ?? {}, { abortEarly: false });
     }
-
     if (activeStep.value === 2) {
       await LineItemsSchema.validate({ lineItems: formData.value.lineItems }, { abortEarly: false });
     }
 
-    if (activeStep.value === 3) {
-      await PaymentSchema.validate(formData.value.paymentInfo, { abortEarly: false });
+    if (activeStep.value < steps.length - 1) activeStep.value++;
+
+  } catch (err: any) {
+    if (err?.inner?.length) {
+      err.inner.forEach((e: any) => { errors.value[e.path] = e.message; });
+    } else if (err?.path) {
+      errors.value[err.path] = err.message;
     }
-
-    // لو كله تمام
-    if (activeStep.value < steps.length - 1) {
-      activeStep.value++;
-    }
-
-  } 
-  catch (err: any) {
-  errors.value = {};
-
-  if (err.inner) {
-    err.inner.forEach((e: any) => {
-      errors.value[e.path] = e.message;
-    });
   }
-}
 };
 const previousTab = () => {
   if (activeStep.value > 0) activeStep.value--;
 };
 
 const submit = async () => {
+  errors.value = {}; // Clear errors first
+
   try {
-    console.log('Submitting with formData:', formData.value);
+    // Validate all schemas before submitting
+    await CustomerSchema.validate(formData.value.customerDetails, { abortEarly: false });
+    await WarehouseSchema.validate(formData.value.warehouseDetails ?? {}, { abortEarly: false });
+    await LineItemsSchema.validate({ lineItems: formData.value.lineItems }, { abortEarly: false });
+    await PaymentSchema.validate({
+      paymentType: formData.value.paymentInfo?.paymentType,
+      paymentTermId: formData.value.paymentInfo?.paymentTermId,
+      purchaseType: formData.value.paymentInfo?.purchaseType,
+      incoterm: formData.value.paymentInfo?.incoterm,
+    }, { abortEarly: false });
+
+    // Proceed with submission if all validations pass
     const exchangeRate = formData.value.paymentTerms?.exchangeRate !== null && 
           formData.value.paymentTerms?.exchangeRate !== undefined && 
           formData.value.paymentTerms?.exchangeRate !== '' 
@@ -171,8 +173,6 @@ const submit = async () => {
       notes: formData.value.notes
     };
     
-    console.log('Final payload before lineItems:', payload);
-    
     const finalPayload = {
         ...payload,
         lineItems: formData.value.lineItems.map((item: any) => ({
@@ -199,7 +199,7 @@ const submit = async () => {
         }))
     };
     
-    console.log('Final payload to send:', finalPayload);
+    
     
     if (mode.value === 'edit' && id.value) {
       await updateSalesWaybill(id.value, finalPayload);
@@ -208,7 +208,27 @@ const submit = async () => {
     }
     await router.push("/sales-waybill");
   } catch (error: any) {
-   toastService.error(error);
+    if (error?.inner?.length) {
+      error.inner.forEach((e: any) => { errors.value[e.path] = e.message; });
+      // Set activeStep to the first step with errors for better UX
+      const errorPaths = error.inner.map((e: any) => e.path);
+      if (errorPaths.some((p: string) => ['customerId', 'waybillDate'].includes(p))) {
+        activeStep.value = 0;
+      } else if (errorPaths.some((p: string) => ['warehouseId'].includes(p))) {
+        activeStep.value = 1;
+      } else if (errorPaths.some((p: string) => p.startsWith('lineItems'))) {
+        activeStep.value = 2;
+      } else {
+        activeStep.value = 3; // Payment errors
+      }
+    } else if (error?.path) {
+      errors.value[error.path] = error.message;
+      // Set step based on single error path
+      // if (['customerId', 'waybillDate'].includes(error.path)) activeStep.value = 0;
+      // else if (error.path === 'warehouseId') activeStep.value = 1;
+      // else if (error.path.startsWith('lineItems')) activeStep.value = 2;
+      // else activeStep.value = 3;
+    }
   }
 };
 
@@ -285,7 +305,7 @@ const mapApiToForm = (apiData: any) => {
       }))
     })),
     paymentInfo: {
-      paymentType:    pi.paymentType ?? "Payable",
+      paymentType:    pi.paymentType ?? "",
       paymentTermId:  pi.paymentTermId ?? null,
       paymentTermName:pi.paymentTermName ?? "",
       incoterm:       pi.incoterm ?? null,

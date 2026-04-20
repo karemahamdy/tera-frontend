@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   warehouseDetails: null,
   disabled: false,
-  
+    errors: () => ({})
 });
 
 const { t } = useI18n()
@@ -86,7 +86,7 @@ onMounted(async () => {
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
     <FormDropdown v-if="!disabled" :label="t('purchaseWaybill.dispatchWarehouse')" :modelValue="form.warehouseId"
       :error="props.errors?.warehouseId" :placeholder="t('purchaseWaybill.dispatchWarehousePlaceholder')"
-      :invalid="!!errors.warehouseId" :options="WarehouseLookups" @update:modelValue="onWarehouseChange" />
+      :invalid="!!props.errors.warehouseId" :options="WarehouseLookups" @update:modelValue="onWarehouseChange" />
     <FormInput v-else :label="t('purchaseWaybill.ReceivingWarehouse')"
       :modelValue="props.warehouseDetails?.warehouseName ?? ''" disabled />
 

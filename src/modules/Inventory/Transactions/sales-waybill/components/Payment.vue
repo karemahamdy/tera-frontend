@@ -22,7 +22,7 @@ const props = defineProps<{
 const emit = defineEmits(['prev', 'submit', 'update'])
 
 const form = reactive({
-    paymentType:    props.paymentInfo?.paymentType ?? "Payable",
+    paymentType:    props.paymentInfo?.paymentType ?? "",
     paymentTermId:  props.paymentInfo?.paymentTermId ?? null as string | null,
     purchaseType:   props.paymentInfo?.purchaseType ?? null as string | null,
     incoterm:       props.paymentInfo?.incoterm ?? null as string | null,
@@ -86,6 +86,15 @@ const isLocal = computed(() => form.purchaseType === 'Local')
 watch(() => form.purchaseType, (val) => {
     if (val === 'Local') {
         form.incoterm = null;
+        nextTick(() => emitUpdate());
+    } else {
+        emitUpdate();
+    }
+});
+
+watch(() => form.paymentType, (val) => {
+    if (val === 'Cash') {
+        form.paymentTermId = null;
         nextTick(() => emitUpdate());
     } else {
         emitUpdate();
@@ -162,6 +171,7 @@ const salesTypeOptions = [
 
 <template>
     <div class="h-full">
+        
         <h2 class="text-xl font-bold text-gray-700 mb-10">
             {{ t("payment.paymentFinanceInfo") }}
         </h2>
@@ -212,12 +222,13 @@ const salesTypeOptions = [
                             <FormDropdown 
                                 :label="t('salesWaybill.SalesType')" 
                                 v-model="form.purchaseType" 
+                                @update:modelValue="(v: any) => { form.purchaseType = v; }"
                                 :options="salesTypeOptions"
                                 optionLabel="label"
                                 optionValue="value"
                                 :error="errors?.purchaseType"
                                 :placeholder="t('payment.selectType')" 
-                                :disabled="disabled || isCash" 
+                                :disabled="disabled" 
                             />
                     </div>
                     <div class="md:col-span-2">

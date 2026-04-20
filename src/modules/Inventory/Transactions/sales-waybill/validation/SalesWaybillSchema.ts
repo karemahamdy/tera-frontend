@@ -20,28 +20,30 @@ export const WarehouseSchema = yup.object({
 });
 
 export const LineItemsSchema = yup.object({
-  lineItems: yup.array().of(
-    yup.object({
-      quantity: yup
-        .number()
-        .typeError("Quantity is required")
-        .required("Quantity is required")
-        .moreThan(0, "Quantity must be greater than 0"),
+  lineItems: yup.array()
+    .min(1, "At least one item is required")
+    .required("Line items are required")
+    .of(
+      yup.object({
+        quantity: yup
+          .number()
+          .typeError("Quantity is required")
+          .required("Quantity is required")
+          .moreThan(0, "Quantity must be greater than 0"),
 
-      trackingType: yup.string(),
+        trackingType: yup.string(),
 
-      serials: yup.array().when("trackingType", {
-        is: "Serial",
-        then: (schema) =>
-          schema
-            .min(1, "Serial is required")
-            .required("Serial is required"),
-        otherwise: (schema) => schema.nullable(),
-      }),
-    })
-  ),
+        serials: yup.array().when("trackingType", {
+          is: "Serial",
+          then: (schema) =>
+            schema
+              .min(1, "Serial is required")
+              .required("Serial is required"),
+          otherwise: (schema) => schema.nullable(),
+        }),
+      })
+    ),
 });
-
 export const PaymentSchema = yup.object({
   paymentType: yup.string().nullable(),
 
@@ -54,17 +56,22 @@ export const PaymentSchema = yup.object({
       otherwise: (schema) => schema.nullable(),
     }),
 
-  purchaseType: yup
-    .string()
-    .nullable()
-    .required("Purchase Type is required"),
+ purchaseType: yup
+  .string()
+  .nullable()
+  .when("paymentType", {
+    is: (val: string) => val !== "Cash",
+    then: (schema) => schema.required("Purchase Type is required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
 
   incoterm: yup
     .string()
     .nullable()
     .when("purchaseType", {
-      is: (val: string) => val === "Export",
+      is: (val: string) => val === "Payable", // 👈 هنا التعديل
       then: (schema) => schema.required("Incoterm is required"),
       otherwise: (schema) => schema.nullable(),
     }),
+
 });

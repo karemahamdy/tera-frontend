@@ -19,6 +19,7 @@ const {
 const props = defineProps<{
     lineItems?: any[];
     disabled?: boolean;
+    errors?: Record<string, string>;
 }>();
 
 const emit = defineEmits(['next', 'prev', 'update']);
@@ -210,17 +211,17 @@ const removeItem = (data: any) => {
     emitUpdate();
 };
 
-function getQtyError(item: any): string {
-  if (!item.quantity || item.quantity <= 0) {
-    return t("validation.invalidQuantity");
-  }
-  return "";
+function getQtyError(index: number): string {
+  return props.errors?.[`lineItems[${index}].quantity`] || "";
 }
 
 </script>
 
 <template>
     <div class="flex flex-col h-full bg-white rounded-xl ">
+  <div v-if="props.errors?.lineItems" class="text-danger-500 text-sm mb-3">
+  {{  props.errors.lineItems }}
+</div>
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
@@ -266,9 +267,7 @@ function getQtyError(item: any): string {
                <small v-if="getQtyError(data)" class="p-error text-xs">
               {{ getQtyError(data) }}
             </small>
-              <span v-else class="text-gray-700">
-                {{ data.quantity }}
-              </span>
+              
             </template>
           </div>
         </template>
