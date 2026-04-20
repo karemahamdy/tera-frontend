@@ -105,7 +105,7 @@ onMounted(() => {
       </card>
       <div class="w-full flex justify-end">
         <div class="flex gap-4 mt-5 w-1/2">
-          <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'BranchManagement' }" />
+          <BaseButton label="button.cancel" variant="ghost" block :to="{ name: 'InventoryAdjustment' }" />
           <BaseButton type="submit" label="InventoryAdjustment.createAdjustment" variant="primary" block />
         </div>
       </div>

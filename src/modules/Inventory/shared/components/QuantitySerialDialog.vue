@@ -159,8 +159,8 @@ watch(
 </script>
 
 <template>
-  <Dialog v-model:visible="isVisible" modal :closable="false">
-    <div class="grid grid-cols-1 md:grid-cols-2">
+  <Dialog v-model:visible="isVisible" modal :closable="false" class="w-full max-w-6xl">
+    <div class="grid" :class="disabled ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'">
       <!-- Left Form Panel — hidden in view mode -->
       <div v-if="!disabled" class="md:col-span-1 w-full flex flex-col gap-5 p-2 h-full">
         <div class="flex justify-between items-center">
@@ -291,10 +291,11 @@ watch(
 
       <!-- Right List Panel -->
       <div
-        class="w-full h-full flex-1 flex flex-col justify-between p-2 rounded-xl bg-[#F5F8FF]/30"
+        class="w-full flex flex-col p-2 rounded-xl bg-[#F5F8FF]/30"
+        :class="disabled ? 'col-span-1 h-full' : 'flex-1 h-full'"
       >
-        <div>
-          <div class="mb-4">
+        <div class="flex flex-col h-full">
+          <div class="mb-4 flex-shrink-0">
             <h3 class="font-bold text-lg text-gray-900">
               {{ t("serial.addedSerial") }}
             </h3>
@@ -304,7 +305,7 @@ watch(
           </div>
 
           <div
-            class="flex-1 overflow-hidden rounded-lg bg-[#EFF4FF] border border-gray-100"
+            class="flex-1 overflow-auto rounded-lg bg-[#EFF4FF] border border-gray-100"
           >
             <DynamicTable
               :columns="columns"
@@ -313,7 +314,8 @@ watch(
               :showView="false"
               :showEdit="false"
               :showDelete="false"
-              class="h-full bg-transparent"
+              class="h-full w-full bg-transparent"
+              tableClass="min-w-full"
             >
               <template #col-batchNumber="{ data }">
                 <span
@@ -354,44 +356,44 @@ watch(
               </template>
             </DynamicTable>
           </div>
-        </div>
 
-        <div
-          class="flex justify-between items-center gap-5 mt-4 pt-4 border-t border-gray-100"
-        >
-          <div class="flex flex-col">
-            <span class="text-xs text-gray-500 font-medium">
-              {{ t("serial.totalQty") }}
-            </span>
-            <span class="text-2xl font-bold text-primary-600">
-              {{ totalQty }}
-            </span>
-          </div>
+          <div
+            class="flex justify-between items-center gap-5 mt-4 pt-4 border-t border-gray-100 flex-shrink-0"
+          >
+            <div class="flex flex-col">
+              <span class="text-xs text-gray-500 font-medium">
+                {{ t("serial.totalQty") }}
+              </span>
+              <span class="text-2xl font-bold text-primary-600">
+                {{ totalQty }}
+              </span>
+            </div>
 
-          <!-- View mode: Close only -->
-          <div v-if="disabled" class="flex gap-3">
-            <BaseButton
-              :label="t('common.close')"
-              variant="ghost"
-              class="w-24 border-gray-300 text-gray-700 hover:bg-gray-50 bg-white"
-              @click="close"
-            />
-          </div>
+            <!-- View mode: Close only -->
+            <div v-if="disabled" class="flex gap-3">
+              <BaseButton
+                :label="t('common.close')"
+                variant="ghost"
+                class="w-24 border-gray-300 text-gray-700 hover:bg-gray-50 bg-white"
+                @click="close"
+              />
+            </div>
 
-          <!-- Edit mode: Cancel + Save -->
-          <div v-else class="flex gap-3">
-            <BaseButton
-              :label="t('common.cancel')"
-              variant="ghost"
-              class="w-24 border-gray-300 text-gray-700 hover:bg-gray-50 bg-white"
-              @click="close"
-            />
+            <!-- Edit mode: Cancel + Save -->
+            <div v-else class="flex gap-3">
+              <BaseButton
+                :label="t('common.cancel')"
+                variant="ghost"
+                class="w-24 border-gray-300 text-gray-700 hover:bg-gray-50 bg-white"
+                @click="close"
+              />
 
-            <BaseButton
-              :label="t('serial.finalizeSave')"
-              class="w-40 bg-primary-600 hover:bg-primary-700 text-white border-0"
-              @click="save"
-            />
+              <BaseButton
+                :label="t('serial.finalizeSave')"
+                class="w-40 bg-primary-600 hover:bg-primary-700 text-white border-0"
+                @click="save"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -402,11 +404,33 @@ watch(
 <style scoped>
 :deep(.p-dialog-content) {
   padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.p-dialog) {
+  height: 80vh;
+  max-height: 80vh;
 }
 
 :deep(.p-datatable .p-datatable-thead > tr > th) {
   background-color: #e2e8f0;
   color: #475569;
   font-weight: 700;
+  padding: 0.75rem 1rem;
+}
+
+:deep(.p-datatable .p-datatable-tbody > tr > td) {
+  padding: 0.75rem 1rem;
+}
+
+:deep(.p-datatable) {
+  height: 100%;
+}
+
+:deep(.p-datatable .p-datatable-wrapper) {
+  height: 100%;
+  overflow: auto;
 }
 </style>

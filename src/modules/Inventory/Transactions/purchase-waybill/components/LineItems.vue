@@ -382,8 +382,10 @@ const handleWarehouseChange = async (item: any) => {
 
     <ItemSelectionDialog v-if="showItemDialog" v-model:visible="showItemDialog" :items="availableItems"
       @select="handleSelectItem" />
+
     <QuantitySerialDialog v-if="showQtyDialog && currentItem" v-model:visible="showQtyDialog" :item="currentItem"
       :initialSerials="currentItem.serials" :disabled="disabled" @save="handleSaveSerials" />
+      
     <StorageLocationPicker v-if="showLocationPicker" v-model:visible="showLocationPicker" :locations="currentLocations"
       :selectedLocationId="locationPickerTarget?.locationId" @select="handleSelectLocation" />
   </div>
