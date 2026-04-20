@@ -3,8 +3,8 @@ export interface Branch {
   id: string;
   code: string;
   name: string;
- addressEn?: string;
- addressAr?: string;
+ address?: string;
+//  addressAr?: string;
   isActive: boolean;
   createAt: string;
 }

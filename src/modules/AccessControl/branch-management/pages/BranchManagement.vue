@@ -32,7 +32,7 @@ const columns = computed(() => {
     const Columns = [
         { field: 'name', header: t('branch.branchName'), type: 'slot', sortable: true },
         { field: 'code', header: t('branch.code'), sortable: true, type: 'badge', Class: 'custom-badge' },
-        { field: 'addressEn', header: t('branch.address'), sortable: true },
+        { field: 'address', header: t('branch.address'), sortable: true },
         { field: 'isActive', header: t('status'), type: 'status', sortable: true },
         { field: 'createAt', header: t('table.created'), type: 'date', sortable: true },
         { field: 'action', header: t('action') }
