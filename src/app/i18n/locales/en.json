@@ -1531,6 +1531,7 @@
     "ofTotalCostPerUnit": "Total Cost Per Unit",
     "ChangedBy": "Changed by",
     "uom": "UOM",
+    "MachineCost" : "Machine Cost",
     "quantity": "Quantity",
     "unitcost": "Unit Cost",
     "scrap": "Scrap",

@@ -31,6 +31,13 @@ const cards = computed(() => [
     valueUnit: '$',
     subtitle: `${props.costingSummary?.overheadCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
   },
+  {
+    variant: 'purple',
+    title: 'BOM.MachineCost',
+    value: props.costingSummary?.overheadCost?.toFixed(2) ?? '0',
+    valueUnit: '$',
+    subtitle: `${props.costingSummary?.overheadCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
+  },
 ]);
 const totalCostPerUnit = computed(() => {
   const labor = props.costingSummary?.laborCost ?? 0;
@@ -42,7 +49,7 @@ const totalCostPerUnit = computed(() => {
 </script>
 
 <template>
-            <div class="grid gap-6 md:grid-cols-3 sm:grid-cols-1">
+            <div class="grid gap-6 md:grid-cols-4 sm:grid-cols-2">
                 <StatusCard v-for="(card, index) in cards" :key="index" v-bind="card" />
             </div>
             <div class="bg-[#EEF2FF] px-4 py-3 rounded-lg text-sm text-[#6366F1] flex justify-between mt-4">

@@ -1529,6 +1529,7 @@
     "Machine": "الآلة",
     "RunTime": "وقت التشغيل",
     "SetupTime": "وقت الإعداد",
+    "MachineCost": "تكلفة الالة",
     "headerInfo": "المعلومات الأساسية",
     "BomItems": "عناصر قائمة المواد",
     "operations": "العمليات",

@@ -9,8 +9,8 @@ const props = defineProps<{
 }>();
 
 const columns = computed(() => [
-  { field: 'componentItemCode', header: t('BOM.code'), sortable: false },
-  { field: 'componentItemName', header: t('BOM.name'), sortable: false },
+  { field: 'componentItemCode', header: t('itemList.itemCode'), sortable: false },
+  { field: 'componentItemName', header: t('itemList.itemName'), sortable: false },
   { field: 'uomName', header: t('BOM.uom'), sortable: false },
   { field: 'quantity', header: t('BOM.quantity'), sortable: false },
   { field: 'unitCost', header: t('BOM.unitcost'), sortable: false },

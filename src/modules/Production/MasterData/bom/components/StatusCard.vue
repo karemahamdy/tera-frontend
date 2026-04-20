@@ -87,4 +87,23 @@ const props = defineProps({
 .blue .progress {
   background: #638EFF;
 }
+
+.card.purple {
+  background: #f0dce3;
+  color: #df6d99;
+  border: 1px solid #cc839f;
+}
+.purple .status {
+  background: #fedbfe;
+  color: #ce487b;
+}
+.purple .unit {
+  color: #aa3e68;
+}
+.purple .progress-bg {
+  background: #fedbfe;
+}
+.purple .progress {
+  background: #FBCFE8;
+}
 </style>
