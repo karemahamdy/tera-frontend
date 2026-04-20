@@ -34,7 +34,7 @@ const cards = computed(() => [
   {
     variant: 'purple',
     title: 'BOM.MachineCost',
-    value: props.costingSummary?.overheadCost?.toFixed(2) ?? '0',
+    value: props.costingSummary?.machineCost?.toFixed(2) ?? '0',
     valueUnit: '$',
     subtitle: `${props.costingSummary?.overheadCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
   },

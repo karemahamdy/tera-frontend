@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import router from '@/app/router';
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
 
 const props = defineProps<{
   versions: any[];
 }>();
 
-const handleEdit = () => {
-  router.push(`/bom/view/${route.params.id}`);
+const handleEdit = (id: string) => {
+  router.push(`/bom/view/${id}`);
 };
 
 const getStatusBadge = (isActive: boolean) =>
@@ -48,7 +45,7 @@ const formatDate = (dateStr: string) =>
       <!-- Right -->
       <div class="flex flex-col items-end gap-3">
         <span class="text-md text-gray-500">{{ formatDate(item.createdAt) }}</span>
-        <BaseButton label="button.view" icon="Eye" variant="outline-primary" block @click="handleEdit()" />
+        <BaseButton label="button.view" icon="Eye" variant="outline-primary" block @click="handleEdit(item.id)" />
       </div>
     </div>
   </div>
