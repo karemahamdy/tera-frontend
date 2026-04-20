@@ -91,6 +91,7 @@ const handleSaveSerials = (selectedSerials: { serials: any[], totalQty: number }
         "comment": serial.comment
     }));
     quantity.value = selectedSerials.totalQty;
+    initialSerials.value = [...selectedSerials.serials];
 };
 
 const setSelectedValues = () => {
@@ -106,14 +107,25 @@ const setSelectedValues = () => {
     }
     if (serials.value && serials.value.length > 0) {
         initialSerials.value = serials.value.map((s: any) => ({
-            serial: s.serial,
+            mainSerial: s.serial,
             qty: s.quantity,
-            batch: s.batchNumber,
-            expire: s.expireDate,
+            batchNumber: s.batchNumber,
+            expireDate: s.expireDate
+                ? s.expireDate.split("T")[0]
+                : null,
             serialNumber2: s.serialNumber2,
             serialNumber3: s.serialNumber3,
             comment: s.comment
         }));
+        // initialSerials.value = serials.value.map((s: any) => ({
+        //     serial: s.serial,
+        //     qty: s.quantity,
+        //     batch: s.batchNumber,
+        //     expire: s.expireDate,
+        //     serialNumber2: s.serialNumber2,
+        //     serialNumber3: s.serialNumber3,
+        //     comment: s.comment
+        // }));
     }
 }
 

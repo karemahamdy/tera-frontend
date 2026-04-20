@@ -53,7 +53,10 @@ const totalQty = computed(() =>
 );
 
 const addSerial = () => {
-  if (!serialInput.value && !qtyInput.value) return;
+  if (!serialInput.value) {
+    toastService.error(t("serial.serialRequired") || "Serial number is required");
+    return;
+  }
 
   serialList.value.push({
     mainSerial: serialInput.value,

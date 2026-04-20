@@ -92,7 +92,8 @@
     "minZero": "Must be at least 0",
     "Zero": "Duration must be greater than 0",
     "maxHundred": "Must be at most 100",
-    "max": "Reached the maximum limit"
+    "max": "Reached the maximum limit",
+    "serialRequired": "This Serial is required"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
