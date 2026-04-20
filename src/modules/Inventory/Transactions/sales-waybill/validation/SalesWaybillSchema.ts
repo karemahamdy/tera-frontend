@@ -4,32 +4,32 @@ export const CustomerSchema = yup.object({
   customerId: yup
     .string()
     .nullable()
-    .required("Customer is required"),
+    .required("form.fieldRequired"),
 
   waybillDate: yup
     .date()
     .nullable()
-    .required("Waybill Date is required"),
+    .required("form.fieldRequired"),
 });
 
 export const WarehouseSchema = yup.object({
   warehouseId: yup
     .string()
     .nullable()
-    .required("Warehouse is required"),
+    .required("form.fieldRequired"),
 });
 
 export const LineItemsSchema = yup.object({
   lineItems: yup.array()
     .min(1, "At least one item is required")
-    .required("Line items are required")
+    .required("form.fieldRequired")
     .of(
       yup.object({
         quantity: yup
           .number()
-          .typeError("Quantity is required")
-          .required("Quantity is required")
-          .moreThan(0, "Quantity must be greater than 0"),
+          .typeError("form.fieldRequired")
+          .required("form.fieldRequired")
+          .moreThan(0, "form.mustBeGreaterZero"),
 
         trackingType: yup.string(),
 
@@ -37,8 +37,8 @@ export const LineItemsSchema = yup.object({
           is: "Serial",
           then: (schema) =>
             schema
-              .min(1, "Serial is required")
-              .required("Serial is required"),
+              .min(1, "form.fieldRequired")
+              .required("form.fieldRequired"),
           otherwise: (schema) => schema.nullable(),
         }),
       })
@@ -52,7 +52,7 @@ export const PaymentSchema = yup.object({
     .nullable()
     .when("paymentType", {
       is: (val: string) => val === "Payable",
-      then: (schema) => schema.required("Payment Terms is required"),
+      then: (schema) => schema.required("form.fieldRequired"),
       otherwise: (schema) => schema.nullable(),
     }),
 
@@ -61,7 +61,7 @@ export const PaymentSchema = yup.object({
   .nullable()
   .when("paymentType", {
     is: (val: string) => val !== "Cash",
-    then: (schema) => schema.required("Purchase Type is required"),
+    then: (schema) => schema.required("form.fieldRequired"),
     otherwise: (schema) => schema.nullable(),
   }),
 
