@@ -11,9 +11,11 @@ import type { LineItem } from '../types/PurchaseWaybill';
 const props = withDefaults(defineProps<{
   lineItems?: LineItem[] | null;
   disabled?: boolean;
+  errors?: Record<string, string>;
 }>(), {
   lineItems: null,
   disabled: false,
+  errors: () => ({}),
 });
 
 const { t } = useI18n();

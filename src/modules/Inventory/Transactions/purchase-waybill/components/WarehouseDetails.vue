@@ -7,9 +7,11 @@ import type { WarehouseDetailsData } from "../types/PurchaseWaybill";
 const props = withDefaults(defineProps<{
   warehouseDetails?: WarehouseDetailsData | null;
   disabled?: boolean;
+  errors?: Record<string, string>;
 }>(), {
   warehouseDetails: null,
   disabled: false,
+  errors: () => ({}),
 });
 
 const { t } = useI18n()
@@ -21,7 +23,7 @@ const form = reactive({
   zoneId: props.warehouseDetails?.zoneId ?? null as string | null,
 });
 
-const errors = reactive({ warehouseId: "", zoneId: "" });
+
 
 const selectedWarehouse = computed(() =>
   WarehouseLookups.value.find(w => w.value === form.warehouseId)
@@ -53,13 +55,7 @@ function onZoneChange(val: string | null) {
   emitUpdate();
 }
 
-function validate(): boolean {
-  errors.warehouseId = form.warehouseId ? "" : t("validation.required");
-  errors.zoneId = isProf.value && !form.zoneId ? t("validation.required") : "";
-  return !errors.warehouseId && !errors.zoneId;
-}
 
-defineExpose({ validate });
 
 onMounted(async () => {
   await getWarehouseLookups();
@@ -77,13 +73,13 @@ onMounted(async () => {
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
     <FormDropdown v-if="!disabled" :label="t('purchaseWaybill.ReceivingWarehouse')" :modelValue="form.warehouseId"
-      :error="errors.warehouseId" :placeholder="t('purchaseWaybill.ReceivingWarehousePlaceholder')"
-      :invalid="!!errors.warehouseId" :options="WarehouseLookups" @update:modelValue="onWarehouseChange" />
+      :error="props.errors?.warehouseId" :placeholder="t('purchaseWaybill.ReceivingWarehousePlaceholder')"
+      :invalid="!!props.errors?.warehouseId" :options="WarehouseLookups" @update:modelValue="onWarehouseChange" />
     <FormInput v-else :label="t('purchaseWaybill.ReceivingWarehouse')"
       :modelValue="props.warehouseDetails?.warehouseName ?? ''" disabled />
 
     <FormDropdown v-if="isProf && !disabled" :label="t('purchaseWaybill.zone')" :modelValue="form.zoneId"
-      :error="errors.zoneId" :placeholder="t('purchaseWaybill.zonePlaceholder')" :invalid="!!errors.zoneId"
+      :error="props.errors?.zoneId" :placeholder="t('purchaseWaybill.zonePlaceholder')" :invalid="!!props.errors?.zoneId"
       :options="ZonesLookups" @update:modelValue="onZoneChange" />
     <FormInput v-else-if="isProf && disabled" :label="t('purchaseWaybill.zone')"
       :modelValue="props.warehouseDetails?.zoneName ?? '—'" disabled />

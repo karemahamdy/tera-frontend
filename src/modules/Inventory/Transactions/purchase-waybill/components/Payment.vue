@@ -13,12 +13,14 @@ const props = withDefaults(defineProps<{
   paymentTerms?: PaymentTermsData | null;
   notes?: NotesData | null;
   disabled?: boolean;
+  errors?: Record<string, string>;
 }>(), {
   lineItems: () => [],
   paymentInfo: null,
   paymentTerms: null,
   notes: null,
   disabled: false,
+  errors: () => ({}),
 });
 
 const { t } = useI18n()
@@ -88,6 +90,13 @@ watch(() => form.globalDiscount, () => {
 watch(exchangeRate, () => {
   emitUpdate();
 });
+
+// Watch comment fields to emit updates when they change
+watch(() => form.comment1, () => emitUpdate());
+watch(() => form.comment2, () => emitUpdate());
+watch(() => form.comment3, () => emitUpdate());
+watch(() => form.comment4, () => emitUpdate());
+watch(() => form.comment5, () => emitUpdate());
 
 function emitUpdate() {
   if (props.disabled) return;
@@ -179,6 +188,7 @@ onMounted(async () => {
           <div class="md:col-span-2">
             <FormDropdown v-if="!disabled" :label="t('payment.paymentTerms')" :modelValue="form.paymentTermId"
               :options="PaymentTerms" :placeholder="t('payment.selectTerms')" :disabled="disabled || isCash"
+              :error="props.errors?.paymentTermId" :invalid="!!props.errors?.paymentTermId"
               @update:modelValue="(v: string) => { form.paymentTermId = v; emitUpdate(); }" />
             <FormInput v-else :label="t('payment.paymentTerms')"
               :modelValue="props.paymentInfo?.paymentTermName ?? ''" disabled />
@@ -186,7 +196,7 @@ onMounted(async () => {
 
           <div class="md:col-span-2">
             <FormDropdown v-if="!disabled" :label="t('payment.importType')" :modelValue="form.purchaseType"
-              :options="importOptions" :placeholder="t('payment.selectType')"  :disabled="disabled || isCash"
+              :options="importOptions" :placeholder="t('payment.selectType')"  :disabled="disabled"
               @update:modelValue="(v: string) => { form.purchaseType = v; emitUpdate(); }" />
             <FormInput v-else :label="t('payment.importType')"
               :modelValue="props.paymentInfo?.purchaseType ?? ''" disabled />
@@ -195,7 +205,7 @@ onMounted(async () => {
           <div class="md:col-span-2">
             <FormDropdown v-if="!disabled" :label="t('payment.incoterms')" :modelValue="form.incoterm"
               :options="IncotermsLookups" :placeholder="t('payment.selectIncoterms')"
-              :disabled="isLocal || disabled || isCash"
+              :disabled="isLocal || disabled"
               @update:modelValue="(v: string) => { form.incoterm = v; emitUpdate(); }" />
             <FormInput v-else :label="t('payment.incoterms')"
               :modelValue="props.paymentInfo?.incoterm ?? '—'" disabled />

@@ -10,10 +10,12 @@ const props = withDefaults(defineProps<{
   supplierDetails?: SupplierDetailsData | null;
   paymentTerms?: PaymentTermsData | null;
   disabled?: boolean;
+  errors?: Record<string, string>;
 }>(), {
   supplierDetails: null,
   paymentTerms: null,
   disabled: false,
+  errors: () => ({}),
 });
 
 const route = useRoute();
@@ -40,10 +42,7 @@ const form = reactive({
   baseCurrencyCode:    props.paymentTerms?.baseCurrencyCode ?? "SAR",
 });
 
-const errors = reactive({
-  waybillNumber: "", supplierId: "", supplierSalesOrder: "",
-  purchaseOrderRef: "", externalReference: "", currencyId: "", exchangeRate: "",
-});
+
 
 function toDateStr(d: Date | string | null | undefined): string | null {
   if (!d) return null;
@@ -130,28 +129,30 @@ watch(
     <p class="font-bold mb-5 text-lg">{{ t("purchaseWaybill.SupplierDetails") }}</p>
 
     <FormInput :label="t('purchaseWaybill.WaybillNumber')" v-model="form.waybillNumber"
-      :error="errors.waybillNumber" :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')"
-      :invalid="!!errors.waybillNumber" disabled />
+      :error="props.errors?.waybillNumber" :placeholder="t('purchaseWaybill.WaybillNumberPlaceholder')"
+      :invalid="!!props.errors?.waybillNumber" disabled />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <FormDropdown v-if="!disabled" :label="t('purchaseWaybill.Supplier')"
-        :modelValue="form.supplierId" :error="errors.supplierId"
-        :placeholder="t('purchaseWaybill.SupplierPlaceholder')" :invalid="!!errors.supplierId"
+        :modelValue="form.supplierId" :error="props.errors?.supplierId"
+        :placeholder="t('purchaseWaybill.SupplierPlaceholder')" :invalid="!!props.errors?.supplierId"
         :options="supplierLookups"
         @update:modelValue="(v: string) => { form.supplierId = v; emitUpdate(); }" />
       <FormInput v-else :label="t('purchaseWaybill.Supplier')"
         :modelValue="props.supplierDetails?.supplierName ?? ''" disabled />
 
       <FormInput :label="t('purchaseWaybill.SupplierSalesOrder')" v-model="form.supplierSalesOrder"
-        :error="errors.supplierSalesOrder" :placeholder="t('purchaseWaybill.SupplierSalesOrderPlaceholder')"
-        :invalid="!!errors.supplierSalesOrder" :disabled="disabled" @blur="emitUpdate" />
+        :error="props.errors?.supplierSalesOrder" :placeholder="t('purchaseWaybill.SupplierSalesOrderPlaceholder')"
+        :invalid="!!props.errors?.supplierSalesOrder" :disabled="disabled" @blur="emitUpdate" />
 
       <div class="flex gap-4 mt-2 md:col-span-2">
         <div class="w-1/2">
           <label class="block text-gray-600 text-lg">{{ t("purchaseWaybill.WaybillDate") }}</label>
           <DatePicker v-model="form.waybillDate" showIcon fluid iconDisplay="input"
             :placeholder="t('purchaseWaybill.WaybillDatePlaceholder')" :disabled="disabled"
+            :class="{'p-invalid border-red-500': props.errors?.waybillDate}"
             @update:modelValue="emitUpdate" />
+          <small v-if="props.errors?.waybillDate" class="p-error text-red-500 block mt-1">{{ t(props.errors.waybillDate) }}</small>
         </div>
         <div class="w-1/2">
           <label class="block text-gray-600 text-lg">{{ t("purchaseWaybill.ExpectedDelivery") }}</label>
@@ -162,12 +163,12 @@ watch(
       </div>
 
       <FormDropdown :label="t('purchaseWaybill.PurchaseOrder')" :modelValue="form.purchaseOrderRef"
-        :error="errors.purchaseOrderRef" :placeholder="t('purchaseWaybill.PurchaseOrderPlaceholder')"
+        :error="props.errors?.purchaseOrderRef" :placeholder="t('purchaseWaybill.PurchaseOrderPlaceholder')"
         :disabled="disabled"
         @update:modelValue="(v: string) => { form.purchaseOrderRef = v; emitUpdate(); }" />
 
       <FormInput :label="t('purchaseWaybill.Reference')" v-model="form.externalReference"
-        :error="errors.externalReference" :placeholder="t('purchaseWaybill.ReferencePlaceholder')"
+        :error="props.errors?.externalReference" :placeholder="t('purchaseWaybill.ReferencePlaceholder')"
         :disabled="disabled" @blur="emitUpdate" />
     </div>
 
@@ -175,7 +176,7 @@ watch(
 
     <FormDropdown v-if="!disabled" class="w-full" :label="t('purchaseWaybill.Currency')"
       :options="CurrenciesLookups" optionLabel="label" optionValue="value"
-      :modelValue="form.currencyId" :error="errors.currencyId"
+      :modelValue="form.currencyId" :error="props.errors?.currencyId"
       :placeholder="t('purchaseWaybill.CurrencyPlaceholder')"
       @update:modelValue="(v: string) => { form.currencyId = v; emitUpdate(); }" />
     <FormInput v-else class="w-full" :label="t('purchaseWaybill.Currency')"
@@ -189,7 +190,7 @@ watch(
           @update:modelValue="emitUpdate" />
       </div>
       <FormInput :label="t('purchaseWaybill.ExchangeValue')" v-model="form.exchangeRate" type="number"
-        :error="errors.exchangeRate" :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')"
+        :error="props.errors?.exchangeRate" :placeholder="t('purchaseWaybill.ExchangeValuePlaceholder')"
         :disabled="disabled || isUsdCurrency" @blur="emitUpdate" />
     </div>
   </div>

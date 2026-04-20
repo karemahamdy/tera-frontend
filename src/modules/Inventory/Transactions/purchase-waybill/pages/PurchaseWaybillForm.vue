@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import SupplierDetails from '../components/SupplierDetails.vue';
 import WarehouseDetails from '../components/WarehouseDetails.vue';
@@ -8,6 +8,7 @@ import Payment from '../components/Payment.vue';
 import { usePurchaseWaybill } from '../composables/usePurshace';
 
 import { useI18n } from "vue-i18n";
+import { SupplierSchema, LineItemsSchema, PaymentSchema, WarehouseSchema } from '../validation/PurchaseWaybillSchema';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -31,10 +32,17 @@ const formData = ref<any>({
   warehouseDetails: null,
   lineItems: [],
   paymentInfo: null,
-  notes: null
+  notes: {
+    comment1: "",
+    comment2: "",
+    comment3: "",
+    comment4: "",
+    comment5: "",
+  }
 });
 
 const activeStep = ref(0);
+const errors = ref<Record<string, string>>({});
 
 const updateSupplierData = (data: any) => {
   formData.value.supplierDetails = data.supplierDetails;
@@ -55,8 +63,49 @@ const updatePaymentData = (data: any) => {
   formData.value.notes = data.notes;
 };
 
-const nextTab = () => {
-  if (activeStep.value < steps.length - 1) activeStep.value++;
+// Watchers to clear errors when fields are filled
+watch(() => formData.value.supplierDetails?.supplierId, (newVal) => {
+  if (newVal) errors.value.supplierId = '';
+});
+watch(() => formData.value.supplierDetails?.waybillDate, (newVal) => {
+  if (newVal) errors.value.waybillDate = '';
+});
+watch(() => formData.value.warehouseDetails?.warehouseId, (newVal) => {
+  if (newVal) errors.value.warehouseId = '';
+});
+watch(() => formData.value.lineItems?.length, (newVal) => {
+  if (newVal > 0) errors.value.lineItems = '';
+});
+watch(() => formData.value.paymentInfo?.paymentType, (newVal) => {
+  if (newVal) errors.value.paymentType = '';
+});
+watch(() => formData.value.paymentInfo?.paymentTermId, (newVal) => {
+  if (newVal) errors.value.paymentTermId = '';
+});
+
+const nextTab = async () => {
+  errors.value = {}; // Clear errors first
+
+  try {
+    if (activeStep.value === 0) {
+      await SupplierSchema.validate(formData.value.supplierDetails, { abortEarly: false });
+    }
+    if (activeStep.value === 1) {
+      await WarehouseSchema.validate(formData.value.warehouseDetails ?? {}, { abortEarly: false });
+    }
+    if (activeStep.value === 2) {
+      await LineItemsSchema.validate({ lineItems: formData.value.lineItems }, { abortEarly: false });
+    }
+
+    if (activeStep.value < steps.length - 1) activeStep.value++;
+
+  } catch (err: any) {
+    if (err?.inner?.length) {
+      err.inner.forEach((e: any) => { errors.value[e.path] = e.message; });
+    } else if (err?.path) {
+      errors.value[err.path] = err.message;
+    }
+  }
 };
 
 const previousTab = () => {
@@ -64,7 +113,21 @@ const previousTab = () => {
 };
 
 const submit = async () => {
+  errors.value = {}; // Clear errors first
+
   try {
+    // Validate all schemas before submitting
+    await SupplierSchema.validate(formData.value.supplierDetails, { abortEarly: false });
+    await WarehouseSchema.validate(formData.value.warehouseDetails ?? {}, { abortEarly: false });
+    await LineItemsSchema.validate({ lineItems: formData.value.lineItems }, { abortEarly: false });
+    await PaymentSchema.validate({
+      paymentType: formData.value.paymentInfo?.paymentType,
+      paymentTermId: formData.value.paymentInfo?.paymentTermId,
+      purchaseType: formData.value.paymentInfo?.purchaseType,
+      incoterm: formData.value.paymentInfo?.incoterm,
+    }, { abortEarly: false });
+
+    // Proceed with submission if all validations pass
     const payload = {
       supplierDetails: formData.value.supplierDetails,
       paymentTerms: {
@@ -84,7 +147,16 @@ const submit = async () => {
         zoneId: item.zoneId || formData.value.warehouseDetails?.zoneId || null,
         unitPrice: Number(item.unitPrice) || 0,
         unitTaxPercent: Number(item.tax ?? item.unitTaxPercent) || 0,
-        lineTotal: Number(item.total) || 0
+        lineTotal: Number(item.total) || 0,
+        serials: (item.serials || []).map((s: any) => ({
+          mainSerial: s.serial || s.mainSerial || '',
+          quantity: Number(s.qty ?? s.quantity) || 0,
+          batchNumber: s.batch || s.batchNumber || null,
+          expireDate: s.expire || s.expireDate ? new Date((s.expire || s.expireDate)).toISOString() : null,
+          serialNumber2: s.serialNumber2 || null,
+          serialNumber3: s.serialNumber3 || null,
+          comment: s.comment || null,
+        }))
       })),
       paymentInfo: (() => {
         const pi = formData.value.paymentInfo;
@@ -109,8 +181,28 @@ const submit = async () => {
       await createPurchaseWaybill(payload);
     }
     await router.push("/purchase-waybill");
-  } catch (error) {
-    console.error('Failed to submit purchase waybill:', error);
+  } catch (error: any) {
+    if (error?.inner?.length) {
+      error.inner.forEach((e: any) => { errors.value[e.path] = e.message; });
+      // Set activeStep to the first step with errors for better UX
+      const errorPaths = error.inner.map((e: any) => e.path);
+      if (errorPaths.some((p: string) => ['supplierId', 'waybillDate'].includes(p))) {
+        activeStep.value = 0;
+      } else if (errorPaths.some((p: string) => ['warehouseId'].includes(p))) {
+        activeStep.value = 1;
+      } else if (errorPaths.some((p: string) => p.startsWith('lineItems'))) {
+        activeStep.value = 2;
+      } else {
+        activeStep.value = 3; // Payment errors
+      }
+    } else if (error?.path) {
+      errors.value[error.path] = error.message;
+      // Set step based on single error path
+      if (['supplierId', 'waybillDate'].includes(error.path)) activeStep.value = 0;
+      else if (error.path === 'warehouseId') activeStep.value = 1;
+      else if (error.path.startsWith('lineItems')) activeStep.value = 2;
+      else activeStep.value = 3;
+    }
   }
 };
 
@@ -158,6 +250,7 @@ onMounted(async () => {
                 :supplierDetails="formData?.supplierDetails"
                 :paymentTerms="formData?.paymentTerms"
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updateSupplierData"
               />
             </div>
@@ -165,6 +258,7 @@ onMounted(async () => {
               <WarehouseDetails
                 :warehouseDetails="formData?.warehouseDetails"
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updateWarehouseData"
               />
             </div>
@@ -172,6 +266,7 @@ onMounted(async () => {
               <LineItems
                 :lineItems="formData?.lineItems"
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updateLineItemsData"
                 @next="nextTab"
                 @prev="previousTab"
@@ -184,6 +279,7 @@ onMounted(async () => {
                 :paymentTerms="formData?.paymentTerms"
                 :notes="formData?.notes"
                 :disabled="isDisabled"
+                :errors="errors"
                 @update="updatePaymentData"
                 @prev="previousTab"
                 @submit="submit"
