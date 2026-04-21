@@ -8,37 +8,48 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const cards = computed(() => {
+  const labor = props.costingSummary?.laborCost ?? 0;
+  const material = props.costingSummary?.materialCost ?? 0;
+  const overhead = props.costingSummary?.overheadCost ?? 0;
+  const machine = props.costingSummary?.machineCost ?? 0;
 
-const cards = computed(() => [
-  {
-    variant: 'green',
-    title: 'BOM.LaborCost',
-    value: props.costingSummary?.laborCost?.toFixed(2) ?? '0',
-    valueUnit: '$',
-    subtitle: `${props.costingSummary?.laborCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
-  },
-  {
-    variant: 'blue',
-    title: 'BOM.MaterialCost',
-    value: props.costingSummary?.materialCost?.toFixed(2) ?? '0',
-    valueUnit: '$',
-    subtitle: `${props.costingSummary?.materialCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
-  },
-  {
-    variant: 'orange',
-    title: 'BOM.OverheadCost',
-    value: props.costingSummary?.overheadCost?.toFixed(2) ?? '0',
-    valueUnit: '$',
-    subtitle: `${props.costingSummary?.overheadCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
-  },
-  {
-    variant: 'purple',
-    title: 'BOM.MachineCost',
-    value: props.costingSummary?.machineCost?.toFixed(2) ?? '0',
-    valueUnit: '$',
-    subtitle: `${props.costingSummary?.overheadCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
-  },
-]);
+  const total = labor + material + overhead + machine;
+
+  const getPercentage = (value: number) =>
+    total ? ((value / total) * 100).toFixed(2) : '0';
+
+  return [
+    {
+      variant: 'green',
+      title: 'BOM.LaborCost',
+      value: labor.toFixed(2),
+      valueUnit: '$',
+      subtitle: `${props.costingSummary?.laborCostPercentage}% ${t('BOM.ofTotalCost')}`,
+    },
+    {
+      variant: 'blue',
+      title: 'BOM.MaterialCost',
+      value: material.toFixed(2),
+      valueUnit: '$',
+      subtitle: `${props.costingSummary?.materialCostPercentage}% ${t('BOM.ofTotalCost')}`,
+    },
+    {
+      variant: 'orange',
+      title: 'BOM.OverheadCost',
+      value: overhead.toFixed(2),
+      valueUnit: '$',
+      subtitle: `${props.costingSummary?.overheadCostPercentage}% ${t('BOM.ofTotalCost')}`,
+    },
+    {
+      variant: 'purple',
+      title: 'BOM.MachineCost',
+      value: machine.toFixed(2),
+      valueUnit: '$',
+      subtitle: `${getPercentage(machine)}% ${t('BOM.ofTotalCost')}`, 
+    },
+  ];
+});
 
 </script>
 
