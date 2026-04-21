@@ -411,14 +411,18 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
-  const getAllItemsLookUp = async () => {
+const getAllItemsLookUp = async () => {
     try {
-      const res = await LookupsService.getAllItemsLookUp();
-      itemsLookups.value = res.data;
+        const res = await LookupsService.getAllItemsLookUp();
+        itemsLookups.value = res.data.map((item: any) => ({
+            label: item.itemName,
+            value: item.itemId,
+            raw: item,  
+        }));
     } catch (error) {
-      toastService.error(error as string);
+        toastService.error(error as string);
     }
-  };
+};
     const GetAllItemRawLockUp = async () => {
     try {
       const res = await LookupsService.GetAllItemRawLockUp();

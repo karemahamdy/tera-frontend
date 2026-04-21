@@ -13,7 +13,7 @@ const mode = computed(() => {
   if (route.name === 'BOMFormEdit') return 'edit';
   return 'create';
 });
-const activeStep = ref(1);
+const activeStep = ref(0);
 
 const nextTab = () => {
   if (activeStep.value < steps.length - 1) activeStep.value++;
@@ -23,7 +23,7 @@ const previousTab = () => {
   if (activeStep.value > 0) activeStep.value--;
 };
 const steps = [
-  { label: t("steps.woNumber") },
+  { label: t("BOM.headerInformation") },
   { label: t("steps.Materials") },
   { label: t("steps.Operations") },
 ];

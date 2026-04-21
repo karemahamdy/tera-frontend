@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useForm } from "vee-validate";
 import { useworkOrder } from "@/modules/Production/Transaction/work-order/composables/useWorkOrder";
 import { LDCSchema } from "../validation/BOMSchema";
 import { useRoute, useRouter } from "vue-router";
+import { useLookups } from "@/composables/useLookups";
 
+const isSubmitting = ref(false);
+const router = useRouter();
+const route = useRoute();
 const props = defineProps<{
   mode: "edit" | "create";
   id?: string;
 }>();
-
 const editMode = props.mode === "edit";
-const isSubmitting = ref(false);
-const router = useRouter();
-const route = useRoute();
+
 const { createworkOrder, updateworkOrder } = useworkOrder();
+const { getAllItemsLookUp, itemsLookups } = useLookups();
 const isCreate = computed(() => route.name === 'BOMCreate')
 
 type LDCFormValues = {
@@ -44,11 +46,25 @@ const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
 
 const [bomCode] = defineField("bomCode");
 const [bomName] = defineField("bomName");
-// const [parentItemId] = defineField("parentItemId");
+const [parentItemId] = defineField("parentItemId");
 const [baseQuantity] = defineField("baseQuantity");
 const [notes] = defineField("notes");
 const [isActive] = defineField("isActive");
 const [version] = defineField("version");
+const selectedItem = ref<any>(null);
+
+onMounted(async () => {
+    await Promise.all([
+        getAllItemsLookUp(),
+    ]);
+});
+
+const onItemSelect = (itemId: string) => {
+    const item = itemsLookups.value.find((i: any) => i.value === itemId);
+    if (item?.raw) {
+        selectedItem.value = item.raw;
+    }
+};
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
@@ -68,6 +84,7 @@ const onSubmit = handleSubmit(async (values) => {
     isSubmitting.value = false;
   }
 });
+
 </script>
 
 
@@ -91,12 +108,15 @@ const onSubmit = handleSubmit(async (values) => {
         <FormInput :label="$t('BOM.BaseQuantity')" v-model="baseQuantity" :placeholder="$t('BOM.quantityPlaceholder')"
           :error="errors.baseQuantity" :invalid="!!errors.baseQuantity" />
       </div>
-
       <div class="grid grid-cols-2 gap-4">
-        <FormDropdown :label="$t('BOM.FinalProduct')" v-model="bomName" :placeholder="$t('BOM.FinalProductPlaceholder')"
-          :error="errors.bomName" :invalid="!!errors.bomName" />
-        <FormInput :label="$t('BOM.BaseUOM')" v-model="bomCode" :placeholder="$t('workOrder.UOMPlaceholder')"
-          :error="errors.bomCode" :invalid="!!errors.bomCode" />
+        <!-- Final Product dropdown -->
+        <FormDropdown :label="$t('BOM.FinalProduct')" v-model="parentItemId"
+          :placeholder="$t('BOM.FinalProductPlaceholder')" :options="itemsLookups" optionLabel="label"
+          optionValue="value" @update:modelValue="onItemSelect" />
+
+        <!-- Base UOM - disabled, auto-filled from selected item -->
+        <FormInput :label="$t('BOM.BaseUOM')" :modelValue="selectedItem?.baseUnitName ?? ''"
+          :placeholder="$t('workOrder.UOMPlaceholder')" disabled />
       </div>
       <ToggleItem :title="$t('BOM.BOMStatus')" :label="$t('BOM.ActiveBOM')" v-model="isActive" :disabled="isCreate" />
       <div>
