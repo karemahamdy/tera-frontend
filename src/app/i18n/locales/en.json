@@ -1593,7 +1593,9 @@
   "MatQty": "Mat. Qty",
   "BOM(Code&Name)": "BOM (Code & Name)",
   "ReportTitle": "BOM Master Report",
-  "ReportDescription": "List BOM header, material lines, and routing lines for each BOM version and final product"
+  "ReportDescription": "List BOM header, material lines, and routing lines for each BOM version and final product",
+  "hours": "hours",
+  "minutes": "minutes"
   },
   "downtime": {
     "downtime": "Downtime",

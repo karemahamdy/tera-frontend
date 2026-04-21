@@ -20,6 +20,13 @@ const cards = computed(() => {
     total ? ((value / total) * 100).toFixed(2) : '0';
 
   return [
+     {
+      variant: 'blue',
+      title: 'BOM.MaterialCost',
+      value: material.toFixed(2),
+      valueUnit: '$',
+      subtitle: `${props.costingSummary?.materialCostPercentage}% ${t('BOM.ofTotalCost')}`,
+    },
     {
       variant: 'green',
       title: 'BOM.LaborCost',
@@ -28,11 +35,11 @@ const cards = computed(() => {
       subtitle: `${props.costingSummary?.laborCostPercentage}% ${t('BOM.ofTotalCost')}`,
     },
     {
-      variant: 'blue',
-      title: 'BOM.MaterialCost',
-      value: material.toFixed(2),
+      variant: 'purple',
+      title: 'BOM.MachineCost',
+      value: machine.toFixed(2),
       valueUnit: '$',
-      subtitle: `${props.costingSummary?.materialCostPercentage}% ${t('BOM.ofTotalCost')}`,
+      subtitle: `${getPercentage(machine)}% ${t('BOM.ofTotalCost')}`, 
     },
     {
       variant: 'orange',
@@ -41,13 +48,7 @@ const cards = computed(() => {
       valueUnit: '$',
       subtitle: `${props.costingSummary?.overheadCostPercentage}% ${t('BOM.ofTotalCost')}`,
     },
-    {
-      variant: 'purple',
-      title: 'BOM.MachineCost',
-      value: machine.toFixed(2),
-      valueUnit: '$',
-      subtitle: `${getPercentage(machine)}% ${t('BOM.ofTotalCost')}`, 
-    },
+   
   ];
 });
 

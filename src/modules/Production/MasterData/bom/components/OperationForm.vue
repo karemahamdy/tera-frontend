@@ -29,31 +29,35 @@ function emitUpdate() {
 }
 
 const columns = computed(() => [
-  { field: 'sequence', header: t('BOM.Seq') },
-  { field: 'operationId', header: t('BOM.Process') },
-  { field: 'machineId', header: t('BOM.Machine') },
-  { field: 'runTime', header: t('BOM.RenTime') },
-  { field: 'setupTime', header: t('BOM.Setuptime') },
-  { field: 'notes', header: t('downtime.notes') },
-  ...(props.disabled ? [] : [{ field: 'action', header: '' }])
+    { field: 'sequence', header: t('BOM.Seq') },
+    { field: 'operationId', header: t('BOM.Process') },
+    { field: 'machineId', header: t('BOM.Machine') },
+    { field: 'runTime', header: t('BOM.RenTime') },
+    { field: 'setupTime', header: t('BOM.Setuptime') },
+    { field: 'notes', header: t('downtime.notes') },
+    ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
-const {  } = useForm({
-  validationSchema: routingSchema,
-  initialValues: [],
+const { } = useForm({
+    validationSchema: routingSchema,
+    initialValues: [],
 });
 
 const addEmptyRow = () => {
-  items.value.push({
+    items.value.push({
         id: Date.now().toString(),
-    sequence: items.value.length + 1,
-    operationId: null,
-    machineId: null,
-    runTime: 0,
-    setupTime: 0,
-    notes: '',
-  });
-  emitUpdate();
+        sequence: items.value.length + 1,
+        operationId: null,
+        machineId: null,
+        runTimeHours: 0,
+        runTimeMinutes: 0,
+        setupTimeHours: 0,
+        setupTimeMinutes: 0,
+        get runTime() { return this.runTimeHours + this.runTimeMinutes / 60; },
+        get setupTime() { return this.setupTimeHours + this.setupTimeMinutes / 60; },
+        notes: '',
+    });
+    emitUpdate();
 };
 
 const removeItem = (data: any) => {
@@ -61,6 +65,9 @@ const removeItem = (data: any) => {
     const index = items.value.findIndex(item => item.id === data.id);
     if (index !== -1) {
         items.value.splice(index, 1);
+        items.value.forEach((item, i) => {
+            item.sequence = i + 1;
+        });
     }
     emitUpdate();
 };
@@ -78,35 +85,77 @@ const removeItem = (data: any) => {
                 class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
                 @click="addEmptyRow" />
         </div>
-        
+
         <!-- Table -->
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
                 :showDelete="false">
                 <template #col-operationId="{ data }">
-                    <FormDropdown :modelValue="data.operationId" :options="processLookups" optionLabel="label" optionValue="value"
-                        class="w-fit-content p-inputtext-sm text-sm" />
+                    <FormDropdown :modelValue="data.operationId" :options="processLookups" optionLabel="label"
+                        optionValue="value" class="w-fit-content p-inputtext-sm text-sm" />
                 </template>
                 <template #col-machineId="{ data }">
-                    <FormDropdown :modelValue="data.machineId" :options="machineLookups" optionLabel="label" optionValue="value"
-                        class="w-fit-content p-inputtext-sm text-sm" />
+                    <FormDropdown :modelValue="data.machineId" :options="machineLookups" optionLabel="label"
+                        optionValue="value" class="w-fit-content p-inputtext-sm text-sm" />
                 </template>
+                <!-- RunTime -->
                 <template #col-runTime="{ data }">
-                    <InputText  v-model.number="data.runTime" class="w-20 p-inputtext-sm" />
+                    <div class="flex items-center gap-1">
+                        <div class="flex flex-col items-center">
+                            <small class="text-xs text-gray-400 mb-1">{{ t('BOM.hours') }}</small>
+                            <InputText v-model.number="data.runTimeHours" class="w-16 p-inputtext-sm text-center"
+                                :min="0" @update:modelValue="emitUpdate" />
+                        </div>
+                        <span class="mt-4 text-gray-400">:</span>
+                        <div class="flex flex-col items-center">
+                            <small class="text-xs text-gray-400 mb-1">{{ t('BOM.minutes') }}</small>
+                            <InputText v-model.number="data.runTimeMinutes" class="w-16 p-inputtext-sm text-center"
+                                :min="0" :max="59" @update:modelValue="(val) => {
+                                    const num = Number(val) || 0;
+                                    data.runTimeMinutes = num > 59 ? 59 : num;
+                                    emitUpdate();
+                                }" />
+                        </div>
+                        <small class="mt-4 text-xs text-gray-500">
+                            = {{ (data.runTimeHours + data.runTimeMinutes / 60).toFixed(2) }}h
+                        </small>
+                    </div>
                 </template>
+
+                <!-- SetupTime -->
                 <template #col-setupTime="{ data }">
-                    <InputText  v-model.number="data.setupTime" class="w-20 p-inputtext-sm" />
-                    </template>
+                    <div class="flex items-center gap-1">
+                        <div class="flex flex-col items-center">
+                            <small class="text-xs text-gray-400 mb-1">{{ t('BOM.hours') }}</small>
+                            <InputText v-model.number="data.setupTimeHours" class="w-16 p-inputtext-sm text-center"
+                                :min="0" @update:modelValue="emitUpdate" />
+                        </div>
+                        <span class="mt-4 text-gray-400">:</span>
+                        <div class="flex flex-col items-center">
+                            <small class="text-xs text-gray-400 mb-1">{{ t('BOM.minutes') }}</small>
+                            <InputText v-model.number="data.setupTimeMinutes" class="w-16 p-inputtext-sm text-center"
+                                :min="0" :max="59" @update:modelValue="(val) => {
+                                    const num = Number(val) || 0;
+                                    data.setupTimeMinutes = num > 59 ? 59 : num;
+                                    emitUpdate();
+                                }" />
+                        </div>
+                        <small class="mt-4 text-xs text-gray-500">
+                            = {{ (data.setupTimeHours + data.setupTimeMinutes / 60).toFixed(2) }}h
+                        </small>
+                    </div>
+                </template>
                 <template #col-name="{ data }">
                     <span class="text-gray-600">{{ data.name }}</span>
                 </template>
-                  <template #col-notes="{ data }">
+                <template #col-notes="{ data }">
                     <div class="flex items-center gap-2">
-                            <InputText  v-model.number="data.quantity" class="w-28 p-inputtext-sm" />
+                        <InputText v-model.number="data.notes" class="w-28 p-inputtext-sm" />
                     </div>
                 </template>
-                 <template #col-sequence="{ data }">
-                    <span class="text-primary-600 border border-primary-600 py-4 px-4 rounded-lg">{{ data.sequence }}</span>
+                <template #col-sequence="{ data }">
+                    <span class="text-primary-600 border border-primary-600 py-4 px-4 rounded-lg">{{ data.sequence
+                    }}</span>
                 </template>
                 <template #col-action="{ data }">
                     <button v-if="!disabled" class="text-red-400 hover:text-red-600" @click="removeItem(data)">
@@ -115,7 +164,7 @@ const removeItem = (data: any) => {
                 </template>
             </DynamicTable>
         </div>
-      
+
     </div>
 </template>
 
