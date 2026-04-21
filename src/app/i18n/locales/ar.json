@@ -1542,6 +1542,9 @@
     "Version": "الإصدار",
     "Material": "المادة",
     "Operation": "العملية",
+     "viewworkOrder": "عرض امر العمل",
+     "BaseUOM": "وحدة القياس الأساسية",
+    "BaseQuantity" : "الكمية الاساسية",
     "TotalCost": "إجمالي التكلفة",
     "CreatedOn": "تاريخ الإنشاء",
     "TotalMaterialCost": "إجمالي تكلفة المواد",
@@ -1662,8 +1665,7 @@
     "WarehouseInPlaceholder": "اختر المخزن للإضافة",
     "PlannedStartPlaceholder": "أدخل تاريخ البدء المخطط",
     "workOrdercreateInfo": "اضافة امر عمل جديد",
-    "workOrderEditInfo": "تعديل امر العمل",
-    "viewworkOrder": "عرض امر العمل"
+    "workOrderEditInfo": "تعديل امر العمل"
   },
   "ProductionReceipts": {
     "ProductionReceipts": "إيصالات الإنتاج",

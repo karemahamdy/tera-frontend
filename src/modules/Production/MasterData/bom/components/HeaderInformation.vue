@@ -88,14 +88,14 @@ const onSubmit = handleSubmit(async (values) => {
       <div class="grid grid-cols-2 gap-4">
         <FormInput :label="$t('BOM.versions')" v-model="version" :placeholder="$t('Version 1')"
           :error="errors.version" :invalid="!!errors.version" disabled/>
-        <FormInput :label="$t('BOM.quantity')" v-model="baseQuantity" :placeholder="$t('BOM.quantityPlaceholder')"
+        <FormInput :label="$t('BOM.BaseQuantity')" v-model="baseQuantity" :placeholder="$t('BOM.quantityPlaceholder')"
           :error="errors.baseQuantity" :invalid="!!errors.baseQuantity" />
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <FormDropdown :label="$t('BOM.FinalProduct')" v-model="bomName" :placeholder="$t('BOM.FinalProductPlaceholder')"
           :error="errors.bomName" :invalid="!!errors.bomName" />
-        <FormInput :label="$t('workOrder.UOM')" v-model="bomCode" :placeholder="$t('workOrder.UOMPlaceholder')"
+        <FormInput :label="$t('BOM.BaseUOM')" v-model="bomCode" :placeholder="$t('workOrder.UOMPlaceholder')"
           :error="errors.bomCode" :invalid="!!errors.bomCode" />
       </div>
       <ToggleItem :title="$t('BOM.BOMStatus')" :label="$t('BOM.ActiveBOM')" v-model="isActive" />

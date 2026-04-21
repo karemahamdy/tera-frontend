@@ -1549,6 +1549,8 @@
     "costing": "Costing",
     "versions": "Versions",
     "code": "BOM Code",
+    "BaseUOM": "Base UOM",
+    "BaseQuantity": "Base Quantity",
     "name": "BOM Name",
     "Product": "Product",
     "Version": "Version",
