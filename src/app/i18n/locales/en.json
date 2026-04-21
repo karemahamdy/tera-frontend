@@ -1391,7 +1391,11 @@
   "validation": {
     "required": "This field is required",
     "sameSourceAndDestination": "Source and destination cannot be the same",
-    "invalidQuantity": "Invalid quantity must be greater than zero"
+    "invalidQuantity": "Invalid quantity must be greater than zero",
+    "atLeastOneMaterial": "At least one material is required",
+    "scrapRange": "Scrap percentage must be between 0 and 100",
+    "processRequired": "Process is required for all operations",
+    "machineRequired": "Machine is required for all operations"
   },
    "type": {
     "Breakdown": "Breakdown",

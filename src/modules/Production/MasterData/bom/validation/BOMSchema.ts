@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const LDCSchema = yup.object({
+export const headerSchema = yup.object({
   bomCode: yup.string().required("BOM code is required"),
   bomName: yup.string().required("BOM name is required"),
   parentItemId: yup.string().required("Final product is required"),
@@ -13,20 +13,15 @@ export const LDCSchema = yup.object({
   isActive: yup.boolean(),
   version: yup.string().required(),
 });
-export const materialSchema = yup.array().of(
-  yup.object({
-    componentId: yup.string().required(),
-    quantity: yup
-      .number()
-      .moreThan(0, "Quantity must be > 0")
-      .required(),
-
-    scrap: yup
-      .number()
-      .min(0, "Scrap must be ≥ 0")
-      .default(0),
-  })
-);
+export const materialSchema = yup.array()
+  .min(1, "At least one material is required")
+  .of(
+    yup.object({
+      componentId: yup.string().required(),
+      quantity: yup.number().moreThan(0, "Quantity must be > 0").required(),
+      scrap: yup.number().min(0, "Scrap must be ≥ 0").max(100, "Scrap must be ≤ 100").default(0),
+    })
+  ); 
 export const routingSchema = yup.array().of(
   yup.object({
     sequence: yup.number().required(),

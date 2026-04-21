@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useForm } from "vee-validate";
 import { useworkOrder } from "@/modules/Production/Transaction/work-order/composables/useWorkOrder";
-import { LDCSchema } from "../validation/BOMSchema";
+import { headerSchema } from "../validation/BOMSchema";
 import { useRoute, useRouter } from "vue-router";
 import { useLookups } from "@/composables/useLookups";
 
@@ -18,8 +18,8 @@ const editMode = props.mode === "edit";
 const { createworkOrder, updateworkOrder } = useworkOrder();
 const { getAllItemsLookUp, itemsLookups } = useLookups();
 const isCreate = computed(() => route.name === 'BOMCreate')
-
-type LDCFormValues = {
+ 
+type headerValues = {
   bomCode: string;
   bomName: string;
   parentItemId: string;
@@ -29,7 +29,7 @@ type LDCFormValues = {
   version: string;
 };
 
-const initialValues: LDCFormValues = {
+const initialValues: headerValues = {
   bomCode: "",
   bomName: "",
   parentItemId: "",
@@ -39,8 +39,8 @@ const initialValues: LDCFormValues = {
   version: "Version 1",
 };
 
-const { errors, defineField, handleSubmit } = useForm<LDCFormValues>({
-  validationSchema: LDCSchema,
+const { errors, defineField, handleSubmit } = useForm<headerValues>({
+  validationSchema: headerSchema,
   initialValues,
 });
 
@@ -65,6 +65,19 @@ const onItemSelect = (itemId: string) => {
         selectedItem.value = item.raw;
     }
 };
+
+// Expose a method the parent can call to get values
+const getValues = () => ({
+  bomCode: bomCode.value,
+  bomName: bomName.value,
+  parentItemId: parentItemId.value,
+  baseQuantity: baseQuantity.value,
+  notes: notes.value,
+  isActive: isActive.value,
+  version: version.value,
+});
+
+defineExpose({ getValues,  validate: handleSubmit(() => true), });
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;

@@ -14,7 +14,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['next', 'prev', 'update']);
-
 const items = ref<any[]>([]);
 
 onMounted(async () => {
@@ -59,6 +58,10 @@ const addEmptyRow = () => {
     });
     emitUpdate();
 };
+defineExpose({ 
+  getItems: () => items.value, 
+   
+});
 
 const removeItem = (data: any) => {
     if (props.disabled) return;
@@ -91,11 +94,11 @@ const removeItem = (data: any) => {
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
                 :showDelete="false">
                 <template #col-operationId="{ data }">
-                    <FormDropdown :modelValue="data.operationId" :options="processLookups" optionLabel="label"
+                    <FormDropdown :options="processLookups" v-model="data.operationId" optionLabel="label"
                         optionValue="value" class="w-fit-content p-inputtext-sm text-sm" />
                 </template>
                 <template #col-machineId="{ data }">
-                    <FormDropdown :modelValue="data.machineId" :options="machineLookups" optionLabel="label"
+                    <FormDropdown  :options="machineLookups"  v-model="data.machineId" optionLabel="label"
                         optionValue="value" class="w-fit-content p-inputtext-sm text-sm" />
                 </template>
                 <!-- RunTime -->
@@ -150,7 +153,7 @@ const removeItem = (data: any) => {
                 </template>
                 <template #col-notes="{ data }">
                     <div class="flex items-center gap-2">
-                        <InputText v-model.number="data.notes" class="w-28 p-inputtext-sm" />
+                        <InputText v-model="data.notes" class="w-28 p-inputtext-sm" />
                     </div>
                 </template>
                 <template #col-sequence="{ data }">

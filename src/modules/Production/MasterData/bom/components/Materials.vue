@@ -28,6 +28,12 @@ const columns = computed(() => [
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 const availableItems = computed(() => itemsRowLookups.value);
+defineExpose({ 
+  getItems: () => items.value,
+});
+
+
+
 onMounted(async () => {
     await Promise.all([
         GetAllItemRawLockUp(),
