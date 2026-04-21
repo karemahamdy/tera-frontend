@@ -10,11 +10,10 @@ const { t } = useI18n();
 const route = useRoute();
 
 const mode = computed(() => {
-  if (route.name === 'SalesWaybillView') return 'view';
-  if (route.name === 'SalesWaybillEdit') return 'edit';
+  if (route.name === 'BOMFormEdit') return 'edit';
   return 'create';
 });
-const activeStep = ref(0);
+const activeStep = ref(1);
 
 const nextTab = () => {
   if (activeStep.value < steps.length - 1) activeStep.value++;
@@ -50,7 +49,7 @@ const steps = [
       </Card>
       
       <StepperActions 
-        v-if="mode !== 'view'"
+        
         :current="activeStep" 
         :total="steps.length"    
         :finishText="mode === 'edit' ? t('button.update') : t('button.create')"

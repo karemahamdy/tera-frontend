@@ -3,33 +3,23 @@ import { ref, computed, onMounted } from 'vue';
 import { useForm } from "vee-validate";
 import { useI18n } from 'vue-i18n';
 import { useLookups } from '@/composables/useLookups';
-import ItemSelectionDialog from '@/modules/Production/ItemSelectionDialog.vue';
 import { materialSchema } from '../validation/BOMSchema';
+import ItemSelectionDialog from '@/modules/Production/sharedComponents/ItemSelectionDialog.vue';
 
 const { t } = useI18n();
-const { getAllItemsLookUp, itemsLookups } = useLookups();
+const { GetAllItemRawLockUp, itemsRowLookups } = useLookups();
+const { } = useForm({ validationSchema: materialSchema });
+const showItemDialog = ref(false);
+const items = ref<any[]>([]);
 
+const emit = defineEmits(['next', 'prev', 'update']);
 const props = defineProps<{
     lineItems?: any[];
     disabled?: boolean;
 }>();
 
-const emit = defineEmits(['next', 'prev', 'update']);
-
-const items = ref<any[]>([]);
-
-onMounted(async () => {
-    await Promise.all([
-        getAllItemsLookUp(),
-    ]);
-});
-
-function emitUpdate() {
-    emit('update', [...items.value]);
-}
-
 const columns = computed(() => [
-    { field: 'code', header: t('itemList.itemCode') },
+    { field: 'itemCode', header: t('itemList.itemCode') },
     { field: 'itemName', header: t('itemList.itemName') },
     { field: 'quantity', header: t('itemList.quantity') },
     { field: 'unitId', header: t('itemList.UOM') },
@@ -37,34 +27,45 @@ const columns = computed(() => [
     { field: 'notes', header: t('downtime.notes') },
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
-// const calculateExpectedQty = (baseQty, compQty, scrap) => {
-//   return baseQty * compQty * (1 + scrap / 100);
-// };
-// --- Item Selection Dialog ---
-
-const { } = useForm({
-  validationSchema: materialSchema,
+const availableItems = computed(() => itemsRowLookups.value);
+onMounted(async () => {
+    await Promise.all([
+        GetAllItemRawLockUp(),
+    ]);
 });
-const showItemDialog = ref(false);
-const availableItems = computed(() => itemsLookups.value);
 
+function emitUpdate() {
+    emit('update', [...items.value]);
+}
 const openItemDialog = () => {
     if (!props.disabled) showItemDialog.value = true;
 };
-
 const handleSelectItem = (item: any) => {
-  items.value.push({
-    itemId: item.id || item.itemId,
-    tracked: item.tracked || null,
-    code: item.code,
-    itemName: item.name,
-    quantity: 1,
-    scrap: 0, 
-    unitId: item.baseUnitId || null,
-    notes: '',
-  });
-  emitUpdate();
+    const mappedUnits = item.units?.map((unit: any) => ({
+        label: `${unit.unitName} (${unit.unitCode})`,
+        value: unit.unitId,
+    })) ?? [];
+    const baseUnit = item.units?.find((unit: any) => unit.isBase === true);
+    items.value.push({
+        itemId: item.itemId,
+        tracked: item.tracked || null,
+        itemCode: item.itemCode,
+        itemName: item.itemName,
+        unitId: baseUnit?.unitId ?? mappedUnits[0]?.value,
+        quantity: 1,
+        scrap: 0,
+        units: mappedUnits,
+        notes: '',
+    });
+    emitUpdate();
 };
+
+function getQtyError(item: any): string {
+    if ( item.quantity <= 0) {
+        return t("validation.invalidQuantity");
+    }
+    return "";
+}
 
 const removeItem = (data: any) => {
     if (props.disabled) return;
@@ -88,12 +89,12 @@ const removeItem = (data: any) => {
                 class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
                 @click="openItemDialog" />
         </div>
-       
+
         <!-- Table -->
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
                 :showDelete="false">
-                <template #col-code="{ data }">
+                <template #col-itemCode="{ data }">
                     <div class="flex items-center gap-2 rounded">
                         <Badge v-if="data.tracked" severity="success" class="circle-badge-sm">
                             <VsxIcon iconName="Brodcast" :size="20" type="linear" />
@@ -101,24 +102,31 @@ const removeItem = (data: any) => {
                         <Badge v-else severity="transparent" class="circle-badge">
                             <VsxIcon iconName="Brodcast" :size="20" type="linear" class="icon-transparent" />
                         </Badge>
-                        <div class="text-base text-gray-700">{{ data.code }}</div>
-                    </div>
-               </template>
-                <template #col-quantity="{ data }">
-                    <div class="flex items-center gap-2">
-                            <InputText  v-model.number="data.quantity" class="w-20 p-inputtext-sm" />
+                        <div class="text-base text-gray-700">{{ data.itemCode }}</div>
                     </div>
                 </template>
-                  <template #col-notes="{ data }">
+                <template #col-quantity="{ data }">
                     <div class="flex items-center gap-2">
-                            <InputText  v-model.number="data.quantity" class="w-28 p-inputtext-sm" />
+                        <InputText v-model.number="data.quantity" type="number" class="w-20 p-inputtext-sm" />
+                        <small v-if="getQtyError(data)" class="text-danger-300 text-xs">
+                            {{ getQtyError(data) }}
+                        </small>
+                    </div>
+                </template>
+                <template #col-scrap="{ data }">
+                    <div class="flex items-center gap-2">
+                        <InputText v-model.number="data.scrap" type="number" class="w-20 p-inputtext-sm" />
+                    </div>
+                </template>
+                <template #col-notes="{ data }">
+                    <div class="flex items-center gap-2">
+                        <InputText v-model="data.notes" class="w-28 p-inputtext-sm" />
                     </div>
                 </template>
                 <template #col-unitId="{ data }">
-                    <FormDropdown :modelValue="data.unitId" optionLabel="label" optionValue="value"
+                    <FormDropdown v-model="data.unitId" :options="data.units" optionLabel="label" optionValue="value"
                         class="w-34 p-inputtext-sm text-sm" />
                 </template>
-
                 <template #col-itemName="{ data }">
                     <span class="text-gray-600">{{ data.itemName }}</span>
                 </template>

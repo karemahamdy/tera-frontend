@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useForm } from "vee-validate";
-import router from "@/app/router";
 import { useworkOrder } from "@/modules/Production/Transaction/work-order/composables/useWorkOrder";
 import { LDCSchema } from "../validation/BOMSchema";
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps<{
-  mode: "edit" | "create" | "view";
+  mode: "edit" | "create";
   id?: string;
 }>();
 
 const editMode = props.mode === "edit";
-const viewMode = props.mode === "view";
 const isSubmitting = ref(false);
+const router = useRouter();
+const route = useRoute();
 const { createworkOrder, updateworkOrder } = useworkOrder();
+const isCreate = computed(() => route.name === 'BOMCreate')
 
 type LDCFormValues = {
   bomCode: string;
@@ -50,8 +52,6 @@ const [version] = defineField("version");
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
-  if (viewMode) return;
-
   try {
     if (editMode && props.id) {
       await updateworkOrder(props.id, values);
@@ -98,7 +98,7 @@ const onSubmit = handleSubmit(async (values) => {
         <FormInput :label="$t('BOM.BaseUOM')" v-model="bomCode" :placeholder="$t('workOrder.UOMPlaceholder')"
           :error="errors.bomCode" :invalid="!!errors.bomCode" />
       </div>
-      <ToggleItem :title="$t('BOM.BOMStatus')" :label="$t('BOM.ActiveBOM')" v-model="isActive" />
+      <ToggleItem :title="$t('BOM.BOMStatus')" :label="$t('BOM.ActiveBOM')" v-model="isActive" :disabled="isCreate" />
       <div>
         <label class="text-gray-700 font-medium mb-2 block">
           {{ $t("downtime.notes") }}

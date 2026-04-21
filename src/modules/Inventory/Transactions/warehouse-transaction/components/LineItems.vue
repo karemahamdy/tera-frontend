@@ -305,7 +305,7 @@ const openLocationPicker = (item: any) => {
   }
 };
 function getQtyError(item: any): string {
-  if (!item.quantity || item.quantity <= 0) {
+  if ( item.quantity <= 0) {
     return t("validation.invalidQuantity");
   }
   return "";

@@ -39,6 +39,7 @@ export function useLookups() {
   const workCentersLookups = ref<LookupsOption[]>([]);
   const AllVersionsLookups = ref<LookupsOption[]>([]);
   const itemsLookups = ref<any[]>([]);
+  const itemsRowLookups = ref<any[]>([]);
   const WorkOrderLookups = ref<any[]>([]);
 
 
@@ -418,6 +419,14 @@ export function useLookups() {
       toastService.error(error as string);
     }
   };
+    const GetAllItemRawLockUp = async () => {
+    try {
+      const res = await LookupsService.GetAllItemRawLockUp();
+      itemsRowLookups.value = res.data;
+    } catch (error) {
+      toastService.error(error as string);
+    }
+  };
    const getworkOrderLookUp = async () => {
     try {
       const res = await LookupsService.getworkOrderLookUp();
@@ -465,6 +474,8 @@ export function useLookups() {
     AllVersionsLookups,
     itemsLookups,
     machineLookups,
+    itemsRowLookups,
+    GetAllItemRawLockUp,
     getAllItemsLookUp,
     getworkOrderLookUp,
     getAllVersionsLookups,

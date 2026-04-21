@@ -150,6 +150,11 @@ export const LookupsService = {
       "/Bom/GetAllItemsLockUp",
     );
   },
+   GetAllItemRawLockUp() {
+    return axiosWrapper.get<ApiResponse<ItemLookup[]>>(
+      "/Bom/GetAllItemRawLockUp",
+    );
+  },
    getworkOrderLookUp() {
     return axiosWrapper.get<ApiResponse<any[]>>(
       "/WorkOrder/GetAllWorkOrders",
