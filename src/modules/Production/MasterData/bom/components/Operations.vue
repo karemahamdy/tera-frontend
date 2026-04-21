@@ -14,8 +14,8 @@ const columns = computed(() => [
   { field: 'machineName',   header: t('BOM.Machine'),       sortable: false },
   { field: 'runTime',       header: t('BOM.RunTime'),       sortable: false },
   { field: 'setupTime',     header: t('BOM.SetupTime'),     sortable: false },
-  { field: '',     header: t('BOM.MachineCost'),     sortable: false },
-  { field: '',     header: t('BOM.LaborCost'),     sortable: false },
+  { field: 'machineCost',     header: t('BOM.MachineCost'),     sortable: false },
+  { field: 'laborCost',     header: t('BOM.LaborCost'),     sortable: false },
   { field: 'overheadCost',  header: t('BOM.OverheadCost'),  sortable: false },
 ]);
 const formattedRoutings = computed(() => {

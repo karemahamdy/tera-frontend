@@ -51,7 +51,7 @@ const getStatusText = (isActive: boolean) =>
     </div>
     <div class="grid grid-cols-1 p-4" v-if="data?.notes">
       <div class="flex flex-col gap-2">
-        <span class="text-lg text-[#A4A7AE]">{{ $t('BOM.Notes') }}</span>
+        <span class="text-lg text-[#A4A7AE]">{{ $t('downtime.notes') }}</span>
         <span class="text-[#101828] text-base font-medium">{{ data.notes }}</span>
       </div>
     </div>

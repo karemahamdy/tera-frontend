@@ -39,13 +39,7 @@ const cards = computed(() => [
     subtitle: `${props.costingSummary?.overheadCostPercentage ?? 0}% ${t('BOM.ofTotalCost')}`,
   },
 ]);
-const totalCostPerUnit = computed(() => {
-  const labor = props.costingSummary?.laborCost ?? 0;
-  const material = props.costingSummary?.materialCost ?? 0;
-  const overhead = props.costingSummary?.overheadCost ?? 0;
 
-  return (labor + material + overhead).toFixed(2);
-});
 </script>
 
 <template>
@@ -54,7 +48,7 @@ const totalCostPerUnit = computed(() => {
             </div>
             <div class="bg-[#EEF2FF] px-4 py-3 rounded-lg text-sm text-[#6366F1] flex justify-between mt-4">
             <span class="text-[#717680] text-center pt-3 text-[18px]">{{ $t('BOM.ofTotalCostPerUnit') }}</span>
-            <span class="text-[#414651] text-[32px] font-bold">${{ totalCostPerUnit }}</span>
+            <span class="text-[#414651] text-[32px] font-bold">${{ props.costingSummary?.totalCostPerUnit }}</span>
                
             </div>
 </template>
