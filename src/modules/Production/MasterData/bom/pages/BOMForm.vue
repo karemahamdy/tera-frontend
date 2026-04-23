@@ -18,13 +18,18 @@ const mode = computed(() => {
   return 'create';
 });
 const activeStep = ref(0);
-// ─── Navigation ──────────────────────────────────────────────────
 
 const nextTab = async () => {
   stepErrors.value = [];
-  let valid = false;
+  if (activeStep.value === 0) {
+    const result = await headerRef.value?.validate();
+    if (!result?.valid) return;
+  } else if (activeStep.value === 1) {
+    const isValid = await materialsRef.value?.validate();
+    if (!isValid) return;
+  }
 
-  if (valid && activeStep.value < steps.length - 1) {
+  if (activeStep.value < steps.length - 1) {
     activeStep.value++;
   }
 };
@@ -39,7 +44,30 @@ const materialsRef = ref();
 const routingsRef = ref();
 
 const onFinish = async () => {
+  stepErrors.value = [];
 
+  // 1. validate header
+  const headerResult = await headerRef.value?.validate();
+  if (!headerResult?.valid) {
+    activeStep.value = 0;
+    return;
+  }
+
+  // 2. validate materials
+  const materialsValid = await materialsRef.value?.validate();
+  if (!materialsValid) {
+    activeStep.value = 1;
+    return;
+  }
+
+  // 3. validate routings
+  const routingsValid = await routingsRef.value?.validate();
+  if (!routingsValid) {
+    activeStep.value = 2;
+    return;
+  }
+
+  // ✅ لو كله تمام كمل
   const header = headerRef.value?.getValues();
   const materials = materialsRef.value?.getItems();
   const routings = routingsRef.value?.getItems();
@@ -78,7 +106,6 @@ const onFinish = async () => {
     console.error(error);
   }
 };
-
 const steps = [
   { label: t("BOM.headerInformation") },
   { label: t("steps.Materials") },

@@ -2,8 +2,6 @@
 import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLookups } from '@/composables/useLookups';
-import { routingSchema } from '../validation/BOMSchema';
-import { useForm } from 'vee-validate';
 
 const { t } = useI18n();
 const { getProcessLookups, processLookups, getMachineLookups, machineLookups } = useLookups();
@@ -37,10 +35,37 @@ const columns = computed(() => [
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 
-const { } = useForm({
-    validationSchema: routingSchema,
-    initialValues: [],
-});
+const operationsError = ref('');
+const rowErrors = ref<Record<string, { operationId?: string; machineId?: string; }>>({});
+
+const validate = async () => {
+  operationsError.value = '';
+  rowErrors.value = {};
+  let isValid = true;
+
+  if (items.value.length === 0) {
+    operationsError.value = t('validation.atLeastOneOperation');
+    return false;
+  }
+
+  items.value.forEach((item) => {
+    const errors: any = {};
+    if (!item.operationId) {
+      errors.operationId = t('validation.processRequired');
+      isValid = false;
+    }
+    if (!item.machineId) {
+      errors.machineId = t('validation.machineRequired');
+      isValid = false;
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      rowErrors.value[item.id] = errors;
+    }
+  });
+
+  return isValid;
+};
 
 const addEmptyRow = () => {
     items.value.push({
@@ -58,9 +83,10 @@ const addEmptyRow = () => {
     });
     emitUpdate();
 };
+
 defineExpose({ 
-  getItems: () => items.value, 
-   
+  getItems: () => items.value,
+  validate,
 });
 
 const removeItem = (data: any) => {
@@ -89,17 +115,34 @@ const removeItem = (data: any) => {
                 @click="addEmptyRow" />
         </div>
 
+        <!-- Operation validation error -->
+        <div v-if="operationsError" class="text-danger-500 text-sm mb-2">
+            {{ operationsError }}
+        </div>
+
         <!-- Table -->
         <div class="overflow-x-auto">
             <DynamicTable :columns="columns" :data="items" :paginator="false" :showView="false" :showEdit="false"
                 :showDelete="false">
                 <template #col-operationId="{ data }">
-                    <FormDropdown :options="processLookups" v-model="data.operationId" optionLabel="label"
-                        optionValue="value" class="w-fit-content p-inputtext-sm text-sm" />
+                    <div>
+                        <FormDropdown :options="processLookups" v-model="data.operationId" optionLabel="label"
+                            optionValue="value" class="w-fit-content p-inputtext-sm text-sm"
+                            :invalid="!!rowErrors[data.id]?.operationId" />
+                        <small v-if="rowErrors[data.id]?.operationId" class="text-danger-500 text-xs">
+                            {{ rowErrors[data?.id]?.operationId }}
+                        </small>
+                    </div>
                 </template>
                 <template #col-machineId="{ data }">
-                    <FormDropdown  :options="machineLookups"  v-model="data.machineId" optionLabel="label"
-                        optionValue="value" class="w-fit-content p-inputtext-sm text-sm" />
+                    <div>
+                        <FormDropdown :options="machineLookups" v-model="data.machineId" optionLabel="label"
+                            optionValue="value" class="w-fit-content p-inputtext-sm text-sm"
+                            :invalid="!!rowErrors[data.id]?.machineId" />
+                        <small v-if="rowErrors[data.id]?.machineId" class="text-danger-500 text-xs">
+                            {{ rowErrors[data?.id]?.machineId }}
+                        </small>
+                    </div>
                 </template>
                 <!-- RunTime -->
                 <template #col-runTime="{ data }">

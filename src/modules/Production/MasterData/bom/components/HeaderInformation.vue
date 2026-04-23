@@ -39,7 +39,7 @@ const initialValues: headerValues = {
   version: "Version 1",
 };
 
-const { errors, defineField, handleSubmit } = useForm<headerValues>({
+const { errors, defineField, handleSubmit, validate } = useForm<headerValues>({
   validationSchema: headerSchema,
   initialValues,
 });
@@ -77,7 +77,7 @@ const getValues = () => ({
   version: version.value,
 });
 
-defineExpose({ getValues,  validate: handleSubmit(() => true), });
+defineExpose({ getValues, validate });
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
@@ -125,7 +125,8 @@ const onSubmit = handleSubmit(async (values) => {
         <!-- Final Product dropdown -->
         <FormDropdown :label="$t('BOM.FinalProduct')" v-model="parentItemId"
           :placeholder="$t('BOM.FinalProductPlaceholder')" :options="itemsLookups" optionLabel="label"
-          optionValue="value" @update:modelValue="onItemSelect" />
+          optionValue="value" @update:modelValue="onItemSelect"
+          :error="errors.parentItemId" :invalid="!!errors.parentItemId" />
 
         <!-- Base UOM - disabled, auto-filled from selected item -->
         <FormInput :label="$t('BOM.BaseUOM')" :modelValue="selectedItem?.baseUnitName ?? ''"

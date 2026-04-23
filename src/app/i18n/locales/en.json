@@ -1395,7 +1395,9 @@
     "atLeastOneMaterial": "At least one material is required",
     "scrapRange": "Scrap percentage must be between 0 and 100",
     "processRequired": "Process is required for all operations",
-    "machineRequired": "Machine is required for all operations"
+    "machineRequired": "Machine is required for all operations",
+    "atLeastOneOperation": "At least one operation is required",
+    "runTimeRequired": "Run time must be greater than 0"
   },
    "type": {
     "Breakdown": "Breakdown",

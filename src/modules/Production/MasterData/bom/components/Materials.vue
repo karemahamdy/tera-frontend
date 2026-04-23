@@ -28,8 +28,24 @@ const columns = computed(() => [
     ...(props.disabled ? [] : [{ field: 'action', header: '' }])
 ]);
 const availableItems = computed(() => itemsRowLookups.value);
+const materialsError = ref('');
+
+const validate = async () => {
+  materialsError.value = '';
+  if (items.value.length === 0) {
+    materialsError.value = t('validation.atLeastOneMaterial');
+    return false;
+  }
+  const hasInvalidQty = items.value.some(item => !item.quantity || item.quantity <= 0);
+  if (hasInvalidQty) {
+    return false;
+  }
+  return true;
+};
+
 defineExpose({ 
   getItems: () => items.value,
+  validate,
 });
 
 
@@ -72,7 +88,12 @@ function getQtyError(item: any): string {
     }
     return "";
 }
-
+function getScrapError(item: any): string {
+    if ( item.scrap >= 100) {
+        return t("validation.scrapRange");
+    }
+    return "";
+}
 const removeItem = (data: any) => {
     if (props.disabled) return;
     const index = items.value.findIndex(item => item.id === data.id);
@@ -94,6 +115,11 @@ const removeItem = (data: any) => {
             <BaseButton v-if="!disabled" :label="t('workOrder.addItem')" icon="AddSquare"
                 class="bg-primary-600 border-none hover:bg-primary-700 font-semibold px-4 py-2 rounded-lg"
                 @click="openItemDialog" />
+        </div>
+
+        <!-- Material validation error -->
+        <div v-if="materialsError" class="text-danger-500 text-sm mb-2">
+            {{ materialsError }}
         </div>
 
         <!-- Table -->
@@ -121,7 +147,10 @@ const removeItem = (data: any) => {
                 </template>
                 <template #col-scrap="{ data }">
                     <div class="flex items-center gap-2">
-                        <InputText v-model.number="data.scrap" type="number" class="w-20 p-inputtext-sm" />
+                        <InputText v-model.number="data.scrap" :max="100" type="number" class="w-20 p-inputtext-sm" />
+                        <small v-if="getScrapError(data)" class="text-danger-300 text-xs">
+                            {{ getScrapError(data) }}
+                        </small>
                     </div>
                 </template>
                 <template #col-notes="{ data }">
@@ -137,7 +166,7 @@ const removeItem = (data: any) => {
                     <span class="text-gray-600">{{ data.itemName }}</span>
                 </template>
                 <template #col-action="{ data }">
-                    <button v-if="!disabled" class="text-red-400 hover:text-red-600" @click="removeItem(data)">
+                    <button v-if="!disabled" class="text-danger-400 hover:text-danger-600" @click="removeItem(data)">
                         <VsxIcon iconName="Trash" :size="20" type="linear" color="#F04438" />
                     </button>
                 </template>
