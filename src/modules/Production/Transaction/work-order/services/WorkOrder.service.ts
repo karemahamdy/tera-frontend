@@ -6,32 +6,32 @@ export const workOrderService = {
   async getAll(params: Pagination) {
 
     const resp = await axiosWrapper.get<workOrderResponse>(
-      `/LedgerDetailCard`, { params }
+      `/WorkOrder`, { params }
     );
     return resp.data;
   },
 
   async getById(id: string): Promise<any> {
-    const data = await axiosWrapper.get<any>(`/LedgerDetailCard/${id}`);
+    const data = await axiosWrapper.get<any>(`/WorkOrder/${id}`);
     return data.data;
   },
 
   async create(payload: any) {
-    const data = await axiosWrapper.post<any>(`/LedgerDetailCard`, payload);
+    const data = await axiosWrapper.post<any>(`/WorkOrder`, payload);
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/LedgerDetailCard/${id}`, payload);
+    const data = await axiosWrapper.put<any>(`/WorkOrder/${id}`, payload);
     return data.data;
   },
 
   async delete(id: string): Promise<void> {
-    await axiosWrapper.delete(`/LedgerDetailCard/${id}`);
+    await axiosWrapper.delete(`/WorkOrder/${id}`);
   },
 
   async toggleActive(id: string, isActive: boolean) {
     const data = await axiosWrapper.put<any>(
-      `/LedgerDetailCard/Status/${id}`,
+      `/WorkOrder/Status/${id}`,
       null,
       {
         params: { isActive }
@@ -42,7 +42,7 @@ export const workOrderService = {
 
   async exportData(payload: any) {
     const data = await axiosWrapper.get<Blob>(
-      `/LedgerDetailCard/export-workOrders`,
+      `/WorkOrder/export-workOrders`,
       {
         params: payload,
         responseType: "blob",

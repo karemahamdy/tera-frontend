@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import StatusDialog from "@/sharedComponents/StatusDialog.vue";
 import alertIcon from '@/assets/images/alert.png';
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useworkOrder } from "../composables/useWorkOrder";
@@ -11,7 +11,7 @@ const router = useRouter();
 const showDeleteDialog = ref(false);
 const rowToDelete = ref<any | null>(null);
 const isDeleting = ref(false);
-const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteworkOrder, onFilterChange } = useworkOrder();
+const { loading, toggleActive, pageIndex, pageSize, totalCount, onSearch, onSort, setPage, deleteworkOrder, onFilterChange, fetchworkOrder, apiworkOrder } = useworkOrder();
 
 const emit = defineEmits(['search', 'action-menu-click']);
 const customItems = [
@@ -30,14 +30,10 @@ const customItems = [
         action: 'view',
     },
 ];
-const data = ref([
-    { id: 1, code: 'WC001', name: 'Work Center 1', department: 'Department A', machines: "3 machines", status: "Completed" },
-    { id: 2, code: 'WC002', name: 'Work Center 2', department: 'Department B', machines: "3 machines", status: "In Progress" },
-    { id: 3, code: 'WC003', name: 'Work Center 3', department: 'Department C', machines: "8 machines", status: "New" },
-]);
-// onMounted(() => {
-//     fetchworkOrder();
-// });
+
+onMounted(() => {
+    fetchworkOrder();
+});
 const filtersOperation = computed(() => {
     return [
 
@@ -57,12 +53,12 @@ const filtersOperation = computed(() => {
 
 const columns = computed(() => {
     const Columns = [
-        { field: 'code', header: t('workOrder.woNumber'), sortable: true },
-        { field: 'name', header: t('workOrder.item'), type: 'slot', sortable: true },
-        { field: 'department', header: t('workOrder.quantity'), type: 'slot', sortable: true },
-        { field: 'machines', header: t('workOrder.WarehouseIn'), sortable: true },
-        { field: 'machines', header: t('workOrder.WarehouseOut'), sortable: true },
-        { field: 'machines', header: t('workOrder.Plannedstart'), sortable: true },
+        { field: 'workOrderNumber', header: t('workOrder.woNumber'), sortable: true },
+        { field: 'itemName', header: t('workOrder.item'), type: 'slot', sortable: true },
+        { field: 'quantity', header: t('workOrder.quantity'), type: 'slot', sortable: true },
+        { field: 'warehouseInName', header: t('workOrder.WarehouseIn'), sortable: true },
+        { field: 'warehouseOutName', header: t('workOrder.WarehouseOut'), sortable: true },
+        { field: 'plannedStartDate', header: t('workOrder.Plannedstart'), sortable: true },
         { field: 'status', header: t('status'), sortable: true },
         { field: 'action', header: t('action') }
     ];
@@ -139,7 +135,7 @@ const addworkOrder = () => {
             </template>
             <!-- DynamicTable component -->
             <template #content>
-                <DynamicTable :columns="columns" :data="data" :loading="loading" :customItems="customItems"
+                <DynamicTable :columns="columns" :data="apiworkOrder" :loading="loading" :customItems="customItems"
                     @action-menu-click="handleActionMenu" :showDelete="true" @page-change="setPage"
                     @order-change="(payload: any) => onSort(payload.orderBy, payload.direction)" :first="firstRecord"
                     :last="lastRecord" :rows="pageSize" :totalRecords="totalCount" @search="onSearch" lazy>
