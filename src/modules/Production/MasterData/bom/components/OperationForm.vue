@@ -84,9 +84,33 @@ const addEmptyRow = () => {
     emitUpdate();
 };
 
+const setItems = (newItems: any[]) => {
+    items.value = newItems.map((item, index) => {
+        const runH = Math.floor(item.runTime || 0);
+        const runM = Math.round(((item.runTime || 0) - runH) * 60);
+        const setH = Math.floor(item.setupTime || 0);
+        const setM = Math.round(((item.setupTime || 0) - setH) * 60);
+
+        return {
+            id: item.id || Date.now().toString() + index,
+            sequence: item.sequence,
+            operationId: item.operationId,
+            machineId: item.machineId,
+            runTimeHours: runH,
+            runTimeMinutes: runM,
+            setupTimeHours: setH,
+            setupTimeMinutes: setM,
+            get runTime() { return this.runTimeHours + this.runTimeMinutes / 60; },
+            get setupTime() { return this.setupTimeHours + this.setupTimeMinutes / 60; },
+            notes: item.notes || '',
+        };
+    });
+};
+
 defineExpose({ 
   getItems: () => items.value,
   validate,
+  setItems,
 });
 
 const removeItem = (data: any) => {

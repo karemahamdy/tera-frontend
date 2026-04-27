@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import Materials from '../components/Materials.vue';
@@ -10,7 +10,7 @@ import { useBOM } from '../composables/useBom';
 
 const { t } = useI18n();
 const route = useRoute();
-const { createBOM, updateBOM } = useBOM();
+const { createBOM, updateBOM, fetchBOMById } = useBOM();
 const stepErrors = ref<string[]>([]);
 
 const mode = computed(() => {
@@ -42,6 +42,17 @@ const previousTab = () => {
 const headerRef = ref();
 const materialsRef = ref();
 const routingsRef = ref();
+
+onMounted(async () => {
+  if (mode.value === 'edit' && route.params.id) {
+    const bomData = await fetchBOMById(route.params.id as string);
+    if (bomData) {
+      headerRef.value?.setValues(bomData);
+      materialsRef.value?.setItems(bomData.materials || []);
+      routingsRef.value?.setItems(bomData.routings || []);
+    }
+  }
+});
 
 const onFinish = async () => {
   stepErrors.value = [];
@@ -101,7 +112,7 @@ const onFinish = async () => {
     } else {
       await createBOM(payload);
     }
-    router.push({ name: 'BOMList' });
+    router.push({ name: 'BOM' });
   } catch (error) {
     console.error(error);
   }

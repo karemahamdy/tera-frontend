@@ -21,7 +21,7 @@ export const BOMService = {
     return data.data;
   },
   async update(id: string, payload: any) {
-    const data = await axiosWrapper.put<any>(`/Bom/${id}`, payload);
+    const data = await axiosWrapper.post<any>(`/Bom/${id}/version`, payload);
     return data.data;
   },
 

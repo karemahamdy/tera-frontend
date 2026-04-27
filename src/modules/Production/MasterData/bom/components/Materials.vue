@@ -43,9 +43,49 @@ const validate = async () => {
   return true;
 };
 
+const internalItems = ref<any[]>([]);
+
+const mapItems = () => {
+    if (!internalItems.value.length) return;
+    items.value = internalItems.value.map((item, index) => {
+        const lookupItem = itemsRowLookups.value.find(i => i.itemId === item.itemId);
+        let mappedUnits = [{ label: item.uomName || item.unitName || 'Unit', value: item.uomId || item.unitId }];
+        if (lookupItem?.units?.length) {
+             mappedUnits = lookupItem.units.map((unit: any) => ({
+                label: `${unit.unitName} (${unit.unitCode})`,
+                value: unit.unitId,
+            }));
+            if (item.uomId && !mappedUnits.find(u => u.value === item.uomId)) {
+                 mappedUnits.push({ label: item.uomName || 'Unit', value: item.uomId });
+            } else if (item.unitId && !mappedUnits.find(u => u.value === item.unitId)) {
+                 mappedUnits.push({ label: item.unitName || 'Unit', value: item.unitId });
+            }
+        }
+
+        return {
+            id: item.id || Date.now().toString() + index,
+            itemId: item.itemId,
+            tracked: lookupItem?.tracked || item.tracked || null,
+            itemCode: item.itemCode,
+            itemName: item.itemName,
+            unitId: item.uomId || item.unitId,
+            quantity: item.quantity,
+            scrap: item.scrapPercentage || item.scrap || 0,
+            units: mappedUnits,
+            notes: item.notes || '',
+        };
+    });
+};
+
+const setItems = (newItems: any[]) => {
+    internalItems.value = newItems;
+    mapItems();
+};
+
 defineExpose({ 
   getItems: () => items.value,
   validate,
+  setItems,
 });
 
 
@@ -54,6 +94,7 @@ onMounted(async () => {
     await Promise.all([
         GetAllItemRawLockUp(),
     ]);
+    mapItems();
 });
 
 function emitUpdate() {

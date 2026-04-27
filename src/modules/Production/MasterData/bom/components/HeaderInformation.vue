@@ -57,6 +57,9 @@ onMounted(async () => {
     await Promise.all([
         getAllItemsLookUp(),
     ]);
+    if (parentItemId.value) {
+        onItemSelect(parentItemId.value);
+    }
 });
 
 const onItemSelect = (itemId: string) => {
@@ -77,7 +80,23 @@ const getValues = () => ({
   version: version.value,
 });
 
-defineExpose({ getValues, validate });
+const setValues = (data: any) => {
+  bomCode.value = data.bomCode;
+  bomName.value = data.bomName;
+  parentItemId.value = data.parentItemId;
+  baseQuantity.value = data.baseQuantity;
+  notes.value = data.notes;
+  isActive.value = data.isActive ?? true;
+  version.value = `Version ${data.version ?? 1}`;
+  
+  if (data.parentItemId && itemsLookups.value.length) {
+     onItemSelect(data.parentItemId);
+  } else if (data.parentItemBaseUnit || data.uomName) {
+     selectedItem.value = { baseUnitName: data.parentItemBaseUnit || data.uomName };
+  }
+};
+
+defineExpose({ getValues, validate, setValues });
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
