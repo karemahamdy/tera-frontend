@@ -32,7 +32,7 @@ const props = defineProps({
   dataFileUrl: { type: [String, null], default: null },
   templateFileName: { type: String, default: "template-file.xlsx" },
   dataFileName: { type: String, default: "data-file.xlsx" },
-  filters: { type: Array, default: [] },
+  filters: { type: Array, default: () => [] },
   requiresBody: { type: Boolean, default: false },
 });
 

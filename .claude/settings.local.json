@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn build-storybook *)",
+      "Bash(yarn npm *)"
+    ]
+  }
+}

@@ -6,7 +6,7 @@ const props = defineProps({
   showExport: { type: Boolean, default: false },
   exportText: { type: String, default: "Export" },
   onExport: { type: Function, default: null },
-  filters: { type: Array, default: [] },
+  filters: { type: Array, default: () => [] },
 });
 
 const emit = defineEmits(["filter-change", "search", "clear"]);
